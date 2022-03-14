@@ -1,4 +1,7 @@
-import dotenv from "dotenv";
-dotenv.config();
+import axios from "axios";
 
-export {};
+const instance = axios.create({
+    baseURL: process.env.REACT_APP_BASE_API || ""
+});
+
+export { instance as axiosInstance };
