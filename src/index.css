@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 /* ubuntu-regular - latin */
 @font-face {
     font-family: 'Ubuntu';
@@ -14,12 +18,11 @@
     font-style: normal;
     font-weight: 800;
     src: local(''),
-         url('../public/poppins-v19-latin-800.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-         url('../public/poppins-v19-latin-800.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-  }
-  
+        url('../public/poppins-v19-latin-800.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+        url('../public/poppins-v19-latin-800.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
 
-p, a, h1, h2, h3, h4, h5, h6 {
+p, a, li {
     font-family: 'Ubuntu', sans-serif;
 }
 

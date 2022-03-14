@@ -1,12 +1,14 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
 import _ from "lodash";
-import { formatDuration, startOfDay } from "date-fns";
+import { formatDuration, startOfDay, intervalToDuration } from "date-fns";
+import { Title } from "@mantine/core";
 
 const prettifyProgrammingLanguageName = (name: string): string => ({
   "typescript": "TypeScript",
   "typescriptreact": "TypeScript with React",
   "json": "JSON",
-  "html": "HTML"
+  "html": "HTML",
+  "css": "CSS"
 }[name] || name);
 
 type ActivityDataEntryWithDate = ActivityDataEntry & { dayStart: Date };
@@ -43,26 +45,41 @@ export const Dashboard = () => {
     dayStart: startOfDay(entry.start_time)
   }));
 
+
+  const formatShort = {
+    xSeconds: "{{count}}s",
+    xMinutes: "{{count}}min",
+    xHours: "{{count}}h"
+  };
+
+  const prettyDuration = (seconds: number) => formatDuration(intervalToDuration({ start: 0, end: Math.round(seconds * 1000 / 60000) * 60000 }),
+    {
+      locale: {
+        // Let's just hope the token is one of these options
+        formatDistance: (token: "xSeconds" | "xMinutes" | "xHours", count: number) => formatShort[token].replace("{{count}}", String(count))
+      }
+    }) || "0 seconds";
+
   return <div>
-    <h2>Your statistics</h2>
-    <p>Total time programmed: {formatDuration({ minutes: Math.round(entries.reduce((prev, curr) => prev + curr.duration, 0) / 60) })}</p>
-    <h3>Languages</h3>
+    <Title>Your statistics</Title>
+    <p>Total time programmed: {prettyDuration(entries.reduce((prev, curr) => prev + curr.duration, 0))}</p>
+    <Title order={2}>Languages</Title>
     <ol>
       {getAllTimeTopLanguages(entriesWithStartOfDay).map(l => <li key={l.language}>
-        {prettifyProgrammingLanguageName(l.language)}: {formatDuration({ minutes: Math.round(l.totalSeconds / 60) }, { zero: true })}
+        {prettifyProgrammingLanguageName(l.language)}: {prettyDuration(l.totalSeconds)}
       </li>)}
     </ol>
-    <h3>Projects</h3>
+    <Title order={2}>Projects</Title>
     <ol>
       {getAllTimeTopProjects(entriesWithStartOfDay).map(p => <li key={p.project}>
-        {p.project}: {formatDuration({ minutes: Math.round(p.totalSeconds / 60) }, { zero: true })}
+        {p.project}: {prettyDuration(p.totalSeconds)}
       </li>)}
     </ol>
-    <h2>Your sessions</h2>
+    <Title order={2}>Your sessions</Title>
     {getAllEntriesByDay(entriesWithStartOfDay).map(d => <div key={d.date.getTime()}>
-      <h3>{d.date.toLocaleDateString()}</h3>
+      <Title order={3}>{d.date.toLocaleDateString()}</Title>
       <p>
-        Time today: {formatDuration({ minutes: Math.round(d.entries.reduce((prev, curr) => prev + curr.duration, 0) / 60) }, { zero: true })}
+        Time today: {prettyDuration(d.entries.reduce((prev, curr) => prev + curr.duration, 0))}
       </p>
       <ol>
         {d.entries.map(entry => <li key={entry.start_time.getTime()}>

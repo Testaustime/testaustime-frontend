@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { axiosInstance } from "../config";
-import { RootState } from "../store";
 import { useAuthentication } from "./useAuthentication";
 
 interface ResponseActivityDataEntry {

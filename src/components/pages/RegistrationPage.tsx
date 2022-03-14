@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button, Title } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
@@ -12,7 +12,7 @@ export const RegistrationPage = () => {
   const notifications = useNotifications();
 
   return <div>
-    <h1>Register</h1>
+    <Title order={1} mb={20}>Register</Title>
     <Formik
       initialValues={{
         username: "",

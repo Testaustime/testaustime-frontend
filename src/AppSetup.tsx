@@ -1,6 +1,6 @@
 import { Anchor, Button, Group, MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
-import { useSelector } from "react-redux";
+import { ExitIcon } from "@radix-ui/react-icons";
 import { Route, Routes } from "react-router";
 import { BrowserRouter, Link } from "react-router-dom";
 import styled from "styled-components";
@@ -9,7 +9,6 @@ import { MainPage } from "./components/pages/MainPage";
 import { ProfilePage } from "./components/pages/ProfilePage";
 import { RegistrationPage } from "./components/pages/RegistrationPage";
 import { useAuthentication } from "./hooks/useAuthentication";
-import { RootState } from "./store";
 
 const Layout = styled.div`
   display: flex;
@@ -34,12 +33,24 @@ const TestaustimeTitle = styled(Link)`
 `;
 
 export const AppSetup = () => {
-  const username = useSelector<RootState, string>(state => state.users.username);
   const { logOut, isLoggedIn } = useAuthentication();
 
-  return <MantineProvider theme={{
-    fontFamily: "'Ubuntu', sans-serif"
-  }}>
+  return <MantineProvider
+    withGlobalStyles
+    theme={{
+      colorScheme: "light", // TODO: Implement dark mode
+      fontFamily: "'Ubuntu', sans-serif",
+      white: "#eee",
+      black: "#121212",
+      colors: {
+        blue: ["#1D357F", "#28408A", "#667bc4", "#3D55A0", "#5084cc", "#536AB7", "#5E74C2", "#667bc4", "#6275bc", "#7E94E3"]
+      },
+      headings: {
+        fontFamily: "Poppins, sans-serif",
+        fontWeight: 800
+      }
+    }}
+  >
     <NotificationsProvider>
       <Layout>
         <Container>
@@ -52,7 +63,7 @@ export const AppSetup = () => {
                 {!isLoggedIn && <Anchor component={Link} to="/login">Login</Anchor>}
                 {!isLoggedIn && <Button component={Link} to="/register">Register</Button>}
                 {isLoggedIn && <Anchor component={Link} to="/profile">My profile</Anchor>}
-                {isLoggedIn && <Button variant="outline" size="sm" onClick={logOut}>Log out: {username}</Button>}
+                {isLoggedIn && <Button variant="outline" size="xs" onClick={logOut} leftIcon={<ExitIcon />}>Log out</Button>}
               </Group>
             </Group>
             <Routes>
