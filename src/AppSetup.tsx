@@ -1,3 +1,5 @@
+import { Anchor, Button, Group, MantineProvider } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router";
 import { BrowserRouter, Link } from "react-router-dom";
@@ -31,47 +33,37 @@ const TestaustimeTitle = styled(Link)`
   text-decoration: none;
 `;
 
-const HeaderRow = styled.header`
-  display: flex;
-  padding-top: 10px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 50px;
-`;
-
-const HeaderLinks = styled.div`
-  display: flex;
-  gap: 15px;
-  align-items: center;
-`;
-
-
 export const AppSetup = () => {
   const username = useSelector<RootState, string>(state => state.users.username);
   const { logOut, isLoggedIn } = useAuthentication();
 
-  return <Layout>
-    <Container>
-      <BrowserRouter>
-        <HeaderRow>
-          <TestaustimeTitle to="/">
-            Testaustime
-          </TestaustimeTitle>
-          <HeaderLinks>
-            {!isLoggedIn && <Link to="/login">Login</Link>}
-            {!isLoggedIn && <Link to="/register">Register</Link>}
-            {isLoggedIn && <Link to="/profile">My profile</Link>}
-            {isLoggedIn && <button onClick={logOut}>Log out: {username}</button>}
-          </HeaderLinks>
-        </HeaderRow>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegistrationPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-        </Routes>
-      </BrowserRouter>
-    </Container>
-  </Layout>;
+  return <MantineProvider theme={{
+    fontFamily: "'Ubuntu', sans-serif"
+  }}>
+    <NotificationsProvider>
+      <Layout>
+        <Container>
+          <BrowserRouter>
+            <Group position="apart" mb={50}>
+              <TestaustimeTitle to="/">
+                Testaustime
+              </TestaustimeTitle>
+              <Group spacing={15} align="center">
+                {!isLoggedIn && <Anchor component={Link} to="/login">Login</Anchor>}
+                {!isLoggedIn && <Button component={Link} to="/register">Register</Button>}
+                {isLoggedIn && <Anchor component={Link} to="/profile">My profile</Anchor>}
+                {isLoggedIn && <Button variant="outline" size="sm" onClick={logOut}>Log out: {username}</Button>}
+              </Group>
+            </Group>
+            <Routes>
+              <Route path="/" element={<MainPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegistrationPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+            </Routes>
+          </BrowserRouter>
+        </Container>
+      </Layout>
+    </NotificationsProvider>
+  </MantineProvider>;
 };

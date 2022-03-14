@@ -1,30 +1,43 @@
-import { useState } from "react";
+import { Button } from "@mantine/core";
+import { useNotifications } from "@mantine/notifications";
+import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import { useLogin } from "../../hooks/useLogin";
+import { FormikTextInput } from "../forms/FormikTextInput";
+import * as Yup from "yup";
 
 export const LoginPage = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const { login } = useLogin();
   const navigate = useNavigate();
-
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    login(username, password).then(() => {
-      navigate("/");
-    }).catch(() => {
-      setError("An error occurred while logging in");
-    });
-  };
+  const notifications = useNotifications();
 
   return <div>
     <h1>Login</h1>
-    {error}
-    <form onSubmit={handleSubmit}>
-      <input type="text" name="username" onChange={e => setUsername(e.target.value)} value={username} />
-      <input type="password" name="password" onChange={e => setPassword(e.target.value)} value={password} />
-      <input type="submit" value="Log in" />
-    </form>
+    <Formik
+      initialValues={{
+        username: "",
+        password: ""
+      }}
+      validationSchema={Yup.object().shape({
+        username: Yup.string().required("Username is required"),
+        password: Yup.string().required("Password is required")
+      })}
+      onSubmit={values => {
+        login(values.username, values.password).then(() => {
+          navigate("/");
+        }).catch(error => {
+          notifications.showNotification({
+            title: "Error",
+            color: "red",
+            message: String(error.response.data)
+          });
+        });
+      }}>
+      {() => <Form>
+        <FormikTextInput name="username" label="Username" />
+        <FormikTextInput name="password" label="Password" type="password" mt={15} />
+        <Button mt={20} type="submit">Log in</Button>
+      </Form>}
+    </Formik>
   </div>;
 };
