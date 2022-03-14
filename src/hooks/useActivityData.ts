@@ -12,7 +12,7 @@ interface ResponseActivityDataEntry {
   "duration": number
 }
 
-interface ActivityDataEntry {
+export interface ActivityDataEntry {
   "language": string,
   "hostname": string,
   "editor_name": string,
