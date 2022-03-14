@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { axiosInstance } from "../config";
-import { setAuthToken } from "../slices/userSlice";
+import { setAuthToken, setUsername } from "../slices/userSlice";
 
 interface UseLoginResult {
   login: (username: string, password: string) => Promise<string>;
@@ -14,6 +14,7 @@ export const useLogin = (): UseLoginResult => {
       const authToken = response.data;
       localStorage.setItem("authToken", authToken);
       dispatch(setAuthToken(authToken));
+      dispatch(setUsername(username));
       return await Promise.resolve(authToken);
     } catch (error) {
       return await Promise.reject(error);
