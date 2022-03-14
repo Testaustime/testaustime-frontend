@@ -2,15 +2,15 @@ import { useDispatch } from "react-redux";
 import { axiosInstance } from "../config";
 import { setAuthToken } from "../slices/userSlice";
 
-interface UseRegisterResult {
-  register: (username: string, password: string) => Promise<string>;
+interface UseLoginResult {
+  login: (username: string, password: string) => Promise<string>;
 }
 
-export const useRegister = (): UseRegisterResult => {
+export const useLogin = (): UseLoginResult => {
   const dispatch = useDispatch();
-  const register = async (username: string, password: string) => {
+  const login = async (username: string, password: string) => {
     try {
-      const response = await axiosInstance.post<string>("/users/register", { username, password }, { responseType: "text" });
+      const response = await axiosInstance.post<string>("/users/login", { username, password }, { responseType: "text" });
       const authToken = response.data;
       localStorage.setItem("authToken", authToken);
       dispatch(setAuthToken(authToken));
@@ -21,6 +21,6 @@ export const useRegister = (): UseRegisterResult => {
   };
 
   return {
-    register
+    login
   };
 };
