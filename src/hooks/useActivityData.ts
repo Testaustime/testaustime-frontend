@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../config";
 import { RootState } from "../store";
+import { useAuthentication } from "./useAuthentication";
 
 interface ResponseActivityDataEntry {
   "language": string,
@@ -22,7 +23,7 @@ export interface ActivityDataEntry {
 }
 
 export const useActivityData = () => {
-  const token = useSelector<RootState, string>(state => state.users.authToken);
+  const { token } = useAuthentication();
   const [entries, setEntries] = useState<ActivityDataEntry[]>([]);
 
   useEffect(() => {

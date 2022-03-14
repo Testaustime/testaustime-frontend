@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mantine/hooks": "^4.0.4",
     "@reduxjs/toolkit": "^1.8.0",
     "@types/node": "^16.11.26",
     "@types/react": "^17.0.40",

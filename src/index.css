@@ -19,11 +19,11 @@
   }
   
 
-* {
+p, a, h2, h3, h4, h5, h6 {
     font-family: 'Ubuntu', sans-serif;
 }
 
-p, a{
+p, a {
     font-size: 1.2rem;
     line-height: 2rem;
 }
