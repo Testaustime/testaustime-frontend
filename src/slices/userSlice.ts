@@ -5,7 +5,8 @@ export interface UsersSlice {
 }
 
 const initialState: UsersSlice = {
-  authToken: "",
+  // Should the pre-existing auth token be retrieved here, or when AppSetup is mounted??
+  authToken: localStorage.getItem("authToken") || "",
 };
 
 export const usersSlice = createSlice({

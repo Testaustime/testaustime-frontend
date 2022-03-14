@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { setAuthToken } from "../../slices/userSlice";
 import { RootState } from "../../store";
+import { Dashboard } from "../Dashboard";
 
 // TODO: Install Poppins font
 const TestaustimeTitle = styled.h1`
@@ -45,7 +46,7 @@ export const MainPage = () => {
       </HeaderLinks>
     </HeaderRow>
     {isLoggedIn ? <>
-      <p>Your token: {token || "none"}</p>
+      <Dashboard />
     </> : <>
       <p>TestausTime is the ultimate tool for tracking time of your coding sessions. Show the world how dedicated you are to your projects.</p>
     </>}
