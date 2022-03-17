@@ -1,8 +1,9 @@
 import { Anchor, Button, Group, MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import { ExitIcon } from "@radix-ui/react-icons";
-import { Route, Routes } from "react-router";
-import { BrowserRouter, Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { LoginPage } from "./components/pages/LoginPage";
 import { MainPage } from "./components/pages/MainPage";
@@ -33,7 +34,15 @@ const TestaustimeTitle = styled(Link)`
 `;
 
 export const AppSetup = () => {
-  const { logOut, isLoggedIn } = useAuthentication();
+  const { logOut, isLoggedIn, refetchUsername, username } = useAuthentication();
+  const navigate = useNavigate();
+
+  useEffect(() => refetchUsername(), []);
+
+  const logOutAndRedirect = () => {
+    logOut();
+    navigate("/");
+  };
 
   return <MantineProvider
     withGlobalStyles
@@ -54,25 +63,23 @@ export const AppSetup = () => {
     <NotificationsProvider>
       <Layout>
         <Container>
-          <BrowserRouter>
-            <Group position="apart" mb={50}>
-              <TestaustimeTitle to="/">
-                Testaustime
-              </TestaustimeTitle>
-              <Group spacing={15} align="center">
-                {!isLoggedIn && <Anchor component={Link} to="/login">Login</Anchor>}
-                {!isLoggedIn && <Button component={Link} to="/register">Register</Button>}
-                {isLoggedIn && <Anchor component={Link} to="/profile">My profile</Anchor>}
-                {isLoggedIn && <Button variant="outline" size="xs" onClick={logOut} leftIcon={<ExitIcon />}>Log out</Button>}
-              </Group>
+          <Group position="apart" mb={50}>
+            <TestaustimeTitle to="/">
+              Testaustime
+            </TestaustimeTitle>
+            <Group spacing={15} align="center">
+              {!isLoggedIn && <Anchor component={Link} to="/login">Login</Anchor>}
+              {!isLoggedIn && <Button component={Link} to="/register">Register</Button>}
+              {isLoggedIn && <Anchor component={Link} to="/profile">My profile</Anchor>}
+              {isLoggedIn && <Button variant="outline" size="xs" onClick={logOutAndRedirect} leftIcon={<ExitIcon />}>Log out {username}</Button>}
             </Group>
-            <Routes>
-              <Route path="/" element={<MainPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegistrationPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-            </Routes>
-          </BrowserRouter>
+          </Group>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegistrationPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Routes>
         </Container>
       </Layout>
     </NotificationsProvider>

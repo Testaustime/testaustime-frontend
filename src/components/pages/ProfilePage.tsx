@@ -1,18 +1,25 @@
 import { Button, Group, Popover, Text, Title } from "@mantine/core";
 import { useBooleanToggle, useClipboard } from "@mantine/hooks";
 import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { useAuthentication } from "../../hooks/useAuthentication";
-import { RootState } from "../../store";
 import { AuthTokenField } from "../AuthTokenField";
 
 export const ProfilePage = () => {
-  const username = useSelector<RootState, string>(state => state.users.username);
   const { copy, copied } = useClipboard({ timeout: 2000 });
-  const { token, regenerateToken } = useAuthentication();
+  const { token, regenerateToken, username, isLoggedIn } = useAuthentication();
   const [confirmationOpened, setConfirmationOpened] = useState(false);
   const [revealedToken, toggleRevealToken] = useBooleanToggle(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, []);
+
+  if (!isLoggedIn) return <Text>You need to log in to view this page</Text>;
 
   return <div>
     <Title order={2}>My profile</Title>

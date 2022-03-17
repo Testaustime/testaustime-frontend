@@ -1,7 +1,10 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
 import _ from "lodash";
 import { formatDuration, startOfDay, intervalToDuration } from "date-fns";
-import { Title } from "@mantine/core";
+import { Text, Title } from "@mantine/core";
+import { useAuthentication } from "../hooks/useAuthentication";
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const prettifyProgrammingLanguageName = (name: string): string => ({
   "typescript": "TypeScript",
@@ -39,6 +42,8 @@ const getAllEntriesByDay = (entries: ActivityDataEntryWithDate[]): { date: Date,
 
 export const Dashboard = () => {
   const entries = useActivityData();
+  const { isLoggedIn } = useAuthentication();
+  const navigate = useNavigate();
 
   const entriesWithStartOfDay = entries.map(entry => ({
     ...entry,
@@ -59,6 +64,14 @@ export const Dashboard = () => {
         formatDistance: (token: "xSeconds" | "xMinutes" | "xHours", count: number) => formatShort[token].replace("{{count}}", String(count))
       }
     }) || "0 seconds";
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, []);
+
+  if (!isLoggedIn) return <Text>You need to log in to view this page</Text>;
 
   return <div>
     <Title>Your statistics</Title>
