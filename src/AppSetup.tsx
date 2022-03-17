@@ -37,7 +37,9 @@ export const AppSetup = () => {
   const { logOut, isLoggedIn, refetchUsername, username } = useAuthentication();
   const navigate = useNavigate();
 
-  useEffect(() => refetchUsername(), []);
+  useEffect(() => {
+    refetchUsername();
+  }, []);
 
   const logOutAndRedirect = () => {
     logOut();

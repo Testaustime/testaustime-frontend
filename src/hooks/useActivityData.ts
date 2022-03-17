@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../config";
+import { apiUrl } from "../config";
 import { useAuthentication } from "./useAuthentication";
 
 interface ResponseActivityDataEntry {
@@ -25,12 +25,11 @@ export const useActivityData = () => {
   const [entries, setEntries] = useState<ActivityDataEntry[]>([]);
 
   useEffect(() => {
-    axiosInstance.get<ResponseActivityDataEntry[]>("/users/@me/activity/data", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then(response => {
-      setEntries(response.data.map(e => ({
+    fetch(`${apiUrl}/users/@me/activity/data`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then(async response => {
+      const data: ResponseActivityDataEntry[] = await response.json();
+      setEntries(data.map(e => ({
         ...e,
         start_time: new Date(e.start_time)
       })));
