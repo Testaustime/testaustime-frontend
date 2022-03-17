@@ -13,7 +13,7 @@ export const useRegister = (): UseRegisterResult => {
 
   const register = async (username: string, password: string) => {
     try {
-      const response = await axiosInstance.post<string>("/users/register", { username, password }, { responseType: "text" });
+      const response = await axiosInstance.post<string>("/auth/register", { username, password }, { responseType: "text" });
       const authToken = response.data;
       setToken(authToken);
       dispatch(setUsername(username));
