@@ -13,7 +13,7 @@ export const useLogin = (): UseLoginResult => {
 
   const login = async (username: string, password: string) => {
     try {
-      const response = await axiosInstance.post<string>("/users/login", { username, password }, { responseType: "text" });
+      const response = await axiosInstance.post<string>("/auth/login", { username, password }, { responseType: "text" });
       const authToken = response.data;
       setToken(authToken);
       dispatch(setUsername(username));

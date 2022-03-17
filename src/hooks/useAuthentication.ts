@@ -14,7 +14,7 @@ export const useAuthentication = () => {
 
     const regenerateToken = async () => {
         try {
-            const response = await axiosInstance.post("/users/regenerate", {}, {
+            const response = await axiosInstance.post("/auth/regenerate", {}, {
                 headers: { Authorization: `Bearer ${token}` },
                 responseType: "text"
             });

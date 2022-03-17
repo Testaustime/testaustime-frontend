@@ -25,7 +25,7 @@ export const useActivityData = () => {
   const [entries, setEntries] = useState<ActivityDataEntry[]>([]);
 
   useEffect(() => {
-    axiosInstance.get<ResponseActivityDataEntry[]>("/activity/data", {
+    axiosInstance.get<ResponseActivityDataEntry[]>("/users/@me/activity/data", {
       headers: {
         Authorization: `Bearer ${token}`
       }
