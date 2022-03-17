@@ -2,12 +2,12 @@ import { Button, Title } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
-import { useRegister } from "../../hooks/useRegister";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
+import { useAuthentication } from "../../hooks/useAuthentication";
 
 export const RegistrationPage = () => {
-  const { register } = useRegister();
+  const { register } = useAuthentication();
   const navigate = useNavigate();
   const notifications = useNotifications();
 

@@ -28,6 +28,30 @@ export const useAuthentication = () => {
     }
   };
 
+  const register = async (username: string, password: string) => {
+    try {
+      const response = await axiosInstance.post<string>("/auth/register", { username, password }, { responseType: "text" });
+      const authToken = response.data;
+      setToken(authToken);
+      dispatch(setUsername(username));
+      return await Promise.resolve(authToken);
+    } catch (error) {
+      return await Promise.reject(error);
+    }
+  };
+
+  const login = async (username: string, password: string) => {
+    try {
+      const response = await axiosInstance.post<string>("/auth/login", { username, password }, { responseType: "text" });
+      const authToken = response.data;
+      setToken(authToken);
+      dispatch(setUsername(username));
+      return await Promise.resolve(authToken);
+    } catch (error) {
+      return await Promise.reject(error);
+    }
+  };
+
   const logOut = () => {
     dispatch(setAuthToken(""));
     dispatch(setUsername(""));
@@ -56,6 +80,8 @@ export const useAuthentication = () => {
     setToken,
     isLoggedIn: !!token,
     regenerateToken,
+    register,
+    login,
     logOut,
     username,
     refetchUsername
