@@ -22,6 +22,7 @@ module.exports = {
     "@typescript-eslint"
   ],
   "rules": {
+    "indent": ["error", 2],
     "linebreak-style": [
       "error",
       "unix"
