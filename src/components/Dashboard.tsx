@@ -11,7 +11,13 @@ const prettifyProgrammingLanguageName = (name: string): string => ({
   "typescriptreact": "TypeScript with React",
   "json": "JSON",
   "html": "HTML",
-  "css": "CSS"
+  "css": "CSS",
+  "rust": "Rust",
+  "r": "R",
+  "haskell": "Haskell",
+  "c": "C",
+  "vimwiki": "VimWiki",
+  "vim": "Vim"
 }[name] || name);
 
 type ActivityDataEntryWithDate = ActivityDataEntry & { dayStart: Date };
