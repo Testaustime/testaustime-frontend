@@ -29,7 +29,7 @@ export const RegistrationPage = () => {
           notifications.showNotification({
             title: "Error",
             color: "red",
-            message: String(error.response.data)
+            message: String(error || "An unknown error occurred")
           });
         });
       }}>

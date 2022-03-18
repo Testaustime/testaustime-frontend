@@ -1,5 +1,6 @@
 import { Button, Group, Popover, Text, Title } from "@mantine/core";
 import { useBooleanToggle, useClipboard } from "@mantine/hooks";
+import { useNotifications } from "@mantine/notifications";
 import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -12,6 +13,7 @@ export const ProfilePage = () => {
   const [confirmationOpened, setConfirmationOpened] = useState(false);
   const [revealedToken, toggleRevealToken] = useBooleanToggle(false);
   const navigate = useNavigate();
+  const notifications = useNotifications();
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -39,7 +41,13 @@ export const ProfilePage = () => {
         <Text mb={10}>Are you sure?</Text>
         <Button variant="outline" mr={10} onClick={() => setConfirmationOpened(false)}>Cancel</Button>
         <Button variant="filled" color="red" onClick={() => {
-          regenerateToken();
+          regenerateToken().catch(error => {
+            notifications.showNotification({
+              title: "Error",
+              color: "red",
+              message: String(error || "An unknown error occurred")
+            });
+          });
           setConfirmationOpened(false);
         }}>Yes</Button>
       </Popover>

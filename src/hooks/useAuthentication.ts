@@ -20,10 +20,16 @@ export const useAuthentication = () => {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` }
       });
-      const newToken = await response.text();
-      setToken(newToken);
-      return Promise.resolve(newToken);
-    } catch (error) {
+      if (response.ok) {
+        const newToken = await response.text();
+        setToken(newToken);
+        return newToken;
+      }
+      else {
+        return Promise.reject(await response.text());
+      }
+    }
+    catch (error) {
       return Promise.reject(error);
     }
   };
@@ -35,12 +41,17 @@ export const useAuthentication = () => {
         body: JSON.stringify({ username, password }),
         headers: { "Content-Type": "application/json" }
       });
-      const authToken = await response.text();
-      setToken(authToken);
-      dispatch(setUsername(username));
-      return await Promise.resolve(authToken);
+      if (response.ok) {
+        const authToken = await response.text();
+        setToken(authToken);
+        dispatch(setUsername(username));
+        return authToken;
+      }
+      else {
+        return Promise.reject(await response.text());
+      }
     } catch (error) {
-      return await Promise.reject(error);
+      return Promise.reject(error);
     }
   };
 
@@ -51,12 +62,16 @@ export const useAuthentication = () => {
         body: JSON.stringify({ username, password }),
         headers: { "Content-Type": "application/json" }
       });
-      const authToken = await response.text();
-      setToken(authToken);
-      dispatch(setUsername(username));
-      return await Promise.resolve(authToken);
+      if (response.ok) {
+        const authToken = await response.text();
+        setToken(authToken);
+        dispatch(setUsername(username));
+      }
+      else {
+        return Promise.reject(await response.text());
+      }
     } catch (error) {
-      return await Promise.reject(error);
+      return Promise.reject(error);
     }
   };
 
@@ -68,12 +83,18 @@ export const useAuthentication = () => {
 
   const refetchUsername = async () => {
     if (token) {
-      const response = await fetch(`${apiUrl}/users/@me`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      const data = await response.json();
-      dispatch(setUsername(data.user_name));
+      try {
+        const response = await fetch(`${apiUrl}/users/@me`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          dispatch(setUsername(data.user_name));
+        }
+      }
+      catch (error) {
+        console.log(error);
+      }
     }
     else {
       dispatch(setUsername(""));

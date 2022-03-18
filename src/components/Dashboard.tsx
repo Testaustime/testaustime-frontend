@@ -100,13 +100,13 @@ export const Dashboard = () => {
     <p>Total time programmed: {prettyDuration(entries.reduce((prev, curr) => prev + curr.duration, 0))}</p>
     <Title order={2}>Languages</Title>
     <ol>
-      {getAllTimeTopLanguages(entries).map(l => <li key={l.language}>
+      {getAllTimeTopLanguages(entries).map(l => <li key={l.language || "null"}>
         {prettifyProgrammingLanguageName(l.language) || <i>Unknown</i>}: {prettyDuration(l.totalSeconds)}
       </li>)}
     </ol>
     <Title order={2}>Projects</Title>
     <ol>
-      {getAllTimeTopProjects(entries).map(p => <li key={p.project_name}>
+      {getAllTimeTopProjects(entries).map(p => <li key={p.project_name || "null"}>
         {p.project_name || <i>Unknown</i>}: {prettyDuration(p.totalSeconds)}
       </li>)}
     </ol>
