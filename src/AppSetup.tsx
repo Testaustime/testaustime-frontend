@@ -58,7 +58,12 @@ export const AppSetup = () => {
       },
       headings: {
         fontFamily: "Poppins, sans-serif",
-        fontWeight: 800
+        fontWeight: 800,
+        sizes: {
+          h1: { fontSize: "1.9rem" },
+          h2: { fontSize: "1.65rem" },
+          h3: { fontSize: "1.4rem" },
+        }
       }
     }}
   >
