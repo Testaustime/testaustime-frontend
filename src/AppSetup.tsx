@@ -1,4 +1,5 @@
 import { Anchor, Button, Group, MantineProvider } from "@mantine/core";
+import { useColorScheme } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
 import { ExitIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
@@ -36,6 +37,7 @@ const TestaustimeTitle = styled(Link)`
 export const AppSetup = () => {
   const { logOut, isLoggedIn, refetchUsername, username } = useAuthentication();
   const navigate = useNavigate();
+  const preferredColorScheme = useColorScheme();
 
   useEffect(() => {
     refetchUsername();
@@ -49,7 +51,7 @@ export const AppSetup = () => {
   return <MantineProvider
     withGlobalStyles
     theme={{
-      colorScheme: "light", // TODO: Implement dark mode
+      colorScheme: preferredColorScheme,
       fontFamily: "'Ubuntu', sans-serif",
       white: "#eee",
       black: "#121212",
