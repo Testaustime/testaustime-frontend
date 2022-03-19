@@ -8,7 +8,7 @@ import { useAuthentication } from "../../hooks/useAuthentication";
 import { AuthTokenField } from "../AuthTokenField";
 
 export const ProfilePage = () => {
-  const { copy, copied } = useClipboard({ timeout: 2000 });
+  const { copy, copied, reset } = useClipboard({ timeout: 2000 });
   const { token, regenerateToken, username, isLoggedIn } = useAuthentication();
   const [confirmationOpened, setConfirmationOpened] = useState(false);
   const [revealedToken, toggleRevealToken] = useBooleanToggle(false);
@@ -19,6 +19,7 @@ export const ProfilePage = () => {
     if (!isLoggedIn) {
       navigate("/login");
     }
+    return reset;
   }, []);
 
   if (!isLoggedIn) return <Text>You need to log in to view this page</Text>;
