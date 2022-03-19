@@ -5,14 +5,16 @@ export interface UsersSlice {
   authToken: string,
   username: string,
   registrationTime: Date,
-  friendCode: string
+  friendCode: string,
+  friends: Array<string>
 }
 
 const initialState: UsersSlice = {
   authToken: localStorage.getItem(authTokenLocalStorageKey) || "",
   username: "",
   registrationTime: new Date(),
-  friendCode: ""
+  friendCode: "",
+  friends: [""]
 };
 
 export const usersSlice = createSlice({
@@ -31,8 +33,11 @@ export const usersSlice = createSlice({
     setFriendCode: (state, action: PayloadAction<string>) => {
       state.friendCode = action.payload;
     },
+    setFriends: (state, action: PayloadAction<Array<string>>) => {
+      state.friends = action.payload;
+    },
   },
 });
 
-export const { setAuthToken, setUsername, setRegisterTime, setFriendCode } = usersSlice.actions;
+export const { setAuthToken, setUsername, setRegisterTime, setFriendCode, setFriends } = usersSlice.actions;
 export default usersSlice.reducer;
