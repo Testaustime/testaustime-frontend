@@ -1,33 +1,27 @@
 import { useDispatch, useSelector } from "react-redux";
 import { apiUrl } from "../config";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuthentication } from "./useAuthentication";
 import { setFriends } from "../slices/userSlice";
 import { RootState } from "../store";
 
-export const useFriends =() => {
+export const useFriends = () => {
   const { token } = useAuthentication();
   const dispatch = useDispatch();
 
   const friends = useSelector<RootState, Array<string>>(state => state.users.friends);
 
-  const listFriends = () => {
-    const [entries, setEntries] = useState<Array<string>>([]);
-
-    useEffect(() => {
-      fetch(`${apiUrl}/friends/list`, {
-        headers: { Authorization: `Bearer ${token}` }
-      }).then(async response => {
-        const data: Array<string> = await response.json();
-        dispatch(setFriends(data));
-        setEntries(data);
-      }).catch(error => {
-        console.log(error);
-      });
-    }, []);
-  
-    return entries;
-  };
+  useEffect(() => {
+    fetch(`${apiUrl}/friends/list`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then(async response => {
+      const data: Array<string> = await response.json();
+      console.log(data);
+      dispatch(setFriends(data));
+    }).catch(error => {
+      console.log(error);
+    });
+  }, []);
 
   const addFriend = async (friendCode: string) => {
     console.log(friendCode);
@@ -35,13 +29,15 @@ export const useFriends =() => {
       const response = await fetch(`${apiUrl}/friends/add`, {
         method: "POST",
         body: friendCode,
-        headers: { 
-          Authorization: `Bearer ${token}`, 
+        headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "text/plain"
         }
       });
       if (response.ok) {
-        return true;
+        const friendUsername = await response.text();
+        dispatch(setFriends([...friends, friendUsername]));
+        return friendUsername;
       } else {
         return Promise.reject(await response.text());
       }
@@ -51,7 +47,6 @@ export const useFriends =() => {
   };
 
   return {
-    listFriends,
     addFriend,
     friends
   };
