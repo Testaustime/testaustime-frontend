@@ -1,5 +1,4 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
-import _ from "lodash";
 import { Text, Title } from "@mantine/core";
 import { useAuthentication } from "../hooks/useAuthentication";
 import { useNavigate } from "react-router";
@@ -9,9 +8,10 @@ import TopLanguages from "./TopLanguages";
 import { prettyDuration } from "../utils/dateUtils";
 import { TopProjects } from "./TopProjects/TopProjects";
 import DaySessions from "./DaySessions";
+import { groupBy, sumBy } from "../utils/arrayUtils";
 
 const getAllEntriesByDay = (entries: ActivityDataEntry[]): { date: Date, entries: ActivityDataEntry[] }[] => {
-  const byDayDictionary = _.groupBy(entries, entry => entry.dayStart.getTime());
+  const byDayDictionary = groupBy(entries, entry => entry.dayStart.getTime());
   return Object.keys(byDayDictionary).sort((a, b) => Number(b) - Number(a)).map(key => ({
     date: new Date(Number(key)),
     entries: byDayDictionary[key].sort((a, b) => b.start_time.getTime() - a.start_time.getTime())
@@ -37,7 +37,7 @@ export const Dashboard = () => {
 
   return <div>
     <Title mb={5}>Your statistics</Title>
-    <Text>Total time programmed: {prettyDuration(entries.reduce((prev, curr) => prev + curr.duration, 0))}</Text>
+    <Text>Total time programmed: {prettyDuration(sumBy(entries, entry => entry.duration))}</Text>
     <Title order={2} mt={20} mb={5}>Languages</Title>
     <TopLanguages entries={entries} />
     <Title order={2} mt={20} mb={5}>Projects</Title>
