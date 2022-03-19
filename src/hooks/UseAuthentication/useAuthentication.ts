@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { apiUrl } from "../../config";
 import { authTokenLocalStorageKey } from "../../constants";
-import { setAuthToken, setUsername } from "../../slices/userSlice";
+import { setAuthToken, setUsername, setRegisterTime, setFriendCode } from "../../slices/userSlice";
 import { RootState } from "../../store";
 
 export interface UseAuthenticationResult {
@@ -21,6 +21,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const token = useSelector<RootState, string>(state => state.users.authToken);
   const username = useSelector<RootState, string>(state => state.users.username);
+  const registrationTime = useSelector<RootState, Date>(state => state.users.registrationTime);
+  const friendCode = useSelector<RootState, string>(state => state.users.friendCode);
 
   const setToken = (newToken: string) => {
     dispatch(setAuthToken(newToken));
@@ -96,6 +98,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
     dispatch(setAuthToken(""));
     dispatch(setUsername(""));
     localStorage.removeItem(authTokenLocalStorageKey);
+    dispatch(setFriendCode(""));
+    dispatch(setRegisterTime(new Date()));
   };
 
   const refetchUsername = async () => {
@@ -107,6 +111,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
         if (response.ok) {
           const data = await response.json();
           dispatch(setUsername(data.user_name));
+          dispatch(setFriendCode(data.friend_code));
+          dispatch(setRegisterTime(data.registration_time));
           return data.user_name;
         }
       }
@@ -128,6 +134,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
     login,
     logOut,
     username,
+    registrationTime,
+    friendCode,
     refetchUsername
   };
 };

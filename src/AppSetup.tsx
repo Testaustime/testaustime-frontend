@@ -10,7 +10,8 @@ import { LoginPage } from "./components/pages/LoginPage";
 import { MainPage } from "./components/pages/MainPage";
 import { ProfilePage } from "./components/pages/ProfilePage";
 import { RegistrationPage } from "./components/pages/RegistrationPage";
-import useAuthentication from "./hooks/UseAuthentication";
+import { FriendPage } from "./components/pages/FriendPage";
+import { useAuthentication } from "./hooks/useAuthentication";
 
 const Layout = styled.div`
   display: flex;
@@ -79,6 +80,7 @@ export const AppSetup = () => {
             <Group spacing={15} align="center">
               {!isLoggedIn && <Anchor component={Link} to="/login">Login</Anchor>}
               {!isLoggedIn && <Button component={Link} to="/register">Register</Button>}
+              {isLoggedIn && <Anchor component={Link} to="/friends">Friends</Anchor>}
               {isLoggedIn && <Anchor component={Link} to="/profile">My profile</Anchor>}
               {isLoggedIn && <Button variant="outline" size="xs" onClick={logOutAndRedirect} leftIcon={<ExitIcon />}>Log out {username}</Button>}
             </Group>
@@ -88,6 +90,7 @@ export const AppSetup = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegistrationPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/friends" element={<FriendPage />} />
           </Routes>
         </Container>
       </Layout>
