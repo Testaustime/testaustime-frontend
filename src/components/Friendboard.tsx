@@ -4,11 +4,9 @@ import { useEffect, useState, useCallback } from "react";
 import { useFriends } from "../hooks/useFriends";
 
 export const Friendboard = () => {
-  const { listFriends, addFriend, friends } = useFriends();
+  const { addFriend, friends } = useFriends();
 
   const [friendCode, setFriendCode]=useState<string>("");
-
-  listFriends();
 
   return <div>
     <Title order={2}>Add new friend</Title>
