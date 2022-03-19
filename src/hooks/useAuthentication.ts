@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { apiUrl } from "../config";
 import { setAuthToken, setUsername } from "../slices/userSlice";
 import { RootState } from "../store";
 
@@ -16,7 +15,7 @@ export const useAuthentication = () => {
 
   const regenerateToken = async () => {
     try {
-      const response = await fetch(`${apiUrl}/auth/regenerate`, {
+      const response = await fetch("/auth/regenerate", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -36,7 +35,7 @@ export const useAuthentication = () => {
 
   const register = async (username: string, password: string) => {
     try {
-      const response = await fetch(`${apiUrl}/auth/register`, {
+      const response = await fetch("/auth/register", {
         method: "POST",
         body: JSON.stringify({ username, password }),
         headers: { "Content-Type": "application/json" }
@@ -57,7 +56,7 @@ export const useAuthentication = () => {
 
   const login = async (username: string, password: string) => {
     try {
-      const response = await fetch(`${apiUrl}/auth/login`, {
+      const response = await fetch("/auth/login", {
         method: "POST",
         body: JSON.stringify({ username, password }),
         headers: { "Content-Type": "application/json" }
@@ -84,7 +83,7 @@ export const useAuthentication = () => {
   const refetchUsername = async () => {
     if (token) {
       try {
-        const response = await fetch(`${apiUrl}/users/@me`, {
+        const response = await fetch("/users/@me", {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (response.ok) {

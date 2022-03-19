@@ -1,6 +1,7 @@
 {
   "name": "testaustime-frontend",
   "version": "0.1.0",
+  "proxy": "http://localhost:8000",
   "private": true,
   "dependencies": {
     "@mantine/core": "^4.0.4",
@@ -49,9 +50,7 @@
     ]
   },
   "devDependencies": {
-    "@types/dotenv-webpack": "^7.0.3",
     "@types/lodash": "^4.14.179",
-    "@types/styled-components": "^5.1.24",
-    "dotenv-webpack": "^7.1.0"
+    "@types/styled-components": "^5.1.24"
   }
 }
