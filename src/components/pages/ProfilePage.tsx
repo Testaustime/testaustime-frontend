@@ -11,7 +11,7 @@ export const ProfilePage = () => {
   const { copy, copied, reset } = useClipboard({ timeout: 2000 });
   const { token, regenerateToken, username, isLoggedIn } = useAuthentication();
   const [confirmationOpened, setConfirmationOpened] = useState(false);
-  const [revealedToken, toggleRevealToken] = useBooleanToggle(false);
+  const [isTokenRevealed, toggleIsTokenRevealed] = useBooleanToggle(false);
   const navigate = useNavigate();
   const notifications = useNotifications();
 
@@ -28,10 +28,10 @@ export const ProfilePage = () => {
     <Title order={2}>My profile</Title>
     <Text mt={15}>Username: {username}</Text>
     <Title order={3} mt={40} mb={5}>Authentication token</Title>
-    <Text>My token: <AuthTokenField authToken={token} revealLength={revealedToken ? token.length : 4} /></Text>
+    <Text>My token: <AuthTokenField authToken={token} revealLength={4} revealed={isTokenRevealed} /></Text>
     <Group spacing={15} mt={25}>
       <Button variant="filled" onClick={() => copy(token)} color={copied ? "green" : ""} leftIcon={<ClipboardIcon />}>{copied ? "Copied!" : "Copy"}</Button>
-      <Button variant="outline" onClick={() => toggleRevealToken()} leftIcon={revealedToken ? <EyeClosedIcon /> : <EyeOpenIcon />}>{revealedToken ? "Hide" : "Reveal"}</Button>
+      <Button variant="outline" onClick={() => toggleIsTokenRevealed()} leftIcon={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}>{isTokenRevealed ? "Hide" : "Reveal"}</Button>
       <Popover
         opened={confirmationOpened}
         onClose={() => setConfirmationOpened(false)}
