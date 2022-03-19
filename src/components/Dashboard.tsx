@@ -1,7 +1,7 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
 import _ from "lodash";
 import { formatDuration, intervalToDuration } from "date-fns";
-import { Text, Title } from "@mantine/core";
+import { List, Text, Title } from "@mantine/core";
 import { useAuthentication } from "../hooks/useAuthentication";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
@@ -133,31 +133,29 @@ export const Dashboard = () => {
   if (!isLoggedIn) return <Text>You need to log in to view this page</Text>;
 
   return <div>
-    <Title>Your statistics</Title>
-    <p>Total time programmed: {prettyDuration(entries.reduce((prev, curr) => prev + curr.duration, 0))}</p>
-    <Title order={2}>Languages</Title>
-    <ol>
-      {getAllTimeTopLanguages(entries).map(l => <li key={l.language || "null"}>
+    <Title mb={5}>Your statistics</Title>
+    <Text>Total time programmed: {prettyDuration(entries.reduce((prev, curr) => prev + curr.duration, 0))}</Text>
+    <Title order={2} mt={20} mb={5}>Languages</Title>
+    <List type="ordered" withPadding>
+      {getAllTimeTopLanguages(entries).map(l => <List.Item key={l.language || "null"}>
         {prettifyProgrammingLanguageName(l.language) || <i>Unknown</i>}: {prettyDuration(l.totalSeconds)}
-      </li>)}
-    </ol>
-    <Title order={2}>Projects</Title>
-    <ol>
-      {getAllTimeTopProjects(entries).map(p => <li key={p.project_name || "null"}>
+      </List.Item>)}
+    </List>
+    <Title order={2} mt={20} mb={5}>Projects</Title>
+    <List type="ordered" withPadding>
+      {getAllTimeTopProjects(entries).map(p => <List.Item key={p.project_name || "null"}>
         {p.project_name || <i>Unknown</i>}: {prettyDuration(p.totalSeconds)}
-      </li>)}
-    </ol>
-    <Title order={2}>Your sessions</Title>
+      </List.Item>)}
+    </List>
+    <Title order={2} mt={20} mb={5}>Your sessions</Title>
     {getAllEntriesByDay(entries).map(d => <div key={d.date.getTime()}>
-      <Title order={3}>{d.date.toLocaleDateString()}</Title>
-      <p>
-        Time today: {prettyDuration(d.entries.reduce((prev, curr) => prev + curr.duration, 0))}
-      </p>
-      <ol>
-        {d.entries.map(entry => <li key={entry.start_time.getTime()}>
+      <Title order={3} mt={15} mb={5}>{d.date.toLocaleDateString()}</Title>
+      <Text>Time coded: {prettyDuration(d.entries.reduce((prev, curr) => prev + curr.duration, 0))}</Text>
+      <List withPadding>
+        {d.entries.map(entry => <List.Item key={entry.start_time.getTime()}>
           {entry.start_time.toLocaleTimeString()}: {entry.project_name || <i>Unknown</i>} using {prettifyProgrammingLanguageName(entry.language) || <i>Unknown</i>}
-        </li>)}
-      </ol>
+        </List.Item>)}
+      </List>
     </div>)}
   </div>;
 };
