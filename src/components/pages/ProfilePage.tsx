@@ -9,7 +9,7 @@ import { AuthTokenField } from "../AuthTokenField";
 
 export const ProfilePage = () => {
   const { copy, copied } = useClipboard({ timeout: 2000 });
-  const { token, regenerateToken, username, isLoggedIn } = useAuthentication();
+  const { token, regenerateToken, username, isLoggedIn, friendCode, registrationTime } = useAuthentication();
   const [confirmationOpened, setConfirmationOpened] = useState(false);
   const [revealedToken, toggleRevealToken] = useBooleanToggle(false);
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ export const ProfilePage = () => {
   return <div>
     <Title order={2}>My profile</Title>
     <Text mt={15}>Username: {username}</Text>
+    <Text mt={15}>Registration time: {registrationTime}</Text>
     <Title order={3} mt={40} mb={5}>Authentication token</Title>
     <Text>My token: <AuthTokenField authToken={token} revealLength={revealedToken ? token.length : 4} /></Text>
     <Group spacing={15} mt={25}>
@@ -52,5 +53,8 @@ export const ProfilePage = () => {
         }}>Yes</Button>
       </Popover>
     </Group>
+
+    <Title order={3} mt={40} mb={5}>Friend code</Title>
+    <Text>My friend code: {friendCode}</Text>
   </div >;
 };

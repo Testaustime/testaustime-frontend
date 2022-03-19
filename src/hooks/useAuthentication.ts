@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { apiUrl } from "../config";
-import { setAuthToken, setUsername } from "../slices/userSlice";
+import { setAuthToken, setUsername, setRegisterTime, setFriendCode } from "../slices/userSlice";
 import { RootState } from "../store";
 
 export const useAuthentication = () => {
@@ -8,6 +8,8 @@ export const useAuthentication = () => {
 
   const token = useSelector<RootState, string>(state => state.users.authToken);
   const username = useSelector<RootState, string>(state => state.users.username);
+  const registrationTime = useSelector<RootState, Date>(state => state.users.registrationTime);
+  const friendCode = useSelector<RootState, string>(state => state.users.friendCode);
 
   const setToken = (newToken: string) => {
     dispatch(setAuthToken(newToken));
@@ -78,6 +80,8 @@ export const useAuthentication = () => {
   const logOut = () => {
     dispatch(setAuthToken(""));
     dispatch(setUsername(""));
+    dispatch(setFriendCode(""));
+    dispatch(setRegisterTime(new Date()));
     localStorage.removeItem("authToken");
   };
 
@@ -90,6 +94,8 @@ export const useAuthentication = () => {
         if (response.ok) {
           const data = await response.json();
           dispatch(setUsername(data.user_name));
+          dispatch(setFriendCode(data.friend_code));
+          dispatch(setRegisterTime(data.registration_time));
         }
       }
       catch (error) {
@@ -110,6 +116,8 @@ export const useAuthentication = () => {
     login,
     logOut,
     username,
+    registrationTime,
+    friendCode,
     refetchUsername
   };
 };
