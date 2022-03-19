@@ -19,7 +19,11 @@ const normalizeProgrammingLanguageName = (name?: string) => {
     "js": "javascript",
     "jsx": "javascriptreact",
     "perl6": "perl",
-    "jade": "pug"
+    "jade": "pug",
+    "gitcommit": "git-commit",
+    "gitrebase": "git-rebase",
+    "shellscript": "sh",
+    "make": "makefile"
   }[name] || name;
 };
 
@@ -77,7 +81,7 @@ const prettifyProgrammingLanguageName = (name?: string) => {
     "scss": "SCSS",
     "sass": "SASS",
     "shaderlab": "ShaderLab",
-    "shellscript": "Shell Script",
+    "sh": "Shell Script",
     "slim": "Slim",
     "sql": "SQL",
     "stylus": "Stylus",
@@ -88,7 +92,20 @@ const prettifyProgrammingLanguageName = (name?: string) => {
     "vue-html": "Vue HTML",
     "xml": "XML",
     "xsl": "XSL",
-    "yaml": "YAML"
+    "yaml": "YAML",
+    "fennel": "Fennel",
+    "toml": "TOML",
+    "help": "Help",
+    "packer": "Packer",
+    "cabalconfig": "Cabal Config",
+    "zsh": "ZSH",
+    "crontab": "Crontab",
+    "dosini": "Dosini",
+    "mail": "Mail",
+    "nginx": "NGINX",
+    "cabal": "Cabal",
+    "sshconfig": "SSH Config",
+    "conf": "Config",
   }[name] || name);
 };
 
