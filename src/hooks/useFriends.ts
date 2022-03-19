@@ -23,7 +23,6 @@ export const useFriends = () => {
   }, []);
 
   const addFriend = async (friendCode: string) => {
-    console.log(friendCode);
     try {
       const response = await fetch(`${apiUrl}/friends/add`, {
         method: "POST",
@@ -45,8 +44,36 @@ export const useFriends = () => {
     }
   };
 
+  const unFriend = async (username: string) => {
+    try {
+      const response = await fetch(`${apiUrl}/friends/remove`, {
+        method: "DELETE",
+        body: username,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "text/plain"
+        }
+      });
+      if (response.ok) {
+        const friendUsername = await response.text();
+        const index = friends.indexOf(username);
+        if (index !== -1) {
+          friends.splice(index, 1);
+        }
+        dispatch(setFriends(friends));
+        return true;
+      } else {
+        return Promise.reject(await response.text());
+      }
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+
   return {
     addFriend,
+    unFriend,
     friends
   };
 };
