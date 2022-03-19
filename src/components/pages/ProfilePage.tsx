@@ -5,7 +5,7 @@ import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuthentication } from "../../hooks/useAuthentication";
-import { AuthTokenField } from "../AuthTokenField";
+import AuthTokenField from "../AuthTokenField";
 
 export const ProfilePage = () => {
   const { copy, copied, reset } = useClipboard({ timeout: 2000 });
