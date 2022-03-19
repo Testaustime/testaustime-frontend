@@ -1,10 +1,17 @@
+import { useDispatch, useSelector } from "react-redux";
 import { apiUrl } from "../config";
 import { useEffect, useState } from "react";
 import { useAuthentication } from "./useAuthentication";
+import { setFriends } from "../slices/userSlice";
+import { RootState } from "../store";
 
 export const useFriends =() => {
+  const { token } = useAuthentication();
+  const dispatch = useDispatch();
+
+  const friends = useSelector<RootState, Array<string>>(state => state.users.friends);
+
   const listFriends = () => {
-    const { token } = useAuthentication();
     const [entries, setEntries] = useState<Array<string>>([]);
 
     useEffect(() => {
@@ -12,6 +19,7 @@ export const useFriends =() => {
         headers: { Authorization: `Bearer ${token}` }
       }).then(async response => {
         const data: Array<string> = await response.json();
+        dispatch(setFriends(data));
         setEntries(data);
       }).catch(error => {
         console.log(error);
@@ -22,29 +30,29 @@ export const useFriends =() => {
   };
 
   const addFriend = async (friendCode: string) => {
-
-    const { token } = useAuthentication();
-    const [success, setSuccess] = useState<boolean>(false);
-
-    await fetch(`${apiUrl}/auth/login`, {
-      method: "POST",
-      body: friendCode,
-      headers: { 
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "text/plain"
+    console.log(friendCode);
+    try {
+      const response = await fetch(`${apiUrl}/friends/add`, {
+        method: "POST",
+        body: friendCode,
+        headers: { 
+          Authorization: `Bearer ${token}`, 
+          "Content-Type": "text/plain"
+        }
+      });
+      if (response.ok) {
+        return true;
+      } else {
+        return Promise.reject(await response.text());
       }
-    }).then(async response => {
-      if (response.status == 200)
-        setSuccess(true);
-    }).catch(error => {
-      console.log(error);
-    });
-
-    return success;
+    } catch (error) {
+      return Promise.reject(error);
+    }
   };
 
   return {
     listFriends,
-    addFriend
+    addFriend,
+    friends
   };
 };

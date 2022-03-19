@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { apiUrl } from "../config";
-import { setAuthToken, setUsername, setRegisterTime, setFriendCode } from "../slices/userSlice";
+import { setAuthToken, setUsername, setRegisterTime, setFriendCode, setFriends } from "../slices/userSlice";
 import { RootState } from "../store";
 
 export const useAuthentication = () => {
@@ -82,6 +82,7 @@ export const useAuthentication = () => {
     dispatch(setUsername(""));
     dispatch(setFriendCode(""));
     dispatch(setRegisterTime(new Date()));
+    dispatch(setFriends([""]));
     localStorage.removeItem("authToken");
   };
 

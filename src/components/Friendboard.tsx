@@ -4,25 +4,11 @@ import { useEffect, useState, useCallback } from "react";
 import { useFriends } from "../hooks/useFriends";
 
 export const Friendboard = () => {
-  const { listFriends, addFriend } = useFriends();
-  const friendEntries = listFriends();
+  const { listFriends, addFriend, friends } = useFriends();
 
   const [friendCode, setFriendCode]=useState<string>("");
 
-  const [isAddingFriend, setIsAddingFriend] = useState(false);
-
-  const handleFriendButtonClick = useCallback(async () => {
-    if (isAddingFriend) return;
-    setIsAddingFriend(true);
-    await addFriend(friendCode);
-    setIsAddingFriend(false);
-  }, [isAddingFriend]);
-
-
-  // const handleFriendButtonClick = () => {
-  // console.log(friendCode);
-  // addFriend(friendCode);
-  // };
+  listFriends();
 
   return <div>
     <Title order={2}>Add new friend</Title>
@@ -37,9 +23,9 @@ export const Friendboard = () => {
         />
       </Grid.Col>
       <Grid.Col span={3}>
-        <Button onClick={handleFriendButtonClick} disabled={isAddingFriend}>
-          Add
-        </Button>
+        <Button onClick={() => {
+          addFriend(friendCode);
+        }}>Add</Button>
       </Grid.Col>
     </Grid>
     <br />
@@ -52,7 +38,7 @@ export const Friendboard = () => {
           <th>Friend name</th>
         </tr>
       </thead>
-      <tbody>{friendEntries.map((username, idx) => (
+      <tbody>{friends.map((username, idx) => (
         <tr key={username}>
           <td>{idx+1}</td>
           <td>{username}</td>
