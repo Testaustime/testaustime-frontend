@@ -16,7 +16,6 @@ export const useFriends = () => {
       headers: { Authorization: `Bearer ${token}` }
     }).then(async response => {
       const data: Array<string> = await response.json();
-      console.log(data);
       dispatch(setFriends(data));
     }).catch(error => {
       console.log(error);
