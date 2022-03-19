@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { apiUrl } from "../config";
 import { setAuthToken, setUsername } from "../slices/userSlice";
 import { RootState } from "../store";
 
@@ -13,14 +14,15 @@ export const useAuthentication = () => {
     localStorage.setItem("authToken", newToken);
   };
 
-  const regenerateToken = async () => {
+  const regenerateToken = async (): Promise<string> => {
     try {
-      const response = await fetch("/auth/regenerate", {
+      const response = await fetch(`${apiUrl}/auth/regenerate`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.ok) {
-        const newToken = await response.text();
+        const data = await response.json();
+        const newToken = data.token;
         setToken(newToken);
         return newToken;
       }
@@ -33,15 +35,16 @@ export const useAuthentication = () => {
     }
   };
 
-  const register = async (username: string, password: string) => {
+  const register = async (username: string, password: string): Promise<string> => {
     try {
-      const response = await fetch("/auth/register", {
+      const response = await fetch(`${apiUrl}/auth/register`, {
         method: "POST",
         body: JSON.stringify({ username, password }),
         headers: { "Content-Type": "application/json" }
       });
       if (response.ok) {
-        const authToken = await response.text();
+        const data = await response.json();
+        const authToken = data.token;
         setToken(authToken);
         dispatch(setUsername(username));
         return authToken;
@@ -54,17 +57,19 @@ export const useAuthentication = () => {
     }
   };
 
-  const login = async (username: string, password: string) => {
+  const login = async (username: string, password: string): Promise<string> => {
     try {
-      const response = await fetch("/auth/login", {
+      const response = await fetch(`${apiUrl}/auth/login`, {
         method: "POST",
         body: JSON.stringify({ username, password }),
         headers: { "Content-Type": "application/json" }
       });
       if (response.ok) {
-        const authToken = await response.text();
+        const data = await response.json();
+        const authToken = data.token;
         setToken(authToken);
         dispatch(setUsername(username));
+        return authToken;
       }
       else {
         return Promise.reject(await response.text());
@@ -83,7 +88,7 @@ export const useAuthentication = () => {
   const refetchUsername = async () => {
     if (token) {
       try {
-        const response = await fetch("/users/@me", {
+        const response = await fetch(`${apiUrl}/users/@me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (response.ok) {

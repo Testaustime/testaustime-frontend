@@ -1,5 +1,6 @@
 import { startOfDay } from "date-fns";
 import { useEffect, useState } from "react";
+import { apiUrl } from "../config";
 import { useAuthentication } from "./useAuthentication";
 
 interface ResponseActivityDataEntry {
@@ -18,7 +19,7 @@ export const useActivityData = () => {
   const [entries, setEntries] = useState<ActivityDataEntry[]>([]);
 
   useEffect(() => {
-    fetch("/users/@me/activity/data", {
+    fetch(`${apiUrl}/users/@me/activity/data`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(async response => {
       const data: ResponseActivityDataEntry[] = await response.json();
