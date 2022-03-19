@@ -1,11 +1,11 @@
-import { Button, Grid, Input, Title, Table } from "@mantine/core";
+import { Button, Grid, Input, Title, Table, Group } from "@mantine/core";
 import { User } from "tabler-icons-react";
 import { useEffect, useState, useCallback } from "react";
 import { useFriends } from "../hooks/useFriends";
 import { useNotifications } from "@mantine/notifications";
 
 export const Friendboard = () => {
-  const { addFriend, friends } = useFriends();
+  const { addFriend, unFriend, friends } = useFriends();
   const notifications = useNotifications();
 
   const [friendCode, setFriendCode]=useState<string>("");
@@ -42,12 +42,28 @@ export const Friendboard = () => {
         <tr>
           <th>Index</th>
           <th>Friend name</th>
+          <th> </th>
         </tr>
       </thead>
       <tbody>{friends.map((username, idx) => (
         <tr key={username}>
           <td>{idx+1}</td>
           <td>{username}</td>
+          <td>
+            <Group position="right">
+              <Button variant="outline" color="red" compact onClick={(e: React.ChangeEvent<any>) => {                
+                unFriend(username).catch(error => {
+                  notifications.showNotification({
+                    title: "Error",
+                    color: "red",
+                    message: String(error || "An unknown error occurred")
+                  });
+                });
+              }}>
+                Unfriend
+              </Button>
+            </Group>
+          </td>
         </tr>
       ))}</tbody>
     </Table>
