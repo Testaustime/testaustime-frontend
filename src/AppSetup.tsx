@@ -10,7 +10,7 @@ import { LoginPage } from "./components/pages/LoginPage";
 import { MainPage } from "./components/pages/MainPage";
 import { ProfilePage } from "./components/pages/ProfilePage";
 import { RegistrationPage } from "./components/pages/RegistrationPage";
-import { useAuthentication } from "./hooks/useAuthentication";
+import useAuthentication from "./hooks/UseAuthentication";
 
 const Layout = styled.div`
   display: flex;

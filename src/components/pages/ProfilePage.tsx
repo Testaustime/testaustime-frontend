@@ -4,7 +4,7 @@ import { useNotifications } from "@mantine/notifications";
 import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuthentication } from "../../hooks/useAuthentication";
+import useAuthentication from "../../hooks/UseAuthentication";
 import AuthTokenField from "../AuthTokenField";
 
 export const ProfilePage = () => {

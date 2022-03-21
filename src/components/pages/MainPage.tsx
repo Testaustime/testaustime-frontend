@@ -1,5 +1,5 @@
 import { Anchor, Group, Text, Title } from "@mantine/core";
-import { useAuthentication } from "../../hooks/useAuthentication";
+import useAuthentication from "../../hooks/UseAuthentication";
 import { Dashboard } from "../Dashboard";
 
 export const MainPage = () => {

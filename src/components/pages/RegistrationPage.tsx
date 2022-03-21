@@ -4,7 +4,7 @@ import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
-import { useAuthentication } from "../../hooks/useAuthentication";
+import useAuthentication from "../../hooks/UseAuthentication";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 
 export const RegistrationPage = () => {

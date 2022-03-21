@@ -1,9 +1,22 @@
 import { useDispatch, useSelector } from "react-redux";
-import { apiUrl } from "../config";
-import { setAuthToken, setUsername } from "../slices/userSlice";
-import { RootState } from "../store";
+import { apiUrl } from "../../config";
+import { authTokenLocalStorageKey } from "../../constants";
+import { setAuthToken, setUsername } from "../../slices/userSlice";
+import { RootState } from "../../store";
 
-export const useAuthentication = () => {
+export interface UseAuthenticationResult {
+  token: string,
+  setToken: (newToken: string) => void,
+  isLoggedIn: boolean,
+  regenerateToken: () => Promise<string>,
+  register: (username: string, password: string) => Promise<string>,
+  login: (username: string, password: string) => Promise<string>,
+  logOut: () => void,
+  username: string,
+  refetchUsername: () => Promise<string>
+}
+
+export const useAuthentication = (): UseAuthenticationResult => {
   const dispatch = useDispatch();
 
   const token = useSelector<RootState, string>(state => state.users.authToken);
@@ -11,7 +24,7 @@ export const useAuthentication = () => {
 
   const setToken = (newToken: string) => {
     dispatch(setAuthToken(newToken));
-    localStorage.setItem("authToken", newToken);
+    localStorage.setItem(authTokenLocalStorageKey, newToken);
   };
 
   const regenerateToken = async (): Promise<string> => {
@@ -82,7 +95,7 @@ export const useAuthentication = () => {
   const logOut = () => {
     dispatch(setAuthToken(""));
     dispatch(setUsername(""));
-    localStorage.removeItem("authToken");
+    localStorage.removeItem(authTokenLocalStorageKey);
   };
 
   const refetchUsername = async () => {
@@ -94,6 +107,7 @@ export const useAuthentication = () => {
         if (response.ok) {
           const data = await response.json();
           dispatch(setUsername(data.user_name));
+          return data.user_name;
         }
       }
       catch (error) {

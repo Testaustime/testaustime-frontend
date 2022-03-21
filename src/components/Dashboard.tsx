@@ -1,6 +1,6 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
 import { Text, Title } from "@mantine/core";
-import { useAuthentication } from "../hooks/useAuthentication";
+import useAuthentication from "../hooks/UseAuthentication";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
