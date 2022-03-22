@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  app:
+    image: testaustime-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_BASE_API: https://api.testaustime.fi
+    ports:
+      - 8080:80
