@@ -2,7 +2,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { authTokenLocalStorageKey } from "../../constants";
 import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
-import { setAuthToken, setUsername } from "../../slices/userSlice";
+import { setAuthToken, setUsername, setRegisterTime, setFriendCode, setFriends } from "../../slices/userSlice";
 import { RootState } from "../../store";
 
 export interface ApiAuthRegisterResponse {
@@ -31,8 +31,10 @@ export interface UseAuthenticationResult {
   regenerateToken: () => Promise<string>,
   register: (username: string, password: string) => Promise<string>,
   login: (username: string, password: string) => Promise<string>,
+  registrationTime: Date,
   logOut: () => void,
   username: string,
+  friendCode: string,
   refetchUsername: () => Promise<string>
 }
 
@@ -41,6 +43,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const token = useSelector<RootState, string>(state => state.users.authToken);
   const username = useSelector<RootState, string>(state => state.users.username);
+  const registrationTime = useSelector<RootState, Date>(state => new Date(state.users.registrationTime));
+  const friendCode = useSelector<RootState, string>(state => state.users.friendCode);
 
   const setToken = (newToken: string) => {
     dispatch(setAuthToken(newToken));
@@ -86,6 +90,9 @@ export const useAuthentication = (): UseAuthenticationResult => {
     dispatch(setAuthToken(""));
     dispatch(setUsername(""));
     localStorage.removeItem(authTokenLocalStorageKey);
+    dispatch(setFriendCode(""));
+    dispatch(setRegisterTime(new Date().toISOString()));
+    dispatch(setFriends([""]));
   };
 
   const refetchUsername = async () => {
@@ -93,6 +100,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
       try {
         const { data } = await axios.get("/users/@me", { headers: { Authorization: `Bearer ${token}` } });
         dispatch(setUsername(data.user_name));
+        dispatch(setFriendCode(data.friend_code));
+        dispatch(setRegisterTime(data.registration_time));
         return data.user_name;
       } catch (error) {
         dispatch(setUsername(""));
@@ -114,6 +123,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
     login,
     logOut,
     username,
+    registrationTime,
+    friendCode,
     refetchUsername
   };
 };
