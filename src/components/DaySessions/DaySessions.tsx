@@ -1,4 +1,5 @@
 import { List, Text, Title } from "@mantine/core";
+import { format } from "date-fns/esm";
 import { ActivityDataEntry } from "../../hooks/useActivityData";
 import { sumBy } from "../../utils/arrayUtils";
 import { prettyDuration } from "../../utils/dateUtils";
@@ -11,7 +12,7 @@ export interface DaySessionsProps {
 
 export const DaySessions = ({ date, entries }: DaySessionsProps) => {
   return <div>
-    <Title order={3} mt={15} mb={5}>{date.toLocaleDateString()}</Title>
+    <Title order={3} mt={15} mb={5}>{format(date, "d.M.yyyy")}</Title>
     <Text>Time coded: {prettyDuration(sumBy(entries, entry => entry.duration))}</Text>
     <List withPadding>
       {entries.map(entry => <List.Item key={entry.start_time.getTime()}>

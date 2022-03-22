@@ -2,6 +2,7 @@ import { Button, Group, Popover, Text, Title } from "@mantine/core";
 import { useBooleanToggle, useClipboard } from "@mantine/hooks";
 import { useNotifications } from "@mantine/notifications";
 import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { format } from "date-fns/esm";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import useAuthentication from "../../hooks/UseAuthentication";
@@ -27,7 +28,7 @@ export const ProfilePage = () => {
   return <div>
     <Title order={2}>My profile</Title>
     <Text mt={15}>Username: {username}</Text>
-    <Text mt={15}>Registration time: {registrationTime.toLocaleString()}</Text>
+    <Text mt={15}>Registration time: {format(registrationTime, "d.M.yyyy HH:mm")}</Text>
     <Title order={3} mt={40} mb={5}>Authentication token</Title>
     <Text>My token: <AuthTokenField authToken={token} revealLength={4} revealed={isTokenRevealed} /></Text>
     <Group spacing={15} mt={25}>
