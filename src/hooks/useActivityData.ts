@@ -1,6 +1,6 @@
+import axios from "axios";
 import { startOfDay } from "date-fns";
 import { useEffect, useState } from "react";
-import { apiUrl } from "../config";
 import useAuthentication from "./UseAuthentication";
 
 export interface ApiUsersUserActivityDataResponseItem {
@@ -23,17 +23,12 @@ export const useActivityData = () => {
   const [entries, setEntries] = useState<ActivityDataEntry[]>([]);
 
   useEffect(() => {
-    fetch(`${apiUrl}/users/@me/activity/data`, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).then(async response => {
-      const data: ApiUsersUserActivityDataResponseItem[] = await response.json();
+    axios.get<ApiUsersUserActivityDataResponseItem[]>("/users/@me/activity/data", { headers: { Authorization: `Bearer ${token}` } }).then(({ data }) => {
       setEntries(data.map(e => ({
         ...e,
         start_time: new Date(e.start_time),
         dayStart: startOfDay(new Date(e.start_time))
       })));
-    }).catch(error => {
-      console.log(error);
     });
   }, []);
 

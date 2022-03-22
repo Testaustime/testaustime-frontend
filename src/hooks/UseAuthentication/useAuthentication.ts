@@ -1,6 +1,7 @@
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { apiUrl } from "../../config";
 import { authTokenLocalStorageKey } from "../../constants";
+import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
 import { setAuthToken, setUsername } from "../../slices/userSlice";
 import { RootState } from "../../store";
 
@@ -46,68 +47,38 @@ export const useAuthentication = (): UseAuthenticationResult => {
     localStorage.setItem(authTokenLocalStorageKey, newToken);
   };
 
-  const regenerateToken = async (): Promise<string> => {
+  const regenerateToken = async () => {
     try {
-      const response = await fetch(`${apiUrl}/auth/regenerate`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (response.ok) {
-        const data: ApiAuthRegenerateResponse = await response.json();
-        const newToken = data.token;
-        setToken(newToken);
-        return newToken;
-      }
-      else {
-        return Promise.reject(await response.text());
-      }
-    }
-    catch (error) {
-      return Promise.reject(error);
+      const { data } = await axios.post<ApiAuthRegenerateResponse>("/auth/regenerate", null, { headers: { Authorization: `Bearer ${token}` } });
+      const newToken = data.token;
+      setToken(newToken);
+      return newToken;
+    } catch (error) {
+      throw getErrorMessage(error);
     }
   };
 
-  const register = async (username: string, password: string): Promise<string> => {
+  const register = async (username: string, password: string) => {
     try {
-      const response = await fetch(`${apiUrl}/auth/register`, {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-        headers: { "Content-Type": "application/json" }
-      });
-      if (response.ok) {
-        const data: ApiAuthRegisterResponse = await response.json();
-        const authToken = data.token;
-        setToken(authToken);
-        dispatch(setUsername(username));
-        return authToken;
-      }
-      else {
-        return Promise.reject(await response.text());
-      }
-    } catch (error) {
-      return Promise.reject(error);
+      const { data } = await axios.post<ApiAuthRegisterResponse>("/auth/register", { username, password });
+      const authToken = data.token;
+      setToken(authToken);
+      dispatch(setUsername(username));
+      return authToken;
+    } catch(error) {
+      throw getErrorMessage(error);
     }
   };
 
-  const login = async (username: string, password: string): Promise<string> => {
+  const login = async (username: string, password: string) => {
     try {
-      const response = await fetch(`${apiUrl}/auth/login`, {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-        headers: { "Content-Type": "application/json" }
-      });
-      if (response.ok) {
-        const data: ApiAuthLoginResponse = await response.json();
-        const authToken = data.token;
-        setToken(authToken);
-        dispatch(setUsername(username));
-        return authToken;
-      }
-      else {
-        return Promise.reject(await response.text());
-      }
-    } catch (error) {
-      return Promise.reject(error);
+      const { data } = await axios.post<ApiAuthLoginResponse>("/auth/login", { username, password });
+      const authToken = data.token;
+      setToken(authToken);
+      dispatch(setUsername(username));
+      return authToken;
+    } catch (err) {
+      throw getErrorMessage(err);
     }
   };
 
@@ -120,20 +91,11 @@ export const useAuthentication = (): UseAuthenticationResult => {
   const refetchUsername = async () => {
     if (token) {
       try {
-        const response = await fetch(`${apiUrl}/users/@me`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        if (response.ok) {
-          const data: ApiUsersUserResponse = await response.json();
-          dispatch(setUsername(data.user_name));
-          return data.user_name;
-        }
-        else {
-          return "";
-        }
-      }
-      catch (error) {
-        console.log(error);
+        const { data } = await axios.get("/users/@me", { headers: { Authorization: `Bearer ${token}` } });
+        dispatch(setUsername(data.user_name));
+        return data.user_name;
+      } catch (error) {
+        dispatch(setUsername(""));
         return "";
       }
     }

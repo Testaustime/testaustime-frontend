@@ -11,6 +11,7 @@ import { MainPage } from "./components/pages/MainPage";
 import { ProfilePage } from "./components/pages/ProfilePage";
 import { RegistrationPage } from "./components/pages/RegistrationPage";
 import useAuthentication from "./hooks/UseAuthentication";
+import "./config";
 
 const Layout = styled.div`
   display: flex;
