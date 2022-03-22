@@ -4,6 +4,25 @@ import { authTokenLocalStorageKey } from "../../constants";
 import { setAuthToken, setUsername } from "../../slices/userSlice";
 import { RootState } from "../../store";
 
+export interface ApiAuthRegisterResponse {
+  token: string
+}
+
+export interface ApiAuthLoginResponse {
+  token: string
+}
+
+export interface ApiAuthRegenerateResponse {
+  token: string
+}
+
+export interface ApiUsersUserResponse {
+  id: number,
+  user_name: string,
+  friend_code: string,
+  registration_time: string
+}
+
 export interface UseAuthenticationResult {
   token: string,
   setToken: (newToken: string) => void,
@@ -34,7 +53,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.ok) {
-        const data = await response.json();
+        const data: ApiAuthRegenerateResponse = await response.json();
         const newToken = data.token;
         setToken(newToken);
         return newToken;
@@ -56,7 +75,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
         headers: { "Content-Type": "application/json" }
       });
       if (response.ok) {
-        const data = await response.json();
+        const data: ApiAuthRegisterResponse = await response.json();
         const authToken = data.token;
         setToken(authToken);
         dispatch(setUsername(username));
@@ -78,7 +97,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
         headers: { "Content-Type": "application/json" }
       });
       if (response.ok) {
-        const data = await response.json();
+        const data: ApiAuthLoginResponse = await response.json();
         const authToken = data.token;
         setToken(authToken);
         dispatch(setUsername(username));
@@ -105,17 +124,22 @@ export const useAuthentication = (): UseAuthenticationResult => {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (response.ok) {
-          const data = await response.json();
+          const data: ApiUsersUserResponse = await response.json();
           dispatch(setUsername(data.user_name));
           return data.user_name;
+        }
+        else {
+          return "";
         }
       }
       catch (error) {
         console.log(error);
+        return "";
       }
     }
     else {
       dispatch(setUsername(""));
+      return "";
     }
   };
 
