@@ -3,16 +3,20 @@ import { useEffect, useState } from "react";
 import { apiUrl } from "../config";
 import useAuthentication from "./UseAuthentication";
 
-interface ResponseActivityDataEntry {
-  language?: string,
-  hostname?: string,
-  editor_name?: string,
-  project_name?: string,
+export interface ApiUsersUserActivityDataResponseItem {
+  id: number,
   start_time: string,
-  duration: number
+  duration: number,
+  project_name?: string,
+  language?: string,
+  editor_name?: string,
+  hostname?: string,
 }
 
-export type ActivityDataEntry = Omit<ResponseActivityDataEntry, "start_time"> & { start_time: Date, dayStart: Date }
+export type ActivityDataEntry = Omit<ApiUsersUserActivityDataResponseItem, "start_time"> & {
+  start_time: Date,
+  dayStart: Date
+}
 
 export const useActivityData = () => {
   const { token } = useAuthentication();
@@ -22,7 +26,7 @@ export const useActivityData = () => {
     fetch(`${apiUrl}/users/@me/activity/data`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(async response => {
-      const data: ResponseActivityDataEntry[] = await response.json();
+      const data: ApiUsersUserActivityDataResponseItem[] = await response.json();
       setEntries(data.map(e => ({
         ...e,
         start_time: new Date(e.start_time),
