@@ -27,7 +27,7 @@ export const ProfilePage = () => {
   return <div>
     <Title order={2}>My profile</Title>
     <Text mt={15}>Username: {username}</Text>
-    <Text mt={15}>Registration time: {registrationTime}</Text>
+    <Text mt={15}>Registration time: {registrationTime.toLocaleString()}</Text>
     <Title order={3} mt={40} mb={5}>Authentication token</Title>
     <Text>My token: <AuthTokenField authToken={token} revealLength={4} revealed={isTokenRevealed} /></Text>
     <Group spacing={15} mt={25}>

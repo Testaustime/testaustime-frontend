@@ -1,9 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import { apiUrl } from "../config";
 import { useEffect } from "react";
 import useAuthentication from "./UseAuthentication";
 import { setFriends } from "../slices/userSlice";
 import { RootState } from "../store";
+import axios from "axios";
+import { getErrorMessage } from "../lib/errorHandling/errorHandler";
+
+export interface ApiFriendsAddResponse {
+  name: string
+}
 
 export const useFriends = () => {
   const { token } = useAuthentication();
@@ -12,61 +17,43 @@ export const useFriends = () => {
   const friends = useSelector<RootState, Array<string>>(state => state.users.friends);
 
   useEffect(() => {
-    fetch(`${apiUrl}/friends/list`, {
+    axios.get<string[]>("/friends/list", {
       headers: { Authorization: `Bearer ${token}` }
-    }).then(async response => {
-      const data: Array<string> = await response.json();
-      dispatch(setFriends(data));
-    }).catch(error => {
-      console.log(error);
+    }).then(response => {
+      dispatch(setFriends(response.data));
     });
   }, []);
 
   const addFriend = async (friendCode: string) => {
     try {
-      const response = await fetch(`${apiUrl}/friends/add`, {
-        method: "POST",
-        body: friendCode,
+      const response = await axios.post<ApiFriendsAddResponse>("/friends/add", friendCode, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "text/plain"
         }
       });
-      if (response.ok) {
-        const friendUsername = await response.text();
-        dispatch(setFriends([...friends, friendUsername]));
-        return friendUsername;
-      } else {
-        return Promise.reject(await response.text());
-      }
+
+      const friendUsername = response.data.name;
+      dispatch(setFriends([...friends, friendUsername]));
+      return friendUsername;
     } catch (error) {
-      return Promise.reject(error);
+      throw getErrorMessage(error);
     }
   };
 
   const unFriend = async (username: string) => {
     try {
-      const response = await fetch(`${apiUrl}/friends/remove`, {
-        method: "DELETE",
-        body: username,
+      await axios.delete("/friends/remove", {
+        data: username,
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "text/plain"
         }
       });
-      if (response.ok) {
-        const friendUsername = await response.text();
-        const index = friends.indexOf(username);
-        if (index !== -1) {
-          friends.splice(index, 1);
-        }
-        dispatch(setFriends(friends));
-        return true;
-      } else {
-        return Promise.reject(await response.text());
-      }
+
+      dispatch(setFriends(friends.filter(f => f !== username)));
     } catch (error) {
-      return Promise.reject(error);
+      throw getErrorMessage(error);
     }
   };
 

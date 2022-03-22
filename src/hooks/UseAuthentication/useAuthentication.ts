@@ -92,7 +92,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
     localStorage.removeItem(authTokenLocalStorageKey);
     dispatch(setFriendCode(""));
     dispatch(setRegisterTime(new Date().toISOString()));
-    dispatch(setFriends([""]));
+    dispatch(setFriends([]));
   };
 
   const refetchUsername = async () => {
