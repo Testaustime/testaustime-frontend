@@ -4,14 +4,14 @@ import { useNotifications } from "@mantine/notifications";
 import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuthentication } from "../../hooks/useAuthentication";
-import { AuthTokenField } from "../AuthTokenField";
+import useAuthentication from "../../hooks/UseAuthentication";
+import AuthTokenField from "../AuthTokenField";
 
 export const ProfilePage = () => {
-  const { copy, copied } = useClipboard({ timeout: 2000 });
+  const { copy, copied, reset } = useClipboard({ timeout: 2000 });
   const { token, regenerateToken, username, isLoggedIn, friendCode, registrationTime } = useAuthentication();
   const [confirmationOpened, setConfirmationOpened] = useState(false);
-  const [revealedToken, toggleRevealToken] = useBooleanToggle(false);
+  const [isTokenRevealed, toggleIsTokenRevealed] = useBooleanToggle(false);
   const navigate = useNavigate();
   const notifications = useNotifications();
 
@@ -19,6 +19,7 @@ export const ProfilePage = () => {
     if (!isLoggedIn) {
       navigate("/login");
     }
+    return reset;
   }, []);
 
   if (!isLoggedIn) return <Text>You need to log in to view this page</Text>;
@@ -28,10 +29,10 @@ export const ProfilePage = () => {
     <Text mt={15}>Username: {username}</Text>
     <Text mt={15}>Registration time: {registrationTime}</Text>
     <Title order={3} mt={40} mb={5}>Authentication token</Title>
-    <Text>My token: <AuthTokenField authToken={token} revealLength={revealedToken ? token.length : 4} /></Text>
+    <Text>My token: <AuthTokenField authToken={token} revealLength={4} revealed={isTokenRevealed} /></Text>
     <Group spacing={15} mt={25}>
       <Button variant="filled" onClick={() => copy(token)} color={copied ? "green" : ""} leftIcon={<ClipboardIcon />}>{copied ? "Copied!" : "Copy"}</Button>
-      <Button variant="outline" onClick={() => toggleRevealToken()} leftIcon={revealedToken ? <EyeClosedIcon /> : <EyeOpenIcon />}>{revealedToken ? "Hide" : "Reveal"}</Button>
+      <Button variant="outline" onClick={() => toggleIsTokenRevealed()} leftIcon={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}>{isTokenRevealed ? "Hide" : "Reveal"}</Button>
       <Popover
         opened={confirmationOpened}
         onClose={() => setConfirmationOpened(false)}

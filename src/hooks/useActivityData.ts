@@ -1,7 +1,7 @@
 import { startOfDay } from "date-fns";
 import { useEffect, useState } from "react";
 import { apiUrl } from "../config";
-import { useAuthentication } from "./useAuthentication";
+import useAuthentication from "./UseAuthentication";
 
 interface ResponseActivityDataEntry {
   language?: string,

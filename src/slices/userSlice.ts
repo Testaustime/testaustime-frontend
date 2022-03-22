@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { authTokenLocalStorageKey } from "../constants";
 
 export interface UsersSlice {
   authToken: string,
@@ -9,7 +10,7 @@ export interface UsersSlice {
 }
 
 const initialState: UsersSlice = {
-  authToken: localStorage.getItem("authToken") || "",
+  authToken: localStorage.getItem(authTokenLocalStorageKey) || "",
   username: "",
   registrationTime: new Date(),
   friendCode: "",

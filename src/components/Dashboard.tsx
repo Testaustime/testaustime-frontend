@@ -1,115 +1,17 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
-import _ from "lodash";
-import { formatDuration, intervalToDuration } from "date-fns";
 import { Text, Title } from "@mantine/core";
-import { useAuthentication } from "../hooks/useAuthentication";
+import useAuthentication from "../hooks/UseAuthentication";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
-
-const isStringNull = (text: string | null | undefined) => !text || text.toLowerCase() === "null" || text.toLowerCase() === "undefined" || text.trim() === "";
-
-const normalizeProgrammingLanguageName = (name?: string) => {
-  if (!name || isStringNull(name)) return undefined;
-
-  // Create "synonyms" for the programming language names. The values will be used to get the language's name in `prettifyProgrammingLanguageName`
-  return {
-    "cs": "csharp",
-    "ts": "typescript",
-    "tsx": "typescriptreact",
-    "js": "javascript",
-    "jsx": "javascriptreact",
-    "perl6": "perl",
-    "jade": "pug"
-  }[name] || name;
-};
-
-const prettifyProgrammingLanguageName = (name?: string) => {
-  if (!name || isStringNull(name)) return undefined;
-
-  return ({
-    "typescript": "TypeScript",
-    "typescriptreact": "TypeScript with React",
-    "javascript": "JavaScript",
-    "json": "JSON",
-    "html": "HTML",
-    "css": "CSS",
-    "rust": "Rust",
-    "r": "R",
-    "haskell": "Haskell",
-    "c": "C",
-    "vimwiki": "VimWiki",
-    "vim": "Vim",
-    "abap": "ABAP",
-    "bat": "Windows Batch",
-    "bibtex": "BibTeX",
-    "clojure": "Clojure",
-    "coffeescript": "CoffeeScript",
-    "cpp": "C++",
-    "csharp": "C#",
-    "cuda-cpp": "CUDA C++",
-    "diff": "Diff",
-    "dockerfile": "Dockerfile",
-    "fsharp": "F#",
-    "git-commit": "Git Commit",
-    "git-rebase": "Git Rebase",
-    "go": "Go",
-    "groovy": "Groovy",
-    "handlebars": "Handlebars",
-    "haml": "Haml",
-    "ini": "Ini",
-    "java": "Java",
-    "jsonc": "JSON with Comments",
-    "latex": "LaTeX",
-    "less": "Less",
-    "lua": "Lua",
-    "makefile": "Makefile",
-    "markdown": "Markdown",
-    "objective-c": "Objective-C",
-    "objective-cpp": "Objective-C++",
-    "perl": "Perl",
-    "php": "PHP",
-    "plaintext": "Plain Text",
-    "powershell": "PowerShell",
-    "pug": "Pug",
-    "python": "Python",
-    "razor": "Razor",
-    "ruby": "Ruby",
-    "scss": "SCSS",
-    "sass": "SASS",
-    "shaderlab": "ShaderLab",
-    "shellscript": "Shell Script",
-    "slim": "Slim",
-    "sql": "SQL",
-    "stylus": "Stylus",
-    "swift": "Swift",
-    "text": "TeX",
-    "vb": "Visual Basic",
-    "vue": "Vue",
-    "vue-html": "Vue HTML",
-    "xml": "XML",
-    "xsl": "XSL",
-    "yaml": "YAML"
-  }[name] || name);
-};
-
-const getAllTimeTopLanguages = (entries: ActivityDataEntry[]): { language?: string, totalSeconds: number }[] => {
-  const byLanguage = _.groupBy(entries, entry => entry.language);
-  return Object.keys(byLanguage).map(language => ({
-    language: isStringNull(language) ? undefined : language,
-    totalSeconds: byLanguage[language].reduce((prev, curr) => prev + curr.duration, 0)
-  })).sort((a, b) => b.totalSeconds - a.totalSeconds);
-};
-
-const getAllTimeTopProjects = (entries: ActivityDataEntry[]): { project_name?: string, totalSeconds: number }[] => {
-  const byProject = _.groupBy(entries, entry => entry.project_name);
-  return Object.keys(byProject).map(project => ({
-    project_name: isStringNull(project) ? undefined : project,
-    totalSeconds: byProject[project].reduce((prev, curr) => prev + curr.duration, 0)
-  })).sort((a, b) => b.totalSeconds - a.totalSeconds);
-};
+import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
+import TopLanguages from "./TopLanguages";
+import { prettyDuration } from "../utils/dateUtils";
+import { TopProjects } from "./TopProjects/TopProjects";
+import DaySessions from "./DaySessions";
+import { groupBy, sumBy } from "../utils/arrayUtils";
 
 const getAllEntriesByDay = (entries: ActivityDataEntry[]): { date: Date, entries: ActivityDataEntry[] }[] => {
-  const byDayDictionary = _.groupBy(entries, entry => entry.dayStart.getTime());
+  const byDayDictionary = groupBy(entries, entry => entry.dayStart.getTime());
   return Object.keys(byDayDictionary).sort((a, b) => Number(b) - Number(a)).map(key => ({
     date: new Date(Number(key)),
     entries: byDayDictionary[key].sort((a, b) => b.start_time.getTime() - a.start_time.getTime())
@@ -125,20 +27,6 @@ export const Dashboard = () => {
     language: normalizeProgrammingLanguageName(entry.language),
   }));
 
-  const formatShort = {
-    xSeconds: "{{count}}s",
-    xMinutes: "{{count}}min",
-    xHours: "{{count}}h"
-  };
-
-  const prettyDuration = (seconds: number) => formatDuration(intervalToDuration({ start: 0, end: Math.round(seconds * 1000 / 60000) * 60000 }),
-    {
-      locale: {
-        // Let's just hope the token is one of these options
-        formatDistance: (token: "xSeconds" | "xMinutes" | "xHours", count: number) => formatShort[token].replace("{{count}}", String(count))
-      }
-    }) || "0 seconds";
-
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/login");
@@ -148,31 +36,13 @@ export const Dashboard = () => {
   if (!isLoggedIn) return <Text>You need to log in to view this page</Text>;
 
   return <div>
-    <Title>Your statistics</Title>
-    <p>Total time programmed: {prettyDuration(entries.reduce((prev, curr) => prev + curr.duration, 0))}</p>
-    <Title order={2}>Languages</Title>
-    <ol>
-      {getAllTimeTopLanguages(entries).map(l => <li key={l.language || "null"}>
-        {prettifyProgrammingLanguageName(l.language) || <i>Unknown</i>}: {prettyDuration(l.totalSeconds)}
-      </li>)}
-    </ol>
-    <Title order={2}>Projects</Title>
-    <ol>
-      {getAllTimeTopProjects(entries).map(p => <li key={p.project_name || "null"}>
-        {p.project_name || <i>Unknown</i>}: {prettyDuration(p.totalSeconds)}
-      </li>)}
-    </ol>
-    <Title order={2}>Your sessions</Title>
-    {getAllEntriesByDay(entries).map(d => <div key={d.date.getTime()}>
-      <Title order={3}>{d.date.toLocaleDateString()}</Title>
-      <p>
-        Time today: {prettyDuration(d.entries.reduce((prev, curr) => prev + curr.duration, 0))}
-      </p>
-      <ol>
-        {d.entries.map(entry => <li key={entry.start_time.getTime()}>
-          {entry.start_time.toLocaleTimeString()}: {entry.project_name || <i>Unknown</i>} using {prettifyProgrammingLanguageName(entry.language) || <i>Unknown</i>}
-        </li>)}
-      </ol>
-    </div>)}
+    <Title mb={5}>Your statistics</Title>
+    <Text>Total time programmed: {prettyDuration(sumBy(entries, entry => entry.duration))}</Text>
+    <Title order={2} mt={20} mb={5}>Languages</Title>
+    <TopLanguages entries={entries} />
+    <Title order={2} mt={20} mb={5}>Projects</Title>
+    <TopProjects entries={entries} />
+    <Title order={2} mt={20} mb={5}>Your sessions</Title>
+    {getAllEntriesByDay(entries).map(d => <DaySessions key={d.date.getTime()} date={d.date} entries={d.entries} />)}
   </div>;
 };

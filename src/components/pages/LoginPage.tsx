@@ -4,7 +4,8 @@ import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
-import { useAuthentication } from "../../hooks/useAuthentication";
+import useAuthentication from "../../hooks/UseAuthentication";
+import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 
 export const LoginPage = () => {
   const { login } = useAuthentication();
@@ -35,7 +36,7 @@ export const LoginPage = () => {
       }}>
       {() => <Form>
         <FormikTextInput name="username" label="Username" />
-        <FormikTextInput name="password" label="Password" type="password" mt={15} />
+        <FormikPasswordInput name="password" label="Password" mt={15} />
         <Button mt={20} type="submit">Log in</Button>
       </Form>}
     </Formik>

@@ -1,9 +1,22 @@
 import { useDispatch, useSelector } from "react-redux";
-import { apiUrl } from "../config";
-import { setAuthToken, setUsername, setRegisterTime, setFriendCode, setFriends } from "../slices/userSlice";
-import { RootState } from "../store";
+import { apiUrl } from "../../config";
+import { authTokenLocalStorageKey } from "../../constants";
+import { setAuthToken, setUsername, setRegisterTime, setFriendCode, setFriends } from "../../slices/userSlice";
+import { RootState } from "../../store";
 
-export const useAuthentication = () => {
+export interface UseAuthenticationResult {
+  token: string,
+  setToken: (newToken: string) => void,
+  isLoggedIn: boolean,
+  regenerateToken: () => Promise<string>,
+  register: (username: string, password: string) => Promise<string>,
+  login: (username: string, password: string) => Promise<string>,
+  logOut: () => void,
+  username: string,
+  refetchUsername: () => Promise<string>
+}
+
+export const useAuthentication = (): UseAuthenticationResult => {
   const dispatch = useDispatch();
 
   const token = useSelector<RootState, string>(state => state.users.authToken);
@@ -13,17 +26,18 @@ export const useAuthentication = () => {
 
   const setToken = (newToken: string) => {
     dispatch(setAuthToken(newToken));
-    localStorage.setItem("authToken", newToken);
+    localStorage.setItem(authTokenLocalStorageKey, newToken);
   };
 
-  const regenerateToken = async () => {
+  const regenerateToken = async (): Promise<string> => {
     try {
       const response = await fetch(`${apiUrl}/auth/regenerate`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.ok) {
-        const newToken = await response.text();
+        const data = await response.json();
+        const newToken = data.token;
         setToken(newToken);
         return newToken;
       }
@@ -36,7 +50,7 @@ export const useAuthentication = () => {
     }
   };
 
-  const register = async (username: string, password: string) => {
+  const register = async (username: string, password: string): Promise<string> => {
     try {
       const response = await fetch(`${apiUrl}/auth/register`, {
         method: "POST",
@@ -44,7 +58,8 @@ export const useAuthentication = () => {
         headers: { "Content-Type": "application/json" }
       });
       if (response.ok) {
-        const authToken = await response.text();
+        const data = await response.json();
+        const authToken = data.token;
         setToken(authToken);
         dispatch(setUsername(username));
         return authToken;
@@ -57,7 +72,7 @@ export const useAuthentication = () => {
     }
   };
 
-  const login = async (username: string, password: string) => {
+  const login = async (username: string, password: string): Promise<string> => {
     try {
       const response = await fetch(`${apiUrl}/auth/login`, {
         method: "POST",
@@ -65,9 +80,11 @@ export const useAuthentication = () => {
         headers: { "Content-Type": "application/json" }
       });
       if (response.ok) {
-        const authToken = await response.text();
+        const data = await response.json();
+        const authToken = data.token;
         setToken(authToken);
         dispatch(setUsername(username));
+        return authToken;
       }
       else {
         return Promise.reject(await response.text());
@@ -80,6 +97,7 @@ export const useAuthentication = () => {
   const logOut = () => {
     dispatch(setAuthToken(""));
     dispatch(setUsername(""));
+    localStorage.removeItem(authTokenLocalStorageKey);
     dispatch(setFriendCode(""));
     dispatch(setRegisterTime(new Date()));
     dispatch(setFriends([""]));
@@ -97,6 +115,7 @@ export const useAuthentication = () => {
           dispatch(setUsername(data.user_name));
           dispatch(setFriendCode(data.friend_code));
           dispatch(setRegisterTime(data.registration_time));
+          return data.user_name;
         }
       }
       catch (error) {

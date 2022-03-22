@@ -4,7 +4,8 @@ import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
-import { useAuthentication } from "../../hooks/useAuthentication";
+import useAuthentication from "../../hooks/UseAuthentication";
+import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 
 export const RegistrationPage = () => {
   const { register } = useAuthentication();
@@ -20,7 +21,7 @@ export const RegistrationPage = () => {
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string().required("Username is required"),
-        password: Yup.string().required("Password is required")
+        password: Yup.string().required("Password is required").min(8, "Password must be at least 8 characters long")
       })}
       onSubmit={values => {
         register(values.username, values.password).then(() => {
@@ -35,7 +36,7 @@ export const RegistrationPage = () => {
       }}>
       {() => <Form>
         <FormikTextInput name="username" label="Username" />
-        <FormikTextInput name="password" label="Password" type="password" mt={15} />
+        <FormikPasswordInput name="password" label="Password" mt={15} />
         <Button mt={20} type="submit">Register</Button>
       </Form>}
     </Formik>
