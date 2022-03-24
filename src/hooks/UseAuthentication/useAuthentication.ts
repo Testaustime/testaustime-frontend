@@ -24,6 +24,10 @@ export interface ApiAuthRegenerateResponse {
   token: string
 }
 
+export interface ApiFriendsRegenerateResponse {
+  friend_code: string
+}
+
 export interface ApiUsersUserResponse {
   id: number,
   user_name: string,
@@ -36,6 +40,7 @@ export interface UseAuthenticationResult {
   setToken: (newToken: string) => void,
   isLoggedIn: boolean,
   regenerateToken: () => Promise<string>,
+  regenerateFriendCode: () => Promise<string>,
   register: (username: string, password: string) => Promise<string>,
   login: (username: string, password: string) => Promise<string>,
   registrationTime?: Date,
@@ -69,10 +74,21 @@ export const useAuthentication = (): UseAuthenticationResult => {
     }
   };
 
+  const regenerateFriendCode = async () => {
+    try {
+      const { data } = await axios.post<ApiFriendsRegenerateResponse>("/friends/regenerate", null, { headers: { Authorization: `Bearer ${token}` } });
+      const newFriendCode = data.friend_code;
+      dispatch(setFriendCode(newFriendCode));
+      return newFriendCode;
+    } catch (error) {
+      throw getErrorMessage(error);
+    }
+  };
+
   const register = async (username: string, password: string) => {
     try {
       const { data } = await axios.post<ApiAuthRegisterResponse>("/auth/register", { username, password });
-      const { auth_token, friend_code, username: apiUsername, registration_time} = data;
+      const { auth_token, friend_code, username: apiUsername, registration_time } = data;
       setToken(auth_token);
       dispatch(setUsername(apiUsername));
       dispatch(setFriendCode(friend_code));
@@ -130,6 +146,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
     setToken,
     isLoggedIn: !!token,
     regenerateToken,
+    regenerateFriendCode,
     register,
     login,
     logOut,

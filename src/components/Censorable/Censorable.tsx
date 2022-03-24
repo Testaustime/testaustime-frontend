@@ -1,16 +1,16 @@
-export interface AuthTokenFieldProps {
+export interface CensorableProps {
   authToken: string,
   revealLength: number,
   revealed?: boolean,
   hiddenCharacter?: string
 }
 
-export const AuthTokenField = ({
+export const Censorable = ({
   authToken,
   revealLength,
   revealed,
   hiddenCharacter = "*"
-}: AuthTokenFieldProps) => {
+}: CensorableProps) => {
   if (!authToken) {
     return null;
   }
