@@ -6,11 +6,18 @@ import { setAuthToken, setUsername, setRegisterTime, setFriendCode, setFriends }
 import { RootState } from "../../store";
 
 export interface ApiAuthRegisterResponse {
-  token: string
+  auth_token: string,
+  username: string,
+  friend_code: string,
+  registration_time: string
 }
 
 export interface ApiAuthLoginResponse {
-  token: string
+  id: number,
+  auth_token: string,
+  friend_code: string,
+  username: string,
+  registration_time: string
 }
 
 export interface ApiAuthRegenerateResponse {
@@ -25,26 +32,26 @@ export interface ApiUsersUserResponse {
 }
 
 export interface UseAuthenticationResult {
-  token: string,
+  token?: string,
   setToken: (newToken: string) => void,
   isLoggedIn: boolean,
   regenerateToken: () => Promise<string>,
   register: (username: string, password: string) => Promise<string>,
   login: (username: string, password: string) => Promise<string>,
-  registrationTime: Date,
+  registrationTime?: Date,
   logOut: () => void,
-  username: string,
-  friendCode: string,
+  username?: string,
+  friendCode?: string,
   refetchUsername: () => Promise<string>
 }
 
 export const useAuthentication = (): UseAuthenticationResult => {
   const dispatch = useDispatch();
 
-  const token = useSelector<RootState, string>(state => state.users.authToken);
-  const username = useSelector<RootState, string>(state => state.users.username);
-  const registrationTime = useSelector<RootState, Date>(state => new Date(state.users.registrationTime));
-  const friendCode = useSelector<RootState, string>(state => state.users.friendCode);
+  const token = useSelector<RootState, string | undefined>(state => state.users.authToken);
+  const username = useSelector<RootState, string | undefined>(state => state.users.username);
+  const registrationTime = useSelector<RootState, Date | undefined>(state => state.users.registrationTime ? new Date(state.users.registrationTime) : undefined);
+  const friendCode = useSelector<RootState, string | undefined>(state => state.users.friendCode);
 
   const setToken = (newToken: string) => {
     dispatch(setAuthToken(newToken));
@@ -65,11 +72,13 @@ export const useAuthentication = (): UseAuthenticationResult => {
   const register = async (username: string, password: string) => {
     try {
       const { data } = await axios.post<ApiAuthRegisterResponse>("/auth/register", { username, password });
-      const authToken = data.token;
-      setToken(authToken);
-      dispatch(setUsername(username));
-      return authToken;
-    } catch(error) {
+      const { auth_token, friend_code, username: apiUsername, registration_time} = data;
+      setToken(auth_token);
+      dispatch(setUsername(apiUsername));
+      dispatch(setFriendCode(friend_code));
+      dispatch(setRegisterTime(registration_time));
+      return auth_token;
+    } catch (error) {
       throw getErrorMessage(error);
     }
   };
@@ -77,21 +86,23 @@ export const useAuthentication = (): UseAuthenticationResult => {
   const login = async (username: string, password: string) => {
     try {
       const { data } = await axios.post<ApiAuthLoginResponse>("/auth/login", { username, password });
-      const authToken = data.token;
-      setToken(authToken);
-      dispatch(setUsername(username));
-      return authToken;
+      const { auth_token, friend_code, username: apiUsername, registration_time } = data;
+      setToken(auth_token);
+      dispatch(setUsername(apiUsername));
+      dispatch(setFriendCode(friend_code));
+      dispatch(setRegisterTime(registration_time));
+      return auth_token;
     } catch (err) {
       throw getErrorMessage(err);
     }
   };
 
   const logOut = () => {
-    dispatch(setAuthToken(""));
-    dispatch(setUsername(""));
     localStorage.removeItem(authTokenLocalStorageKey);
-    dispatch(setFriendCode(""));
-    dispatch(setRegisterTime(new Date().toISOString()));
+    dispatch(setAuthToken(undefined));
+    dispatch(setUsername(undefined));
+    dispatch(setFriendCode(undefined));
+    dispatch(setRegisterTime(undefined));
     dispatch(setFriends([]));
   };
 

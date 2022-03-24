@@ -42,12 +42,10 @@ describe("useAuthentication", () => {
       const user = {
         username,
         password,
-        authToken: generateAuthToken(username)
+        auth_token: generateAuthToken(username)
       };
       existingUsers.push(user);
-      return res(ctx.json({
-        token: user.authToken
-      }));
+      return res(ctx.json(user));
     }),
     rest.post<{ username: string, password: string }>("/auth/login", (req, res, ctx) => {
       const { username, password } = req.body;
@@ -55,12 +53,10 @@ describe("useAuthentication", () => {
       const user = {
         username,
         password,
-        authToken: generateAuthToken(username)
+        auth_token: generateAuthToken(username)
       };
       existingUsers.push(user);
-      return res(ctx.json({
-        token: user.authToken
-      }));
+      return res(ctx.json(user));
     })
   );
   beforeAll(() => server.listen());

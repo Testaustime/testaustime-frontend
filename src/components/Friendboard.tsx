@@ -1,8 +1,8 @@
 import { Button, Grid, Input, Title, Table, Group } from "@mantine/core";
-import { User } from "tabler-icons-react";
 import { useState } from "react";
 import { useFriends } from "../hooks/useFriends";
 import { useNotifications } from "@mantine/notifications";
+import { PersonIcon } from "@radix-ui/react-icons";
 
 export const Friendboard = () => {
   const { addFriend, unFriend, friends } = useFriends();
@@ -16,7 +16,7 @@ export const Friendboard = () => {
     <Grid columns={24}>
       <Grid.Col span={21}>
         <Input
-          icon={<User />}
+          icon={<PersonIcon />}
           placeholder="Friend code"
           value={friendCode}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFriendCode(e.target.value)}
@@ -34,9 +34,7 @@ export const Friendboard = () => {
         }}>Add</Button>
       </Grid.Col>
     </Grid>
-    <br />
-    <Title order={2}>Your friends</Title>
-
+    <Title order={2} mt={40}>Your friends</Title>
     <Table>
       <thead>
         <tr>

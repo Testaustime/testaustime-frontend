@@ -17,13 +17,13 @@ export const ProfilePage = () => {
   const notifications = useNotifications();
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn || !registrationTime || !token) {
       navigate("/login");
     }
     return reset;
   }, []);
 
-  if (!isLoggedIn) return <Text>You need to log in to view this page</Text>;
+  if (!isLoggedIn || !registrationTime || !token) return <Text>You need to log in to view this page</Text>;
 
   return <div>
     <Title order={2}>My profile</Title>
