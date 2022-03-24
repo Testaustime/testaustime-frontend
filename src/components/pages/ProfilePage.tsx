@@ -57,6 +57,6 @@ export const ProfilePage = () => {
     </Group>
 
     <Title order={3} mt={40} mb={5}>Friend code</Title>
-    <Text>My friend code: {friendCode}</Text>
+    <Text>My friend code: ttfc_{friendCode}</Text>
   </div >;
 };
