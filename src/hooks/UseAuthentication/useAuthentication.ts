@@ -30,7 +30,7 @@ export interface ApiFriendsRegenerateResponse {
 
 export interface ApiUsersUserResponse {
   id: number,
-  user_name: string,
+  username: string,
   friend_code: string,
   registration_time: string
 }
@@ -125,11 +125,11 @@ export const useAuthentication = (): UseAuthenticationResult => {
   const refetchUsername = async () => {
     if (token) {
       try {
-        const { data } = await axios.get("/users/@me", { headers: { Authorization: `Bearer ${token}` } });
-        dispatch(setUsername(data.user_name));
+        const { data } = await axios.get<ApiUsersUserResponse>("/users/@me", { headers: { Authorization: `Bearer ${token}` } });
+        dispatch(setUsername(data.username));
         dispatch(setFriendCode(data.friend_code));
         dispatch(setRegisterTime(data.registration_time));
-        return data.user_name;
+        return data.username;
       } catch (error) {
         dispatch(setUsername(""));
         return "";
