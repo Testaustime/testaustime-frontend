@@ -1,4 +1,5 @@
-import { Anchor, Group, Text, Title } from "@mantine/core";
+import { Anchor, Text } from "@mantine/core";
+import { Link } from "react-router-dom";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { Dashboard } from "../Dashboard";
 
@@ -9,12 +10,8 @@ export const MainPage = () => {
     {isLoggedIn ? <>
       <Dashboard />
     </> : <>
-      <Text>TestausTime is the ultimate tool for tracking time of your coding sessions. Show the world how dedicated you are to your projects.</Text>
-      <Title order={2} mt={40} mb={20}>Editor extensions</Title>
-      <Group spacing={15} direction="column">
-        <Anchor href="https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime">Visual Studio Code</Anchor>
-        <Anchor href="https://github.com/lajp/testaustime-nvim">NeoVim</Anchor>
-      </Group>
+      <Text mb={20}>TestausTime is the ultimate tool for tracking time of your coding sessions. Show the world how dedicated you are to your projects.</Text>
+      <Anchor component={Link} to="/extensions">Get the editor extensions from here!</Anchor>
     </>}
   </div>;
 };

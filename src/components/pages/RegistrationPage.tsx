@@ -22,7 +22,7 @@ export const RegistrationPage = () => {
       validationSchema={Yup.object().shape({
         username: Yup.string()
           .required("Username is required")
-          .min(8, "Username must be at least 8 characters long")
+          .min(2, "Username must be at least 2 characters long")
           .max(32, "Username can not be more than 32 characters long"),
         password: Yup.string()
           .required("Password is required")

@@ -12,6 +12,7 @@ import { RegistrationPage } from "./components/pages/RegistrationPage";
 import useAuthentication from "./hooks/UseAuthentication";
 import "./config";
 import { FriendPage } from "./components/pages/FriendPage";
+import { ExtensionsPage } from "./components/pages/ExtensionsPage";
 
 const useStyles = createStyles(() => ({
   container: {
@@ -87,6 +88,7 @@ export const AppSetup = () => {
             <Route path="/register" element={<RegistrationPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/friends" element={<FriendPage />} />
+            <Route path="/extensions" element={<ExtensionsPage />} />
           </Routes>
         </div>
       </Group>
