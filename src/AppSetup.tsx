@@ -49,7 +49,7 @@ export const AppSetup = () => {
     withGlobalStyles
     theme={{
       colorScheme: preferredColorScheme,
-      fontFamily: "'Ubuntu', sans-serif",
+      fontFamily: "Ubuntu, sans-serif",
       white: "#eee",
       black: "#121212",
       colors: {
