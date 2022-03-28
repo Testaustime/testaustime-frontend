@@ -77,6 +77,7 @@ export const AppSetup = () => {
             <Group spacing={15} align="center">
               {!isLoggedIn && <Anchor component={Link} to="/login">Login</Anchor>}
               {!isLoggedIn && <Button component={Link} to="/register">Register</Button>}
+              {isLoggedIn && <Anchor component={Link} to="/">Dashboard</Anchor>}
               {isLoggedIn && <Anchor component={Link} to="/friends">Friends</Anchor>}
               {isLoggedIn && <Anchor component={Link} to="/profile">My profile</Anchor>}
               {isLoggedIn && <Button variant="outline" size="xs" onClick={logOutAndRedirect} leftIcon={<ExitIcon />}>Log out {username}</Button>}
