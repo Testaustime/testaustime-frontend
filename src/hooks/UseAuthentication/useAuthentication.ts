@@ -123,20 +123,21 @@ export const useAuthentication = (): UseAuthenticationResult => {
   };
 
   const refetchUsername = async () => {
-    if (token) {
-      try {
-        const { data } = await axios.get<ApiUsersUserResponse>("/users/@me", { headers: { Authorization: `Bearer ${token}` } });
-        dispatch(setUsername(data.username));
-        dispatch(setFriendCode(data.friend_code));
-        dispatch(setRegisterTime(data.registration_time));
-        return data.username;
-      } catch (error) {
-        dispatch(setUsername(""));
-        return "";
-      }
-    }
-    else {
+    if (!token) {
       dispatch(setUsername(""));
+      logOut();
+      return "";
+    }
+
+    try {
+      const { data } = await axios.get<ApiUsersUserResponse>("/users/@me", { headers: { Authorization: `Bearer ${token}` } });
+      dispatch(setUsername(data.username));
+      dispatch(setFriendCode(data.friend_code));
+      dispatch(setRegisterTime(data.registration_time));
+      return data.username;
+    } catch (error) {
+      dispatch(setUsername(""));
+      logOut();
       return "";
     }
   };
@@ -144,7 +145,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
   return {
     token,
     setToken,
-    isLoggedIn: !!token,
+    isLoggedIn: !!username,
     regenerateToken,
     regenerateFriendCode,
     register,
