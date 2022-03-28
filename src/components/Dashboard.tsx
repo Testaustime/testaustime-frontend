@@ -1,5 +1,6 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
 import { Text, Title } from "@mantine/core";
+import { YAxis, XAxis, CartesianGrid, Tooltip,  Line, LineChart } from "recharts";
 import useAuthentication from "../hooks/UseAuthentication";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
@@ -35,8 +36,24 @@ export const Dashboard = () => {
 
   if (!isLoggedIn) return <Text>You need to log in to view this page</Text>;
 
+  const data_ig = getAllEntriesByDay(entries).map(e => ({date: e.date.toDateString(), duration: sumBy(e.entries, entry => entry.duration)}));
+
   return <div>
     <Title mb={5}>Your statistics</Title>
+    <LineChart width={500} height={300} data={data_ig}>
+      <XAxis dataKey="date" reversed={true} padding={{left: 10}}/>
+      <YAxis dataKey="duration" padding={{bottom: 10}} type="number" tickFormatter={d => {
+        d = Number(d);
+        const h = Math.floor(d / 3600);
+        const m = Math.floor(d % 3600 / 60);
+        const hDisplay = h > 0 ? h + "h " : "";
+        const mDisplay = m > 0 ? m + "m " : "";
+        return hDisplay + mDisplay;
+      }}/>
+      <Tooltip/>
+      <CartesianGrid/>
+      <Line dataKey="duration" strokeWidth={3}></Line>
+    </LineChart>
     <Text>Total time programmed: {prettyDuration(sumBy(entries, entry => entry.duration))}</Text>
     <Title order={2} mt={20} mb={5}>Languages</Title>
     <TopLanguages entries={entries} />
