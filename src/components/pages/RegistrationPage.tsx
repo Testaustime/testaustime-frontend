@@ -17,7 +17,8 @@ export const RegistrationPage = () => {
     <Formik
       initialValues={{
         username: "",
-        password: ""
+        password: "",
+        passwordConfirmation: ""
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string()
@@ -27,7 +28,10 @@ export const RegistrationPage = () => {
         password: Yup.string()
           .required("Password is required")
           .min(8, "Password must be at least 8 characters long")
-          .max(128, "Password can not be more than 128 characters long")
+          .max(128, "Password can not be more than 128 characters long"),
+        passwordConfirmation: Yup.string()
+          .required("Password confirmation is required")
+          .oneOf([Yup.ref("password"), null], "Passwords must match")
       })}
       onSubmit={values => {
         register(values.username, values.password).then(() => {
@@ -43,6 +47,7 @@ export const RegistrationPage = () => {
       {() => <Form>
         <FormikTextInput name="username" label="Username" />
         <FormikPasswordInput name="password" label="Password" mt={15} />
+        <FormikPasswordInput name="passwordConfirmation" label="Confirm password" mt={15} />
         <Button mt={20} type="submit">Register</Button>
       </Form>}
     </Formik>
