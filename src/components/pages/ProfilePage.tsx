@@ -1,8 +1,6 @@
 import { ActionIcon, Anchor, Group, Text, Title, Tooltip } from "@mantine/core";
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns/esm";
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { TokenField } from "../TokenField/TokenField";
@@ -13,19 +11,11 @@ export const ProfilePage = () => {
     regenerateToken,
     regenerateFriendCode,
     username,
-    isLoggedIn,
     friendCode,
     registrationTime
   } = useAuthentication();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  }, []);
-
-  if (!isLoggedIn || !registrationTime || !token || !friendCode) return <Text>You need to log in to view this page</Text>;
+  if (!registrationTime || !token || !friendCode) return <Text>You need to log in to view this page</Text>;
 
   return <div>
     <Title order={2}>My profile</Title>
@@ -36,7 +26,7 @@ export const ProfilePage = () => {
         <Title order={3}>
           Authentication token
         </Title>
-        <Tooltip 
+        <Tooltip
           allowPointerEvents
           wrapLines
           width={250}

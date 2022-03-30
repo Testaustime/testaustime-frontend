@@ -6,7 +6,8 @@ export interface UsersSlice {
   username?: string,
   registrationTime?: string,
   friendCode?: string,
-  friends: Array<string>
+  friends: Array<string>,
+  loginInitialized: boolean,
 }
 
 const initialState: UsersSlice = {
@@ -14,7 +15,8 @@ const initialState: UsersSlice = {
   username: undefined,
   registrationTime: undefined,
   friendCode: undefined,
-  friends: []
+  friends: [],
+  loginInitialized: false
 };
 
 export const usersSlice = createSlice({
@@ -36,8 +38,11 @@ export const usersSlice = createSlice({
     setFriends: (state, action: PayloadAction<Array<string>>) => {
       state.friends = action.payload;
     },
+    setLoginInitialized: (state, action: PayloadAction<boolean>) => {
+      state.loginInitialized = action.payload;
+    }
   },
 });
 
-export const { setAuthToken, setUsername, setRegisterTime, setFriendCode, setFriends } = usersSlice.actions;
+export const { setAuthToken, setUsername, setRegisterTime, setFriendCode, setFriends, setLoginInitialized } = usersSlice.actions;
 export default usersSlice.reducer;
