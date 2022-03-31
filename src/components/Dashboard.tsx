@@ -1,9 +1,6 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
 import { Text, Title } from "@mantine/core";
 import { YAxis, XAxis, CartesianGrid, Tooltip,  Line, LineChart } from "recharts";
-import useAuthentication from "../hooks/UseAuthentication";
-import { useNavigate } from "react-router";
-import { useEffect } from "react";
 import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
 import TopLanguages from "./TopLanguages";
 import { prettyDuration } from "../utils/dateUtils";
@@ -20,21 +17,10 @@ const getAllEntriesByDay = (entries: ActivityDataEntry[]): { date: Date, entries
 };
 
 export const Dashboard = () => {
-  const { isLoggedIn } = useAuthentication();
-  const navigate = useNavigate();
-
   const entries = useActivityData().map(entry => ({
     ...entry,
     language: normalizeProgrammingLanguageName(entry.language),
   }));
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  }, []);
-
-  if (!isLoggedIn) return <Text>You need to log in to view this page</Text>;
 
   const data_ig = getAllEntriesByDay(entries).map(e => ({date: e.date.toDateString(), duration: sumBy(e.entries, entry => entry.duration)}));
 

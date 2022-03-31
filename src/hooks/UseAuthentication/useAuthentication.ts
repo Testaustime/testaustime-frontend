@@ -2,7 +2,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { authTokenLocalStorageKey } from "../../constants";
 import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
-import { setAuthToken, setUsername, setRegisterTime, setFriendCode, setFriends } from "../../slices/userSlice";
+import { setAuthToken, setUsername, setRegisterTime, setFriendCode, setFriends, setLoginInitialized } from "../../slices/userSlice";
 import { RootState } from "../../store";
 
 export interface ApiAuthRegisterResponse {
@@ -39,6 +39,7 @@ export interface UseAuthenticationResult {
   token?: string,
   setToken: (newToken: string) => void,
   isLoggedIn: boolean,
+  isLoggedOut: boolean
   regenerateToken: () => Promise<string>,
   regenerateFriendCode: () => Promise<string>,
   register: (username: string, password: string) => Promise<string>,
@@ -47,7 +48,8 @@ export interface UseAuthenticationResult {
   logOut: () => void,
   username?: string,
   friendCode?: string,
-  refetchUsername: () => Promise<string>
+  refetchUsername: () => Promise<string>,
+  loginInitialized: boolean,
 }
 
 export const useAuthentication = (): UseAuthenticationResult => {
@@ -57,6 +59,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
   const username = useSelector<RootState, string | undefined>(state => state.users.username);
   const registrationTime = useSelector<RootState, Date | undefined>(state => state.users.registrationTime ? new Date(state.users.registrationTime) : undefined);
   const friendCode = useSelector<RootState, string | undefined>(state => state.users.friendCode);
+  const loginInitialized = useSelector<RootState, boolean>(state => state.users.loginInitialized);
 
   const setToken = (newToken: string) => {
     dispatch(setAuthToken(newToken));
@@ -68,8 +71,10 @@ export const useAuthentication = (): UseAuthenticationResult => {
       const { data } = await axios.post<ApiAuthRegenerateResponse>("/auth/regenerate", null, { headers: { Authorization: `Bearer ${token}` } });
       const newToken = data.token;
       setToken(newToken);
+      dispatch(setLoginInitialized(true));
       return newToken;
     } catch (error) {
+      dispatch(setLoginInitialized(true));
       throw getErrorMessage(error);
     }
   };
@@ -79,8 +84,10 @@ export const useAuthentication = (): UseAuthenticationResult => {
       const { data } = await axios.post<ApiFriendsRegenerateResponse>("/friends/regenerate", null, { headers: { Authorization: `Bearer ${token}` } });
       const newFriendCode = data.friend_code;
       dispatch(setFriendCode(newFriendCode));
+      dispatch(setLoginInitialized(true));
       return newFriendCode;
     } catch (error) {
+      dispatch(setLoginInitialized(true));
       throw getErrorMessage(error);
     }
   };
@@ -93,8 +100,10 @@ export const useAuthentication = (): UseAuthenticationResult => {
       dispatch(setUsername(apiUsername));
       dispatch(setFriendCode(friend_code));
       dispatch(setRegisterTime(registration_time));
+      dispatch(setLoginInitialized(true));
       return auth_token;
     } catch (error) {
+      dispatch(setLoginInitialized(true));
       throw getErrorMessage(error);
     }
   };
@@ -107,8 +116,10 @@ export const useAuthentication = (): UseAuthenticationResult => {
       dispatch(setUsername(apiUsername));
       dispatch(setFriendCode(friend_code));
       dispatch(setRegisterTime(registration_time));
+      dispatch(setLoginInitialized(true));
       return auth_token;
     } catch (err) {
+      dispatch(setLoginInitialized(true));
       throw getErrorMessage(err);
     }
   };
@@ -119,6 +130,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
     dispatch(setUsername(undefined));
     dispatch(setFriendCode(undefined));
     dispatch(setRegisterTime(undefined));
+    dispatch(setLoginInitialized(true));
     dispatch(setFriends([]));
   };
 
@@ -134,9 +146,11 @@ export const useAuthentication = (): UseAuthenticationResult => {
       dispatch(setUsername(data.username));
       dispatch(setFriendCode(data.friend_code));
       dispatch(setRegisterTime(data.registration_time));
+      dispatch(setLoginInitialized(true));
       return data.username;
     } catch (error) {
       dispatch(setUsername(""));
+      dispatch(setLoginInitialized(true));
       logOut();
       return "";
     }
@@ -145,7 +159,6 @@ export const useAuthentication = (): UseAuthenticationResult => {
   return {
     token,
     setToken,
-    isLoggedIn: !!username,
     regenerateToken,
     regenerateFriendCode,
     register,
@@ -154,6 +167,9 @@ export const useAuthentication = (): UseAuthenticationResult => {
     username,
     registrationTime,
     friendCode,
-    refetchUsername
+    refetchUsername,
+    loginInitialized,
+    isLoggedIn: Boolean(loginInitialized && !!username),
+    isLoggedOut: Boolean(loginInitialized && !username)
   };
 };

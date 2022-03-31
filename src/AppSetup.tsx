@@ -2,8 +2,8 @@ import { Anchor, Button, createStyles, Group, MantineProvider } from "@mantine/c
 import { useColorScheme } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
 import { ExitIcon } from "@radix-ui/react-icons";
-import { useEffect } from "react";
-import { Route, Routes, useNavigate } from "react-router";
+import { FunctionComponent, useEffect } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { LoginPage } from "./components/pages/LoginPage";
 import { MainPage } from "./components/pages/MainPage";
@@ -30,6 +30,15 @@ const useStyles = createStyles(() => ({
     textDecoration: "none"
   }
 }));
+
+const PrivateRoute: FunctionComponent = ({ children }) => {
+  const { isLoggedOut } = useAuthentication();
+  if (isLoggedOut) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+};
 
 export const AppSetup = () => {
   const { logOut, isLoggedIn, refetchUsername, username } = useAuthentication();
@@ -87,8 +96,8 @@ export const AppSetup = () => {
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegistrationPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/friends" element={<FriendPage />} />
+            <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+            <Route path="/friends" element={<PrivateRoute><FriendPage /></PrivateRoute>} />
             <Route path="/extensions" element={<ExtensionsPage />} />
           </Routes>
         </div>
