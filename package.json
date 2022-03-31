@@ -22,15 +22,16 @@
     "react-scripts": "5.0.0",
     "source-map-explorer": "^2.5.2",
     "typescript": "^4.6.2",
-    "yup": "^0.32.11",
-    "recharts": "^2.1.9"
+    "victory": "^36.3.1",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "analyze": "source-map-explorer ./build/static/js/*.js"
+    "analyze": "source-map-explorer ./build/static/js/*.js",
+    "lint": "eslint src --ext .ts,.tsx"
   },
   "eslintConfig": {
     "extends": [
