@@ -12,4 +12,4 @@ export const prettyDuration = (seconds: number) => formatDuration(intervalToDura
       // Let's just hope the token is one of these options
       formatDistance: (token: "xSeconds" | "xMinutes" | "xHours", count: number) => formatShort[token].replace("{{count}}", String(count))
     }
-  }) || "0 seconds";
+  }) || "0s";
