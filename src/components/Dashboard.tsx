@@ -34,7 +34,7 @@ export const Dashboard = () => {
     language: normalizeProgrammingLanguageName(entry.language),
   }));
 
-  const [statisticsRange, setStatisticsRange] = useState<DayRange>("month");
+  const [statisticsRange, setStatisticsRange] = useState<DayRange>("week");
   const dayCount = getDayCount(statisticsRange);
 
   return <div>
