@@ -1,5 +1,5 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
-import { SegmentedControl, Text, Title } from "@mantine/core";
+import { Group, SegmentedControl, Text, Title } from "@mantine/core";
 import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
 import TopLanguages from "./TopLanguages";
 import { prettyDuration } from "../utils/dateUtils";
@@ -8,6 +8,7 @@ import DaySessions from "./DaySessions";
 import { groupBy, sumBy } from "../utils/arrayUtils";
 import { DailyCodingTimeChart } from "./DailyCodingTimeChart";
 import { useState } from "react";
+import { useMediaQuery } from "@mantine/hooks";
 
 type DayRange = "month" | "week"
 
@@ -37,6 +38,8 @@ export const Dashboard = () => {
   const [statisticsRange, setStatisticsRange] = useState<DayRange>("week");
   const dayCount = getDayCount(statisticsRange);
 
+  const isSmallScreen = useMediaQuery("(max-width: 700px)");
+
   return <div>
     <Title mb={5}>Your statistics</Title>
     <SegmentedControl
@@ -50,10 +53,16 @@ export const Dashboard = () => {
     />
     <DailyCodingTimeChart entries={entries} dayCount={dayCount} />
     <Text mt={15}>Total time programmed: {prettyDuration(sumBy(entries, entry => entry.duration))}</Text>
-    <Title order={2} mt={20} mb={5}>Languages</Title>
-    <TopLanguages entries={entries} />
-    <Title order={2} mt={20} mb={5}>Projects</Title>
-    <TopProjects entries={entries} />
+    <Group direction={isSmallScreen ? "column" : "row"} grow mt={20} mb={20} align="start">
+      <div>
+        <Title order={2}>Languages</Title>
+        <TopLanguages entries={entries} />
+      </div>
+      <div>
+        <Title order={2}>Projects</Title>
+        <TopProjects entries={entries} />
+      </div>
+    </Group>
     <Title order={2} mt={20} mb={5}>Your sessions</Title>
     {getAllEntriesByDay(entries).map(d => <DaySessions key={d.date.getTime()} date={d.date} entries={d.entries} />)}
   </div>;
