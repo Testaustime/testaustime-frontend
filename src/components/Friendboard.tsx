@@ -1,16 +1,15 @@
 import { Button, Title, Table, Group } from "@mantine/core";
 import { useFriends } from "../hooks/useFriends";
-import { useNotifications } from "@mantine/notifications";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { FormikTextInput } from "./forms/FormikTextInput";
 import { generateFriendCode } from "../utils/friendUtils";
 import { useState } from "react";
+import { handleErrorWithNotification } from "../utils/notificationErrorHandler";
 
 export const Friendboard = () => {
   const { addFriend, unFriend, friends } = useFriends();
-  const notifications = useNotifications();
 
   // We have to use useState, so it stays the same when the component is re-rendered
   const [placeholderFriendCode] = useState(generateFriendCode());
@@ -30,13 +29,7 @@ export const Friendboard = () => {
         onSubmit={({ friendCode }, { resetForm }) => {
           addFriend(friendCode)
             .then(() => resetForm())
-            .catch(error => {
-              notifications.showNotification({
-                title: "Error",
-                color: "red",
-                message: String(error || "An unknown error occurred")
-              });
-            });
+            .catch(handleErrorWithNotification);
         }}>
         {() => <Form style={{ width: "100%" }}>
           <Group align="start">
@@ -74,15 +67,12 @@ export const Friendboard = () => {
           <td>{username}</td>
           <td>
             <Group position="right">
-              <Button variant="outline" color="red" compact onClick={() => {
-                unFriend(username).catch(error => {
-                  notifications.showNotification({
-                    title: "Error",
-                    color: "red",
-                    message: String(error || "An unknown error occurred")
-                  });
-                });
-              }}>
+              <Button
+                variant="outline"
+                color="red"
+                compact
+                onClick={() => unFriend(username).catch(handleErrorWithNotification)}
+              >
                 Unfriend
               </Button>
             </Group>

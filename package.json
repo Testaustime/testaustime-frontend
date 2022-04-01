@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@mantine/core": "^4.0.4",
-    "@mantine/hooks": "^4.0.4",
-    "@mantine/notifications": "^4.0.4",
+    "@mantine/core": "^4.1.1",
+    "@mantine/hooks": "^4.1.1",
+    "@mantine/notifications": "^4.1.1",
     "@radix-ui/react-icons": "^1.1.0",
     "@reduxjs/toolkit": "^1.8.0",
     "@types/node": "^16.11.26",

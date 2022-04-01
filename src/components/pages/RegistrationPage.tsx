@@ -1,16 +1,15 @@
 import { Button, Title } from "@mantine/core";
-import { useNotifications } from "@mantine/notifications";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
+import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
 
 export const RegistrationPage = () => {
   const { register } = useAuthentication();
   const navigate = useNavigate();
-  const notifications = useNotifications();
 
   return <div>
     <Title order={1} mb={20}>Register</Title>
@@ -34,15 +33,9 @@ export const RegistrationPage = () => {
           .oneOf([Yup.ref("password"), null], "Passwords must match")
       })}
       onSubmit={values => {
-        register(values.username, values.password).then(() => {
-          navigate("/");
-        }).catch(error => {
-          notifications.showNotification({
-            title: "Error",
-            color: "red",
-            message: String(error || "An unknown error occurred")
-          });
-        });
+        register(values.username, values.password)
+          .then(() => navigate("/"))
+          .catch(handleErrorWithNotification);
       }}>
       {() => <Form>
         <FormikTextInput name="username" label="Username" />

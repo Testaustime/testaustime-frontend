@@ -1,8 +1,8 @@
 import { Button, Group, Popover, Text } from "@mantine/core";
 import { useBooleanToggle, useClipboard } from "@mantine/hooks";
-import { useNotifications } from "@mantine/notifications";
 import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
+import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
 import Censorable from "../Censorable";
 
 export interface TokenFieldProps {
@@ -16,7 +16,6 @@ export const TokenField = ({ value, regenerate, censorable, revealLength }: Toke
   const { copy, copied, reset } = useClipboard({ timeout: 2000 });
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [isTokenRevealed, toggleIsTokenRevealed] = useBooleanToggle(false);
-  const notifications = useNotifications();
 
   useEffect(() => {
     return reset;
@@ -39,13 +38,7 @@ export const TokenField = ({ value, regenerate, censorable, revealLength }: Toke
         <Text mb={10}>Are you sure?</Text>
         <Button variant="outline" mr={10} onClick={() => setConfirmationOpen(false)}>Cancel</Button>
         <Button variant="filled" color="red" onClick={() => {
-          regenerate().catch(error => {
-            notifications.showNotification({
-              title: "Error",
-              color: "red",
-              message: String(error || "An unknown error occurred")
-            });
-          });
+          regenerate().catch(handleErrorWithNotification);
           setConfirmationOpen(false);
         }}>Yes</Button>
       </Popover>
