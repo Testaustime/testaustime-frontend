@@ -61,7 +61,7 @@ export const Dashboard = () => {
     />
     <Title mb={5} order={2}>Time per day</Title>
     <DailyCodingTimeChart entries={entriesByDay} dayCount={dayCount} />
-    <Title mb={5} order={2}>Time per project</Title>
+    <Title mb={5} order={2}>Time per last updated projects</Title>
     <PerProjectChart entries={entriesByDay} />
     <Text mt={15}>Total time programmed ever: {prettyDuration(sumBy(entries, entry => entry.duration))}</Text>
     <Group direction={isSmallScreen ? "column" : "row"} grow mt={20} mb={20} align="start">
