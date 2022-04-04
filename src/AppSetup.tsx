@@ -58,10 +58,16 @@ export const AppSetup = () => {
 
   // Save colorScheme to localStorage and the default value is the preferred colorScheme
   const preferredColorScheme = useColorScheme();
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+
+  const [savedColorScheme, setColorScheme] = useLocalStorage<
+    ColorScheme | "none"
+  >({
     key: "testaustime-color-scheme",
-    defaultValue: preferredColorScheme
+    defaultValue: "none"
   });
+
+  const colorScheme =
+    savedColorScheme === "none" ? preferredColorScheme : savedColorScheme;
 
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
