@@ -9,6 +9,8 @@ import { groupBy, sumBy } from "../utils/arrayUtils";
 import { DailyCodingTimeChart } from "./DailyCodingTimeChart";
 import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
+import { PerProjectChart } from "./PerProjectChart";
+import { addDays, startOfDay } from "date-fns/esm";
 
 type DayRange = "month" | "week"
 
@@ -30,13 +32,19 @@ const getAllEntriesByDay = (entries: ActivityDataEntry[]): { date: Date, entries
 };
 
 export const Dashboard = () => {
+  const [statisticsRange, setStatisticsRange] = useState<DayRange>("week");
+  const dayCount = getDayCount(statisticsRange);
+
   const entries = useActivityData().map(entry => ({
     ...entry,
     language: normalizeProgrammingLanguageName(entry.language),
   }));
 
-  const [statisticsRange, setStatisticsRange] = useState<DayRange>("week");
-  const dayCount = getDayCount(statisticsRange);
+  // Filter out entries that are not in the current statistics range
+  const entriesByDay = entries.filter(entry => {
+    const startOfStatisticsRange = startOfDay(addDays(new Date(), -dayCount));
+    return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
+  });
 
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
 
@@ -51,8 +59,11 @@ export const Dashboard = () => {
       onChange={(value: DayRange) => setStatisticsRange(value)}
       mb={15}
     />
-    <DailyCodingTimeChart entries={entries} dayCount={dayCount} />
-    <Text mt={15}>Total time programmed: {prettyDuration(sumBy(entries, entry => entry.duration))}</Text>
+    <Title mb={5} order={2}>Time per day</Title>
+    <DailyCodingTimeChart entries={entriesByDay} dayCount={dayCount} />
+    <Title mb={5} order={2}>Time per last updated projects</Title>
+    <PerProjectChart entries={entriesByDay} />
+    <Text mt={15}>Total time programmed ever: {prettyDuration(sumBy(entries, entry => entry.duration))}</Text>
     <Group direction={isSmallScreen ? "column" : "row"} grow mt={20} mb={20} align="start">
       <div>
         <Title order={2}>Languages</Title>

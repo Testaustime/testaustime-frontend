@@ -6,6 +6,8 @@
     "@mantine/core": "^4.1.1",
     "@mantine/hooks": "^4.1.1",
     "@mantine/notifications": "^4.1.1",
+    "@nivo/bar": "^0.79.1",
+    "@nivo/core": "^0.79.0",
     "@radix-ui/react-icons": "^1.1.0",
     "@reduxjs/toolkit": "^1.8.0",
     "@types/node": "^16.11.26",
