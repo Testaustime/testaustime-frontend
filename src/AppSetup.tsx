@@ -17,7 +17,8 @@ import { ExtensionsPage } from "./components/pages/ExtensionsPage";
 const useStyles = createStyles(() => ({
   container: {
     maxWidth: 800,
-    width: "100%"
+    width: "100%",
+    paddingBottom: 100
   },
   testaustimeTitle: {
     paddingTop: 4,
