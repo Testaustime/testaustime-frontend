@@ -65,5 +65,6 @@ export const prettifyProgrammingLanguageName = (name?: string) => {
     "nginx": "NGINX",
     "sshconfig": "SSH Config",
     "conf": "Config",
+    "dockercompose": "Docker Compose"
   }[name] || capitalizeFirstLetter(name));
 };

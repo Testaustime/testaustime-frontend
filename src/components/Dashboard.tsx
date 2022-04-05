@@ -1,5 +1,5 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
-import { Group, SegmentedControl, Text, Title } from "@mantine/core";
+import { Accordion, Group, MultiSelect, SegmentedControl, Text, Title } from "@mantine/core";
 import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
 import TopLanguages from "./TopLanguages";
 import { prettyDuration } from "../utils/dateUtils";
@@ -10,7 +10,7 @@ import { DailyCodingTimeChart } from "./DailyCodingTimeChart";
 import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
-import { addDays, startOfDay } from "date-fns/esm";
+import { addDays, format, startOfDay } from "date-fns/esm";
 
 type DayRange = "month" | "week"
 
@@ -34,47 +34,67 @@ const getAllEntriesByDay = (entries: ActivityDataEntry[]): { date: Date, entries
 export const Dashboard = () => {
   const [statisticsRange, setStatisticsRange] = useState<DayRange>("week");
   const dayCount = getDayCount(statisticsRange);
+  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
   const entries = useActivityData().map(entry => ({
     ...entry,
     language: normalizeProgrammingLanguageName(entry.language),
   }));
 
-  // Filter out entries that are not in the current statistics range
-  const entriesByDay = entries.filter(entry => {
-    const startOfStatisticsRange = startOfDay(addDays(new Date(), -dayCount));
-    return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
-  });
+  const projectNames = entries.reduce<string[]>((acc, entry) => {
+    const name = entry.project_name || "Unknown";
+    return acc.includes(name) ? acc : [...acc, name];
+  }, []);
+
+  // Filter out entries that are not selected and are not in the current statistics range
+  const filteredEntries = entries
+    .filter(entry => selectedProjects.includes(entry.project_name || "Unknown"))
+    .filter(entry => {
+      const startOfStatisticsRange = startOfDay(addDays(new Date(), -dayCount));
+      return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
+    });
 
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
 
   return <div>
     <Title mb={5}>Your statistics</Title>
-    <SegmentedControl
-      data={[
-        { label: "Last week", value: "week" },
-        { label: "Last month", value: "month" },
-      ]}
-      value={statisticsRange}
-      onChange={(value: DayRange) => setStatisticsRange(value)}
-      mb={15}
-    />
+    <Group align="end" position="apart" mt={10} mb={30}>
+      <MultiSelect
+        sx={{ minWidth: 400 }}
+        label="Projects"
+        data={projectNames}
+        onChange={(selectedProjectNames: string[]) => setSelectedProjects(selectedProjectNames)}
+      />
+      <SegmentedControl
+        data={[
+          { label: "Last week", value: "week" },
+          { label: "Last month", value: "month" },
+        ]}
+        value={statisticsRange}
+        onChange={(value: DayRange) => setStatisticsRange(value)}
+      />
+    </Group>
     <Title mb={5} order={2}>Time per day</Title>
-    <DailyCodingTimeChart entries={entriesByDay} dayCount={dayCount} />
+    <DailyCodingTimeChart entries={filteredEntries} dayCount={dayCount} />
     <Title mb={5} order={2}>Time per last updated projects</Title>
-    <PerProjectChart entries={entriesByDay} />
-    <Text mt={15}>Total time programmed ever: {prettyDuration(sumBy(entries, entry => entry.duration))}</Text>
+    <PerProjectChart entries={filteredEntries} />
+    <Text mt={15}>Total time programmed: {prettyDuration(sumBy(filteredEntries, entry => entry.duration))}</Text>
     <Group direction={isSmallScreen ? "column" : "row"} grow mt={20} mb={20} align="start">
       <div>
         <Title order={2}>Languages</Title>
-        <TopLanguages entries={entries} />
+        <TopLanguages entries={filteredEntries} />
       </div>
       <div>
         <Title order={2}>Projects</Title>
-        <TopProjects entries={entries} />
+        <TopProjects entries={filteredEntries} />
       </div>
     </Group>
     <Title order={2} mt={20} mb={5}>Your sessions</Title>
-    {getAllEntriesByDay(entries).map(d => <DaySessions key={d.date.getTime()} date={d.date} entries={d.entries} />)}
+    <Accordion multiple>
+      {getAllEntriesByDay(filteredEntries).map(d =>
+        <Accordion.Item key={d.date.getTime()} label={<Text size="lg">{format(d.date, "d.M.yyyy")}</Text>}>
+          <DaySessions entries={d.entries} />
+        </Accordion.Item>)}
+    </Accordion>
   </div>;
 };
