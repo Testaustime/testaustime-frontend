@@ -10,6 +10,12 @@ export const prettyDuration = (seconds: number) => formatDuration(intervalToDura
   {
     locale: {
       // Let's just hope the token is one of these options
-      formatDistance: (token: "xSeconds" | "xMinutes" | "xHours", count: number) => formatShort[token].replace("{{count}}", String(count))
+      formatDistance: (token: "xSeconds" | "xMinutes" | "xHours", count: number) => {
+        if(!(token in formatShort)){
+          return "";
+        }
+        
+        return formatShort[token].replace("{{count}}", String(count));
+      }
     }
   }) || "0s";
