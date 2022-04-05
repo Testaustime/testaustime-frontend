@@ -1,6 +1,7 @@
 import { List, Paper, Text, useMantineTheme } from "@mantine/core";
 import { ResponsiveBar } from "@nivo/bar";
 import { groupBy, sumBy } from "../utils/arrayUtils";
+import { calculateTickValues } from "../utils/chartUtils";
 import { prettyDuration } from "../utils/dateUtils";
 import { prettifyProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
 
@@ -66,6 +67,9 @@ export const PerProjectChart = ({ entries, projectCount = 5 }: PerProjectChartPr
       };
     });
 
+  const maxDuration = Math.max(...totalTimeByProject.map(p => sumBy(p.totalTimeByLanguage, l => l.duration)));
+  const ticks = calculateTickValues(maxDuration);
+
   return (
     <div style={{ height: 130 * Math.min(totalTimeByProject.length, projectCount) }}>
       <ResponsiveBar
@@ -77,7 +81,11 @@ export const PerProjectChart = ({ entries, projectCount = 5 }: PerProjectChartPr
         enableGridY={false}
         enableGridX
         theme={{ textColor: usesDarkMode ? "white" : "black" }}
-        axisBottom={{ format: (d: number) => prettyDuration(d) }}
+        axisBottom={{
+          format: (d: number) => prettyDuration(d),
+          tickValues: ticks,
+        }}
+        gridXValues={ticks}
         axisLeft={{ tickPadding: 20 }}
         tooltipLabel={(d) => String(d.data.projectName)}
         tooltip={(point) => (
