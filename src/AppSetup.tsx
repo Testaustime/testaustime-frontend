@@ -121,7 +121,7 @@ export const AppSetup = () => {
         }}
       >
         <NotificationsProvider>
-          <Group position="center" mt={80}>
+          <Group position="center" mt={80} sx={{ overflow: "hidden" }}>
             <div className={classes.container}>
               <Group position="apart" mb={50}>
                 <Link to="/" className={classes.testaustimeTitle}>
