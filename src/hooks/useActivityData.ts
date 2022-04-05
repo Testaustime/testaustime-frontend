@@ -3,19 +3,20 @@ import { startOfDay } from "date-fns";
 import { useEffect, useState } from "react";
 import useAuthentication from "./UseAuthentication";
 
-export interface ApiUsersUserActivityDataResponseItem {
+interface ApiUsersUserActivityDataResponseItem {
   id: number,
   start_time: string,
   duration: number,
-  project_name?: string,
+  project_name?: string | null,
   language?: string,
   editor_name?: string,
   hostname?: string,
 }
 
-export type ActivityDataEntry = Omit<ApiUsersUserActivityDataResponseItem, "start_time"> & {
+export type ActivityDataEntry = Omit<ApiUsersUserActivityDataResponseItem, "start_time" | "project_name"> & {
   start_time: Date,
-  dayStart: Date
+  dayStart: Date,
+  project_name?: string
 }
 
 export const useActivityData = () => {
@@ -27,7 +28,8 @@ export const useActivityData = () => {
       setEntries(data.map(e => ({
         ...e,
         start_time: new Date(e.start_time),
-        dayStart: startOfDay(new Date(e.start_time))
+        dayStart: startOfDay(new Date(e.start_time)),
+        project_name: e.project_name || undefined, // Change nulls and empty strings to undefineds
       })));
     });
   }, []);

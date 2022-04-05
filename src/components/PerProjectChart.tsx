@@ -67,7 +67,7 @@ export const PerProjectChart = ({ entries, projectCount = 5 }: PerProjectChartPr
     });
 
   return (
-    <div style={{ height: 130 * totalTimeByProject.length }}>
+    <div style={{ height: 130 * Math.min(totalTimeByProject.length, projectCount) }}>
       <ResponsiveBar
         data={data}
         keys={[...languageNames.map((l) => `${l}_duration`)]}
