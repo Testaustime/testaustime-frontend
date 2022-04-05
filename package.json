@@ -8,6 +8,7 @@
     "@mantine/notifications": "^4.1.1",
     "@nivo/bar": "^0.79.1",
     "@nivo/core": "^0.79.0",
+    "@nivo/line": "^0.79.1",
     "@radix-ui/react-icons": "^1.1.0",
     "@reduxjs/toolkit": "^1.8.0",
     "@types/node": "^16.11.26",
@@ -26,7 +27,6 @@
     "source-map-explorer": "^2.5.2",
     "tabler-icons-react": "^1.43.0",
     "typescript": "^4.6.2",
-    "victory": "^36.3.1",
     "yup": "^0.32.11"
   },
   "scripts": {

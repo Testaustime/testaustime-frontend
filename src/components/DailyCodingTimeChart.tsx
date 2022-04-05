@@ -1,55 +1,10 @@
-import { useMantineTheme } from "@mantine/core";
+import { Paper, Text, useMantineTheme } from "@mantine/core";
 import { format } from "date-fns";
-import { addDays, startOfDay } from "date-fns/esm";
-import {
-  VictoryTheme,
-  VictoryAxis,
-  VictoryChart,
-  VictoryGroup,
-  VictoryLine,
-  VictoryScatter,
-  VictoryTooltip,
-  VictoryVoronoiContainer,
-  VictoryThemeDefinition,
-  VictoryLabel
-} from "victory";
+import { addDays, isSunday, startOfDay } from "date-fns/esm";
 import { sumBy } from "../utils/arrayUtils";
+import { ResponsiveLine } from "@nivo/line";
 import { calculateTickValues } from "../utils/chartUtils";
 import { prettyDuration } from "../utils/dateUtils";
-
-const darkVictoryTheme: VictoryThemeDefinition = {
-  scatter: {
-    style: {
-      data: {
-        fill: "#c1c2c5"
-      }
-    }
-  },
-  line: {
-    style: {
-      data: {
-        stroke: "#3A6C98",
-        strokeWidth: 2
-      }
-    }
-  },
-  axis: {
-    style: {
-      axis: {
-        stroke: "#c1c2c5"
-      },
-      grid: {
-        stroke: "#818e99",
-        strokeWidth: 1,
-        opacity: 0.7
-      },
-      tickLabels: {
-        fill: "#c1c2c5",
-        fontSize: 11
-      }
-    }
-  }
-};
 
 export interface DailyCodingTimeChartProps {
   entries: {
@@ -71,6 +26,8 @@ export const DailyCodingTimeChart = ({
 }: DailyCodingTimeChartProps) => {
   const usesDarkMode = useMantineTheme().colorScheme === "dark";
 
+  if (entries.length === 0) return <Text>No data</Text>;
+
   const data = Array(dayCount)
     .fill(0)
     .map((_, dayIndex) => {
@@ -83,52 +40,70 @@ export const DailyCodingTimeChart = ({
     })
     .sort((a, b) => a.date.getTime() - b.date.getTime());
 
-  const maxDuration = data.sort((a, b) => b.duration - a.duration)[0].duration;
+  const maxDuration = [...data].sort((a, b) => b.duration - a.duration)[0].duration;
+  const yticks = calculateTickValues(maxDuration);
 
   return (
-    <VictoryChart
-      theme={
-        !usesDarkMode
-          ? {
-              ...VictoryTheme.grayscale,
-              axis: { style: { tickLabels: { fontSize: 11 } } }
+    <div style={{ height: 400 }}>
+      <ResponsiveLine
+        data={[{
+          id: "daily-coding-time",
+          data: data.map(({ date, duration }) => ({
+            x: date,
+            y: duration
+          }))
+        }]}
+        margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
+        xScale={{
+          type: "time",
+          precision: "day",
+          min: data[0].date,
+          max: data[data.length - 1].date,
+        }}
+        yScale={{
+          type: "linear",
+          min: 0,
+          max: yticks[yticks.length - 1]
+        }}
+        axisBottom={{
+          format: (date) => {
+            if (dayCount <= 14) return format(date, "d.M.");
+            return isSunday(date) ? format(date, "d.M.") : "";
+          },
+          tickValues: data.map(({ date }) => date),
+        }}
+        axisLeft={{
+          format: (durationSeconds) => prettyDuration(durationSeconds),
+          tickValues: yticks,
+        }}
+        gridXValues={data.map(({ date }) => date)}
+        gridYValues={yticks}
+        sliceTooltip={(p) => {
+          const { x, y } = p.slice.points[0].data as { x: Date; y: number };
+          return (
+            <Paper p={10} sx={theme => ({ backgroundColor: theme.white, color: theme.black })}>
+              <Text>{format(x, "d.M.yyyy")}</Text>
+              <Text>{prettyDuration(y)}</Text>
+            </Paper>
+          );
+        }}
+        useMesh
+        enableSlices="x"
+        pointLabelYOffset={0}
+        pointSize={12}
+        theme={{
+          textColor: usesDarkMode ? "#fff" : "#000",
+          crosshair: {
+            line: {
+              stroke: usesDarkMode ? "#fff" : "#555",
+              strokeWidth: 3,
             }
-          : darkVictoryTheme
-      }
-      padding={{ left: 30, bottom: 30, top: 15, right: 30 }}
-      scale={{ x: "time" }}
-      containerComponent={<VictoryVoronoiContainer />}
-    >
-      <VictoryAxis
-        tickFormat={(d) => format(new Date(d), "d.M.")}
-        tickLabelComponent={<VictoryLabel dy={10} />}
+          }
+        }}
+        colors={{
+          scheme: usesDarkMode ? "paired" : "category10"
+        }}
       />
-      <VictoryAxis
-        tickFormat={() => ""}
-        tickCount={28}
-        style={{ grid: { opacity: 0.2 } }}
-      />
-      <VictoryAxis
-        dependentAxis
-        tickFormat={(tick) => prettyDuration(tick)}
-        tickLabelComponent={<VictoryLabel dx={-10} />}
-        tickValues={calculateTickValues(maxDuration)}
-      />
-      <VictoryGroup
-        data={data.map(({ date, duration }) => ({ x: date, y: duration }))}
-        labels={(d) =>
-          `${format(d.datum.x, "d.M.yyyy")}\n${prettyDuration(d.datum.y)}`
-        }
-        labelComponent={
-          <VictoryTooltip
-            flyoutPadding={{ left: 10, right: 10, top: 3, bottom: 3 }}
-            style={{ fontSize: 10 }}
-          />
-        }
-      >
-        <VictoryLine />
-        <VictoryScatter size={({ active }) => (active ? 6 : 3)} />
-      </VictoryGroup>
-    </VictoryChart>
+    </div>
   );
 };
