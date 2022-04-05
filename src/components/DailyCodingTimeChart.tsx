@@ -5,6 +5,7 @@ import { sumBy } from "../utils/arrayUtils";
 import { ResponsiveLine } from "@nivo/line";
 import { calculateTickValues } from "../utils/chartUtils";
 import { prettyDuration } from "../utils/dateUtils";
+import { useSettings } from "../hooks/useSettings";
 
 export interface DailyCodingTimeChartProps {
   entries: {
@@ -25,6 +26,7 @@ export const DailyCodingTimeChart = ({
   dayCount
 }: DailyCodingTimeChartProps) => {
   const usesDarkMode = useMantineTheme().colorScheme === "dark";
+  const { smoothCharts } = useSettings();
 
   if (entries.length === 0) return <Text>No data</Text>;
 
@@ -65,6 +67,7 @@ export const DailyCodingTimeChart = ({
           min: 0,
           max: yticks[yticks.length - 1]
         }}
+        curve={smoothCharts ? "monotoneX" : "linear"}
         axisBottom={{
           format: (date) => {
             if (dayCount <= 14) return format(date, "d.M.");

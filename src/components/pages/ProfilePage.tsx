@@ -1,9 +1,10 @@
-import { Anchor, Group, Text, Title } from "@mantine/core";
+import { Anchor, Checkbox, Group, Text, Title } from "@mantine/core";
 import { format } from "date-fns/esm";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { WithTooltip } from "../WithTooltip";
 import { TokenField } from "../TokenField/TokenField";
 import { Link } from "react-router-dom";
+import { useSettings } from "../../hooks/useSettings";
 
 export const ProfilePage = () => {
   const {
@@ -14,6 +15,8 @@ export const ProfilePage = () => {
     friendCode,
     registrationTime
   } = useAuthentication();
+
+  const { smoothCharts, setSmoothCharts } = useSettings();
 
   if (!registrationTime || !token || !friendCode) return <Text>You need to log in to view this page</Text>;
 
@@ -34,6 +37,10 @@ export const ProfilePage = () => {
         <Title order={3}>Friend code</Title>
       </WithTooltip>
       <TokenField value={"ttfc_" + friendCode} regenerate={regenerateFriendCode} />
+    </Group>
+    <Title order={2} mt={40}>Settings</Title>
+    <Group mt={15}>
+      <Checkbox checked={smoothCharts} onChange={e => setSmoothCharts(e.target.checked)} label="Smooth charts" />
     </Group>
   </div >;
 };
