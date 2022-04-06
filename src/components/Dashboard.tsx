@@ -11,6 +11,9 @@ import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
 import { addDays, format, startOfDay } from "date-fns/esm";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
+import { setSelectedProjects } from "../slices/dashboardSlice";
 
 type DayRange = "month" | "week"
 
@@ -32,9 +35,11 @@ const getAllEntriesByDay = (entries: ActivityDataEntry[]): { date: Date, entries
 };
 
 export const Dashboard = () => {
+  const dispatch = useDispatch();
   const [statisticsRange, setStatisticsRange] = useState<DayRange>("week");
   const dayCount = getDayCount(statisticsRange);
-  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+
+  const selectedProjects = useSelector<RootState, string[]>(state => state.dashboard.selectedProjects);
 
   const entries = useActivityData().map(entry => ({
     ...entry,
@@ -63,7 +68,8 @@ export const Dashboard = () => {
         sx={{ minWidth: 400 }}
         label="Projects"
         data={projectNames}
-        onChange={(selectedProjectNames: string[]) => setSelectedProjects(selectedProjectNames)}
+        value={selectedProjects}
+        onChange={(selectedProjectNames: string[]) => dispatch(setSelectedProjects(selectedProjectNames))}
       />
       <SegmentedControl
         data={[
