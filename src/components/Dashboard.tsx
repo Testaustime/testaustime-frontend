@@ -8,12 +8,9 @@ import DaySessions from "./DaySessions";
 import { groupBy, sumBy } from "../utils/arrayUtils";
 import { DailyCodingTimeChart } from "./DailyCodingTimeChart";
 import { useState } from "react";
-import { useMediaQuery } from "@mantine/hooks";
+import { useLocalStorageValue, useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
 import { addDays, format, startOfDay } from "date-fns/esm";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store";
-import { setSelectedProjects } from "../slices/dashboardSlice";
 
 type DayRange = "month" | "week"
 
@@ -35,11 +32,9 @@ const getAllEntriesByDay = (entries: ActivityDataEntry[]): { date: Date, entries
 };
 
 export const Dashboard = () => {
-  const dispatch = useDispatch();
   const [statisticsRange, setStatisticsRange] = useState<DayRange>("week");
   const dayCount = getDayCount(statisticsRange);
-
-  const selectedProjects = useSelector<RootState, string[]>(state => state.dashboard.selectedProjects);
+  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
   const entries = useActivityData().map(entry => ({
     ...entry,
@@ -51,13 +46,16 @@ export const Dashboard = () => {
     return acc.includes(name) ? acc : [...acc, name];
   }, []);
 
-  // Filter out entries that are not selected and are not in the current statistics range
-  const filteredEntries = entries
-    .filter(entry => selectedProjects.includes(entry.project_name || "Unknown"))
-    .filter(entry => {
-      const startOfStatisticsRange = startOfDay(addDays(new Date(), -dayCount));
-      return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
-    });
+  const shouldFilter = selectedProjects.length > 0;
+
+  const filteredEntries = shouldFilter ?
+    entries.filter(entry => selectedProjects.includes(entry.project_name || "Unknown")) :
+    entries;
+
+  const entriesInRange = filteredEntries.filter(entry => {
+    const startOfStatisticsRange = startOfDay(addDays(new Date(), -dayCount));
+    return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
+  });
 
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
 
@@ -69,7 +67,8 @@ export const Dashboard = () => {
         label="Projects"
         data={projectNames}
         value={selectedProjects}
-        onChange={(selectedProjectNames: string[]) => dispatch(setSelectedProjects(selectedProjectNames))}
+        onChange={(selectedProjectNames: string[]) => setSelectedProjects(selectedProjectNames)}
+        clearable
       />
       <SegmentedControl
         data={[
@@ -80,24 +79,24 @@ export const Dashboard = () => {
         onChange={(value: DayRange) => setStatisticsRange(value)}
       />
     </Group>
+    <Text mt={15} mb={15}>Total time programmed in the last {dayCount} days: <b>{prettyDuration(sumBy(entriesInRange, entry => entry.duration))}</b></Text>
     <Title mb={5} order={2}>Time per day</Title>
-    <DailyCodingTimeChart entries={filteredEntries} dayCount={dayCount} />
+    <DailyCodingTimeChart entries={entriesInRange} dayCount={dayCount} />
     <Title mb={5} order={2}>Time per last updated projects</Title>
-    <PerProjectChart entries={filteredEntries} />
-    <Text mt={15}>Total time programmed: {prettyDuration(sumBy(filteredEntries, entry => entry.duration))}</Text>
+    <PerProjectChart entries={entriesInRange} />
     <Group direction={isSmallScreen ? "column" : "row"} grow mt={20} mb={20} align="start">
       <div>
         <Title order={2}>Languages</Title>
-        <TopLanguages entries={filteredEntries} />
+        <TopLanguages entries={entriesInRange} />
       </div>
       <div>
         <Title order={2}>Projects</Title>
-        <TopProjects entries={filteredEntries} />
+        <TopProjects entries={entriesInRange} />
       </div>
     </Group>
     <Title order={2} mt={20} mb={5}>Your sessions</Title>
     <Accordion multiple>
-      {getAllEntriesByDay(filteredEntries).map(d =>
+      {getAllEntriesByDay(entriesInRange).map(d =>
         <Accordion.Item key={d.date.getTime()} label={<Text size="lg">{format(d.date, "d.M.yyyy")}</Text>}>
           <DaySessions entries={d.entries} />
         </Accordion.Item>)}

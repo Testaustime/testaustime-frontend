@@ -1,11 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import dashboardSlice from "./slices/dashboardSlice";
 import userSlice from "./slices/userSlice";
 
 export const store = configureStore({
   reducer: {
     users: userSlice,
-    dashboard: dashboardSlice
   },
 });
 
