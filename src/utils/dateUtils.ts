@@ -18,4 +18,4 @@ export const prettyDuration = (seconds: number) => formatDuration(intervalToDura
         return formatShort[token].replace("{{count}}", String(count));
       }
     }
-  }) || "0s";
+  }) || "None";

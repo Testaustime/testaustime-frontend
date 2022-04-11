@@ -85,8 +85,8 @@ export const DailyCodingTimeChart = ({
           const { x, y } = p.slice.points[0].data as { x: Date; y: number };
           return (
             <Paper p={10} sx={theme => ({ backgroundColor: theme.white, color: theme.black })}>
-              <Text>{format(x, "d.M.yyyy")}</Text>
-              <Text>{prettyDuration(y)}</Text>
+              <Text>{"Date: " + format(x, "d.M.yyyy")}</Text>
+              <Text>{"Time spent: " + prettyDuration(y)}</Text>
             </Paper>
           );
         }}
@@ -95,7 +95,20 @@ export const DailyCodingTimeChart = ({
         pointLabelYOffset={0}
         pointSize={12}
         theme={{
+          axis: {
+            ticks: {
+              line: {
+                stroke: usesDarkMode ? "#d8d8d8" : "black"
+              }
+            }
+          },
           textColor: usesDarkMode ? "#fff" : "#000",
+          grid: {
+            line: {
+              stroke: usesDarkMode ? "#d8d8d8" : "black",
+              strokeWidth: 1
+            }
+          },
           crosshair: {
             line: {
               stroke: usesDarkMode ? "#fff" : "#555",
@@ -103,9 +116,10 @@ export const DailyCodingTimeChart = ({
             }
           }
         }}
-        colors={{
-          scheme: usesDarkMode ? "paired" : "category10"
-        }}
+        colors = {[
+          usesDarkMode ? "#536AB7" : "#3D55A0"
+        ]}
+        enableArea
       />
     </div>
   );
