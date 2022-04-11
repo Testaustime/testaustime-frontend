@@ -33,7 +33,7 @@ export const ExtensionsPage = () => {
       <ExtensionBlock
         logo={<img src={Neovim} height={40} />}
         downloadLink="https://lajp.fi/static/testaustime-nvim"
-        sourceCodeLink="https://github.com/lajp/testaustime-nvim"
+        sourceCodeLink="https://github.com/Testaustime/testaustime-nvim"
         text="Download Testaustime for Neovim"
       />
     </Group>
