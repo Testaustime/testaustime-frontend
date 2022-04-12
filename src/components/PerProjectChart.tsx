@@ -88,7 +88,7 @@ export const PerProjectChart = ({ entries, projectCount = 5 }: PerProjectChartPr
         borderRadius={2}
         labelSkipHeight={20}
         labelTextColor="black"
-        gridXValues={ticks}
+        gridYValues={ticks}
         axisBottom={{
           tickPadding: 8,
         }}
