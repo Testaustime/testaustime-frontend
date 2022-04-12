@@ -68,6 +68,7 @@ export const Dashboard = () => {
         data={projectNames}
         value={selectedProjects}
         onChange={(selectedProjectNames: string[]) => setSelectedProjects(selectedProjectNames)}
+        placeholder="No selections, showing all projects"
         clearable
       />
       <SegmentedControl
