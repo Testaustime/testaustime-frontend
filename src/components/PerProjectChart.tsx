@@ -71,22 +71,27 @@ export const PerProjectChart = ({ entries, projectCount = 5 }: PerProjectChartPr
   const ticks = calculateTickValues(maxDuration);
 
   return (
-    <div style={{ height: 130 * Math.min(totalTimeByProject.length, projectCount) }}>
+    <div style={{ height: 350 }}>
       <ResponsiveBar
         data={data}
         keys={[...languageNames.map((l) => `${l}_duration`)]}
         indexBy="projectName"
-        margin={{ top: 30, right: 30, bottom: 30, left: 160 }}
+        margin={{ top: 30, right: 120, bottom: 60, left: 50 }}
         padding={0.3}
-        enableGridY={false}
-        enableGridX
+        enableGridY
+        enableGridX={false}
         theme={{ textColor: usesDarkMode ? "white" : "black" }}
-        axisBottom={{
+        axisLeft={{
           format: (d: number) => prettyDuration(d),
           tickValues: ticks,
         }}
+        borderRadius={2}
+        labelSkipHeight={20}
+        labelTextColor="black"
         gridXValues={ticks}
-        axisLeft={{ tickPadding: 20 }}
+        axisBottom={{
+          tickPadding: 8,
+        }}
         tooltipLabel={(d) => String(d.data.projectName)}
         tooltip={(point) => (
           <Paper
@@ -111,8 +116,20 @@ export const PerProjectChart = ({ entries, projectCount = 5 }: PerProjectChartPr
           </Paper>
         )}
         valueFormat={(v) => prettyDuration(v)}
-        layout="horizontal"
+        layout="vertical"
         colors={{ scheme: "paired" }}
+        // TODO: Format the values properly instead of the raw "*_duration" format 
+        legendLabel={balls => String(balls.id)}
+        legends={[
+          {
+            dataFrom: "keys",
+            anchor: "bottom-right",
+            direction: "column",
+            translateX: 100,
+            itemWidth: 80,
+            itemHeight: 20
+          }
+        ]}
       />
     </div>
   );
