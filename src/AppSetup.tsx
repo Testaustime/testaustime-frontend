@@ -22,6 +22,7 @@ import "./config";
 import { FriendPage } from "./components/pages/FriendPage";
 import { ExtensionsPage } from "./components/pages/ExtensionsPage";
 import ThemeToggle from "./components/ThemeToggle";
+import { NotFoundPage } from "./components/NotFoundPage";
 
 const useStyles = createStyles(() => ({
   container: {
@@ -187,6 +188,7 @@ export const AppSetup = () => {
                   }
                 />
                 <Route path="/extensions" element={<ExtensionsPage />} />
+                <Route path="*" element={<NotFoundPage />}/>
               </Routes>
             </div>
           </Group>
