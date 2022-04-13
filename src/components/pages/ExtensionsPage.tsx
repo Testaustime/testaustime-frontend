@@ -17,6 +17,13 @@ export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: { l
     text: {
       padding: "2rem",
     },
+    sideContainer: {
+      "@media (max-width: 685px)": {
+        width: "100%",
+        justifyContent: "flex-end",
+        marginTop: "-15px",
+      }
+    },
     iconContainer: {
       backgroundColor: theme.colorScheme === "dark" ? "#22242e" : "#eef1ff",
       padding: "calc(2rem + 2px)",
@@ -24,6 +31,16 @@ export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: { l
         filter: "brightness(0.95)",
       },
       borderRadius: "0px 10px 10px 0px",
+      "@media (max-width: 685px)": {
+        width: "100%",
+        height: "50px",
+        padding: "unset",
+        display: "flex",
+        alignContent: "center",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: "0px 0px 10px 10px"
+      },
     },
     icon: {
       transition: "ease-in-out filter 0.2s"
@@ -38,7 +55,7 @@ export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: { l
       borderRadius: "10px",
       backgroundColor: "#C1C2C5",
       width: "1px"
-    }
+    },
   }))();
   // Icon map for source code icons
   const iconMap: Record<string, any> = { // Root domain in lower case to icon element
@@ -50,7 +67,7 @@ export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: { l
     </Center>
     <Anchor className={classes.spacer}></Anchor>
     <Anchor href={downloadLink} sx={{ flex: 1 }} size="lg" className={classes.text}>{text}</Anchor>
-    <Group spacing={10}>
+    <Group spacing={10} className={classes.sideContainer}>
       <Anchor href={sourceCodeLink} variant="text" className={classes.iconContainer}>
         {iconMap[new URL(sourceCodeLink).hostname.split(".").reverse()[1]] ?? <QuestionMarkIcon height={20} width={20} className={classes.icon}/>}
       </Anchor>
