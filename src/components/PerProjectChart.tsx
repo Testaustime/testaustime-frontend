@@ -51,9 +51,8 @@ export const PerProjectChart = ({ entries, projectCount = 5 }: PerProjectChartPr
 
   // Flatten totalTimeByLanguage in totalTimeByProject, to the form { projectName: string, language1_duration: number, language2_duration: number, language3_duration: number, ... }
   const data: Record<string, string | number>[] = totalTimeByProject
-    .sort((a, b) => b.latestUpdate - a.latestUpdate)
+    .sort((a, b) => sumBy(b.totalTimeByLanguage, (e) => e.duration) - sumBy(a.totalTimeByLanguage, (e) => e.duration))
     .slice(0, projectCount)
-    .reverse()
     .map((project) => {
       return {
         projectName: project.projectName,
