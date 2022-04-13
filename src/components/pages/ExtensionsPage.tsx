@@ -1,19 +1,58 @@
-import { Anchor, Center, Group, Text, Title } from "@mantine/core";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { Anchor, Center, createStyles, Group, Text, Title } from "@mantine/core";
+import { GitHubLogoIcon, QuestionMarkIcon } from "@radix-ui/react-icons";
 import React from "react";
 import Neovim from "../../images/neovim.svg";
 import Vscode from "../../images/vscode.svg";
 
 export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: { logo: React.ReactNode, downloadLink: string, sourceCodeLink: string, text: string }) => {
-  // TODO: Determine source code icon based on sourceCodeLink (for example, if sourceCodeLink contains "gitlab", use GitLab icon)
-  return <Group sx={{ width: "100%" }}>
-    <Center style={{ minWidth: 50 }}>
+  // Classes
+  const { classes } = createStyles((theme) => ({
+    // ExtensionBlock CSS
+    wrapper: {
+      colorScheme: "dark",
+      backgroundColor: theme.colorScheme === "dark" ? "#282a36" : "#fff",
+      borderRadius: "10px",
+      border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`,
+    },
+    text: {
+      padding: "2rem",
+    },
+    iconContainer: {
+      backgroundColor: theme.colorScheme === "dark" ? "#22242e" : "#eef1ff",
+      padding: "calc(2rem + 2px)",
+      "&:hover": {
+        filter: "brightness(0.95)",
+      },
+      borderRadius: "0px 10px 10px 0px",
+    },
+    icon: {
+      transition: "ease-in-out filter 0.2s"
+    },
+    logo: {
+      paddingLeft: "2rem",
+      paddingRight: "2rem",
+    },
+    spacer: {
+      height: "3rem",
+      marginLeft: "-15px",
+      borderRadius: "10px",
+      backgroundColor: "#C1C2C5",
+      width: "1px"
+    }
+  }))();
+  // Icon map for source code icons
+  const iconMap: Record<string, any> = { // Root domain in lower case to icon element
+    "github": <GitHubLogoIcon height={20} width={20} className={classes.icon}/>
+  };
+  return <Group sx={{ width: "100%" }} className={classes.wrapper}>
+    <Center className={classes.logo}>
       {logo}
     </Center>
-    <Anchor href={downloadLink} sx={{ flex: 1 }} size="lg">{text}</Anchor>
+    <Anchor className={classes.spacer}></Anchor>
+    <Anchor href={downloadLink} sx={{ flex: 1 }} size="lg" className={classes.text}>{text}</Anchor>
     <Group spacing={10}>
-      <Anchor href={sourceCodeLink} variant="text">
-        <GitHubLogoIcon height={20} width={20} />
+      <Anchor href={sourceCodeLink} variant="text" className={classes.iconContainer}>
+        {iconMap[new URL(sourceCodeLink).hostname.split(".").reverse()[1]] ?? <QuestionMarkIcon height={20} width={20} className={classes.icon}/>}
       </Anchor>
     </Group>
   </Group>;
@@ -25,13 +64,13 @@ export const ExtensionsPage = () => {
     <Text>Download the Testaustime extension for your favorite code editor!</Text>
     <Group spacing={25} direction="column" mt={30}>
       <ExtensionBlock
-        logo={<img src={Vscode} height={40} />}
+        logo={<img src={Vscode} width={45} style={{ marginRight: "-5px" }} />}
         downloadLink="https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime"
         sourceCodeLink="https://github.com/Testausserveri/testaustime-vscode"
         text="Download Testaustime for Visual Studio Code"
       />
       <ExtensionBlock
-        logo={<img src={Neovim} height={40} />}
+        logo={<img src={Neovim} width={40} />}
         downloadLink="https://lajp.fi/static/testaustime-nvim"
         sourceCodeLink="https://github.com/Testaustime/testaustime-nvim"
         text="Download Testaustime for Neovim"
