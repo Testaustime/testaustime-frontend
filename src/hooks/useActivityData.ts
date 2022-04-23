@@ -3,7 +3,7 @@ import { startOfDay } from "date-fns";
 import { useEffect, useState } from "react";
 import useAuthentication from "./UseAuthentication";
 
-interface ApiUsersUserActivityDataResponseItem {
+export interface ApiUsersUserActivityDataResponseItem {
   id: number,
   start_time: string,
   duration: number,

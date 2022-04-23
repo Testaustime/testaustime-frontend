@@ -7,7 +7,7 @@ const formatShort = {
   xDays: "{{count}}d",
 };
 
-export const prettyDuration = (seconds: number) => formatDuration(intervalToDuration({ start: 0, end: Math.round(seconds * 1000 / 60000) * 60000 }),
+export const prettyDuration = (seconds: number) => formatDuration(intervalToDuration({ start: 0, end: Math.round((seconds || 0) * 1000 / 60000) * 60000 }),
   {
     locale: {
       // Let's just hope the token is one of these options

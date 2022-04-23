@@ -8,7 +8,7 @@ import DaySessions from "./DaySessions";
 import { groupBy, sumBy } from "../utils/arrayUtils";
 import { DailyCodingTimeChart } from "./DailyCodingTimeChart";
 import { useState } from "react";
-import { useLocalStorageValue, useMediaQuery } from "@mantine/hooks";
+import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
 import { addDays, format, startOfDay } from "date-fns/esm";
 

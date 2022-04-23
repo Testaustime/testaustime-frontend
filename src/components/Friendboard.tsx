@@ -7,9 +7,12 @@ import { FormikTextInput } from "./forms/FormikTextInput";
 import { generateFriendCode } from "../utils/friendUtils";
 import { useState } from "react";
 import { handleErrorWithNotification } from "../utils/notificationErrorHandler";
+import { prettyDuration } from "../utils/dateUtils";
 
 export const Friendboard = () => {
   const { addFriend, unFriend, friends } = useFriends();
+
+  const friendsSorted = [...friends].sort((a, b) => b.coding_time.past_month - a.coding_time.past_month);
 
   // We have to use useState, so it stays the same when the component is re-rendered
   const [placeholderFriendCode] = useState(generateFriendCode());
@@ -58,13 +61,15 @@ export const Friendboard = () => {
         <tr>
           <th>Index</th>
           <th>Friend name</th>
-          <th> </th>
+          <th>Time coded during last 30 days</th>
+          <th></th>
         </tr>
       </thead>
-      <tbody>{friends.map((username, idx) => (
+      <tbody>{friendsSorted.map(({ username, coding_time: { past_month } }, idx) => (
         <tr key={username}>
           <td>{idx + 1}</td>
           <td>{username}</td>
+          <td>{prettyDuration(past_month)}</td>
           <td>
             <Group position="right">
               <Button
