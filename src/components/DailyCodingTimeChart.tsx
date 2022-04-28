@@ -19,11 +19,13 @@ export interface DailyCodingTimeChartProps {
     dayStart: Date;
   }[];
   dayCount: number;
+  className: string;
 }
 
 export const DailyCodingTimeChart = ({
   entries,
-  dayCount
+  dayCount,
+  className
 }: DailyCodingTimeChartProps) => {
   const usesDarkMode = useMantineTheme().colorScheme === "dark";
   const { smoothCharts } = useSettings();
@@ -46,7 +48,7 @@ export const DailyCodingTimeChart = ({
   const yticks = calculateTickValues(maxDuration);
 
   return (
-    <div style={{ height: 400 }}>
+    <div className={className}>
       <ResponsiveLine
         data={[{
           id: "daily-coding-time",
@@ -84,7 +86,9 @@ export const DailyCodingTimeChart = ({
         sliceTooltip={(p) => {
           const { x, y } = p.slice.points[0].data as { x: Date; y: number };
           return (
-            <Paper p={10} sx={theme => ({ backgroundColor: theme.white, color: theme.black })}>
+            <Paper p={10} sx={theme => ({ backgroundColor: usesDarkMode
+              ? theme.colors.dark[5]
+              : theme.colors.gray[1]})}>
               <Text>{"Date: " + format(x, "d.M.yyyy")}</Text>
               <Text>{"Time spent: " + prettyDuration(y)}</Text>
             </Paper>
@@ -98,14 +102,14 @@ export const DailyCodingTimeChart = ({
           axis: {
             ticks: {
               line: {
-                stroke: usesDarkMode ? "#d8d8d8" : "black"
+                stroke: usesDarkMode ? "#d8d8d8" : "#e2e2e2"
               }
             }
           },
           textColor: usesDarkMode ? "#fff" : "#000",
           grid: {
             line: {
-              stroke: usesDarkMode ? "#d8d8d8" : "black",
+              stroke: usesDarkMode ? "#d8d8d8" : "#e2e2e2",
               strokeWidth: 1
             }
           },
