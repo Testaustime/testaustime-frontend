@@ -15,7 +15,6 @@ export interface ApiFriendsResponseItem {
   }
 }
 
-
 export interface ApiFriendsAddResponse {
   name: string
 }
@@ -33,7 +32,7 @@ export const useFriends = () => {
 
     dispatch(setFriends(response.data));
   };
-
+  
   useEffect(() => {
     fetchFriendData();
   }, []);
