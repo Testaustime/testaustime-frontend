@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { authTokenLocalStorageKey } from "../constants";
+import { ApiFriendsResponseItem } from "../hooks/useFriends";
 
 export interface UsersSlice {
   authToken?: string,
   username?: string,
   registrationTime?: string,
   friendCode?: string,
-  friends: Array<string>,
+  friends: ApiFriendsResponseItem[],
   loginInitialized: boolean,
 }
 
@@ -35,7 +36,7 @@ export const usersSlice = createSlice({
     setFriendCode: (state, action: PayloadAction<string | undefined>) => {
       state.friendCode = action.payload;
     },
-    setFriends: (state, action: PayloadAction<Array<string>>) => {
+    setFriends: (state, action: PayloadAction<ApiFriendsResponseItem[]>) => {
       state.friends = action.payload;
     },
     setLoginInitialized: (state, action: PayloadAction<boolean>) => {
@@ -44,5 +45,12 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { setAuthToken, setUsername, setRegisterTime, setFriendCode, setFriends, setLoginInitialized } = usersSlice.actions;
+export const { 
+  setAuthToken, 
+  setUsername, 
+  setRegisterTime, 
+  setFriendCode, 
+  setFriends, 
+  setLoginInitialized, 
+} = usersSlice.actions;
 export default usersSlice.reducer;

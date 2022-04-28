@@ -24,6 +24,7 @@ import "./config";
 import { FriendPage } from "./components/pages/FriendPage";
 import { ExtensionsPage } from "./components/pages/ExtensionsPage";
 import ThemeToggle from "./components/ThemeToggle";
+import { NotFoundPage } from "./components/NotFoundPage";
 import { Footer } from "./components/Footer";
 
 const useStyles = createStyles((theme) => ({
@@ -264,6 +265,7 @@ export const AppSetup = () => {
                   }
                 />
                 <Route path="/extensions" element={<ExtensionsPage />} />
+                <Route path="*" element={<NotFoundPage />}/>
               </Routes>
               <Footer></Footer>
             </div>

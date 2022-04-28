@@ -6,6 +6,16 @@ import { RootState } from "../store";
 import axios from "axios";
 import { getErrorMessage } from "../lib/errorHandling/errorHandler";
 
+export interface ApiFriendsResponseItem {
+  username: string,
+  coding_time: {
+    all_time: number,
+    past_month: number,
+    past_week: number,
+  }
+}
+
+
 export interface ApiFriendsAddResponse {
   name: string
 }
@@ -14,14 +24,18 @@ export const useFriends = () => {
   const { token } = useAuthentication();
   const dispatch = useDispatch();
 
-  const friends = useSelector<RootState, Array<string>>(state => state.users.friends);
+  const friends = useSelector<RootState, ApiFriendsResponseItem[]>(state => state.users.friends);
+
+  const fetchFriendData = async () => {
+    const response = await axios.get<ApiFriendsResponseItem[]>("/friends/list", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    dispatch(setFriends(response.data));
+  };
 
   useEffect(() => {
-    axios.get<string[]>("/friends/list", {
-      headers: { Authorization: `Bearer ${token}` }
-    }).then(response => {
-      dispatch(setFriends(response.data));
-    });
+    fetchFriendData();
   }, []);
 
   const addFriend = async (friendCode: string) => {
@@ -34,7 +48,8 @@ export const useFriends = () => {
       });
 
       const friendUsername = response.data.name;
-      dispatch(setFriends([...friends, friendUsername]));
+      // TODO: Get correct coding time
+      dispatch(setFriends([...friends, { username: friendUsername, coding_time: { all_time: 0, past_month: 0, past_week: 0 } }]));
       return friendUsername;
     } catch (error) {
       throw getErrorMessage(error);
@@ -51,7 +66,7 @@ export const useFriends = () => {
         }
       });
 
-      dispatch(setFriends(friends.filter(f => f !== username)));
+      dispatch(setFriends(friends.filter(f => f.username !== username)));
     } catch (error) {
       throw getErrorMessage(error);
     }
