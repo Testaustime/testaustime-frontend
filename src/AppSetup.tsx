@@ -32,7 +32,6 @@ const useStyles = createStyles((theme) => ({
     maxWidth: "calc(800px + 10%)",
     width: "100%",
     minHeight: "100%",
-    position: "absolute",
     alignContent: "flex-start",
     paddingBottom: 100,
   },
