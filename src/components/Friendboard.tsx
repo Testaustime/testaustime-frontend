@@ -1,4 +1,4 @@
-import { Button, Title, Table, Group, Text, useMantineTheme } from "@mantine/core";
+import { Button, Title, Table, Group, useMantineTheme } from "@mantine/core";
 import { useFriends } from "../hooks/useFriends";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { Form, Formik } from "formik";
