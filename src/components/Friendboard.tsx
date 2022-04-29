@@ -18,7 +18,7 @@ export const Friendboard = () => {
   const [placeholderFriendCode] = useState(generateFriendCode());
 
   return <div>
-    <Title order={2} mb={15}>Add new friend</Title>
+    <Title order={2} mb={15}>Add a new friend</Title>
     <Group>
       <Formik
         initialValues={{ friendCode: "" }}

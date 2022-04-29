@@ -17,9 +17,10 @@ export interface PerProjectChartProps {
     dayStart: Date;
   }[];
   projectCount?: number;
+  className: string
 }
 
-export const PerProjectChart = ({ entries, projectCount = 5 }: PerProjectChartProps) => {
+export const PerProjectChart = ({ entries, projectCount = 5, className }: PerProjectChartProps) => {
   const usesDarkMode = useMantineTheme().colorScheme === "dark";
 
   if (entries.length === 0) return <Text>No data</Text>;
@@ -29,7 +30,7 @@ export const PerProjectChart = ({ entries, projectCount = 5 }: PerProjectChartPr
     .filter((item, index, array) => array.indexOf(item) === index);
 
   // Get the total time spent on each project
-  const projectGroups = groupBy(entries, (e) => e.project_name);
+  const projectGroups = groupBy(entries, (e) => e.project_name ?? "Unknown");
   const totalTimeByProject = Object.keys(projectGroups).map((projectName) => {
     const projectEntries = projectGroups[projectName];
     const langGroups = groupBy(projectEntries, (e) => e.language);
@@ -70,13 +71,16 @@ export const PerProjectChart = ({ entries, projectCount = 5 }: PerProjectChartPr
   const maxDuration = Math.max(...totalTimeByProject.map(p => sumBy(p.totalTimeByLanguage, l => l.duration)));
   const ticks = calculateTickValues(maxDuration);
 
+  const longestProjectName = totalTimeByProject.slice().map((project) => project.projectName).sort((a, b) => b.length - a.length)[0];
+
   return (
-    <div style={{ height: 130 * Math.min(totalTimeByProject.length, projectCount) }}>
+    <div className={className} style={{ height: 130 * Math.min(totalTimeByProject.length, projectCount) }}>
       <ResponsiveBar
         data={data}
         keys={[...languageNames.map((l) => `${l}_duration`)]}
+        labelSkipWidth={10}
         indexBy="projectName"
-        margin={{ top: 30, right: 30, bottom: 30, left: 160 }}
+        margin={{ top: 30, right: 30, bottom: 30, left: 60 + (longestProjectName.length > 8 ? longestProjectName.length * 2.6 : 0) }}
         padding={0.3}
         enableGridY={false}
         enableGridX
@@ -103,7 +107,7 @@ export const PerProjectChart = ({ entries, projectCount = 5 }: PerProjectChartPr
                 .filter((k) => k.endsWith("_duration"))
                 .map((l) => (
                   <List.Item key={l}>
-                    {prettifyProgrammingLanguageName(l.slice(0, l.length - 9))}:{" "}
+                    {prettifyProgrammingLanguageName(l.slice(0, l.length - 9)) ?? "Unknown"}:{" "}
                     {prettyDuration(point.data[l] as number)}
                   </List.Item>
                 ))}

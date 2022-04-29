@@ -1,5 +1,5 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
-import { Accordion, Group, MultiSelect, SegmentedControl, Text, Title } from "@mantine/core";
+import { Accordion, Group, MultiSelect, SegmentedControl, Text, Title, createStyles } from "@mantine/core";
 import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
 import TopLanguages from "./TopLanguages";
 import { prettyDuration } from "../utils/dateUtils";
@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
 import { addDays, format, startOfDay } from "date-fns/esm";
+import useAuthentication from "../hooks/UseAuthentication";
 
 type DayRange = "month" | "week"
 
@@ -36,6 +37,42 @@ export const Dashboard = () => {
   const dayCount = getDayCount(statisticsRange);
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
+  const { classes } = createStyles((theme) => ({
+    dataCard: {
+      padding: "10px",
+      backgroundColor: theme.colorScheme === "dark" ? "#222326" : "#fff",
+      border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`,
+      borderRadius: "10px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      marginBottom: "30px"
+    },
+    dailyCodingTimeChart: {
+      height: "400px",
+      width: "100%"
+    },
+    projectCodingChart: {
+      height: "400px",
+      width: "100%",
+      paddingBottom: "15px"
+    },
+    multiSelect: {
+      minWidth: "400px",
+      "@media (max-width: 480px)": {
+        width: "100%",
+        minWidth: "unset"
+      },
+    },
+    segmentControl: {
+      marginTop: 25,
+      marginBottom: -3,
+      "@media (max-width: 480px)": {
+        width: "100%",
+      },
+    }
+  }))();
+
   const entries = useActivityData().map(entry => ({
     ...entry,
     language: normalizeProgrammingLanguageName(entry.language),
@@ -59,47 +96,72 @@ export const Dashboard = () => {
 
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
 
-  return <div>
+  const { username } = useAuthentication();
+
+  return <div style={{ width: "100%" }}>
+    <Group style={{ marginBottom: "1rem" }}>
+      <Text>Welcome, <b>{username}</b></Text>
+    </Group>
     <Title mb={5}>Your statistics</Title>
     <Group align="end" position="apart" mt={10} mb={30}>
-      <MultiSelect
-        sx={{ minWidth: 400 }}
-        label="Projects"
-        data={projectNames}
-        value={selectedProjects}
-        onChange={(selectedProjectNames: string[]) => setSelectedProjects(selectedProjectNames)}
-        clearable
-      />
-      <SegmentedControl
-        data={[
-          { label: "Last week", value: "week" },
-          { label: "Last month", value: "month" },
-        ]}
-        value={statisticsRange}
-        onChange={(value: DayRange) => setStatisticsRange(value)}
-      />
+      {projectNames.length !== 0 ? 
+        <>
+          <MultiSelect
+            label="Projects"
+            data={projectNames}
+            value={selectedProjects}
+            className={classes.multiSelect}
+            onChange={(selectedProjectNames: string[]) => setSelectedProjects(selectedProjectNames)}
+            clearable
+            placeholder="Select a project filter"
+          />
+          <SegmentedControl
+            data={[
+              { label: "Last week", value: "week" },
+              { label: "Last month", value: "month" },
+            ]}
+            value={statisticsRange}
+            onChange={(value: DayRange) => setStatisticsRange(value)}
+            className={classes.segmentControl}
+          />
+        </> : <MultiSelect
+          label="Projects"
+          data={projectNames}
+          placeholder="No projects"
+          disabled
+        />}
     </Group>
-    <Text mt={15} mb={15}>Total time programmed in the last {dayCount} days: <b>{prettyDuration(sumBy(entriesInRange, entry => entry.duration))}</b></Text>
-    <Title mb={5} order={2}>Time per day</Title>
-    <DailyCodingTimeChart entries={entriesInRange} dayCount={dayCount} />
-    <Title mb={5} order={2}>Time per last updated projects</Title>
-    <PerProjectChart entries={entriesInRange} />
-    <Group direction={isSmallScreen ? "column" : "row"} grow mt={20} mb={20} align="start">
-      <div>
-        <Title order={2}>Languages</Title>
-        <TopLanguages entries={entriesInRange} />
-      </div>
-      <div>
-        <Title order={2}>Projects</Title>
-        <TopProjects entries={entriesInRange} />
-      </div>
-    </Group>
-    <Title order={2} mt={20} mb={5}>Your sessions</Title>
-    <Accordion multiple>
-      {getAllEntriesByDay(entriesInRange).map(d =>
-        <Accordion.Item key={d.date.getTime()} label={<Text size="lg">{format(d.date, "d.M.yyyy")}</Text>}>
-          <DaySessions entries={d.entries} />
-        </Accordion.Item>)}
-    </Accordion>
+    {entriesInRange.length !== 0 ? 
+      <>
+        <Group className={classes.dataCard}>
+          <Title mt={10} mb={-35} order={2}>Time per day</Title>
+          <DailyCodingTimeChart entries={entriesInRange} dayCount={dayCount} className={classes.dailyCodingTimeChart}/>
+          <Text mt={15} mb={15}>Total time coded in the last {dayCount} days: <b>{prettyDuration(sumBy(entriesInRange, entry => entry.duration))}</b></Text>
+        </Group>
+        <Group className={classes.dataCard}>
+          <Title mt={10} mb={-30} order={2}>Time per latest projects</Title>
+          <PerProjectChart entries={entriesInRange} className={classes.projectCodingChart}/>
+        </Group>
+        <Group direction={isSmallScreen ? "column" : "row"} grow mt={20} mb={20} align="start">
+          <div>
+            <Title order={2}>Languages</Title>
+            <TopLanguages entries={entriesInRange} />
+          </div>
+          <div>
+            <Title order={2}>Projects</Title>
+            <TopProjects entries={entriesInRange} />
+          </div>
+        </Group>
+        <Title order={2} mt={20} mb={5}>Your sessions</Title>
+        <Accordion multiple>
+          {getAllEntriesByDay(entriesInRange).map(d =>
+            <Accordion.Item key={d.date.getTime()} label={<Text size="lg">{format(d.date, "d.M.yyyy")}</Text>}>
+              <DaySessions entries={d.entries} />
+            </Accordion.Item>)}
+        </Accordion>
+      </>
+      :
+      <Text>No programming activity data to display. <a href="/extensions">Install one of the extensions</a> to begin tracking your programming.</Text>
+    }
   </div>;
 };

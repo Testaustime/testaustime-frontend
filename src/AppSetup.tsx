@@ -5,13 +5,15 @@ import {
   ColorSchemeProvider,
   createStyles,
   Group,
-  MantineProvider
+  MantineProvider,
+  MenuItem
 } from "@mantine/core";
 import { useColorScheme, useHotkeys, useLocalStorage } from "@mantine/hooks";
-import { NotificationsProvider } from "@mantine/notifications";
-import { ExitIcon } from "@radix-ui/react-icons";
+import { Menu, Divider, Text } from "@mantine/core";
+import { NotificationsProvider, } from "@mantine/notifications";
+import { ExitIcon, PersonIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { FunctionComponent, useEffect } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router";
+import { Navigate, Route, Routes, useNavigate,  } from "react-router";
 import { Link } from "react-router-dom";
 import { LoginPage } from "./components/pages/LoginPage";
 import { MainPage } from "./components/pages/MainPage";
@@ -23,12 +25,25 @@ import { FriendPage } from "./components/pages/FriendPage";
 import { ExtensionsPage } from "./components/pages/ExtensionsPage";
 import ThemeToggle from "./components/ThemeToggle";
 import { NotFoundPage } from "./components/NotFoundPage";
+import { Footer } from "./components/Footer";
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles((theme) => ({
   container: {
-    maxWidth: 800,
+    maxWidth: "calc(800px + 10%)",
     width: "100%",
-    paddingBottom: 100
+    minHeight: "100%",
+    alignContent: "flex-start",
+    paddingBottom: 100,
+  },
+  innerContainer: {
+    minHeight: "100%",
+    width: "100%",
+    marginLeft: "5%",
+    marginRight: "5%",
+    "@media (max-width: 840px)": {
+      width: "90%",
+      marginLeft: "5%"
+    },
   },
   testaustimeTitle: {
     paddingTop: 4,
@@ -39,7 +54,36 @@ const useStyles = createStyles(() => ({
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
     fontWeight: 800,
-    textDecoration: "none"
+    textDecoration: "none",
+    "@media (max-width: 450px)": {
+      width: "60%",
+      fontSize: "8vw"
+    },
+  },
+  profileButton: {
+    display: "flex"
+  },
+  navigation: {
+    "@media (max-width: 790px)": {
+      display: "none"
+    },
+  },
+  smallNavigation: {
+    display: "none",
+    "@media (max-width: 790px)": {
+      display: "flex"
+    },
+    "@media (max-width: 450px)": {
+      width: "39%",
+    },
+  },
+  spacer: {
+    width: "10px",
+    height: "1px",
+    backgroundColor: theme.colorScheme === "dark" ? "#bbb" : "#333"
+  },
+  menu: {
+    border: `1px solid ${theme.colorScheme === "dark" ? theme.colors.gray[0] : theme.colors.gray[1]}`,
   }
 }));
 
@@ -122,49 +166,81 @@ export const AppSetup = () => {
         }}
       >
         <NotificationsProvider>
-          <Group position="center" mt={80} sx={{ overflow: "hidden" }}>
-            <div className={classes.container}>
+          <Group position="center" mt={40} sx={{ overflow: "hidden" }} className={classes.container}>
+            <div className={classes.innerContainer}>
               <Group position="apart" mb={50}>
                 <Link to="/" className={classes.testaustimeTitle}>
                   Testaustime
                 </Link>
-                <Group spacing={15} align="center">
-                  {!isLoggedIn && (
-                    <Anchor component={Link} to="/login">
-                      Login
-                    </Anchor>
-                  )}
-                  {!isLoggedIn && (
-                    <Button component={Link} to="/register">
-                      Register
-                    </Button>
-                  )}
-                  {isLoggedIn && (
-                    <Anchor component={Link} to="/">
-                      Dashboard
-                    </Anchor>
-                  )}
-                  {isLoggedIn && (
-                    <Anchor component={Link} to="/friends">
-                      Friends
-                    </Anchor>
-                  )}
-                  {isLoggedIn && (
-                    <Anchor component={Link} to="/profile">
-                      My profile
-                    </Anchor>
-                  )}
-                  {isLoggedIn && (
-                    <Button
-                      variant="outline"
-                      size="xs"
-                      onClick={logOutAndRedirect}
-                      leftIcon={<ExitIcon />}
+                <Group>
+                  <Group spacing={15} align="center" className={classes.navigation}>
+                    {
+                      isLoggedIn ? 
+                        <Group>
+                          <Anchor component={Link} to="/extensions">
+                          Extensions
+                          </Anchor>
+                          <Anchor className={classes.spacer}></Anchor>
+                          <Anchor component={Link} to="/">
+                          Dashboard
+                          </Anchor>
+                          <Anchor component={Link} to="/friends">
+                          Friends
+                          </Anchor>
+                          <Menu 
+                            trigger="hover"
+                            control={<Button variant="outline" size="xs"><PersonIcon style={{ marginRight: "5px" }}></PersonIcon><Text>{username}</Text></Button>}
+                          >
+                            <Menu.Label>Account</Menu.Label>
+                            <Menu.Item component={Link} to="/profile">Settings</Menu.Item>
+                            <Divider />
+                            <Menu.Item color="blue" icon={<ExitIcon/>} onClick={logOutAndRedirect}>Log out</Menu.Item>
+                          </Menu>
+                        </Group>
+                        :
+                        <Group>
+                          <Anchor component={Link} to="/extensions">
+                          Extensions
+                          </Anchor>
+                          <Anchor className={classes.spacer}></Anchor>
+                          <Anchor component={Link} to="/login">
+                          Login
+                          </Anchor>
+                          <Button component={Link} to="/register">
+                          Register
+                          </Button>
+                        </Group>
+                    }
+                    <ThemeToggle label={false}/>
+                  </Group>
+                  <Group className={classes.smallNavigation}>
+                    <Menu 
+                      trigger="hover"
+                      control={<Button variant="outline" size="lg"><HamburgerMenuIcon markerHeight={27}></HamburgerMenuIcon></Button>}
                     >
-                      Log out {username}
-                    </Button>
-                  )}
-                  <ThemeToggle />
+                      <MenuItem onClick={() => { toggleColorScheme(); }}><ThemeToggle label={true}></ThemeToggle></MenuItem>
+                      {
+                        !isLoggedIn ? 
+                          <>
+                            <Menu.Item component={Link} to="/profile">Login</Menu.Item>
+                            <Menu.Item color="blue" component={Link} to="/settings">Register</Menu.Item>
+                          </>
+                          :
+                          <>
+                            <Divider />
+                            <Menu.Item component={Link} to="/extensions">Extensions</Menu.Item>
+                            <Divider />
+                            <Menu.Item component={Link} to="/">Dashboard</Menu.Item>
+                            <Menu.Item component={Link} to="/friends">Friends</Menu.Item>
+                            <Divider />
+                            <Menu.Label>Account - {username}</Menu.Label>
+                            <Menu.Item component={Link} to="/profile">Settings</Menu.Item>
+                            <Divider />
+                            <Menu.Item color="blue" icon={<ExitIcon/>} onClick={logOutAndRedirect}>Log out</Menu.Item>
+                          </>
+                      }
+                    </Menu>
+                  </Group>
                 </Group>
               </Group>
               <Routes>
@@ -190,6 +266,7 @@ export const AppSetup = () => {
                 <Route path="/extensions" element={<ExtensionsPage />} />
                 <Route path="*" element={<NotFoundPage />}/>
               </Routes>
+              <Footer></Footer>
             </div>
           </Group>
         </NotificationsProvider>
