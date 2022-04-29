@@ -16,7 +16,12 @@ export interface ApiFriendsResponseItem {
 }
 
 export interface ApiFriendsAddResponse {
-  name: string
+  username: string,
+  coding_time: {
+    all_time: number,
+    past_month: number,
+    past_week: number,
+  }
 }
 
 export const useFriends = () => {
@@ -46,10 +51,9 @@ export const useFriends = () => {
         }
       });
 
-      const friendUsername = response.data.name;
-      // TODO: Get correct coding time
-      dispatch(setFriends([...friends, { username: friendUsername, coding_time: { all_time: 0, past_month: 0, past_week: 0 } }]));
-      return friendUsername;
+      const friend = response.data;
+      dispatch(setFriends([...friends, friend]));
+      return friend;
     } catch (error) {
       throw getErrorMessage(error);
     }
