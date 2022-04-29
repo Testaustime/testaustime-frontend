@@ -1,6 +1,6 @@
 import { Anchor, Center, createStyles, Group, Text, Title } from "@mantine/core";
 import { GitHubLogoIcon, QuestionMarkIcon } from "@radix-ui/react-icons";
-import React from "react";
+import React, { ReactNode } from "react";
 import Neovim from "../../images/neovim.svg";
 import Vscode from "../../images/vscode.svg";
 
@@ -67,10 +67,12 @@ export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: { l
       }
     },
   }))();
+  
   // Icon map for source code icons
-  const iconMap: Record<string, any> = { // Root domain in lower case to icon element
+  const iconMap: Record<string, ReactNode> = { // Root domain in lower case to icon element
     "github": <GitHubLogoIcon height={20} width={20} className={classes.icon}/>
   };
+
   return <Group sx={{ width: "100%" }} className={classes.wrapper}>
     <Center className={classes.logo}>
       {logo}

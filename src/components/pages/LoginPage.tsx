@@ -13,7 +13,7 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
 
-  const { classes } = createStyles((theme) => ({
+  const { classes } = createStyles(() => ({
     loginBox: {
       display: "flex",
       height: "calc(100% - 36px - 50px - 80px)",

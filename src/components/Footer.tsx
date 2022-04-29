@@ -1,4 +1,4 @@
-import { createStyles, Group, Text, Grid } from "@mantine/core";
+import { createStyles, Text, Grid } from "@mantine/core";
 import Testauskoira from "../images/TestauskoiraGradientLogo.png";
 import GradientText from "../images/TestauserveriGradientText.png";
 
