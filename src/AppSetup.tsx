@@ -5,8 +5,7 @@ import {
   ColorSchemeProvider,
   createStyles,
   Group,
-  MantineProvider,
-  MenuItem
+  MantineProvider
 } from "@mantine/core";
 import { useColorScheme, useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { Menu, Divider, Text } from "@mantine/core";
