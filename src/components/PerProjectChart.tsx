@@ -80,7 +80,7 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
         keys={[...languageNames.map((l) => `${l}_duration`)]}
         labelSkipWidth={10}
         indexBy="projectName"
-        margin={{ top: 30, right: 30, bottom: 30, left: 60 + (longestProjectName.length > 8 ? longestProjectName.length * 2.6 : 0) }}
+        margin={{ top: 30, right: 30, bottom: 30, left: 60 + (longestProjectName.length > 8 ? longestProjectName.length * 5 : 0) }}
         padding={0.3}
         enableGridY={false}
         enableGridX
