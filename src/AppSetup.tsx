@@ -5,8 +5,7 @@ import {
   ColorSchemeProvider,
   createStyles,
   Group,
-  MantineProvider,
-  MenuItem
+  MantineProvider
 } from "@mantine/core";
 import { useColorScheme, useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { Menu, Divider, Text } from "@mantine/core";
@@ -218,10 +217,11 @@ export const AppSetup = () => {
                       trigger="hover"
                       control={<Button variant="outline" size="lg"><HamburgerMenuIcon markerHeight={27}></HamburgerMenuIcon></Button>}
                     >
-                      <MenuItem onClick={() => { toggleColorScheme(); }}><ThemeToggle label={true}></ThemeToggle></MenuItem>
+                      <div style={{ padding: "10px" }} onClick={() => { toggleColorScheme(); }}><ThemeToggle label={true}></ThemeToggle></div>
                       {
                         !isLoggedIn ? 
                           <>
+                            <Divider />
                             <Menu.Item component={Link} to="/profile">Login</Menu.Item>
                             <Menu.Item color="blue" component={Link} to="/settings">Register</Menu.Item>
                           </>
