@@ -36,13 +36,9 @@ const useStyles = createStyles((theme) => ({
   },
   innerContainer: {
     minHeight: "100%",
-    width: "100%",
+    width: "90%",
     marginLeft: "5%",
-    marginRight: "5%",
-    "@media (max-width: 840px)": {
-      width: "90%",
-      marginLeft: "5%"
-    },
+    marginRight: "5%"
   },
   testaustimeTitle: {
     paddingTop: 4,
