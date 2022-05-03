@@ -50,11 +50,17 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
     };
   });
 
-  // Flatten totalTimeByLanguage in totalTimeByProject, to the form { projectName: string, language1_duration: number, language2_duration: number, language3_duration: number, ... }
+  // Flatten totalTimeByLanguage in totalTimeByProject to the following form:
+  // {
+  //     projectName: string,
+  //     language1_duration: number,
+  //     language2_duration: number,
+  //     language3_duration: number, 
+  //     ... 
+  // }
   const data: Record<string, string | number>[] = totalTimeByProject
-    .sort((a, b) => b.latestUpdate - a.latestUpdate)
+    .sort((a, b) => sumBy(b.totalTimeByLanguage, (e) => e.duration) - sumBy(a.totalTimeByLanguage, (e) => e.duration))
     .slice(0, projectCount)
-    .reverse()
     .map((project) => {
       return {
         projectName: project.projectName,
@@ -82,15 +88,20 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
         indexBy="projectName"
         margin={{ top: 30, right: 30, bottom: 30, left: 60 + (longestProjectName.length > 8 ? (longestProjectName.length - 8) * 7 : 0) }}
         padding={0.3}
-        enableGridY={false}
-        enableGridX
+        enableGridY
+        enableGridX={false}
         theme={{ textColor: usesDarkMode ? "white" : "black" }}
-        axisBottom={{
+        axisLeft={{
           format: (d: number) => prettyDuration(d),
           tickValues: ticks,
         }}
-        gridXValues={ticks}
-        axisLeft={{ tickPadding: 20 }}
+        borderRadius={2}
+        labelSkipHeight={20}
+        labelTextColor="black"
+        gridYValues={ticks}
+        axisBottom={{
+          tickPadding: 8,
+        }}
         tooltipLabel={(d) => String(d.data.projectName)}
         tooltip={(point) => (
           <Paper
@@ -115,8 +126,20 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
           </Paper>
         )}
         valueFormat={(v) => prettyDuration(v)}
-        layout="horizontal"
+        layout="vertical"
         colors={{ scheme: "paired" }}
+        // TODO: Format the values properly instead of the raw "*_duration" format 
+        legendLabel={balls => String(balls.id)}
+        legends={[
+          {
+            dataFrom: "keys",
+            anchor: "bottom-right",
+            direction: "column",
+            translateX: 100,
+            itemWidth: 80,
+            itemHeight: 20
+          }
+        ]}
       />
     </div>
   );
