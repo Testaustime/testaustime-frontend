@@ -1,8 +1,9 @@
-import { Button, Title } from "@mantine/core";
+import { Button, Title, LoadingOverlay, Group, createStyles } from "@mantine/core";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
+import { useState } from "react";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
@@ -10,8 +11,18 @@ import { handleErrorWithNotification } from "../../utils/notificationErrorHandle
 export const LoginPage = () => {
   const { login } = useAuthentication();
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
 
-  return <div>
+  const { classes } = createStyles(() => ({
+    loginBox: {
+      display: "flex",
+      height: "calc(100% - 36px - 50px - 80px)",
+      flexDirection: "column",
+      width: "100%"
+    }
+  }))();
+
+  return <Group className={classes.loginBox}>
     <Title order={1} mb={20}>Login</Title>
     <Formik
       initialValues={{
@@ -23,15 +34,16 @@ export const LoginPage = () => {
         password: Yup.string().required("Password is required")
       })}
       onSubmit={values => {
+        setVisible(true);
         login(values.username, values.password)
           .then(() => navigate("/"))
-          .catch(handleErrorWithNotification);
+          .catch((...e) => {handleErrorWithNotification(...e); setVisible(false);});
       }}>
-      {() => <Form>
-        <FormikTextInput name="username" label="Username" />
-        <FormikPasswordInput name="password" label="Password" mt={15} />
-        <Button mt={20} type="submit">Log in</Button>
+      {() => <Form style={{ width: "100%" }}>
+        <FormikTextInput name="username" label="Username" style={{ width: "100%" }} />
+        <FormikPasswordInput name="password" label="Password" mt={15} style={{ width: "100%" }} />
+        <Button mt={20} type="submit"><LoadingOverlay visible={visible} />Log in</Button>
       </Form>}
     </Formik>
-  </div>;
+  </Group>;
 };

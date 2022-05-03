@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    transition: ease-in-out background-color 0.2s, ease-in-out filter 0.2s, ease-in-out border 0.2s;
+    transition: ease-in-out background-color 0.2s, ease-in-out filter 0.2s, ease-in-out border 0.2s !important;
 }
 
 /* ubuntu-regular - latin */
@@ -30,4 +30,18 @@ p, a, li {
 p, a {
     font-size: 1.2rem;
     line-height: 2rem;
+}
+
+a {
+    color: #5084cc;
+}
+
+#root {
+    display: flex;
+    align-content: center;
+    align-content: center;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
 }

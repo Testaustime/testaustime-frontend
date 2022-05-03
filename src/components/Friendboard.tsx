@@ -1,4 +1,4 @@
-import { Button, Title, Table, Group } from "@mantine/core";
+import { Button, Title, Table, Group, useMantineTheme } from "@mantine/core";
 import { useFriends } from "../hooks/useFriends";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { Form, Formik } from "formik";
@@ -7,15 +7,39 @@ import { FormikTextInput } from "./forms/FormikTextInput";
 import { generateFriendCode } from "../utils/friendUtils";
 import { useState } from "react";
 import { handleErrorWithNotification } from "../utils/notificationErrorHandler";
+import { prettyDuration } from "../utils/dateUtils";
+import { sumBy } from "../utils/arrayUtils";
+import { useActivityData } from "../hooks/useActivityData";
+import { addDays, startOfDay } from "date-fns/esm";
+import useAuthentication from "../hooks/UseAuthentication";
 
 export const Friendboard = () => {
   const { addFriend, unFriend, friends } = useFriends();
+  const entries = useActivityData();
+  const { username } = useAuthentication();
+
+  const entriesInRange = entries.filter(entry => {
+    const startOfStatisticsRange = startOfDay(addDays(new Date(), -30));
+    return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
+  });
+
+  const friendsSorted = [...friends.map(f => ({ ...f, isMe: false })).concat({
+    coding_time: {
+      all_time: 0,
+      past_month: sumBy(entriesInRange, entry => entry.duration),
+      past_week: 0,
+    },
+    isMe: true,
+    username: username ?? "Me"
+  })].sort((a, b) => b.coding_time.past_month - a.coding_time.past_month);
 
   // We have to use useState, so it stays the same when the component is re-rendered
   const [placeholderFriendCode] = useState(generateFriendCode());
 
+  const theme = useMantineTheme();
+
   return <div>
-    <Title order={2} mb={15}>Add new friend</Title>
+    <Title order={2} mb={15}>Add a new friend</Title>
     <Group>
       <Formik
         initialValues={{ friendCode: "" }}
@@ -58,15 +82,17 @@ export const Friendboard = () => {
         <tr>
           <th>Index</th>
           <th>Friend name</th>
-          <th> </th>
+          <th>Time coded during last 30 days</th>
+          <th></th>
         </tr>
       </thead>
-      <tbody>{friends.map((username, idx) => (
-        <tr key={username}>
+      <tbody>{friendsSorted.map(({ username, coding_time: { past_month }, isMe }, idx) => (
+        <tr key={username} style={{ backgroundColor: isMe ? (theme.colorScheme === "dark" ? "#2b2b2b" : "#dedede") : undefined }}>
           <td>{idx + 1}</td>
           <td>{username}</td>
+          <td>{prettyDuration(past_month)}</td>
           <td>
-            <Group position="right">
+            {!isMe && <Group position="right">
               <Button
                 variant="outline"
                 color="red"
@@ -75,10 +101,10 @@ export const Friendboard = () => {
               >
                 Unfriend
               </Button>
-            </Group>
+            </Group>}
           </td>
         </tr>
       ))}</tbody>
     </Table>
-  </div>;
+  </div >;
 };

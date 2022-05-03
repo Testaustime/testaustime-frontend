@@ -6,22 +6,40 @@ import { RootState } from "../store";
 import axios from "axios";
 import { getErrorMessage } from "../lib/errorHandling/errorHandler";
 
+export interface ApiFriendsResponseItem {
+  username: string,
+  coding_time: {
+    all_time: number,
+    past_month: number,
+    past_week: number,
+  }
+}
+
 export interface ApiFriendsAddResponse {
-  name: string
+  username: string,
+  coding_time: {
+    all_time: number,
+    past_month: number,
+    past_week: number,
+  }
 }
 
 export const useFriends = () => {
   const { token } = useAuthentication();
   const dispatch = useDispatch();
 
-  const friends = useSelector<RootState, Array<string>>(state => state.users.friends);
+  const friends = useSelector<RootState, ApiFriendsResponseItem[]>(state => state.users.friends);
 
-  useEffect(() => {
-    axios.get<string[]>("/friends/list", {
+  const fetchFriendData = async () => {
+    const response = await axios.get<ApiFriendsResponseItem[]>("/friends/list", {
       headers: { Authorization: `Bearer ${token}` }
-    }).then(response => {
-      dispatch(setFriends(response.data));
     });
+
+    dispatch(setFriends(response.data));
+  };
+  
+  useEffect(() => {
+    fetchFriendData();
   }, []);
 
   const addFriend = async (friendCode: string) => {
@@ -33,9 +51,9 @@ export const useFriends = () => {
         }
       });
 
-      const friendUsername = response.data.name;
-      dispatch(setFriends([...friends, friendUsername]));
-      return friendUsername;
+      const friend = response.data;
+      dispatch(setFriends([...friends, friend]));
+      return friend;
     } catch (error) {
       throw getErrorMessage(error);
     }
@@ -51,7 +69,7 @@ export const useFriends = () => {
         }
       });
 
-      dispatch(setFriends(friends.filter(f => f !== username)));
+      dispatch(setFriends(friends.filter(f => f.username !== username)));
     } catch (error) {
       throw getErrorMessage(error);
     }
