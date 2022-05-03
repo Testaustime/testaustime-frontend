@@ -1,6 +1,5 @@
 import { createStyles, Text, Grid } from "@mantine/core";
-import Testauskoira from "../images/TestauskoiraGradientLogo.png";
-import GradientText from "../images/TestauserveriGradientText.png";
+import TestausserveriLogo from "../images/testausserveri.svg";
 
 const authors = [
   "Luukas Pörtfors",
@@ -24,7 +23,7 @@ export const Footer = () => {
     line: {
       width: "100%",
       height: "1px",
-      backgroundColor: theme.colorScheme === "dark" ? "#bbb" : "#333"
+      backgroundColor: theme.colorScheme === "dark" ? "#333" : "#ddd"
     },
     grid: {
       "@media (max-width: 495px)": {
@@ -35,6 +34,20 @@ export const Footer = () => {
       "@media (max-width: 495px)": {
         minWidth: "100%",
       },
+    },
+    rightAlign: {
+      textAlign: "right",
+      "@media (max-width: 495px)": {
+        textAlign: "left"
+      },
+    },
+    bwLogo: {
+      filter: theme.colorScheme === "dark" ? "invert(1)" : "none",
+      opacity: "0.8",
+      transition: "opacity 0.2s !important",
+      ":hover": {
+        opacity: "1"
+      }
     }
   }))();
   return <>
@@ -42,16 +55,20 @@ export const Footer = () => {
       <span className={classes.line}></span>
       <Grid justify="space-between" mt="40px" className={classes.grid}>
         <Grid.Col span={4} className={classes.gridItem}>
-          <Grid align="center" mb="10px">
-            <img src={Testauskoira} width="50px" style={{ marginRight: "10px", marginBottom: "10px" }}></img>
-            <img src={GradientText} width="200px"></img>
-          </Grid>
+          <a href="https://testausserveri.fi" style={{display: "flex"}}>
+            <img 
+              src={TestausserveriLogo} 
+              alt="Testausserveri ry" 
+              style={{marginRight: "8px"}}
+              height={90}
+              className={classes.bwLogo} />
+          </a>
           <Text>Supported by Testausserveri ry</Text>
         </Grid.Col>
-        <Grid.Col span={7} className={classes.gridItem}>
-          <Text pb="5px" align="right">❤️ <b>Authors:</b> {`${authors.slice(0, authors.length - 1).join(", ")} and ${authors[authors.length - 1]}`}</Text>
-          <Text pb="5px" align="right">© {new Date().getFullYear()} <b>Copyright Testausserveri ry & contributors</b></Text>
-          <Text pb="5px" align="right"><i>Licensed under the MIT license.</i></Text>
+        <Grid.Col span={7} className={`${classes.gridItem} ${classes.rightAlign}`}>
+          <Text pb="5px">❤️ Authors: {`${authors.slice(0, authors.length - 1).join(", ")} and ${authors[authors.length - 1]}`}</Text>
+          <Text pb="5px">© {new Date().getFullYear()} Copyright Testausserveri ry & contributors</Text>
+          <Text pb="5px"><i>Licensed under the MIT license.</i></Text>
         </Grid.Col>
       </Grid>
     </div>
