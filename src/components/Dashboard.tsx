@@ -139,7 +139,7 @@ export const Dashboard = () => {
           <Text mt={15} mb={15}>Total time coded in the last {dayCount} days: <b>{prettyDuration(sumBy(entriesInRange, entry => entry.duration))}</b></Text>
         </Group>
         <Group className={classes.dataCard}>
-          <Title mt={10} mb={-30} order={2}>Time per latest projects</Title>
+          <Title mt={10} mb={-30} order={2}>Time by time spent per project</Title>
           <PerProjectChart entries={entriesInRange} className={classes.projectCodingChart}/>
         </Group>
         <Group direction={isSmallScreen ? "column" : "row"} grow mt={20} mb={20} align="start">
