@@ -1,5 +1,6 @@
 import {
   Anchor,
+  Box,
   Button,
   ColorScheme,
   ColorSchemeProvider,
@@ -175,7 +176,7 @@ export const AppSetup = () => {
                           <Anchor component={Link} to="/extensions">
                           Extensions
                           </Anchor>
-                          <Anchor className={classes.spacer}></Anchor>
+                          <Box className={classes.spacer}></Box>
                           <Anchor component={Link} to="/">
                           Dashboard
                           </Anchor>
@@ -197,7 +198,7 @@ export const AppSetup = () => {
                           <Anchor component={Link} to="/extensions">
                           Extensions
                           </Anchor>
-                          <Anchor className={classes.spacer}></Anchor>
+                          <Box className={classes.spacer}></Box>
                           <Anchor component={Link} to="/login">
                           Login
                           </Anchor>
