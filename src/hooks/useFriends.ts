@@ -11,7 +11,7 @@ export interface ApiFriendsResponseItem {
   coding_time: {
     all_time: number,
     past_month: number,
-    past_week: number,
+    past_week: number
   }
 }
 
@@ -20,7 +20,7 @@ export interface ApiFriendsAddResponse {
   coding_time: {
     all_time: number,
     past_month: number,
-    past_week: number,
+    past_week: number
   }
 }
 

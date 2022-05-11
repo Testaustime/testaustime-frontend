@@ -5,15 +5,15 @@ import Neovim from "../../images/neovim.svg";
 import Vscode from "../../images/vscode.svg";
 
 interface ExtensionBlockProps {
-  logo: React.ReactNode;
-  downloadLink: string;
-  sourceCodeLink: string;
-  text: string;
+  logo: React.ReactNode,
+  downloadLink: string,
+  sourceCodeLink: string,
+  text: string
 }
 
 export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: ExtensionBlockProps) => {
   // Classes
-  const { classes } = createStyles((theme) => ({
+  const { classes } = createStyles(theme => ({
     wrapper: {
       backgroundColor: theme.colorScheme === "dark" ? "#282a36" : "#fff",
       borderRadius: "10px",

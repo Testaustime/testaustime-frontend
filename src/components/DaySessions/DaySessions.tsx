@@ -5,7 +5,7 @@ import { prettyDuration } from "../../utils/dateUtils";
 import { prettifyProgrammingLanguageName } from "../../utils/programmingLanguagesUtils";
 
 export interface DaySessionsProps {
-  entries: ActivityDataEntry[],
+  entries: ActivityDataEntry[]
 }
 
 export const DaySessions = ({ entries }: DaySessionsProps) => {

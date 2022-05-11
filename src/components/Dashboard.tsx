@@ -16,7 +16,7 @@ import useAuthentication from "../hooks/UseAuthentication";
 type DayRange = "month" | "week" | "all";
 
 const getDayCount = (dayRange: DayRange) => {
-  const entries = useActivityData().map((entry) => ({
+  const entries = useActivityData().map(entry => ({
     ...entry
   }));
 
@@ -39,11 +39,11 @@ const getDayCount = (dayRange: DayRange) => {
 
 const getAllEntriesByDay = (
   entries: ActivityDataEntry[]
-): { date: Date; entries: ActivityDataEntry[] }[] => {
-  const byDayDictionary = groupBy(entries, (entry) => entry.dayStart.getTime());
+): { date: Date, entries: ActivityDataEntry[] }[] => {
+  const byDayDictionary = groupBy(entries, entry => entry.dayStart.getTime());
   return Object.keys(byDayDictionary)
     .sort((a, b) => Number(b) - Number(a))
-    .map((key) => ({
+    .map(key => ({
       date: new Date(Number(key)),
       entries: byDayDictionary[key].sort(
         (a, b) => b.start_time.getTime() - a.start_time.getTime()
@@ -56,7 +56,7 @@ export const Dashboard = () => {
   const dayCount = getDayCount(statisticsRange);
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
-  const { classes } = createStyles((theme) => ({
+  const { classes } = createStyles(theme => ({
     dataCard: {
       padding: "10px",
       backgroundColor: theme.colorScheme === "dark" ? "#222326" : "#fff",
@@ -92,7 +92,7 @@ export const Dashboard = () => {
     }
   }))();
 
-  const entries = useActivityData().map((entry) => ({
+  const entries = useActivityData().map(entry => ({
     ...entry,
     language: normalizeProgrammingLanguageName(entry.language)
   }));
@@ -105,12 +105,12 @@ export const Dashboard = () => {
   const shouldFilter = selectedProjects.length > 0;
 
   const filteredEntries = shouldFilter
-    ? entries.filter((entry) =>
+    ? entries.filter(entry =>
       selectedProjects.includes(entry.project_name || "Unknown")
     )
     : entries;
 
-  const entriesInRange = filteredEntries.filter((entry) => {
+  const entriesInRange = filteredEntries.filter(entry => {
     const startOfStatisticsRange = startOfDay(addDays(new Date(), -dayCount));
     return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
   });
@@ -174,7 +174,7 @@ export const Dashboard = () => {
               Total time coded in the last {dayCount} days:{" "}
               <b>
                 {prettyDuration(
-                  sumBy(entriesInRange, (entry) => entry.duration)
+                  sumBy(entriesInRange, entry => entry.duration)
                 )}
               </b>
             </Text>
@@ -208,7 +208,7 @@ export const Dashboard = () => {
             Your sessions
           </Title>
           <Accordion multiple>
-            {getAllEntriesByDay(entriesInRange).map((d) => (
+            {getAllEntriesByDay(entriesInRange).map(d => (
               <Accordion.Item
                 key={d.date.getTime()}
                 label={<Text size="lg">{format(d.date, "d.M.yyyy")}</Text>}

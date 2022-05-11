@@ -8,7 +8,7 @@ export interface UsersSlice {
   registrationTime?: string,
   friendCode?: string,
   friends: ApiFriendsResponseItem[],
-  loginInitialized: boolean,
+  loginInitialized: boolean
 }
 
 const initialState: UsersSlice = {

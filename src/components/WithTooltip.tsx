@@ -3,7 +3,7 @@ import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import { FunctionComponent } from "react";
 
 export interface WithTooltipProps {
-  tooltipLabel: React.ReactNode;
+  tooltipLabel: React.ReactNode
 }
 
 export const WithTooltip: FunctionComponent<WithTooltipProps> = ({ tooltipLabel, children }) => {

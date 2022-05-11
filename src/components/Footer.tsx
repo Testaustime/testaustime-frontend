@@ -8,7 +8,7 @@ const authors = [
 ];
 
 export const Footer = () => {
-  const { classes } = createStyles((theme) => ({
+  const { classes } = createStyles(theme => ({
     container: {
       marginTop: "100px",
       width: "100%",

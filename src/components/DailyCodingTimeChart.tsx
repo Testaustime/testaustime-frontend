@@ -15,17 +15,17 @@ const isDateOrNumber = (value: unknown): value is Date | number => {
 
 export interface DailyCodingTimeChartProps {
   entries: {
-    language: string | undefined;
-    duration: number;
-    id: number;
-    project_name?: string | undefined;
-    editor_name?: string | undefined;
-    hostname?: string | undefined;
-    start_time: Date;
-    dayStart: Date;
-  }[];
-  dayCount: number;
-  className: string;
+    language: string | undefined,
+    duration: number,
+    id: number,
+    project_name?: string | undefined,
+    editor_name?: string | undefined,
+    hostname?: string | undefined,
+    start_time: Date,
+    dayStart: Date
+  }[],
+  dayCount: number,
+  className: string
 }
 
 export const DailyCodingTimeChart = ({
@@ -43,8 +43,8 @@ export const DailyCodingTimeChart = ({
     .map((_, dayIndex) => {
       const date = startOfDay(addDays(new Date(), -dayIndex));
       const duration = sumBy(
-        entries.filter((entry) => entry.dayStart.getTime() === date.getTime()),
-        (entry) => entry.duration
+        entries.filter(entry => entry.dayStart.getTime() === date.getTime()),
+        entry => entry.duration
       );
       return { date, duration };
     })
@@ -85,7 +85,7 @@ export const DailyCodingTimeChart = ({
           tickValues: data.map(({ date }) => date)
         }}
         axisLeft={{
-          format: (durationSeconds) => {
+          format: durationSeconds => {
             if (!isNumber(durationSeconds)) return "";
             return prettyDuration(durationSeconds);
           },
@@ -93,8 +93,8 @@ export const DailyCodingTimeChart = ({
         }}
         gridXValues={data.map(({ date }) => date)}
         gridYValues={yticks}
-        sliceTooltip={(p) => {
-          const { x, y } = p.slice.points[0].data as { x: Date; y: number };
+        sliceTooltip={p => {
+          const { x, y } = p.slice.points[0].data as { x: Date, y: number };
           return (
             <Paper p={10} sx={theme => ({
               backgroundColor: usesDarkMode

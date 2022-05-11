@@ -6,7 +6,7 @@ import { Dashboard } from "../Dashboard";
 
 export const MainPage = () => {
   const { isLoggedIn } = useAuthentication();
-  const { classes } = createStyles((theme) => ({
+  const { classes } = createStyles(theme => ({
     downloadButton: {
       width: "60%",
       height: "90px",

@@ -2,7 +2,11 @@ import { ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { Sun } from "react-feather";
 import { MoonStars } from "tabler-icons-react";
 
-function ThemeToggle({ label }: { label: boolean }) {
+interface ThemeToggleProps {
+  label: boolean
+}
+
+function ThemeToggle({ label }: ThemeToggleProps) {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === "dark";
 

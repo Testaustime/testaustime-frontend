@@ -27,7 +27,7 @@ import ThemeToggle from "./components/ThemeToggle";
 import { NotFoundPage } from "./components/NotFoundPage";
 import { Footer } from "./components/Footer";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(theme => ({
   container: {
     maxWidth: "calc(800px + 10%)",
     width: "100%",

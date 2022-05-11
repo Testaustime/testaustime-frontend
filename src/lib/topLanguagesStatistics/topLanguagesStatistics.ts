@@ -2,7 +2,7 @@ import { groupBy, sumBy } from "../../utils/arrayUtils";
 import { isStringNull } from "../../utils/stringUtils";
 
 export interface TopLanguagesRequirement {
-  language?: string
+  language?: string,
   duration: number
 }
 

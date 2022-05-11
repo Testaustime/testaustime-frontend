@@ -46,7 +46,7 @@ export interface UseAuthenticationResult {
   token?: string,
   setToken: (newToken: string) => void,
   isLoggedIn: boolean,
-  isLoggedOut: boolean
+  isLoggedOut: boolean,
   regenerateToken: () => Promise<string>,
   regenerateFriendCode: () => Promise<string>,
   register: (username: string, password: string) => Promise<string>,
@@ -56,7 +56,7 @@ export interface UseAuthenticationResult {
   username?: string,
   friendCode?: string,
   refetchUsername: () => Promise<string>,
-  loginInitialized: boolean,
+  loginInitialized: boolean
 }
 
 export const useAuthentication = (): UseAuthenticationResult => {

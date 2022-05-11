@@ -10,7 +10,7 @@ export interface ApiUsersUserActivityDataResponseItem {
   project_name?: string | null,
   language?: string,
   editor_name?: string,
-  hostname?: string,
+  hostname?: string
 }
 
 export type ActivityDataEntry = Omit<ApiUsersUserActivityDataResponseItem, "start_time" | "project_name"> & {
