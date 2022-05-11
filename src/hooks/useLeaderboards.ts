@@ -43,10 +43,32 @@ export const useLeaderboards = () => {
     });
   }, [leaderboards]);
 
+  // TODO: Add the leaderboard to state
+  const joinLeaderboard = (leaderboardCode: string) => {
+    axios.post<{ name: string }>("/leaderboards/join", {
+      invite: leaderboardCode
+    }, {
+      headers: { Authorization: `Bearer ${token ?? ""}` }
+    }).then(res => {
+      console.log(res.data);
+    }).catch(e => console.error(e));
+  };
+
+  // TODO: Remove the leaderboard from state
+  const leaveLeaderboard = (leaderboardName: string) => {
+    axios.post(`/leaderboards/${leaderboardName}/leave`, {}, {
+      headers: { Authorization: `Bearer ${token ?? ""}` }
+    }).then(res => {
+      console.log(res.data);
+    }).catch(e => console.error(e));
+  };
+
   return {
     leaderboards: leaderboards.map(l => ({
       ...l,
       ...leaderboardData[l.name]
-    }))
+    })),
+    joinLeaderboard,
+    leaveLeaderboard
   };
 };

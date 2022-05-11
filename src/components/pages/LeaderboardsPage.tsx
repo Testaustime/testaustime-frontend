@@ -1,24 +1,52 @@
-import { Badge, Button, Table, Text, Title } from "@mantine/core";
+import { Badge, Button, Group, Table, Text, Title } from "@mantine/core";
 import { useModals } from "@mantine/modals";
+import { Form, Formik } from "formik";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { CombinedLeaderboard, useLeaderboards } from "../../hooks/useLeaderboards";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
+import { FormikTextInput } from "../forms/FormikTextInput";
+
+interface JoinLeaderboardModalProps {
+  onJoin: (leaderboardCode: string) => void
+}
+
+const JoinLeaderboardModal = ({ onJoin }: JoinLeaderboardModalProps) => {
+  return <>
+    <Formik
+      initialValues={{
+        leaderboardCode: ""
+      }}
+      onSubmit={values => {
+        onJoin(values.leaderboardCode);
+      }}
+    >
+      {() => <Form>
+        <FormikTextInput name="leaderboardCode" label="Leaderboard Code" />
+        <Group position="right" mt="md">
+          <Button type="submit">Join</Button>
+        </Group>
+      </Form>}
+    </Formik>
+  </>;
+};
 
 export const LeaderboardsPage = () => {
-  const { leaderboards } = useLeaderboards();
+  const { leaderboards, joinLeaderboard, leaveLeaderboard } = useLeaderboards();
   const { username } = useAuthentication();
   const modals = useModals();
 
   if (!username) return <Text>No user</Text>;
 
-  const openModal = (leaderboard: CombinedLeaderboard) => {
+  const openLeaderboard = (leaderboard: CombinedLeaderboard) => {
     modals.openModal({
       title: <Title>{leaderboard.name}</Title>,
       size: "xl",
       children: (
         <>
-          <Title order={2} mb="md">Members</Title>
+          <Button color="red" size="xs" onClick={() => leaveLeaderboard(leaderboard.name)}>Leave leaderboard</Button>
+          <Text>Invite code: {leaderboard.invite}</Text>
+          <Title order={2} my="md">Members</Title>
           <Table>
             <thead>
               <tr>
@@ -41,8 +69,22 @@ export const LeaderboardsPage = () => {
     });
   };
 
+  const openJoinLeaderboard = () => {
+    const id = modals.openModal({
+      title: <Title>Join a leaderboard</Title>,
+      size: "xl",
+      children: <JoinLeaderboardModal onJoin={code => {
+        joinLeaderboard(code);
+        modals.closeModal(id);
+      }} />
+    });
+  };
+
   return <>
-    <Title mb="md">Leaderboards</Title>
+    <Group align="center" mb="md" mt="xl" position="apart">
+      <Title>Leaderboards</Title>
+      <Button onClick={() => openJoinLeaderboard()}>Join a leaderboard</Button>
+    </Group>
     <Table>
       <thead>
         <tr>
@@ -68,7 +110,7 @@ export const LeaderboardsPage = () => {
                 compact
                 size="sm"
                 variant="outline"
-                onClick={() => openModal(leaderboard)}
+                onClick={() => openLeaderboard(leaderboard)}
               >
                 See more
               </Button>
