@@ -26,6 +26,8 @@ import { ExtensionsPage } from "./components/pages/ExtensionsPage";
 import ThemeToggle from "./components/ThemeToggle";
 import { NotFoundPage } from "./components/NotFoundPage";
 import { Footer } from "./components/Footer";
+import { LeaderboardsPage } from "./components/pages/LeaderboardsPage";
+import { ModalsProvider } from "@mantine/modals";
 
 const useStyles = createStyles(theme => ({
   container: {
@@ -162,102 +164,120 @@ export const AppSetup = () => {
         }}
       >
         <NotificationsProvider>
-          <Group position="center" mt={40} sx={{ overflow: "hidden" }} className={classes.container}>
-            <div className={classes.innerContainer}>
-              <Group position="apart" mb={50}>
-                <Link to="/" className={classes.testaustimeTitle}>
-                  Testaustime
-                </Link>
-                <Group>
-                  <Group spacing={15} align="center" className={classes.navigation}>
-                    {
-                      isLoggedIn ?
-                        <Group>
-                          <Anchor component={Link} to="/extensions">Extensions</Anchor>
-                          <Box className={classes.spacer} />
-                          <Anchor component={Link} to="/">Dashboard</Anchor>
-                          <Anchor component={Link} to="/friends">Friends</Anchor>
-                          <Menu
-                            trigger="hover"
-                            control={<Button
-                              variant="outline"
-                              size="xs"
-                              leftIcon={<PersonIcon style={{ marginRight: "5px" }} />}
-                            >
-                              {username}
-                            </Button>}
-                          >
-                            <Menu.Label>Account</Menu.Label>
-                            <Menu.Item component={Link} to="/profile">Settings</Menu.Item>
-                            <Divider />
-                            <Menu.Item color="blue" icon={<ExitIcon />} onClick={logOutAndRedirect}>Log out</Menu.Item>
-                          </Menu>
-                        </Group>
-                        :
-                        <Group>
-                          <Anchor component={Link} to="/extensions">Extensions</Anchor>
-                          <Box className={classes.spacer} />
-                          <Anchor component={Link} to="/login">Login</Anchor>
-                          <Button component={Link} to="/register">Register</Button>
-                        </Group>
-                    }
-                    <ThemeToggle label={false} />
-                  </Group>
-                  <Group className={classes.smallNavigation}>
-                    <Menu
-                      trigger="hover"
-                      control={<Button variant="outline" size="lg">
-                        <HamburgerMenuIcon markerHeight={27} />
-                      </Button>}
-                    >
-                      <div
-                        style={{ padding: "10px" }}
-                        onClick={() => { toggleColorScheme(); }}>
-                        <ThemeToggle label={true} />
-                      </div>
+          <ModalsProvider>
+            <Group position="center" mt={40} sx={{ overflow: "hidden" }} className={classes.container}>
+              <div className={classes.innerContainer}>
+                <Group position="apart" mb={50}>
+                  <Link to="/" className={classes.testaustimeTitle}>
+                    Testaustime
+                  </Link>
+                  <Group>
+                    <Group spacing={15} align="center" className={classes.navigation}>
                       {
-                        !isLoggedIn ?
-                          <>
-                            <Divider />
-                            <Menu.Item component={Link} to="/profile">Login</Menu.Item>
-                            <Menu.Item color="blue" component={Link} to="/settings">Register</Menu.Item>
-                          </>
+                        isLoggedIn ?
+                          <Group>
+                            <Anchor component={Link} to="/extensions">Extensions</Anchor>
+                            <Box className={classes.spacer} />
+                            <Anchor component={Link} to="/">Dashboard</Anchor>
+                            <Anchor component={Link} to="/friends">Friends</Anchor>
+                            <Anchor component={Link} to="/leaderboards">Leaderboards</Anchor>
+                            <Menu
+                              trigger="hover"
+                              control={<Button
+                                variant="outline"
+                                size="xs"
+                                leftIcon={<PersonIcon style={{ marginRight: "5px" }} />}
+                              >
+                                {username}
+                              </Button>}
+                            >
+                              <Menu.Label>Account</Menu.Label>
+                              <Menu.Item component={Link} to="/profile">Settings</Menu.Item>
+                              <Divider />
+                              <Menu.Item
+                                color="blue"
+                                icon={<ExitIcon />}
+                                onClick={logOutAndRedirect}>
+                                Log out
+                              </Menu.Item>
+                            </Menu>
+                          </Group>
                           :
-                          <>
-                            <Divider />
-                            <Menu.Item component={Link} to="/extensions">Extensions</Menu.Item>
-                            <Divider />
-                            <Menu.Item component={Link} to="/">Dashboard</Menu.Item>
-                            <Menu.Item component={Link} to="/friends">Friends</Menu.Item>
-                            <Divider />
-                            <Menu.Label>Account - {username}</Menu.Label>
-                            <Menu.Item component={Link} to="/profile">Settings</Menu.Item>
-                            <Divider />
-                            <Menu.Item color="blue" icon={<ExitIcon />} onClick={logOutAndRedirect}>Log out</Menu.Item>
-                          </>
+                          <Group>
+                            <Anchor component={Link} to="/extensions">Extensions</Anchor>
+                            <Box className={classes.spacer} />
+                            <Anchor component={Link} to="/login">Login</Anchor>
+                            <Button component={Link} to="/register">Register</Button>
+                          </Group>
                       }
-                    </Menu>
+                      <ThemeToggle label={false} />
+                    </Group>
+                    <Group className={classes.smallNavigation}>
+                      <Menu
+                        trigger="hover"
+                        control={<Button variant="outline" size="lg">
+                          <HamburgerMenuIcon markerHeight={27} />
+                        </Button>}
+                      >
+                        <div
+                          style={{ padding: "10px" }}
+                          onClick={() => { toggleColorScheme(); }}>
+                          <ThemeToggle label={true} />
+                        </div>
+                        {
+                          !isLoggedIn ?
+                            <>
+                              <Divider />
+                              <Menu.Item component={Link} to="/profile">Login</Menu.Item>
+                              <Menu.Item color="blue" component={Link} to="/settings">Register</Menu.Item>
+                            </>
+                            :
+                            <>
+                              <Divider />
+                              <Menu.Item component={Link} to="/extensions">Extensions</Menu.Item>
+                              <Divider />
+                              <Menu.Item component={Link} to="/">Dashboard</Menu.Item>
+                              <Menu.Item component={Link} to="/friends">Friends</Menu.Item>
+                              <Menu.Item component={Link} to="/leaderboards">Leaderboards</Menu.Item>
+                              <Divider />
+                              <Menu.Label>Account - {username}</Menu.Label>
+                              <Menu.Item component={Link} to="/profile">Settings</Menu.Item>
+                              <Divider />
+                              <Menu.Item
+                                color="blue"
+                                icon={<ExitIcon />}
+                                onClick={logOutAndRedirect}>
+                                Log out
+                              </Menu.Item>
+                            </>
+                        }
+                      </Menu>
+                    </Group>
                   </Group>
                 </Group>
-              </Group>
-              <Routes>
-                <Route path="/" element={<MainPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegistrationPage />} />
-                <Route
-                  path="/profile"
-                  element={<PrivateRoute><ProfilePage /></PrivateRoute>}
-                />
-                <Route
-                  path="/friends"
-                  element={<PrivateRoute><FriendPage /></PrivateRoute>}
-                />
-                <Route path="/extensions" element={<ExtensionsPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-              <Footer />
-            </div>
-          </Group>
+                <Routes>
+                  <Route path="/" element={<MainPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegistrationPage />} />
+                  <Route
+                    path="/profile"
+                    element={<PrivateRoute><ProfilePage /></PrivateRoute>}
+                  />
+                  <Route
+                    path="/friends"
+                    element={<PrivateRoute><FriendPage /></PrivateRoute>}
+                  />
+                  <Route
+                    path="/leaderboards"
+                    element={<PrivateRoute><LeaderboardsPage /></PrivateRoute>}
+                  />
+                  <Route path="/extensions" element={<ExtensionsPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+                <Footer />
+              </div>
+            </Group>
+          </ModalsProvider>
         </NotificationsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
