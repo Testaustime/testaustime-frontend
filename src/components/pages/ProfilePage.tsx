@@ -27,7 +27,7 @@ export const ProfilePage = () => {
     <Group direction="column" mt={40} spacing={15}>
       <WithTooltip
         tooltipLabel={<Text>This token is used for authentication in your code editor.
-          <Anchor component={Link} to="/extensions">Get your extension from here!</Anchor>
+          <Anchor component={Link} to="/extensions"> Get your extension from here!</Anchor>
         </Text>}
       >
         <Title order={3}>Authentication token</Title>
