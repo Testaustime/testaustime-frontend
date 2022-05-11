@@ -93,7 +93,7 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
         labelSkipWidth={10}
         indexBy="projectName"
         margin={{
-          top: 30,
+          top: 0,
           right: 30,
           bottom: 30,
           left: 60 + (longestProjectName.length > 8 ? (longestProjectName.length - 8) * 7 : 0)

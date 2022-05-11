@@ -86,7 +86,6 @@ export const Dashboard = () => {
   const firstCodingDay = entries[0]?.start_time ?? new Date(2022, 2, 14);
 
   const diff = new Date().getTime() - firstCodingDay.getTime();
-
   const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
   const dayCount = getDayCount(statisticsRange, diffDays);
 
@@ -103,10 +102,12 @@ export const Dashboard = () => {
     )
     : entries;
 
-  const entriesInRange = filteredEntries.filter(entry => {
-    const startOfStatisticsRange = startOfDay(addDays(new Date(), -dayCount));
-    return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
-  });
+  const startOfStatisticsRange = startOfDay(addDays(new Date(), -dayCount + 1));
+
+  const entriesInRange = filteredEntries.filter(entry =>
+    entry.start_time.getTime() >= startOfStatisticsRange.getTime() &&
+    entry.start_time.getTime() <= new Date().getTime()
+  );
 
   return (
     <div style={{ width: "100%" }}>
@@ -151,7 +152,7 @@ export const Dashboard = () => {
       {entriesInRange.length !== 0 ? (
         <>
           <Group className={classes.dataCard}>
-            <Title mt={10} mb={-35} order={2}>
+            <Title mt={10} order={2}>
               Time per day
             </Title>
             <DailyCodingTimeChart
@@ -169,7 +170,7 @@ export const Dashboard = () => {
             </Text>
           </Group>
           <Group className={classes.dataCard}>
-            <Title mt={10} mb={-30} order={2}>
+            <Title mt={10} order={2}>
               Time per latest projects
             </Title>
             <PerProjectChart

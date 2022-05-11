@@ -63,7 +63,7 @@ export const DailyCodingTimeChart = ({
             y: duration
           }))
         }]}
-        margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
+        margin={{ top: 10, right: 50, bottom: 50, left: 60 }}
         xScale={{
           type: "time",
           precision: "day",
