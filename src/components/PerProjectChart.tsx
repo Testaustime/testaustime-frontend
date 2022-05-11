@@ -101,6 +101,7 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
         padding={0.3}
         enableGridY={false}
         enableGridX
+        maxValue={ticks[ticks.length - 1]}
         theme={{ textColor: usesDarkMode ? "white" : "black" }}
         axisBottom={{
           format: (d: number) => prettyDuration(d),
@@ -125,7 +126,7 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
                 .map(l => (
                   <List.Item key={l}>
                     {prettifyProgrammingLanguageName(l.slice(0, l.length - 9)) ?? "Unknown"}:{" "}
-                    {prettyDuration(point.data[l] as number)}
+                    {prettyDuration(Number(point.data[l]))}
                   </List.Item>
                 ))}
             </List>
