@@ -2,7 +2,14 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { authTokenLocalStorageKey } from "../../constants";
 import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
-import { setAuthToken, setUsername, setRegisterTime, setFriendCode, setFriends, setLoginInitialized } from "../../slices/userSlice";
+import {
+  setAuthToken,
+  setUsername,
+  setRegisterTime,
+  setFriendCode,
+  setFriends,
+  setLoginInitialized
+} from "../../slices/userSlice";
 import { RootState } from "../../store";
 
 export interface ApiAuthRegisterResponse {
@@ -39,7 +46,7 @@ export interface UseAuthenticationResult {
   token?: string,
   setToken: (newToken: string) => void,
   isLoggedIn: boolean,
-  isLoggedOut: boolean
+  isLoggedOut: boolean,
   regenerateToken: () => Promise<string>,
   regenerateFriendCode: () => Promise<string>,
   register: (username: string, password: string) => Promise<string>,
@@ -49,7 +56,7 @@ export interface UseAuthenticationResult {
   username?: string,
   friendCode?: string,
   refetchUsername: () => Promise<string>,
-  loginInitialized: boolean,
+  loginInitialized: boolean
 }
 
 export const useAuthentication = (): UseAuthenticationResult => {
@@ -57,7 +64,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const token = useSelector<RootState, string | undefined>(state => state.users.authToken);
   const username = useSelector<RootState, string | undefined>(state => state.users.username);
-  const registrationTime = useSelector<RootState, Date | undefined>(state => state.users.registrationTime ? new Date(state.users.registrationTime) : undefined);
+  const registrationTime = useSelector<RootState, Date | undefined>(state =>
+    state.users.registrationTime ? new Date(state.users.registrationTime) : undefined);
   const friendCode = useSelector<RootState, string | undefined>(state => state.users.friendCode);
   const loginInitialized = useSelector<RootState, boolean>(state => state.users.loginInitialized);
 
@@ -68,7 +76,9 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const regenerateToken = async () => {
     try {
-      const { data } = await axios.post<ApiAuthRegenerateResponse>("/auth/regenerate", null, { headers: { Authorization: `Bearer ${token}` } });
+      const { data } = await axios.post<ApiAuthRegenerateResponse>("/auth/regenerate", null,
+        { headers: { Authorization: `Bearer ${token ?? ""}` } }
+      );
       const newToken = data.token;
       setToken(newToken);
       dispatch(setLoginInitialized(true));
@@ -81,7 +91,9 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const regenerateFriendCode = async () => {
     try {
-      const { data } = await axios.post<ApiFriendsRegenerateResponse>("/friends/regenerate", null, { headers: { Authorization: `Bearer ${token}` } });
+      const { data } = await axios.post<ApiFriendsRegenerateResponse>("/friends/regenerate", null,
+        { headers: { Authorization: `Bearer ${token ?? ""}` } }
+      );
       const newFriendCode = data.friend_code;
       dispatch(setFriendCode(newFriendCode));
       dispatch(setLoginInitialized(true));
@@ -142,7 +154,9 @@ export const useAuthentication = (): UseAuthenticationResult => {
     }
 
     try {
-      const { data } = await axios.get<ApiUsersUserResponse>("/users/@me", { headers: { Authorization: `Bearer ${token}` } });
+      const { data } = await axios.get<ApiUsersUserResponse>("/users/@me",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       dispatch(setUsername(data.username));
       dispatch(setFriendCode(data.friend_code));
       dispatch(setRegisterTime(data.registration_time));

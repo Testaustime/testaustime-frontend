@@ -8,7 +8,7 @@ export interface UsersSlice {
   registrationTime?: string,
   friendCode?: string,
   friends: ApiFriendsResponseItem[],
-  loginInitialized: boolean,
+  loginInitialized: boolean
 }
 
 const initialState: UsersSlice = {
@@ -42,15 +42,15 @@ export const usersSlice = createSlice({
     setLoginInitialized: (state, action: PayloadAction<boolean>) => {
       state.loginInitialized = action.payload;
     }
-  },
+  }
 });
 
-export const { 
-  setAuthToken, 
-  setUsername, 
-  setRegisterTime, 
-  setFriendCode, 
-  setFriends, 
-  setLoginInitialized, 
+export const {
+  setAuthToken,
+  setUsername,
+  setRegisterTime,
+  setFriendCode,
+  setFriends,
+  setLoginInitialized
 } = usersSlice.actions;
 export default usersSlice.reducer;

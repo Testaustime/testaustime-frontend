@@ -7,5 +7,5 @@ interface FormikPasswordInputProps {
 
 export const FormikPasswordInput = (props: FormikPasswordInputProps & PasswordInputProps) => {
   const [field, meta] = useField(props.name);
-  return <PasswordInput error={meta.error} {...field} {...props}  />;
+  return <PasswordInput error={meta.error} {...field} {...props} />;
 };

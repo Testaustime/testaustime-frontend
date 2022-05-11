@@ -27,7 +27,7 @@ export const Friendboard = () => {
     coding_time: {
       all_time: 0,
       past_month: sumBy(entriesInRange, entry => entry.duration),
-      past_week: 0,
+      past_week: 0
     },
     isMe: true,
     username: username ?? "Me"
@@ -47,9 +47,10 @@ export const Friendboard = () => {
           friendCode: Yup
             .string()
             .required("Friend code is required")
-            .matches(/^ttfc_[a-zA-Z0-9]{24}$/, "Friend code must start with \"ttfc_\", and be followed by 24 alphanumeric characters.")
+            .matches(
+              /^ttfc_[a-zA-Z0-9]{24}$/,
+              "Friend code must start with \"ttfc_\", and be followed by 24 alphanumeric characters.")
         })}
-
         onSubmit={({ friendCode }, { resetForm }) => {
           addFriend(friendCode)
             .then(() => resetForm())
@@ -66,7 +67,7 @@ export const Friendboard = () => {
               styles={theme => ({
                 invalid: {
                   "::placeholder": {
-                    color: theme.fn.rgba(theme.colors.red[5], 0.4),
+                    color: theme.fn.rgba(theme.colors.red[5], 0.4)
                   }
                 }
               })}
@@ -83,11 +84,13 @@ export const Friendboard = () => {
           <th>Index</th>
           <th>Friend name</th>
           <th>Time coded during last 30 days</th>
-          <th></th>
+          <th />
         </tr>
       </thead>
       <tbody>{friendsSorted.map(({ username, coding_time: { past_month }, isMe }, idx) => (
-        <tr key={username} style={{ backgroundColor: isMe ? (theme.colorScheme === "dark" ? "#2b2b2b" : "#dedede") : undefined }}>
+        <tr key={username} style={{
+          backgroundColor: isMe ? (theme.colorScheme === "dark" ? "#2b2b2b" : "#dedede") : undefined
+        }}>
           <td>{idx + 1}</td>
           <td>{username}</td>
           <td>{prettyDuration(past_month)}</td>
@@ -97,7 +100,9 @@ export const Friendboard = () => {
                 variant="outline"
                 color="red"
                 compact
-                onClick={() => unFriend(username).catch(handleErrorWithNotification)}
+                onClick={() => {
+                  unFriend(username).catch(handleErrorWithNotification);
+                }}
               >
                 Unfriend
               </Button>
@@ -106,5 +111,5 @@ export const Friendboard = () => {
         </tr>
       ))}</tbody>
     </Table>
-  </div >;
+  </div>;
 };

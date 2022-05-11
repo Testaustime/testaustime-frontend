@@ -26,14 +26,31 @@ export const TokenField = ({ value, regenerate, censorable, revealLength }: Toke
       <Text><Censorable authToken={value} revealLength={revealLength || 0} revealed={isTokenRevealed} /></Text> :
       <Text><code>{value}</code></Text>}
     <Group spacing={15} mt={25}>
-      <Button variant="filled" onClick={() => copy(value)} color={copied ? "green" : ""} leftIcon={<ClipboardIcon />}>{copied ? "Copied!" : "Copy"}</Button>
-      {censorable && <Button variant="outline" onClick={() => toggleIsTokenRevealed()} leftIcon={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}>{isTokenRevealed ? "Hide" : "Reveal"}</Button>}
+      <Button
+        variant="filled"
+        onClick={() => copy(value)}
+        color={copied ? "green" : ""}
+        leftIcon={<ClipboardIcon />}>
+        {copied ? "Copied!" : "Copy"}
+      </Button>
+      {censorable &&
+        <Button
+          variant="outline"
+          onClick={() => toggleIsTokenRevealed()}
+          leftIcon={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}>
+          {isTokenRevealed ? "Hide" : "Reveal"}
+        </Button>}
       <Popover
         opened={confirmationOpen}
         onClose={() => setConfirmationOpen(false)}
         position="bottom"
         placement="center"
-        target={<Button variant="outline" onClick={() => setConfirmationOpen(true)} leftIcon={<UpdateIcon />}>Regenerate</Button>}
+        target={<Button
+          variant="outline"
+          onClick={() => setConfirmationOpen(true)}
+          leftIcon={<UpdateIcon />}>
+          Regenerate
+        </Button>}
       >
         <Text mb={10}>Are you sure?</Text>
         <Button variant="outline" mr={10} onClick={() => setConfirmationOpen(false)}>Cancel</Button>

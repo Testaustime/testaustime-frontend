@@ -4,29 +4,36 @@ import React, { ReactNode } from "react";
 import Neovim from "../../images/neovim.svg";
 import Vscode from "../../images/vscode.svg";
 
-export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: { logo: React.ReactNode, downloadLink: string, sourceCodeLink: string, text: string }) => {
+interface ExtensionBlockProps {
+  logo: React.ReactNode,
+  downloadLink: string,
+  sourceCodeLink: string,
+  text: string
+}
+
+export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: ExtensionBlockProps) => {
   // Classes
-  const { classes } = createStyles((theme) => ({
+  const { classes } = createStyles(theme => ({
     wrapper: {
       backgroundColor: theme.colorScheme === "dark" ? "#282a36" : "#fff",
       borderRadius: "10px",
-      border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`,
+      border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`
     },
     text: {
-      padding: "2rem",
+      padding: "2rem"
     },
     sideContainer: {
       "@media (max-width: 685px)": {
         width: "100%",
         justifyContent: "flex-end",
-        marginTop: "-15px",
+        marginTop: "-15px"
       }
     },
     iconContainer: {
       backgroundColor: theme.colorScheme === "dark" ? "#22242e" : "#eef1ff",
       padding: "calc(2rem + 2px)",
       "&:hover": {
-        filter: "brightness(0.95)",
+        filter: "brightness(0.95)"
       },
       borderRadius: "0px 10px 10px 0px",
       "@media (max-width: 685px)": {
@@ -38,7 +45,7 @@ export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: { l
         justifyContent: "center",
         alignItems: "center",
         borderRadius: "0px 0px 10px 10px"
-      },
+      }
     },
     icon: {
       transition: "ease-in-out filter 0.2s"
@@ -65,23 +72,25 @@ export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: { l
         marginTop: "2rem",
         marginLeft: "25%"
       }
-    },
+    }
   }))();
-  
+
   // Icon map for source code icons
   const iconMap: Record<string, ReactNode> = { // Root domain in lower case to icon element
-    "github": <GitHubLogoIcon height={20} width={20} className={classes.icon}/>
+    "github": <GitHubLogoIcon height={20} width={20} className={classes.icon} />
   };
 
   return <Group sx={{ width: "100%" }} className={classes.wrapper}>
     <Center className={classes.logo}>
       {logo}
     </Center>
-    <Anchor className={classes.spacer}></Anchor>
+    <Anchor className={classes.spacer} />
     <Anchor href={downloadLink} sx={{ flex: 1 }} size="lg" className={classes.text}>{text}</Anchor>
     <Group spacing={10} className={classes.sideContainer}>
       <Anchor href={sourceCodeLink} variant="text" className={classes.iconContainer}>
-        {iconMap[new URL(sourceCodeLink).hostname.split(".").reverse()[1]] ?? <QuestionMarkIcon height={20} width={20} className={classes.icon}/>}
+        {iconMap[new URL(sourceCodeLink).hostname.split(".").reverse()[1]] ??
+          <QuestionMarkIcon height={20} width={20} className={classes.icon} />
+        }
       </Anchor>
     </Group>
   </Group>;
@@ -93,9 +102,9 @@ export const ExtensionsPage = () => {
     vsCodeLogo: {
       marginRight: "-5px",
       "@media (max-width: 320px)": {
-        marginRight: "0px",
-      },
-    },
+        marginRight: "0px"
+      }
+    }
   }))();
   return <div style={{ height: "calc(100% - 36px - 50px - 80px)" }}>
     <Title order={1} mb={5}>Extensions</Title>

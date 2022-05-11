@@ -10,7 +10,7 @@ describe("topProjectsStatistics", () => {
     const result = getAllTimeTopProjects([
       { project_name: "p1", duration: 10 },
       { project_name: "p1", duration: 5 },
-      { project_name: "p1", duration: 7 },
+      { project_name: "p1", duration: 7 }
     ]);
 
     expect(result).toEqual([
@@ -24,7 +24,7 @@ describe("topProjectsStatistics", () => {
       { project_name: "p2", duration: 50 },
       { project_name: "p1", duration: 5 },
       { project_name: "p2", duration: 30 },
-      { project_name: "p1", duration: 7 },
+      { project_name: "p1", duration: 7 }
     ]);
 
     expect(result).toEqual([
@@ -39,7 +39,7 @@ describe("topProjectsStatistics", () => {
       { project_name: "p1", duration: 50 },
       { project_name: "p2", duration: 5 },
       { project_name: "p1", duration: 30 },
-      { project_name: "p2", duration: 7 },
+      { project_name: "p2", duration: 7 }
     ]);
 
     expect(result).toEqual([
