@@ -26,7 +26,7 @@ export const ProfilePage = () => {
     <Text mt={15}>Registration time: {format(registrationTime, "d.M.yyyy HH:mm")}</Text>
     <Group direction="column" mt={40} spacing={15}>
       <WithTooltip
-        tooltipLabel={<Text>This token is used for authentication in your code editor.
+        tooltipLabel={<Text>This token is used for authentication in your code editor.{" "}
           <Anchor component={Link} to="/extensions">Get your extension from here!</Anchor>
         </Text>}
       >
