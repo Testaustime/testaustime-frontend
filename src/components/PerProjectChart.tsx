@@ -7,12 +7,12 @@ import { prettifyProgrammingLanguageName } from "../utils/programmingLanguagesUt
 
 export interface PerProjectChartProps {
   entries: {
-    language: string | undefined,
+    language?: string,
     duration: number,
     id: number,
-    project_name?: string | undefined,
-    editor_name?: string | undefined,
-    hostname?: string | undefined,
+    project_name?: string,
+    editor_name?: string,
+    hostname?: string,
     start_time: Date,
     dayStart: Date
   }[],

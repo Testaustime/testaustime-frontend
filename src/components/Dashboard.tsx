@@ -1,6 +1,5 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
 import { Accordion, Group, MultiSelect, SegmentedControl, Text, Title, createStyles } from "@mantine/core";
-import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
 import TopLanguages from "./TopLanguages";
 import { prettyDuration } from "../utils/dateUtils";
 import { TopProjects } from "./TopProjects/TopProjects";
@@ -13,27 +12,52 @@ import { PerProjectChart } from "./PerProjectChart";
 import { addDays, format, startOfDay } from "date-fns/esm";
 import useAuthentication from "../hooks/UseAuthentication";
 
+const useStyles = createStyles(theme => ({
+  dataCard: {
+    padding: "10px",
+    backgroundColor: theme.colorScheme === "dark" ? "#222326" : "#fff",
+    border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`,
+    borderRadius: "10px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    marginBottom: "30px"
+  },
+  dailyCodingTimeChart: {
+    height: "400px",
+    width: "100%"
+  },
+  projectCodingChart: {
+    height: "400px",
+    width: "100%",
+    paddingBottom: "15px"
+  },
+  multiSelect: {
+    minWidth: "400px",
+    "@media (max-width: 480px)": {
+      width: "100%",
+      minWidth: "unset"
+    }
+  },
+  segmentControl: {
+    marginTop: 25,
+    marginBottom: -3,
+    "@media (max-width: 480px)": {
+      width: "100%"
+    }
+  }
+}));
+
 type DayRange = "month" | "week" | "all";
 
-const getDayCount = (dayRange: DayRange) => {
-  const entries = useActivityData().map(entry => ({
-    ...entry
-  }));
-
-  const currentDate = new Date();
-  const firstCodingDay = entries.at(0)?.start_time;
-  const defaultDate = new Date("Mon Mar 14 2022 00:00:00 GMT+0300 (Eastern European Summer Time)");
-
-  const diff = currentDate.getTime() - (firstCodingDay?.getTime() ?? defaultDate.getTime());
-
-  const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+const getDayCount = (dayRange: DayRange, allCount: number) => {
   switch (dayRange) {
     case "month":
       return 30;
     case "week":
       return 7;
     case "all":
-      return diffDays;
+      return allCount;
   }
 };
 
@@ -53,49 +77,18 @@ const getAllEntriesByDay = (
 
 export const Dashboard = () => {
   const [statisticsRange, setStatisticsRange] = useState<DayRange>("week");
-  const dayCount = getDayCount(statisticsRange);
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+  const { username } = useAuthentication();
+  const isSmallScreen = useMediaQuery("(max-width: 700px)");
+  const { classes } = useStyles();
+  const entries = useActivityData();
 
-  const { classes } = createStyles(theme => ({
-    dataCard: {
-      padding: "10px",
-      backgroundColor: theme.colorScheme === "dark" ? "#222326" : "#fff",
-      border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`,
-      borderRadius: "10px",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      marginBottom: "30px"
-    },
-    dailyCodingTimeChart: {
-      height: "400px",
-      width: "100%"
-    },
-    projectCodingChart: {
-      height: "400px",
-      width: "100%",
-      paddingBottom: "15px"
-    },
-    multiSelect: {
-      minWidth: "400px",
-      "@media (max-width: 480px)": {
-        width: "100%",
-        minWidth: "unset"
-      }
-    },
-    segmentControl: {
-      marginTop: 25,
-      marginBottom: -3,
-      "@media (max-width: 480px)": {
-        width: "100%"
-      }
-    }
-  }))();
+  const firstCodingDay = entries[0]?.start_time ?? new Date(2022, 2, 14);
 
-  const entries = useActivityData().map(entry => ({
-    ...entry,
-    language: normalizeProgrammingLanguageName(entry.language)
-  }));
+  const diff = new Date().getTime() - firstCodingDay.getTime();
+
+  const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+  const dayCount = getDayCount(statisticsRange, diffDays);
 
   const projectNames = entries.reduce<string[]>((acc, entry) => {
     const name = entry.project_name || "Unknown";
@@ -114,10 +107,6 @@ export const Dashboard = () => {
     const startOfStatisticsRange = startOfDay(addDays(new Date(), -dayCount));
     return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
   });
-
-  const isSmallScreen = useMediaQuery("(max-width: 700px)");
-
-  const { username } = useAuthentication();
 
   return (
     <div style={{ width: "100%" }}>

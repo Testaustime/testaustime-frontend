@@ -1,6 +1,7 @@
 import axios from "axios";
 import { startOfDay } from "date-fns";
 import { useEffect, useState } from "react";
+import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
 import useAuthentication from "./UseAuthentication";
 
 export interface ApiUsersUserActivityDataResponseItem {
@@ -31,7 +32,8 @@ export const useActivityData = () => {
         ...e,
         start_time: new Date(e.start_time),
         dayStart: startOfDay(new Date(e.start_time)),
-        project_name: e.project_name || undefined // Change nulls and empty strings to undefineds
+        project_name: e.project_name || undefined, // Change nulls and empty strings to undefineds
+        language: normalizeProgrammingLanguageName(e.language)
       })));
     }).catch(e => console.error(e));
   }, []);
