@@ -27,12 +27,12 @@ export const MainPage = () => {
         textDecoration: "none"
       },
       "@media (max-width: 800px)": {
-        width: "80%",
+        width: "80%"
       },
       "@media (max-width: 680px)": {
         paddingLeft: "1rem",
-        fontSize: "0.8rem",
-      },
+        fontSize: "0.8rem"
+      }
     },
     heroContainer: {
       height: "400px",
@@ -41,22 +41,22 @@ export const MainPage = () => {
       flexDirection: "row",
       alignContent: "center",
       justifyContent: "center",
-      alignItems: "center",
+      alignItems: "center"
     },
     heroText: {
       textAlign: "center",
       fontWeight: "600",
       fontSize: "1.4rem",
-      color: theme.colorScheme === "dark" ? "#bbb" : "#333",
+      color: theme.colorScheme === "dark" ? "#bbb" : "#333"
     },
-    dashboardContainer : {
+    dashboardContainer: {
       height: "calc(100% - 36px - 50px - 80px)",
       display: "flex",
       flexWrap: "wrap",
       flexDirection: "row",
       alignContent: "flex-start",
       justifyContent: "flex-start",
-      alignItems: "flex-start",
+      alignItems: "flex-start"
     },
     downloadIcon: {
       height: "50px",
@@ -64,17 +64,20 @@ export const MainPage = () => {
       "@media (max-width: 680px)": {
         marginRight: "1rem",
         width: "50px"
-      },
-    },
+      }
+    }
   }))();
 
   return <div className={!isLoggedIn ? classes.heroContainer : classes.dashboardContainer}>
     {isLoggedIn ? <>
       <Dashboard />
     </> : <>
-      <Text mb={20} className={classes.heroText}>The ultimate tool for tracking time of your coding sessions. Show the world how dedicated you are to your projects!</Text>
+      <Text mb={20} className={classes.heroText}>
+        The ultimate tool for tracking time of your coding sessions.
+        Show the world how dedicated you are to your projects!
+      </Text>
       <Anchor className={classes.downloadButton} component={Link} to="/extensions">
-        <DownloadIcon height={30} width={30} className={classes.downloadIcon}></DownloadIcon>
+        <DownloadIcon height={30} width={30} className={classes.downloadIcon} />
         Download now for your favorite editor
       </Anchor>
     </>}

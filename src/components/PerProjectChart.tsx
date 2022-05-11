@@ -38,7 +38,7 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
       const langEntries = langGroups[lang];
       return {
         language: lang,
-        duration: sumBy(langEntries, (e) => e.duration),
+        duration: sumBy(langEntries, (e) => e.duration)
       };
     });
     return {
@@ -46,11 +46,21 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
       totalTimeByLanguage,
       latestUpdate: Math.max(
         ...projectEntries.map((e) => e.start_time.getTime())
-      ),
+      )
     };
   });
 
-  // Flatten totalTimeByLanguage in totalTimeByProject, to the form { projectName: string, language1_duration: number, language2_duration: number, language3_duration: number, ... }
+  /*
+  Flatten totalTimeByLanguage in totalTimeByProject, to the following form:
+  {
+    projectName: string,
+    language1_duration: number,
+    language2_duration: number,
+    language3_duration: number,
+    ...
+  }
+  */
+
   const data: Record<string, string | number>[] = totalTimeByProject
     .sort((a, b) => b.latestUpdate - a.latestUpdate)
     .slice(0, projectCount)
@@ -64,14 +74,16 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
             return acc;
           },
           {}
-        ),
+        )
       };
     });
 
   const maxDuration = Math.max(...totalTimeByProject.map(p => sumBy(p.totalTimeByLanguage, l => l.duration)));
   const ticks = calculateTickValues(maxDuration);
 
-  const longestProjectName = totalTimeByProject.slice().map((project) => project.projectName).sort((a, b) => b.length - a.length)[0];
+  const longestProjectName = totalTimeByProject
+    .slice()
+    .map((project) => project.projectName).sort((a, b) => b.length - a.length)[0];
 
   return (
     <div className={className} style={{ height: 130 * Math.min(totalTimeByProject.length, projectCount) }}>
@@ -80,14 +92,19 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
         keys={[...languageNames.map((l) => `${l}_duration`)]}
         labelSkipWidth={10}
         indexBy="projectName"
-        margin={{ top: 30, right: 30, bottom: 30, left: 60 + (longestProjectName.length > 8 ? (longestProjectName.length - 8) * 7 : 0) }}
+        margin={{
+          top: 30,
+          right: 30,
+          bottom: 30,
+          left: 60 + (longestProjectName.length > 8 ? (longestProjectName.length - 8) * 7 : 0)
+        }}
         padding={0.3}
         enableGridY={false}
         enableGridX
         theme={{ textColor: usesDarkMode ? "white" : "black" }}
         axisBottom={{
           format: (d: number) => prettyDuration(d),
-          tickValues: ticks,
+          tickValues: ticks
         }}
         gridXValues={ticks}
         axisLeft={{ tickPadding: 20 }}
@@ -97,7 +114,7 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
             sx={(theme) => ({
               backgroundColor: usesDarkMode
                 ? theme.colors.dark[5]
-                : theme.colors.gray[1],
+                : theme.colors.gray[1]
             })}
             p={10}
           >

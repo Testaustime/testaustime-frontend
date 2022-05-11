@@ -7,6 +7,12 @@ import { calculateTickValues } from "../utils/chartUtils";
 import { prettyDuration } from "../utils/dateUtils";
 import { useSettings } from "../hooks/useSettings";
 
+const isNumber = (value: unknown): value is number => typeof value === "number";
+
+const isDateOrNumber = (value: unknown): value is Date | number => {
+  return isNumber(value) || value instanceof Date;
+};
+
 export interface DailyCodingTimeChartProps {
   entries: {
     language: string | undefined;
@@ -62,7 +68,7 @@ export const DailyCodingTimeChart = ({
           type: "time",
           precision: "day",
           min: data[0].date,
-          max: data[data.length - 1].date,
+          max: data[data.length - 1].date
         }}
         yScale={{
           type: "linear",
@@ -71,24 +77,30 @@ export const DailyCodingTimeChart = ({
         }}
         curve={smoothCharts ? "monotoneX" : "linear"}
         axisBottom={{
-          format: (date) => {
+          format: (date: unknown) => {
+            if (!isDateOrNumber(date)) return "";
             if (dayCount <= 14) return format(date, "d.M.");
             return isSunday(date) ? format(date, "d.M.") : "";
           },
-          tickValues: data.map(({ date }) => date),
+          tickValues: data.map(({ date }) => date)
         }}
         axisLeft={{
-          format: (durationSeconds) => prettyDuration(durationSeconds),
-          tickValues: yticks,
+          format: (durationSeconds) => {
+            if (!isNumber(durationSeconds)) return "";
+            return prettyDuration(durationSeconds);
+          },
+          tickValues: yticks
         }}
         gridXValues={data.map(({ date }) => date)}
         gridYValues={yticks}
         sliceTooltip={(p) => {
           const { x, y } = p.slice.points[0].data as { x: Date; y: number };
           return (
-            <Paper p={10} sx={theme => ({ backgroundColor: usesDarkMode
-              ? theme.colors.dark[5]
-              : theme.colors.gray[1]})}>
+            <Paper p={10} sx={theme => ({
+              backgroundColor: usesDarkMode
+                ? theme.colors.dark[5]
+                : theme.colors.gray[1]
+            })}>
               <Text>{"Date: " + format(x, "d.M.yyyy")}</Text>
               <Text>{"Time spent: " + prettyDuration(y)}</Text>
             </Paper>
@@ -116,11 +128,11 @@ export const DailyCodingTimeChart = ({
           crosshair: {
             line: {
               stroke: usesDarkMode ? "#fff" : "#555",
-              strokeWidth: 3,
+              strokeWidth: 3
             }
           }
         }}
-        colors = {[
+        colors={[
           usesDarkMode ? "#536AB7" : "#3D55A0"
         ]}
         enableArea

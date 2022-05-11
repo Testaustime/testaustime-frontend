@@ -9,11 +9,11 @@ import {
   MantineProvider
 } from "@mantine/core";
 import { useColorScheme, useHotkeys, useLocalStorage } from "@mantine/hooks";
-import { Menu, Divider, Text } from "@mantine/core";
-import { NotificationsProvider, } from "@mantine/notifications";
+import { Menu, Divider } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
 import { ExitIcon, PersonIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { FunctionComponent, useEffect } from "react";
-import { Navigate, Route, Routes, useNavigate,  } from "react-router";
+import { Navigate, Route, Routes, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { LoginPage } from "./components/pages/LoginPage";
 import { MainPage } from "./components/pages/MainPage";
@@ -33,7 +33,7 @@ const useStyles = createStyles((theme) => ({
     width: "100%",
     minHeight: "100%",
     alignContent: "flex-start",
-    paddingBottom: 100,
+    paddingBottom: 100
   },
   innerContainer: {
     minHeight: "100%",
@@ -54,7 +54,7 @@ const useStyles = createStyles((theme) => ({
     "@media (max-width: 450px)": {
       width: "60%",
       fontSize: "8vw"
-    },
+    }
   },
   profileButton: {
     display: "flex"
@@ -62,7 +62,7 @@ const useStyles = createStyles((theme) => ({
   navigation: {
     "@media (max-width: 790px)": {
       display: "none"
-    },
+    }
   },
   smallNavigation: {
     display: "none",
@@ -70,8 +70,8 @@ const useStyles = createStyles((theme) => ({
       display: "flex"
     },
     "@media (max-width: 450px)": {
-      width: "39%",
-    },
+      width: "39%"
+    }
   },
   spacer: {
     width: "10px",
@@ -79,7 +79,7 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.colorScheme === "dark" ? "#bbb" : "#333"
   },
   menu: {
-    border: `1px solid ${theme.colorScheme === "dark" ? theme.colors.gray[0] : theme.colors.gray[1]}`,
+    border: `1px solid ${theme.colorScheme === "dark" ? theme.colors.gray[0] : theme.colors.gray[1]}`
   }
 }));
 
@@ -116,7 +116,7 @@ export const AppSetup = () => {
   useHotkeys([["mod+J", () => toggleColorScheme()]]);
 
   useEffect(() => {
-    refetchUsername();
+    refetchUsername().catch(e => console.error(e));
   }, []);
 
   const logOutAndRedirect = () => {
@@ -171,52 +171,52 @@ export const AppSetup = () => {
                 <Group>
                   <Group spacing={15} align="center" className={classes.navigation}>
                     {
-                      isLoggedIn ? 
+                      isLoggedIn ?
                         <Group>
-                          <Anchor component={Link} to="/extensions">
-                          Extensions
-                          </Anchor>
-                          <Box className={classes.spacer}></Box>
-                          <Anchor component={Link} to="/">
-                          Dashboard
-                          </Anchor>
-                          <Anchor component={Link} to="/friends">
-                          Friends
-                          </Anchor>
-                          <Menu 
+                          <Anchor component={Link} to="/extensions">Extensions</Anchor>
+                          <Box className={classes.spacer} />
+                          <Anchor component={Link} to="/">Dashboard</Anchor>
+                          <Anchor component={Link} to="/friends">Friends</Anchor>
+                          <Menu
                             trigger="hover"
-                            control={<Button variant="outline" size="xs"><PersonIcon style={{ marginRight: "5px" }}></PersonIcon><Text>{username}</Text></Button>}
+                            control={<Button
+                              variant="outline"
+                              size="xs"
+                              leftIcon={<PersonIcon style={{ marginRight: "5px" }} />}
+                            >
+                              {username}
+                            </Button>}
                           >
                             <Menu.Label>Account</Menu.Label>
                             <Menu.Item component={Link} to="/profile">Settings</Menu.Item>
                             <Divider />
-                            <Menu.Item color="blue" icon={<ExitIcon/>} onClick={logOutAndRedirect}>Log out</Menu.Item>
+                            <Menu.Item color="blue" icon={<ExitIcon />} onClick={logOutAndRedirect}>Log out</Menu.Item>
                           </Menu>
                         </Group>
                         :
                         <Group>
-                          <Anchor component={Link} to="/extensions">
-                          Extensions
-                          </Anchor>
-                          <Box className={classes.spacer}></Box>
-                          <Anchor component={Link} to="/login">
-                          Login
-                          </Anchor>
-                          <Button component={Link} to="/register">
-                          Register
-                          </Button>
+                          <Anchor component={Link} to="/extensions">Extensions</Anchor>
+                          <Box className={classes.spacer} />
+                          <Anchor component={Link} to="/login">Login</Anchor>
+                          <Button component={Link} to="/register">Register</Button>
                         </Group>
                     }
-                    <ThemeToggle label={false}/>
+                    <ThemeToggle label={false} />
                   </Group>
                   <Group className={classes.smallNavigation}>
-                    <Menu 
+                    <Menu
                       trigger="hover"
-                      control={<Button variant="outline" size="lg"><HamburgerMenuIcon markerHeight={27}></HamburgerMenuIcon></Button>}
+                      control={<Button variant="outline" size="lg">
+                        <HamburgerMenuIcon markerHeight={27} />
+                      </Button>}
                     >
-                      <div style={{ padding: "10px" }} onClick={() => { toggleColorScheme(); }}><ThemeToggle label={true}></ThemeToggle></div>
+                      <div
+                        style={{ padding: "10px" }}
+                        onClick={() => { toggleColorScheme(); }}>
+                        <ThemeToggle label={true} />
+                      </div>
                       {
-                        !isLoggedIn ? 
+                        !isLoggedIn ?
                           <>
                             <Divider />
                             <Menu.Item component={Link} to="/profile">Login</Menu.Item>
@@ -233,7 +233,7 @@ export const AppSetup = () => {
                             <Menu.Label>Account - {username}</Menu.Label>
                             <Menu.Item component={Link} to="/profile">Settings</Menu.Item>
                             <Divider />
-                            <Menu.Item color="blue" icon={<ExitIcon/>} onClick={logOutAndRedirect}>Log out</Menu.Item>
+                            <Menu.Item color="blue" icon={<ExitIcon />} onClick={logOutAndRedirect}>Log out</Menu.Item>
                           </>
                       }
                     </Menu>
@@ -246,24 +246,16 @@ export const AppSetup = () => {
                 <Route path="/register" element={<RegistrationPage />} />
                 <Route
                   path="/profile"
-                  element={
-                    <PrivateRoute>
-                      <ProfilePage />
-                    </PrivateRoute>
-                  }
+                  element={<PrivateRoute><ProfilePage /></PrivateRoute>}
                 />
                 <Route
                   path="/friends"
-                  element={
-                    <PrivateRoute>
-                      <FriendPage />
-                    </PrivateRoute>
-                  }
+                  element={<PrivateRoute><FriendPage /></PrivateRoute>}
                 />
                 <Route path="/extensions" element={<ExtensionsPage />} />
-                <Route path="*" element={<NotFoundPage />}/>
+                <Route path="*" element={<NotFoundPage />} />
               </Routes>
-              <Footer></Footer>
+              <Footer />
             </div>
           </Group>
         </NotificationsProvider>

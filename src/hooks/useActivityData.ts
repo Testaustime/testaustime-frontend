@@ -24,14 +24,16 @@ export const useActivityData = () => {
   const [entries, setEntries] = useState<ActivityDataEntry[]>([]);
 
   useEffect(() => {
-    axios.get<ApiUsersUserActivityDataResponseItem[]>("/users/@me/activity/data", { headers: { Authorization: `Bearer ${token}` } }).then(({ data }) => {
+    axios.get<ApiUsersUserActivityDataResponseItem[]>("/users/@me/activity/data",
+      { headers: { Authorization: `Bearer ${token ?? ""}` } }
+    ).then(({ data }) => {
       setEntries(data.map(e => ({
         ...e,
         start_time: new Date(e.start_time),
         dayStart: startOfDay(new Date(e.start_time)),
-        project_name: e.project_name || undefined, // Change nulls and empty strings to undefineds
+        project_name: e.project_name || undefined // Change nulls and empty strings to undefineds
       })));
-    });
+    }).catch(e => console.error(e));
   }, []);
 
   return entries;

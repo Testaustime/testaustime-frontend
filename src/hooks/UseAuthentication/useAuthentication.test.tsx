@@ -14,6 +14,8 @@ interface TestUser {
   password: string
 }
 
+type TestUserWithAuthToken = TestUser & { auth_token: string };
+
 const user1: TestUser = {
   username: "myUserName",
   password: "myPassWord"
@@ -39,7 +41,7 @@ describe("useAuthentication", () => {
         );
       }
 
-      const user = {
+      const user: TestUserWithAuthToken = {
         username,
         password,
         auth_token: generateAuthToken(username)
@@ -88,6 +90,7 @@ describe("useAuthentication", () => {
   it("returns correct token, and sets it to local storage when registering", async () => {
     const registerResult = await waitFor(() => hook.register(user1.username, user1.password));
     expect(registerResult).toEqual(generateAuthToken(user1.username));
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect(localStorage.__STORE__[authTokenLocalStorageKey]).toEqual(generateAuthToken(user1.username));
   });
 

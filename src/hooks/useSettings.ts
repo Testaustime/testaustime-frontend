@@ -5,7 +5,7 @@ export interface LocalStorageSettings {
 }
 
 const defaultValue: LocalStorageSettings = {
-  smoothCharts: true,
+  smoothCharts: true
 };
 
 export const useSettings = () => {

@@ -25,8 +25,8 @@ const getDayCount = (dayRange: DayRange) => {
   const defaultDate = new Date("Mon Mar 14 2022 00:00:00 GMT+0300 (Eastern European Summer Time)");
 
   const diff = currentDate.getTime() - (firstCodingDay?.getTime() ?? defaultDate.getTime());
-  
-  const diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
+
+  const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
   switch (dayRange) {
     case "month":
       return 30;
@@ -135,9 +135,7 @@ export const Dashboard = () => {
               data={projectNames}
               value={selectedProjects}
               className={classes.multiSelect}
-              onChange={(selectedProjectNames: string[]) =>
-                setSelectedProjects(selectedProjectNames)
-              }
+              onChange={selectedProjectNames => setSelectedProjects(selectedProjectNames)}
               clearable
               placeholder="Select a project filter"
             />

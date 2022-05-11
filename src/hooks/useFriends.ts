@@ -32,21 +32,21 @@ export const useFriends = () => {
 
   const fetchFriendData = async () => {
     const response = await axios.get<ApiFriendsResponseItem[]>("/friends/list", {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token ?? ""}` }
     });
 
     dispatch(setFriends(response.data));
   };
-  
+
   useEffect(() => {
-    fetchFriendData();
+    fetchFriendData().catch(e => console.error(e));
   }, []);
 
   const addFriend = async (friendCode: string) => {
     try {
       const response = await axios.post<ApiFriendsAddResponse>("/friends/add", friendCode, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token ?? ""}`,
           "Content-Type": "text/plain"
         }
       });
@@ -64,7 +64,7 @@ export const useFriends = () => {
       await axios.delete("/friends/remove", {
         data: username,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token ?? ""}`,
           "Content-Type": "text/plain"
         }
       });

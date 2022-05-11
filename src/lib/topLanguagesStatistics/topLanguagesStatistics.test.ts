@@ -10,7 +10,7 @@ describe("topLanguagesStatistics", () => {
     const result = getAllTimeTopLanguages([
       { language: "ts", duration: 5 },
       { language: "ts", duration: 3 },
-      { language: "ts", duration: 12 },
+      { language: "ts", duration: 12 }
     ]);
 
     expect(result).toEqual([
@@ -24,12 +24,12 @@ describe("topLanguagesStatistics", () => {
       { language: "java", duration: 10 },
       { language: "ts", duration: 2 },
       { language: "java", duration: 37 },
-      { language: "ts", duration: 30 },
+      { language: "ts", duration: 30 }
     ]);
 
     expect(result).toEqual([
       { language: "java", duration: 47 },
-      { language: "ts", duration: 33 },
+      { language: "ts", duration: 33 }
     ]);
   });
 
@@ -39,12 +39,12 @@ describe("topLanguagesStatistics", () => {
       { language: "ts", duration: 10 },
       { language: "java", duration: 2 },
       { language: "ts", duration: 37 },
-      { language: "java", duration: 30 },
+      { language: "java", duration: 30 }
     ]);
 
     expect(result).toEqual([
       { language: "ts", duration: 47 },
-      { language: "java", duration: 33 },
+      { language: "java", duration: 33 }
     ]);
   });
 });
