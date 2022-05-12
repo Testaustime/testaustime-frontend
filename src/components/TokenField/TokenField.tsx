@@ -7,12 +7,19 @@ import Censorable from "../Censorable";
 
 export interface TokenFieldProps {
   value: string,
-  regenerate: () => Promise<string>,
+  regenerate?: () => Promise<string>,
   censorable?: boolean,
-  revealLength?: number
+  revealLength?: number,
+  regenerable?: boolean
 }
 
-export const TokenField = ({ value, regenerate, censorable, revealLength }: TokenFieldProps) => {
+export const TokenField = ({
+  value,
+  regenerate,
+  censorable,
+  revealLength,
+  regenerable
+}: TokenFieldProps) => {
   const { copy, copied, reset } = useClipboard({ timeout: 2000 });
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [isTokenRevealed, toggleIsTokenRevealed] = useBooleanToggle(false);
@@ -25,7 +32,7 @@ export const TokenField = ({ value, regenerate, censorable, revealLength }: Toke
     {censorable ?
       <Text><Censorable authToken={value} revealLength={revealLength || 0} revealed={isTokenRevealed} /></Text> :
       <Text><code>{value}</code></Text>}
-    <Group spacing={15} mt={25}>
+    <Group spacing="md" mt="sm">
       <Button
         variant="filled"
         onClick={() => copy(value)}
@@ -40,7 +47,7 @@ export const TokenField = ({ value, regenerate, censorable, revealLength }: Toke
           leftIcon={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}>
           {isTokenRevealed ? "Hide" : "Reveal"}
         </Button>}
-      <Popover
+      {regenerable && regenerate && <Popover
         opened={confirmationOpen}
         onClose={() => setConfirmationOpen(false)}
         position="bottom"
@@ -58,7 +65,7 @@ export const TokenField = ({ value, regenerate, censorable, revealLength }: Toke
           regenerate().catch(handleErrorWithNotification);
           setConfirmationOpen(false);
         }}>Yes</Button>
-      </Popover>
+      </Popover>}
     </Group>
   </div>;
 };

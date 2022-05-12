@@ -117,6 +117,23 @@ export const useLeaderboards = () => {
     });
   };
 
+  const regenerateInviteCode = async (leaderboardName: string) => {
+    const res = await axios.post<{ invite_code: string }>(`/leaderboards/${leaderboardName}/regenerate`, {}, {
+      headers: { Authorization: `Bearer ${token ?? ""}` }
+    });
+    const inviteCode = res.data.invite_code;
+
+    setLeaderboardData({
+      ...leaderboardData,
+      [leaderboardName]: {
+        ...leaderboardData[leaderboardName],
+        invite: inviteCode
+      }
+    });
+
+    return inviteCode;
+  };
+
   return {
     leaderboards: leaderboards.map(l => ({
       ...l,
@@ -129,6 +146,7 @@ export const useLeaderboards = () => {
     promoteUser: (leaderboardName: string, username: string) => setUserAdminStatus(leaderboardName, username, true),
     demoteUser: (leaderboardName: string, username: string) => setUserAdminStatus(leaderboardName, username, false),
     setUserAdminStatus,
-    kickUser
+    kickUser,
+    regenerateInviteCode
   };
 };

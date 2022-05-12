@@ -12,6 +12,7 @@ import axios from "axios";
 import { generateLeaderboardInviteCode } from "../../utils/codeUtils";
 import { Trash2 } from "react-feather";
 import { ExitIcon } from "@radix-ui/react-icons";
+import { TokenField } from "../TokenField/TokenField";
 
 interface JoinLeaderboardModalProps {
   onJoin: (leaderboardCode: string) => Promise<void>
@@ -24,7 +25,8 @@ interface LeaderboardModalProps {
   isAdmin: boolean,
   promoteUser: (username: string) => Promise<void>,
   demoteUser: (username: string) => Promise<void>,
-  kickUser: (username: string) => Promise<void>
+  kickUser: (username: string) => Promise<void>,
+  regenerateInviteCode: () => Promise<string>
 }
 
 const LeaderboardModal = ({
@@ -34,7 +36,8 @@ const LeaderboardModal = ({
   isAdmin,
   promoteUser,
   demoteUser,
-  kickUser
+  kickUser,
+  regenerateInviteCode
 }: LeaderboardModalProps) => {
   const { username } = useAuthentication();
 
@@ -59,7 +62,14 @@ const LeaderboardModal = ({
         Delete leaderboard
       </Button>}
     </Group>
-    <Text>Invite code: <code>ttlic_{leaderboard.invite}</code></Text>
+    <Title order={2} my="md">Invite code</Title>
+    <TokenField
+      value={leaderboard.invite}
+      regenerate={regenerateInviteCode}
+      regenerable={isAdmin}
+      censorable
+      revealLength={4}
+    />
     <Title order={2} my="md">Members</Title>
     <Table>
       <thead>
@@ -231,7 +241,8 @@ export const LeaderboardsPage = () => {
     deleteLeaderboard,
     promoteUser,
     demoteUser,
-    kickUser
+    kickUser,
+    regenerateInviteCode
   } = useLeaderboards();
   const { username } = useAuthentication();
   const modals = useModals();
@@ -292,6 +303,7 @@ export const LeaderboardsPage = () => {
         kickUser={async (username: string) => {
           await kickUser(openedLeaderboard.name, username);
         }}
+        regenerateInviteCode={async () => await regenerateInviteCode(openedLeaderboard.name)}
       />}
     </Modal>
     <Group align="center" mb="md" mt="xl" position="apart">
