@@ -1,8 +1,9 @@
-import { Button, Group, Popover, Text } from "@mantine/core";
+import { Button, Group, Text } from "@mantine/core";
 import { useBooleanToggle, useClipboard } from "@mantine/hooks";
 import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
+import { ButtonWithConfirmation } from "../ButtonWithConfirmation";
 import Censorable from "../Censorable";
 
 export interface TokenFieldProps {
@@ -23,7 +24,6 @@ export const TokenField = ({
   textFormatter = (currentValue: string) => currentValue
 }: TokenFieldProps) => {
   const { copy, copied, reset } = useClipboard({ timeout: 2000 });
-  const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [isTokenRevealed, toggleIsTokenRevealed] = useBooleanToggle(false);
 
   useEffect(() => {
@@ -56,25 +56,13 @@ export const TokenField = ({
           leftIcon={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}>
           {isTokenRevealed ? "Hide" : "Reveal"}
         </Button>}
-      {regenerate && <Popover
-        opened={confirmationOpen}
-        onClose={() => setConfirmationOpen(false)}
-        position="bottom"
-        placement="center"
-        target={<Button
-          variant="outline"
-          onClick={() => setConfirmationOpen(true)}
-          leftIcon={<UpdateIcon />}>
-          Regenerate
-        </Button>}
+      {regenerate && <ButtonWithConfirmation
+        leftIcon={<UpdateIcon />}
+        variant="outline"
+        onClick={() => { regenerate().catch(handleErrorWithNotification); }}
       >
-        <Text mb={10}>Are you sure?</Text>
-        <Button variant="outline" mr={10} onClick={() => setConfirmationOpen(false)}>Cancel</Button>
-        <Button variant="filled" color="red" onClick={() => {
-          regenerate().catch(handleErrorWithNotification);
-          setConfirmationOpen(false);
-        }}>Yes</Button>
-      </Popover>}
+        Regenerate
+      </ButtonWithConfirmation>}
     </Group>
   </div>;
 };

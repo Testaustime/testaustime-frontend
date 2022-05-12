@@ -5,6 +5,7 @@ import useAuthentication from "../../hooks/UseAuthentication";
 import { CombinedLeaderboard } from "../../hooks/useLeaderboards";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
+import { ButtonWithConfirmation } from "../ButtonWithConfirmation";
 import { TokenField } from "../TokenField/TokenField";
 
 interface LeaderboardModalProps {
@@ -32,24 +33,21 @@ export const LeaderboardModal = ({
 
   return <>
     <Group mb="md">
-      <Button
+      <ButtonWithConfirmation
         color="red"
         size="xs"
         leftIcon={<ExitIcon />}
-        onClick={() => {
-          leaveLeaderboard().catch(e => console.log(e));
-        }}>
+        onClick={() => { leaveLeaderboard().catch(e => console.log(e)); }}
+      >
         Leave leaderboard
-      </Button>
-      {isAdmin && <Button
+      </ButtonWithConfirmation>
+      {isAdmin && <ButtonWithConfirmation
         color="red"
         size="xs"
         leftIcon={<Trash2 size={18} />}
-        onClick={() => {
-          deleteLeaderboard().catch(e => console.log(e));
-        }}>
+        onClick={() => { deleteLeaderboard().catch(e => console.log(e)); }}>
         Delete leaderboard
-      </Button>}
+      </ButtonWithConfirmation>}
     </Group>
     <Title order={2} my="md">Invite code</Title>
     <TokenField
