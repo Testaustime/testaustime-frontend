@@ -15,6 +15,38 @@ interface JoinLeaderboardModalProps {
   onJoin: (leaderboardCode: string) => Promise<void>
 }
 
+interface LeaderboardModalProps {
+  leaveLeaderboard: (leaderboardId: string) => Promise<void>,
+  leaderboard: CombinedLeaderboard
+}
+
+const LeaderboardModal = ({ leaderboard, leaveLeaderboard }: LeaderboardModalProps) => {
+  return <>
+    <Button color="red" size="xs" mb="md" onClick={() => {
+      leaveLeaderboard(leaderboard.name).catch(e => console.log(e));
+    }}>Leave leaderboard</Button>
+    <Text>Invite code: <code>ttlic_{leaderboard.invite}</code></Text>
+    <Title order={2} my="md">Members</Title>
+    <Table>
+      <thead>
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Time coded</th>
+        </tr>
+      </thead>
+      <tbody>
+        {[...leaderboard.members].sort((a, b) => b.time_coded - a.time_coded).map((member, i) =>
+          <tr key={member.username}>
+            <td>{i + 1}{getOrdinalSuffix(i + 1)}</td>
+            <td>{member.username}{member.admin && <Badge ml="sm">Admin</Badge>}</td>
+            <td>{prettyDuration(member.time_coded)}</td>
+          </tr>)}
+      </tbody>
+    </Table>
+  </>;
+};
+
 const JoinLeaderboardModal = ({ onJoin }: JoinLeaderboardModalProps) => {
   const [error, setError] = useState<string>("");
   const [placeholderLeaderboardInviteCode] = useState(generateLeaderboardInviteCode());
@@ -84,34 +116,13 @@ export const LeaderboardsPage = () => {
     const id = modals.openModal({
       title: <Title>{leaderboard.name}</Title>,
       size: "xl",
-      children: (
-        <>
-          <Button color="red" size="xs" mb="md" onClick={() => {
-            leaveLeaderboard(leaderboard.name).then(() => {
-              modals.closeModal(id);
-            }).catch(e => console.log(e));
-          }}>Leave leaderboard</Button>
-          <Text>Invite code: {leaderboard.invite}</Text>
-          <Title order={2} my="md">Members</Title>
-          <Table>
-            <thead>
-              <tr>
-                <th>Position</th>
-                <th>Name</th>
-                <th>Time coded</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[...leaderboard.members].sort((a, b) => b.time_coded - a.time_coded).map((member, i) =>
-                <tr key={member.username}>
-                  <td>{i + 1}{getOrdinalSuffix(i + 1)}</td>
-                  <td>{member.username}{member.admin && <Badge ml="sm">Admin</Badge>}</td>
-                  <td>{prettyDuration(member.time_coded)}</td>
-                </tr>)}
-            </tbody>
-          </Table>
-        </>
-      )
+      children: <LeaderboardModal
+        leaveLeaderboard={async () => {
+          await leaveLeaderboard(leaderboard.name);
+          modals.closeModal(id);
+        }}
+        leaderboard={leaderboard}
+      />
     });
   };
 

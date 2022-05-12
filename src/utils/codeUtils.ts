@@ -1,11 +1,13 @@
+const alphanumerics = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
 export const generateFriendCode = () => {
-  const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  const code = Array.from({ length: 24 }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join("");
+  const code = Array.from({ length: 24 }, () =>
+    alphanumerics[Math.floor(Math.random() * alphanumerics.length)]).join("");
   return `ttfc_${code}`;
 };
 
 export const generateLeaderboardInviteCode = () => {
-  const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  const code = Array.from({ length: 32 }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join("");
+  const code = Array.from({ length: 32 }, () =>
+    alphanumerics[Math.floor(Math.random() * alphanumerics.length)]).join("");
   return `ttlic_${code}`;
 };
