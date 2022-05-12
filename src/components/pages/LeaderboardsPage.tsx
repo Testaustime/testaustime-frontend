@@ -105,8 +105,55 @@ const JoinLeaderboardModal = ({ onJoin }: JoinLeaderboardModalProps) => {
   </>;
 };
 
+interface CreateLeaderboardModalProps {
+  onCreate: (leaderboardName: string) => Promise<void>
+}
+
+const CreateLeaderboardModal = ({ onCreate }: CreateLeaderboardModalProps) => {
+  const [error, setError] = useState<string>("");
+
+  return <>
+    <Formik
+      initialValues={{
+        leaderboardName: ""
+      }}
+      onSubmit={values => {
+        onCreate(values.leaderboardName)
+          .catch(e => {
+            if (axios.isAxiosError(e)) {
+              if (e.response?.status === 409) {
+                setError("Leaderboard already exists");
+              }
+              else {
+                setError("Error creating leaderboard");
+              }
+            }
+            else {
+              setError("Error creating leaderboard");
+            }
+          });
+      }}
+      validationSchema={Yup.object().shape({
+        leaderboardName: Yup.string()
+          .required()
+          .min(2, "Leaderboard name must be at least 2 characters long")
+          .max(32, "Leaderboard name must be at most 32 characters long")
+          .matches(/^[a-zA-Z0-9]*$/, "Leaderboard name must only contain alphanumeric characters")
+      })}
+    >
+      {() => <Form>
+        <FormikTextInput name="leaderboardName" />
+        <Group position="right" mt="md">
+          <Button type="submit">Create</Button>
+        </Group>
+      </Form>}
+    </Formik>
+    {error && <Text color="red">{error}</Text>}
+  </>;
+};
+
 export const LeaderboardsPage = () => {
-  const { leaderboards, joinLeaderboard, leaveLeaderboard } = useLeaderboards();
+  const { leaderboards, joinLeaderboard, leaveLeaderboard, createLeaderboard } = useLeaderboards();
   const { username } = useAuthentication();
   const modals = useModals();
 
@@ -126,6 +173,19 @@ export const LeaderboardsPage = () => {
     });
   };
 
+  const openCreateLeaderboard = () => {
+    const id = modals.openModal({
+      title: <Title>Create new leaderboard</Title>,
+      size: "xl",
+      children: <CreateLeaderboardModal
+        onCreate={async (leaderboardName: string) => {
+          await createLeaderboard(leaderboardName);
+          modals.closeModal(id);
+        }}
+      />
+    });
+  };
+
   const openJoinLeaderboard = () => {
     const id = modals.openModal({
       title: <Title>Join a leaderboard</Title>,
@@ -140,7 +200,10 @@ export const LeaderboardsPage = () => {
   return <>
     <Group align="center" mb="md" mt="xl" position="apart">
       <Title>Leaderboards</Title>
-      <Button onClick={() => openJoinLeaderboard()}>Join a leaderboard</Button>
+      <Group spacing="sm">
+        <Button onClick={() => openCreateLeaderboard()} variant="outline">Create new leaderboard</Button>
+        <Button onClick={() => openJoinLeaderboard()}>Join a leaderboard</Button>
+      </Group>
     </Group>
     <Table>
       <thead>
@@ -158,7 +221,7 @@ export const LeaderboardsPage = () => {
           const topMember = membersSorted[0];
           const yourPosition = membersSorted.findIndex(member => member.username === username) + 1;
 
-          return <tr key={leaderboard.name}>
+          return <tr key={leaderboard.invite}>
             <td>{leaderboard.name}</td>
             <td>{topMember.username} ({prettyDuration(topMember.time_coded)})</td>
             <td>{yourPosition}{getOrdinalSuffix(yourPosition)} {yourPosition === 1 ? "🏆" : ""}</td>

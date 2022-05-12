@@ -34,13 +34,18 @@ export const useLeaderboards = () => {
   }, []);
 
   useEffect(() => {
-    leaderboards.forEach(leaderboard => {
-      axios.get<LeaderboardData>(`/leaderboards/${leaderboard.name}`, {
-        headers: { Authorization: `Bearer ${token ?? ""}` }
-      }).then(res => {
-        setLeaderboardData({ ...leaderboardData, [leaderboard.name]: res.data });
-      }).catch(e => console.error(e));
-    });
+    const promises = leaderboards.map(leaderboard =>
+      axios.get<LeaderboardData>(`/leaderboards/${leaderboard.name}`,
+        { headers: { Authorization: `Bearer ${token ?? ""}` } })
+    );
+
+    Promise.all(promises).then(values => {
+      const data = values.reduce<Record<string, LeaderboardData>>((acc, cur) => {
+        acc[cur.data.name] = cur.data;
+        return acc;
+      }, {});
+      setLeaderboardData(data);
+    }).catch(e => console.error(e));
   }, [leaderboards]);
 
   const joinLeaderboard = async (leaderboardCode: string) => {
@@ -62,12 +67,22 @@ export const useLeaderboards = () => {
     setLeaderboards(leaderboards.filter(leaderboard => leaderboard.name !== leaderboardName));
   };
 
+  const createLeaderboard = async (leaderboardName: string) => {
+    await axios.post<{ invite_code: string }>("/leaderboards/create", {
+      name: leaderboardName
+    }, {
+      headers: { Authorization: `Bearer ${token ?? ""}` }
+    });
+    setLeaderboards([...leaderboards, { name: leaderboardName, member_count: 0 }]);
+  };
+
   return {
     leaderboards: leaderboards.map(l => ({
       ...l,
       ...leaderboardData[l.name]
     })),
     joinLeaderboard,
-    leaveLeaderboard
+    leaveLeaderboard,
+    createLeaderboard
   };
 };
