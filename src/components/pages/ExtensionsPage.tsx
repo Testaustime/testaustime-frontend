@@ -11,69 +11,71 @@ interface ExtensionBlockProps {
   text: string
 }
 
+const useStyles = createStyles(theme => ({
+  wrapper: {
+    backgroundColor: theme.colorScheme === "dark" ? "#282a36" : "#fff",
+    borderRadius: "10px",
+    border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`
+  },
+  text: {
+    padding: "2rem"
+  },
+  sideContainer: {
+    "@media (max-width: 685px)": {
+      width: "100%",
+      justifyContent: "flex-end",
+      marginTop: "-15px"
+    }
+  },
+  iconContainer: {
+    backgroundColor: theme.colorScheme === "dark" ? "#22242e" : "#eef1ff",
+    padding: "calc(2rem + 2px)",
+    "&:hover": {
+      filter: "brightness(0.95)"
+    },
+    borderRadius: "0px 10px 10px 0px",
+    "@media (max-width: 685px)": {
+      width: "100%",
+      height: "50px",
+      padding: "unset",
+      display: "flex",
+      alignContent: "center",
+      justifyContent: "center",
+      alignItems: "center",
+      borderRadius: "0px 0px 10px 10px"
+    }
+  },
+  icon: {
+    transition: "ease-in-out filter 0.2s"
+  },
+  logo: {
+    paddingLeft: "2rem",
+    paddingRight: "2rem",
+    "@media (max-width: 320px)": {
+      width: "100%",
+      marginTop: "2rem",
+      paddingLeft: "0px",
+      paddingRight: "0px"
+    }
+  },
+  spacer: {
+    height: "3rem",
+    marginLeft: "-15px",
+    borderRadius: "10px",
+    backgroundColor: "#C1C2C5",
+    width: "1px",
+    "@media (max-width: 320px)": {
+      height: "1px",
+      width: "50%",
+      marginTop: "2rem",
+      marginLeft: "25%"
+    }
+  }
+}));
+
 export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: ExtensionBlockProps) => {
   // Classes
-  const { classes } = createStyles(theme => ({
-    wrapper: {
-      backgroundColor: theme.colorScheme === "dark" ? "#282a36" : "#fff",
-      borderRadius: "10px",
-      border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`
-    },
-    text: {
-      padding: "2rem"
-    },
-    sideContainer: {
-      "@media (max-width: 685px)": {
-        width: "100%",
-        justifyContent: "flex-end",
-        marginTop: "-15px"
-      }
-    },
-    iconContainer: {
-      backgroundColor: theme.colorScheme === "dark" ? "#22242e" : "#eef1ff",
-      padding: "calc(2rem + 2px)",
-      "&:hover": {
-        filter: "brightness(0.95)"
-      },
-      borderRadius: "0px 10px 10px 0px",
-      "@media (max-width: 685px)": {
-        width: "100%",
-        height: "50px",
-        padding: "unset",
-        display: "flex",
-        alignContent: "center",
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: "0px 0px 10px 10px"
-      }
-    },
-    icon: {
-      transition: "ease-in-out filter 0.2s"
-    },
-    logo: {
-      paddingLeft: "2rem",
-      paddingRight: "2rem",
-      "@media (max-width: 320px)": {
-        width: "100%",
-        marginTop: "2rem",
-        paddingLeft: "0px",
-        paddingRight: "0px"
-      }
-    },
-    spacer: {
-      height: "3rem",
-      marginLeft: "-15px",
-      borderRadius: "10px",
-      backgroundColor: "#C1C2C5",
-      width: "1px",
-      "@media (max-width: 320px)": {
-        height: "1px",
-        width: "50%",
-        marginTop: "2rem",
-        marginLeft: "25%"
-      }
-    }
-  }))();
+  const { classes } = useStyles();
 
   // Icon map for source code icons
   const iconMap: Record<string, ReactNode> = { // Root domain in lower case to icon element
@@ -96,16 +98,19 @@ export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: Ext
   </Group>;
 };
 
+const useExtensionsPageStyles = createStyles(() => ({
+  vsCodeLogo: {
+    marginRight: "-5px",
+    "@media (max-width: 320px)": {
+      marginRight: "0px"
+    }
+  }
+}));
+
 export const ExtensionsPage = () => {
   // Classes
-  const { classes } = createStyles(() => ({
-    vsCodeLogo: {
-      marginRight: "-5px",
-      "@media (max-width: 320px)": {
-        marginRight: "0px"
-      }
-    }
-  }))();
+  const { classes } = useExtensionsPageStyles();
+
   return <div style={{ height: "calc(100% - 36px - 50px - 80px)" }}>
     <Title order={1} mb={5}>Extensions</Title>
     <Text>Download the Testaustime extension for your favorite code editor!</Text>

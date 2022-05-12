@@ -11,7 +11,17 @@ import {
 import { useColorScheme, useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { Menu, Divider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
-import { ExitIcon, PersonIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
+import {
+  ExitIcon,
+  PersonIcon,
+  HamburgerMenuIcon,
+  GearIcon,
+  MixIcon,
+  EnterIcon,
+  PlusIcon,
+  FaceIcon,
+  HomeIcon
+} from "@radix-ui/react-icons";
 import { FunctionComponent, useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
@@ -28,6 +38,7 @@ import { NotFoundPage } from "./components/NotFoundPage";
 import { Footer } from "./components/Footer";
 import { LeaderboardsPage } from "./components/pages/LeaderboardsPage";
 import { ModalsProvider } from "@mantine/modals";
+import { BarChart2 } from "react-feather";
 
 const useStyles = createStyles(theme => ({
   container: {
@@ -194,8 +205,8 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
         </Link>
         <Group>
           <Group spacing={15} align="center" className={classes.navigation}>
-            {isLoggedIn ?
-              <Group>
+            <Group>
+              {isLoggedIn ? <>
                 <Anchor component={Link} to="/">Dashboard</Anchor>
                 <Anchor component={Link} to="/friends">Friends</Anchor>
                 <Anchor component={Link} to="/leaderboards">Leaderboards</Anchor>
@@ -210,9 +221,9 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
                   </Button>}
                 >
                   <Menu.Label>Account</Menu.Label>
-                  <Menu.Item component={Link} to="/profile">Settings</Menu.Item>
+                  <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>Settings</Menu.Item>
                   <Divider />
-                  <Menu.Item component={Link} to="/extensions">Extensions</Menu.Item>
+                  <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
                   <Divider />
                   <Menu.Item
                     color="blue"
@@ -221,14 +232,13 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
                     Log out
                   </Menu.Item>
                 </Menu>
-              </Group>
-              :
-              <Group>
+              </> : <>
                 <Anchor component={Link} to="/extensions">Extensions</Anchor>
                 <Box className={classes.spacer} />
                 <Anchor component={Link} to="/login">Login</Anchor>
                 <Button component={Link} to="/register">Register</Button>
-              </Group>}
+              </>}
+            </Group>
             <ThemeToggle label={false} />
           </Group>
           <Group className={classes.smallNavigation}>
@@ -243,25 +253,17 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
                 onClick={() => { toggleColorScheme(); }}>
                 <ThemeToggle label={true} />
               </div>
-              {!isLoggedIn ?
+              {isLoggedIn ?
                 <>
                   <Divider />
-                  <Menu.Item component={Link} to="/profile">Login</Menu.Item>
-                  <Menu.Item color="blue" component={Link} to="/settings">Register</Menu.Item>
-                  <Divider />
-                  <Menu.Item component={Link} to="/extensions">Extensions</Menu.Item>
-                </>
-                :
-                <>
-                  <Divider />
-                  <Menu.Item component={Link} to="/">Dashboard</Menu.Item>
-                  <Menu.Item component={Link} to="/friends">Friends</Menu.Item>
-                  <Menu.Item component={Link} to="/leaderboards">Leaderboards</Menu.Item>
+                  <Menu.Item component={Link} to="/" icon={<HomeIcon />}>Dashboard</Menu.Item>
+                  <Menu.Item component={Link} to="/friends" icon={<FaceIcon />}>Friends</Menu.Item>
+                  <Menu.Item component={Link} to="/leaderboards" icon={<BarChart2 size={18} />}>Leaderboards</Menu.Item>
                   <Divider />
                   <Menu.Label>Account - {username}</Menu.Label>
-                  <Menu.Item component={Link} to="/profile">Settings</Menu.Item>
+                  <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>Settings</Menu.Item>
                   <Divider />
-                  <Menu.Item component={Link} to="/extensions">Extensions</Menu.Item>
+                  <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
                   <Divider />
                   <Menu.Item
                     color="blue"
@@ -269,6 +271,14 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
                     onClick={logOutAndRedirect}>
                     Log out
                   </Menu.Item>
+                </>
+                :
+                <>
+                  <Divider />
+                  <Menu.Item component={Link} to="/profile" icon={<EnterIcon />}>Login</Menu.Item>
+                  <Menu.Item color="blue" component={Link} to="/settings" icon={<PlusIcon />}>Register</Menu.Item>
+                  <Divider />
+                  <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
                 </>}
             </Menu>
           </Group>

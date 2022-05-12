@@ -1,15 +1,14 @@
-import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
-import { Accordion, Group, MultiSelect, SegmentedControl, Text, Title, createStyles } from "@mantine/core";
+import { useActivityData } from "../hooks/useActivityData";
+import { Group, MultiSelect, SegmentedControl, Text, Title, createStyles } from "@mantine/core";
 import TopLanguages from "./TopLanguages";
 import { prettyDuration } from "../utils/dateUtils";
 import { TopProjects } from "./TopProjects/TopProjects";
-import DaySessions from "./DaySessions";
-import { groupBy, sumBy } from "../utils/arrayUtils";
+import { sumBy } from "../utils/arrayUtils";
 import { DailyCodingTimeChart } from "./DailyCodingTimeChart";
 import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
-import { addDays, format, startOfDay } from "date-fns/esm";
+import { addDays, startOfDay } from "date-fns/esm";
 import useAuthentication from "../hooks/UseAuthentication";
 
 const useStyles = createStyles(theme => ({
@@ -59,20 +58,6 @@ const getDayCount = (dayRange: DayRange, allCount: number) => {
     case "all":
       return allCount;
   }
-};
-
-const getAllEntriesByDay = (
-  entries: ActivityDataEntry[]
-): { date: Date, entries: ActivityDataEntry[] }[] => {
-  const byDayDictionary = groupBy(entries, entry => entry.dayStart.getTime());
-  return Object.keys(byDayDictionary)
-    .sort((a, b) => Number(b) - Number(a))
-    .map(key => ({
-      date: new Date(Number(key)),
-      entries: byDayDictionary[key].sort(
-        (a, b) => b.start_time.getTime() - a.start_time.getTime()
-      )
-    }));
 };
 
 export const Dashboard = () => {
@@ -194,19 +179,6 @@ export const Dashboard = () => {
               <TopProjects entries={entriesInRange} />
             </div>
           </Group>
-          <Title order={2} mt={20} mb={5}>
-            Your sessions
-          </Title>
-          <Accordion multiple>
-            {getAllEntriesByDay(entriesInRange).map(d => (
-              <Accordion.Item
-                key={d.date.getTime()}
-                label={<Text size="lg">{format(d.date, "d.M.yyyy")}</Text>}
-              >
-                <DaySessions entries={d.entries} />
-              </Accordion.Item>
-            ))}
-          </Accordion>
         </>
       ) : (
         <Text>
