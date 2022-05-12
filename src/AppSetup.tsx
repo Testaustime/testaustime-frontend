@@ -254,14 +254,14 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
                 :
                 <>
                   <Divider />
-                  <Menu.Item component={Link} to="/extensions">Extensions</Menu.Item>
-                  <Divider />
                   <Menu.Item component={Link} to="/">Dashboard</Menu.Item>
                   <Menu.Item component={Link} to="/friends">Friends</Menu.Item>
                   <Menu.Item component={Link} to="/leaderboards">Leaderboards</Menu.Item>
                   <Divider />
                   <Menu.Label>Account - {username}</Menu.Label>
                   <Menu.Item component={Link} to="/profile">Settings</Menu.Item>
+                  <Divider />
+                  <Menu.Item component={Link} to="/extensions">Extensions</Menu.Item>
                   <Divider />
                   <Menu.Item
                     color="blue"
