@@ -14,7 +14,7 @@ const useStyles = createStyles(theme => ({
     alignItems: "center",
     alignContent: "center",
     flexWrap: "nowrap",
-    fontWeight: "500",
+    fontWeight: "bold",
     padding: "2rem 3rem",
     backgroundColor: theme.colorScheme === "dark" ? "#6275bc" : "#7289DA",
     color: "white",
@@ -43,7 +43,7 @@ const useStyles = createStyles(theme => ({
   },
   heroText: {
     textAlign: "center",
-    fontWeight: "600",
+    fontWeight: "bold",
     fontSize: "1.4rem",
     color: theme.colorScheme === "dark" ? "#bbb" : "#333"
   },

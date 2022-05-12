@@ -4,7 +4,7 @@ import { PersonIcon } from "@radix-ui/react-icons";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { FormikTextInput } from "./forms/FormikTextInput";
-import { generateFriendCode } from "../utils/friendUtils";
+import { generateFriendCode } from "../utils/codeUtils";
 import { useState } from "react";
 import { handleErrorWithNotification } from "../utils/notificationErrorHandler";
 import { prettyDuration } from "../utils/dateUtils";

@@ -38,7 +38,14 @@ export const ProfilePage = () => {
       <WithTooltip tooltipLabel={<Text>This code is used for sharing your data with your friends.</Text>}>
         <Title order={3}>Friend code</Title>
       </WithTooltip>
-      <TokenField value={"ttfc_" + friendCode} regenerate={regenerateFriendCode} />
+      <TokenField
+        value={friendCode}
+        censorable
+        revealLength={4}
+        regenerate={regenerateFriendCode}
+        copyFormatter={value => `ttfc_${value}`}
+        textFormatter={value => `ttfc_${value}`}
+      />
     </Group>
     <Title order={2} mt={40}>Settings</Title>
     <Group mt={15}>
