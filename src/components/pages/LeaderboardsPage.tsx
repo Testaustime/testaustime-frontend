@@ -21,10 +21,21 @@ interface LeaderboardModalProps {
   leaveLeaderboard: () => Promise<void>,
   leaderboard: CombinedLeaderboard,
   deleteLeaderboard: () => Promise<void>,
-  isAdmin: boolean
+  isAdmin: boolean,
+  promoteUser: (username: string) => Promise<void>,
+  demoteUser: (username: string) => Promise<void>
 }
 
-const LeaderboardModal = ({ leaderboard, leaveLeaderboard, deleteLeaderboard, isAdmin }: LeaderboardModalProps) => {
+const LeaderboardModal = ({
+  leaderboard,
+  leaveLeaderboard,
+  deleteLeaderboard,
+  isAdmin,
+  promoteUser,
+  demoteUser
+}: LeaderboardModalProps) => {
+  const { username } = useAuthentication();
+
   return <>
     <Group mb="md">
       <Button
@@ -54,15 +65,42 @@ const LeaderboardModal = ({ leaderboard, leaveLeaderboard, deleteLeaderboard, is
           <th>Position</th>
           <th>Name</th>
           <th>Time coded</th>
+          {isAdmin && <th />}
         </tr>
       </thead>
       <tbody>
-        {[...leaderboard.members].sort((a, b) => b.time_coded - a.time_coded).map((member, i) =>
-          <tr key={member.username}>
+        {[...leaderboard.members].sort((a, b) => b.time_coded - a.time_coded).map((member, i) => {
+          return <tr key={member.username}>
             <td>{i + 1}{getOrdinalSuffix(i + 1)}</td>
             <td>{member.username}{member.admin && <Badge ml="sm">Admin</Badge>}</td>
             <td>{prettyDuration(member.time_coded)}</td>
-          </tr>)}
+            {isAdmin && <td>
+              <Group position="right" spacing="xs">
+                {member.username !== username && <>
+                  {(member.admin ?
+                    <Button
+                      size="xs"
+                      variant="subtle"
+                      onClick={() => {
+                        demoteUser(member.username).catch(e => console.log(e));
+                      }}
+                    >
+                      Demote
+                    </Button> :
+                    <Button
+                      size="xs"
+                      variant="subtle"
+                      onClick={() => {
+                        promoteUser(member.username).catch(e => console.log(e));
+                      }}
+                    >
+                      Promote
+                    </Button>)}
+                </>}
+              </Group>
+            </td>}
+          </tr>;
+        })}
       </tbody>
     </Table>
   </>;
@@ -179,7 +217,9 @@ export const LeaderboardsPage = () => {
     joinLeaderboard,
     leaveLeaderboard,
     createLeaderboard,
-    deleteLeaderboard
+    deleteLeaderboard,
+    promoteUser,
+    demoteUser
   } = useLeaderboards();
   const { username } = useAuthentication();
   const modals = useModals();
@@ -202,6 +242,12 @@ export const LeaderboardsPage = () => {
           modals.closeModal(id);
         }}
         isAdmin={userIsAdmin}
+        promoteUser={async (username: string) => {
+          await promoteUser(leaderboard.name, username);
+        }}
+        demoteUser={async (username: string) => {
+          await demoteUser(leaderboard.name, username);
+        }}
       />
     });
   };

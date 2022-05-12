@@ -83,6 +83,24 @@ export const useLeaderboards = () => {
     setLeaderboards(leaderboards.filter(leaderboard => leaderboard.name !== leaderboardName));
   };
 
+  const setUserAdminStatus = async (leaderboardName: string, username: string, adminStatus: boolean) => {
+    await axios.post(`/leaderboards/${leaderboardName}/${adminStatus ? "promote" : "demote"}`, {
+      user: username
+    }, {
+      headers: { Authorization: `Bearer ${token ?? ""}` }
+    });
+
+    setLeaderboardData({
+      ...leaderboardData,
+      [leaderboardName]: {
+        ...leaderboardData[leaderboardName],
+        members: leaderboardData[leaderboardName].members.map(member => {
+          return member.username === username ? { ...member, admin: adminStatus } : member;
+        })
+      }
+    });
+  };
+
   return {
     leaderboards: leaderboards.map(l => ({
       ...l,
@@ -91,6 +109,9 @@ export const useLeaderboards = () => {
     joinLeaderboard,
     leaveLeaderboard,
     createLeaderboard,
-    deleteLeaderboard
+    deleteLeaderboard,
+    promoteUser: (leaderboardName: string, username: string) => setUserAdminStatus(leaderboardName, username, true),
+    demoteUser: (leaderboardName: string, username: string) => setUserAdminStatus(leaderboardName, username, false),
+    setUserAdminStatus
   };
 };
