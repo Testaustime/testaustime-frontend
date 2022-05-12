@@ -65,10 +65,11 @@ const LeaderboardModal = ({
     <Title order={2} my="md">Invite code</Title>
     <TokenField
       value={leaderboard.invite}
-      regenerate={regenerateInviteCode}
-      regenerable={isAdmin}
+      regenerate={isAdmin ? regenerateInviteCode : undefined}
       censorable
       revealLength={4}
+      textFormatter={(currentValue: string) => `ttlic_${currentValue}`}
+      copyFormatter={(currentValue: string) => `ttlic_${currentValue}`}
     />
     <Title order={2} my="md">Members</Title>
     <Table>
@@ -215,7 +216,7 @@ const CreateLeaderboardModal = ({ onCreate }: CreateLeaderboardModalProps) => {
       }}
       validationSchema={Yup.object().shape({
         leaderboardName: Yup.string()
-          .required()
+          .required("Leaderboard name is required")
           .min(2, "Leaderboard name must be at least 2 characters long")
           .max(32, "Leaderboard name must be at most 32 characters long")
           .matches(/^[a-zA-Z0-9]*$/, "Leaderboard name must only contain alphanumeric characters")

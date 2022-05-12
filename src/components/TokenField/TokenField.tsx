@@ -10,7 +10,8 @@ export interface TokenFieldProps {
   regenerate?: () => Promise<string>,
   censorable?: boolean,
   revealLength?: number,
-  regenerable?: boolean
+  copyFormatter?: (currentValue: string) => string,
+  textFormatter?: (currentValue: string) => string
 }
 
 export const TokenField = ({
@@ -18,7 +19,8 @@ export const TokenField = ({
   regenerate,
   censorable,
   revealLength,
-  regenerable
+  copyFormatter = (currentValue: string) => currentValue,
+  textFormatter = (currentValue: string) => currentValue
 }: TokenFieldProps) => {
   const { copy, copied, reset } = useClipboard({ timeout: 2000 });
   const [confirmationOpen, setConfirmationOpen] = useState(false);
@@ -30,12 +32,19 @@ export const TokenField = ({
 
   return <div>
     {censorable ?
-      <Text><Censorable authToken={value} revealLength={revealLength || 0} revealed={isTokenRevealed} /></Text> :
+      <Text>
+        <Censorable
+          authToken={value}
+          revealLength={revealLength || 0}
+          revealed={isTokenRevealed}
+          textFormatter={textFormatter}
+        />
+      </Text> :
       <Text><code>{value}</code></Text>}
     <Group spacing="md" mt="sm">
       <Button
         variant="filled"
-        onClick={() => copy(value)}
+        onClick={() => copy(copyFormatter(value))}
         color={copied ? "green" : ""}
         leftIcon={<ClipboardIcon />}>
         {copied ? "Copied!" : "Copy"}
@@ -47,7 +56,7 @@ export const TokenField = ({
           leftIcon={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}>
           {isTokenRevealed ? "Hide" : "Reveal"}
         </Button>}
-      {regenerable && regenerate && <Popover
+      {regenerate && <Popover
         opened={confirmationOpen}
         onClose={() => setConfirmationOpen(false)}
         position="bottom"
