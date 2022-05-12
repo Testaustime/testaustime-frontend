@@ -76,6 +76,13 @@ export const useLeaderboards = () => {
     setLeaderboards([...leaderboards, { name: leaderboardName, member_count: 0 }]);
   };
 
+  const deleteLeaderboard = async (leaderboardName: string) => {
+    await axios.delete(`/leaderboards/${leaderboardName}`, {
+      headers: { Authorization: `Bearer ${token ?? ""}` }
+    });
+    setLeaderboards(leaderboards.filter(leaderboard => leaderboard.name !== leaderboardName));
+  };
+
   return {
     leaderboards: leaderboards.map(l => ({
       ...l,
@@ -83,6 +90,7 @@ export const useLeaderboards = () => {
     })),
     joinLeaderboard,
     leaveLeaderboard,
-    createLeaderboard
+    createLeaderboard,
+    deleteLeaderboard
   };
 };

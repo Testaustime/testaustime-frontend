@@ -10,21 +10,42 @@ import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
 import axios from "axios";
 import { generateLeaderboardInviteCode } from "../../utils/codeUtils";
+import { Trash2 } from "react-feather";
+import { ExitIcon } from "@radix-ui/react-icons";
 
 interface JoinLeaderboardModalProps {
   onJoin: (leaderboardCode: string) => Promise<void>
 }
 
 interface LeaderboardModalProps {
-  leaveLeaderboard: (leaderboardId: string) => Promise<void>,
-  leaderboard: CombinedLeaderboard
+  leaveLeaderboard: () => Promise<void>,
+  leaderboard: CombinedLeaderboard,
+  deleteLeaderboard: () => Promise<void>,
+  isAdmin: boolean
 }
 
-const LeaderboardModal = ({ leaderboard, leaveLeaderboard }: LeaderboardModalProps) => {
+const LeaderboardModal = ({ leaderboard, leaveLeaderboard, deleteLeaderboard, isAdmin }: LeaderboardModalProps) => {
   return <>
-    <Button color="red" size="xs" mb="md" onClick={() => {
-      leaveLeaderboard(leaderboard.name).catch(e => console.log(e));
-    }}>Leave leaderboard</Button>
+    <Group mb="md">
+      <Button
+        color="red"
+        size="xs"
+        leftIcon={<ExitIcon />}
+        onClick={() => {
+          leaveLeaderboard().catch(e => console.log(e));
+        }}>
+        Leave leaderboard
+      </Button>
+      {isAdmin && <Button
+        color="red"
+        size="xs"
+        leftIcon={<Trash2 size={18} />}
+        onClick={() => {
+          deleteLeaderboard().catch(e => console.log(e));
+        }}>
+        Delete leaderboard
+      </Button>}
+    </Group>
     <Text>Invite code: <code>ttlic_{leaderboard.invite}</code></Text>
     <Title order={2} my="md">Members</Title>
     <Table>
@@ -153,13 +174,20 @@ const CreateLeaderboardModal = ({ onCreate }: CreateLeaderboardModalProps) => {
 };
 
 export const LeaderboardsPage = () => {
-  const { leaderboards, joinLeaderboard, leaveLeaderboard, createLeaderboard } = useLeaderboards();
+  const {
+    leaderboards,
+    joinLeaderboard,
+    leaveLeaderboard,
+    createLeaderboard,
+    deleteLeaderboard
+  } = useLeaderboards();
   const { username } = useAuthentication();
   const modals = useModals();
 
   if (!username) return <Text>No user</Text>;
 
   const openLeaderboard = (leaderboard: CombinedLeaderboard) => {
+    const userIsAdmin = Boolean(leaderboard.members.find(member => member.username === username)?.admin);
     const id = modals.openModal({
       title: <Title>{leaderboard.name}</Title>,
       size: "xl",
@@ -169,6 +197,11 @@ export const LeaderboardsPage = () => {
           modals.closeModal(id);
         }}
         leaderboard={leaderboard}
+        deleteLeaderboard={async () => {
+          await deleteLeaderboard(leaderboard.name);
+          modals.closeModal(id);
+        }}
+        isAdmin={userIsAdmin}
       />
     });
   };
@@ -220,9 +253,10 @@ export const LeaderboardsPage = () => {
           const membersSorted = [...leaderboard.members].sort((a, b) => b.time_coded - a.time_coded);
           const topMember = membersSorted[0];
           const yourPosition = membersSorted.findIndex(member => member.username === username) + 1;
+          const userIsAdmin = Boolean(leaderboard.members.find(member => member.username === username)?.admin);
 
           return <tr key={leaderboard.invite}>
-            <td>{leaderboard.name}</td>
+            <td>{leaderboard.name}{userIsAdmin && <Badge ml="sm">Admin</Badge>}</td>
             <td>{topMember.username} ({prettyDuration(topMember.time_coded)})</td>
             <td>{yourPosition}{getOrdinalSuffix(yourPosition)} {yourPosition === 1 ? "🏆" : ""}</td>
             <td style={{ display: "flex", justifyContent: "end" }}>
