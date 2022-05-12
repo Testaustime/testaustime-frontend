@@ -43,24 +43,23 @@ export const useLeaderboards = () => {
     });
   }, [leaderboards]);
 
-  // TODO: Add the leaderboard to state
-  const joinLeaderboard = (leaderboardCode: string) => {
-    axios.post<{ name: string }>("/leaderboards/join", {
+  const joinLeaderboard = async (leaderboardCode: string) => {
+    // TODO: Wait for https://github.com/Testaustime/testaustime-backend/pull/21 to get merged
+    // After that member_count can be made non-nullable
+    const res = await axios.post<{ name: string, member_count?: number }>("/leaderboards/join", {
       invite: leaderboardCode
     }, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
-    }).then(res => {
-      console.log(res.data);
-    }).catch(e => console.error(e));
+    });
+
+    setLeaderboards([...leaderboards, { name: res.data.name, member_count: res.data.member_count ?? 0 }]);
   };
 
-  // TODO: Remove the leaderboard from state
-  const leaveLeaderboard = (leaderboardName: string) => {
-    axios.post(`/leaderboards/${leaderboardName}/leave`, {}, {
+  const leaveLeaderboard = async (leaderboardName: string) => {
+    await axios.post(`/leaderboards/${leaderboardName}/leave`, {}, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
-    }).then(res => {
-      console.log(res.data);
-    }).catch(e => console.error(e));
+    });
+    setLeaderboards(leaderboards.filter(leaderboard => leaderboard.name !== leaderboardName));
   };
 
   return {

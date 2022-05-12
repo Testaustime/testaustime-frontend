@@ -1,33 +1,75 @@
 import { Badge, Button, Group, Table, Text, Title } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { Form, Formik } from "formik";
+import { useState } from "react";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { CombinedLeaderboard, useLeaderboards } from "../../hooks/useLeaderboards";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
 import { FormikTextInput } from "../forms/FormikTextInput";
+import * as Yup from "yup";
+import axios from "axios";
+import { generateLeaderboardInviteCode } from "../../utils/codeUtils";
 
 interface JoinLeaderboardModalProps {
-  onJoin: (leaderboardCode: string) => void
+  onJoin: (leaderboardCode: string) => Promise<void>
 }
 
 const JoinLeaderboardModal = ({ onJoin }: JoinLeaderboardModalProps) => {
+  const [error, setError] = useState<string>("");
+  const [placeholderLeaderboardInviteCode] = useState(generateLeaderboardInviteCode());
+
   return <>
     <Formik
       initialValues={{
         leaderboardCode: ""
       }}
+      validationSchema={Yup.object().shape({
+        leaderboardCode: Yup
+          .string()
+          .required("Invite code is required")
+          .matches(
+            /^ttlic_[a-zA-Z0-9]{32}$/,
+            "Friend code must start with \"ttlic_\", and be followed by 24 alphanumeric characters.")
+      })}
       onSubmit={values => {
-        onJoin(values.leaderboardCode);
+        onJoin(values.leaderboardCode).catch((e: unknown) => {
+          console.log(e);
+          if (axios.isAxiosError(e)) {
+            if (e.response?.status === 409) {
+              setError("You are already a member of this leaderboard");
+            }
+            else {
+              setError("Error joining leaderboard");
+            }
+          }
+          else {
+            setError("Error joining leaderboard");
+          }
+        });
       }}
     >
-      {() => <Form>
-        <FormikTextInput name="leaderboardCode" label="Leaderboard Code" />
+      {() => <Form onChange={() => {
+        setError("");
+      }}>
+        <FormikTextInput
+          name="leaderboardCode"
+          label="Leaderboard Code"
+          placeholder={placeholderLeaderboardInviteCode}
+          styles={theme => ({
+            invalid: {
+              "::placeholder": {
+                color: theme.fn.rgba(theme.colors.red[5], 0.4)
+              }
+            }
+          })}
+        />
         <Group position="right" mt="md">
           <Button type="submit">Join</Button>
         </Group>
       </Form>}
     </Formik>
+    {error && <Text color="red">{error}</Text>}
   </>;
 };
 
@@ -39,12 +81,16 @@ export const LeaderboardsPage = () => {
   if (!username) return <Text>No user</Text>;
 
   const openLeaderboard = (leaderboard: CombinedLeaderboard) => {
-    modals.openModal({
+    const id = modals.openModal({
       title: <Title>{leaderboard.name}</Title>,
       size: "xl",
       children: (
         <>
-          <Button color="red" size="xs" onClick={() => leaveLeaderboard(leaderboard.name)}>Leave leaderboard</Button>
+          <Button color="red" size="xs" mb="md" onClick={() => {
+            leaveLeaderboard(leaderboard.name).then(() => {
+              modals.closeModal(id);
+            }).catch(e => console.log(e));
+          }}>Leave leaderboard</Button>
           <Text>Invite code: {leaderboard.invite}</Text>
           <Title order={2} my="md">Members</Title>
           <Table>
@@ -73,8 +119,8 @@ export const LeaderboardsPage = () => {
     const id = modals.openModal({
       title: <Title>Join a leaderboard</Title>,
       size: "xl",
-      children: <JoinLeaderboardModal onJoin={code => {
-        joinLeaderboard(code);
+      children: <JoinLeaderboardModal onJoin={async code => {
+        await joinLeaderboard(code);
         modals.closeModal(id);
       }} />
     });
