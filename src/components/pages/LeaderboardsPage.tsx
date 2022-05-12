@@ -1,4 +1,4 @@
-import { Badge, Button, Group, Table, Text, Title } from "@mantine/core";
+import { Badge, Button, Group, Modal, Table, Text, Title } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { Form, Formik } from "formik";
 import { useState } from "react";
@@ -223,34 +223,10 @@ export const LeaderboardsPage = () => {
   } = useLeaderboards();
   const { username } = useAuthentication();
   const modals = useModals();
+  const [openedLeaderboardName, setOpenedLeaderboardName] = useState<string | undefined>(undefined);
+  const openedLeaderboard = leaderboards.find(l => l.name === openedLeaderboardName);
 
   if (!username) return <Text>No user</Text>;
-
-  const openLeaderboard = (leaderboard: CombinedLeaderboard) => {
-    const userIsAdmin = Boolean(leaderboard.members.find(member => member.username === username)?.admin);
-    const id = modals.openModal({
-      title: <Title>{leaderboard.name}</Title>,
-      size: "xl",
-      children: <LeaderboardModal
-        leaveLeaderboard={async () => {
-          await leaveLeaderboard(leaderboard.name);
-          modals.closeModal(id);
-        }}
-        leaderboard={leaderboard}
-        deleteLeaderboard={async () => {
-          await deleteLeaderboard(leaderboard.name);
-          modals.closeModal(id);
-        }}
-        isAdmin={userIsAdmin}
-        promoteUser={async (username: string) => {
-          await promoteUser(leaderboard.name, username);
-        }}
-        demoteUser={async (username: string) => {
-          await demoteUser(leaderboard.name, username);
-        }}
-      />
-    });
-  };
 
   const openCreateLeaderboard = () => {
     const id = modals.openModal({
@@ -277,6 +253,32 @@ export const LeaderboardsPage = () => {
   };
 
   return <>
+    <Modal
+      opened={Boolean(openedLeaderboard)}
+      onClose={() => setOpenedLeaderboardName(undefined)}
+      title={<Title>{openedLeaderboard?.name}</Title>}
+      withCloseButton
+      size="xl"
+    >
+      {openedLeaderboard && <LeaderboardModal
+        leaveLeaderboard={async () => {
+          await leaveLeaderboard(openedLeaderboard.name);
+          setOpenedLeaderboardName(undefined);
+        }}
+        leaderboard={openedLeaderboard}
+        deleteLeaderboard={async () => {
+          await deleteLeaderboard(openedLeaderboard.name);
+          setOpenedLeaderboardName(undefined);
+        }}
+        isAdmin={Boolean(openedLeaderboard.members.find(member => member.username === username)?.admin)}
+        promoteUser={async (username: string) => {
+          await promoteUser(openedLeaderboard.name, username);
+        }}
+        demoteUser={async (username: string) => {
+          await demoteUser(openedLeaderboard.name, username);
+        }}
+      />}
+    </Modal>
     <Group align="center" mb="md" mt="xl" position="apart">
       <Title>Leaderboards</Title>
       <Group spacing="sm">
@@ -310,7 +312,7 @@ export const LeaderboardsPage = () => {
                 compact
                 size="sm"
                 variant="outline"
-                onClick={() => openLeaderboard(leaderboard)}
+                onClick={() => setOpenedLeaderboardName(leaderboard.name)}
               >
                 See more
               </Button>
