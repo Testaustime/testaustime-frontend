@@ -101,6 +101,22 @@ export const useLeaderboards = () => {
     });
   };
 
+  const kickUser = async (leaderboardName: string, username: string) => {
+    await axios.post(`/leaderboards/${leaderboardName}/kick`, {
+      user: username
+    }, {
+      headers: { Authorization: `Bearer ${token ?? ""}` }
+    });
+
+    setLeaderboardData({
+      ...leaderboardData,
+      [leaderboardName]: {
+        ...leaderboardData[leaderboardName],
+        members: leaderboardData[leaderboardName].members.filter(member => member.username !== username)
+      }
+    });
+  };
+
   return {
     leaderboards: leaderboards.map(l => ({
       ...l,
@@ -112,6 +128,7 @@ export const useLeaderboards = () => {
     deleteLeaderboard,
     promoteUser: (leaderboardName: string, username: string) => setUserAdminStatus(leaderboardName, username, true),
     demoteUser: (leaderboardName: string, username: string) => setUserAdminStatus(leaderboardName, username, false),
-    setUserAdminStatus
+    setUserAdminStatus,
+    kickUser
   };
 };

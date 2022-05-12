@@ -23,7 +23,8 @@ interface LeaderboardModalProps {
   deleteLeaderboard: () => Promise<void>,
   isAdmin: boolean,
   promoteUser: (username: string) => Promise<void>,
-  demoteUser: (username: string) => Promise<void>
+  demoteUser: (username: string) => Promise<void>,
+  kickUser: (username: string) => Promise<void>
 }
 
 const LeaderboardModal = ({
@@ -32,7 +33,8 @@ const LeaderboardModal = ({
   deleteLeaderboard,
   isAdmin,
   promoteUser,
-  demoteUser
+  demoteUser,
+  kickUser
 }: LeaderboardModalProps) => {
   const { username } = useAuthentication();
 
@@ -77,6 +79,15 @@ const LeaderboardModal = ({
             {isAdmin && <td>
               <Group position="right" spacing="xs">
                 {member.username !== username && <>
+                  <Button
+                    size="xs"
+                    variant="subtle"
+                    onClick={() => {
+                      kickUser(member.username).catch(e => console.log(e));
+                    }}
+                  >
+                    Kick
+                  </Button>
                   {(member.admin ?
                     <Button
                       size="xs"
@@ -219,7 +230,8 @@ export const LeaderboardsPage = () => {
     createLeaderboard,
     deleteLeaderboard,
     promoteUser,
-    demoteUser
+    demoteUser,
+    kickUser
   } = useLeaderboards();
   const { username } = useAuthentication();
   const modals = useModals();
@@ -276,6 +288,9 @@ export const LeaderboardsPage = () => {
         }}
         demoteUser={async (username: string) => {
           await demoteUser(openedLeaderboard.name, username);
+        }}
+        kickUser={async (username: string) => {
+          await kickUser(openedLeaderboard.name, username);
         }}
       />}
     </Modal>
