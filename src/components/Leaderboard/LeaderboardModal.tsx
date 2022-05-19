@@ -13,6 +13,7 @@ interface LeaderboardModalProps {
   leaderboard: CombinedLeaderboard,
   deleteLeaderboard: () => Promise<void>,
   isAdmin: boolean,
+  isLastAdmin: boolean,
   promoteUser: (username: string) => Promise<void>,
   demoteUser: (username: string) => Promise<void>,
   kickUser: (username: string) => Promise<void>,
@@ -24,6 +25,7 @@ export const LeaderboardModal = ({
   leaveLeaderboard,
   deleteLeaderboard,
   isAdmin,
+  isLastAdmin,
   promoteUser,
   demoteUser,
   kickUser,
@@ -38,6 +40,7 @@ export const LeaderboardModal = ({
         size="xs"
         leftIcon={<ExitIcon />}
         onClick={() => { leaveLeaderboard().catch(e => console.log(e)); }}
+        disabled={isLastAdmin}
       >
         Leave leaderboard
       </ButtonWithConfirmation>

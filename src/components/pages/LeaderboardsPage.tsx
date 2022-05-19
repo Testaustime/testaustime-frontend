@@ -52,6 +52,9 @@ export const LeaderboardsPage = () => {
     });
   };
 
+  const adminUsernames = openedLeaderboard?.members.filter(m => m.admin).map(m => m.username);
+  const isAdmin = Boolean(adminUsernames?.includes(username));
+
   return <>
     <Modal
       opened={Boolean(openedLeaderboard)}
@@ -70,7 +73,8 @@ export const LeaderboardsPage = () => {
           await deleteLeaderboard(openedLeaderboard.name);
           setOpenedLeaderboardName(undefined);
         }}
-        isAdmin={Boolean(openedLeaderboard.members.find(member => member.username === username)?.admin)}
+        isAdmin={Boolean(adminUsernames?.includes(username))}
+        isLastAdmin={isAdmin && adminUsernames?.length === 1}
         promoteUser={async (username: string) => {
           await promoteUser(openedLeaderboard.name, username);
         }}
