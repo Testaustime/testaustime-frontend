@@ -1,9 +1,16 @@
-import { createStyles, Text, Grid } from "@mantine/core";
+import { createStyles, Text, Grid, Anchor } from "@mantine/core";
+import { ReactNode } from "react";
 import { ReactComponent as TestausserveriLogo } from "../images/testausserveri.svg";
-const authors = [
-  "Luukas Pörtfors",
-  "Ville Järvinen",
-  "\"Eldemarkki\""
+
+interface Author {
+  name: string,
+  homepage?: string
+}
+
+const authors: Author[] = [
+  { name: "Luukas Pörtfors", homepage: "https://lajp.fi" },
+  { name: "Ville Järvinen" },
+  { name: "Eetu Mäenpää", homepage: "https://eetumaenpaa.fi" }
 ];
 
 const useStyles = createStyles(theme => ({
@@ -52,7 +59,19 @@ const useStyles = createStyles(theme => ({
 export const Footer = () => {
   const { classes } = useStyles();
 
-  const authorsList = `${authors.slice(0, authors.length - 1).join(", ")} and ${authors[authors.length - 1]}`;
+  const authorComponents: ReactNode[] = [];
+
+  authors.forEach((author, index) => {
+    const c = author.homepage ?
+      <Anchor href={author.homepage}>{author.name}</Anchor> : author.name;
+    authorComponents.push(c);
+    if (index === authors.length - 2) {
+      authorComponents.push(" and ");
+    }
+    else if (index !== authors.length - 1) {
+      authorComponents.push(", ");
+    }
+  });
 
   return <>
     <div className={classes.container}>
@@ -69,7 +88,7 @@ export const Footer = () => {
           <Text>Supported by Testausserveri ry</Text>
         </Grid.Col>
         <Grid.Col span={7} className={`${classes.gridItem} ${classes.rightAlign}`}>
-          <Text pb="5px">❤️ Authors: {authorsList}</Text>
+          <Text pb="5px">❤️ Authors: {authorComponents}</Text>
           <Text pb="5px">&copy; {new Date().getFullYear()} Copyright Testausserveri ry &amp; contributors</Text>
           <Text pb="5px"><i>Licensed under the MIT license.</i></Text>
         </Grid.Col>
