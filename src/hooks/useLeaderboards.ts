@@ -26,7 +26,7 @@ export const useLeaderboards = () => {
   const [leaderboardData, setLeaderboardData] = useState<{ [leaderboardName: string]: LeaderboardData }>({});
 
   useEffect(() => {
-    axios.get<Leaderboard[]>("/users/@me/leaderboards", {
+    axios.get<Leaderboard[]>("/api/users/@me/leaderboards", {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     }).then(res => {
       setLeaderboards(res.data);
@@ -51,7 +51,7 @@ export const useLeaderboards = () => {
   const joinLeaderboard = async (leaderboardCode: string) => {
     // TODO: Wait for https://github.com/Testaustime/testaustime-backend/pull/21 to get merged
     // After that member_count can be made non-nullable
-    const res = await axios.post<{ name: string, member_count?: number }>("/leaderboards/join", {
+    const res = await axios.post<{ name: string, member_count?: number }>("/api/leaderboards/join", {
       invite: leaderboardCode
     }, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
@@ -68,7 +68,7 @@ export const useLeaderboards = () => {
   };
 
   const createLeaderboard = async (leaderboardName: string) => {
-    await axios.post<{ invite_code: string }>("/leaderboards/create", {
+    await axios.post<{ invite_code: string }>("/api/leaderboards/create", {
       name: leaderboardName
     }, {
       headers: { Authorization: `Bearer ${token ?? ""}` }

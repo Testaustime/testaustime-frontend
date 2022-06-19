@@ -31,7 +31,7 @@ export const useFriends = () => {
   const friends = useSelector<RootState, ApiFriendsResponseItem[]>(state => state.users.friends);
 
   const fetchFriendData = async () => {
-    const response = await axios.get<ApiFriendsResponseItem[]>("/friends/list", {
+    const response = await axios.get<ApiFriendsResponseItem[]>("/api/friends/list", {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     });
 
@@ -44,7 +44,7 @@ export const useFriends = () => {
 
   const addFriend = async (friendCode: string) => {
     try {
-      const response = await axios.post<ApiFriendsAddResponse>("/friends/add", friendCode, {
+      const response = await axios.post<ApiFriendsAddResponse>("/api/friends/add", friendCode, {
         headers: {
           Authorization: `Bearer ${token ?? ""}`,
           "Content-Type": "text/plain"
@@ -61,7 +61,7 @@ export const useFriends = () => {
 
   const unFriend = async (username: string) => {
     try {
-      await axios.delete("/friends/remove", {
+      await axios.delete("/api/friends/remove", {
         data: username,
         headers: {
           Authorization: `Bearer ${token ?? ""}`,

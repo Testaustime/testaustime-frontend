@@ -1,5 +1,5 @@
 import { createStyles, Text, Grid, Anchor } from "@mantine/core";
-import { ReactNode } from "react";
+import { ReactNode, Fragment } from "react";
 import { ReactComponent as TestausserveriLogo } from "../images/testausserveri.svg";
 
 interface Author {
@@ -63,7 +63,9 @@ export const Footer = () => {
 
   authors.forEach((author, index) => {
     const c = author.homepage ?
-      <Anchor href={author.homepage}>{author.name}</Anchor> : author.name;
+      <Anchor key={author.name} href={author.homepage}>{author.name}</Anchor> :
+      <Fragment key={author.name}>{author.name}</Fragment>;
+
     authorComponents.push(c);
     if (index === authors.length - 2) {
       authorComponents.push(" and ");
