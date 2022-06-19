@@ -276,7 +276,7 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
                 <>
                   <Divider />
                   <Menu.Item component={Link} to="/profile" icon={<EnterIcon />}>Login</Menu.Item>
-                  <Menu.Item color="blue" component={Link} to="/settings" icon={<PlusIcon />}>Register</Menu.Item>
+                  <Menu.Item color="blue" component={Link} to="/register" icon={<PlusIcon />}>Register</Menu.Item>
                   <Divider />
                   <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
                 </>}
