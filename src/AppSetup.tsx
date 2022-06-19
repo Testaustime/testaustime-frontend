@@ -30,7 +30,6 @@ import { MainPage } from "./components/pages/MainPage";
 import { ProfilePage } from "./components/pages/ProfilePage";
 import { RegistrationPage } from "./components/pages/RegistrationPage";
 import useAuthentication from "./hooks/UseAuthentication";
-import "./config";
 import { FriendPage } from "./components/pages/FriendPage";
 import { ExtensionsPage } from "./components/pages/ExtensionsPage";
 import ThemeToggle from "./components/ThemeToggle";
