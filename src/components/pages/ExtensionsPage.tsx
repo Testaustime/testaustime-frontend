@@ -1,8 +1,8 @@
 import { Anchor, Center, createStyles, Group, Text, Title } from "@mantine/core";
 import { GitHubLogoIcon, QuestionMarkIcon } from "@radix-ui/react-icons";
 import React, { ReactNode } from "react";
-import Neovim from "../../images/neovim.svg";
-import Vscode from "../../images/vscode.svg";
+import { ReactComponent as Neovim } from "../../images/neovim.svg";
+import { ReactComponent as Vscode } from "../../images/vscode.svg";
 
 interface ExtensionBlockProps {
   logo: React.ReactNode,
@@ -108,7 +108,6 @@ const useExtensionsPageStyles = createStyles(() => ({
 }));
 
 export const ExtensionsPage = () => {
-  // Classes
   const { classes } = useExtensionsPageStyles();
 
   return <div style={{ height: "calc(100% - 36px - 50px - 80px)" }}>
@@ -116,13 +115,13 @@ export const ExtensionsPage = () => {
     <Text>Download the Testaustime extension for your favorite code editor!</Text>
     <Group spacing={25} direction="column" mt={30}>
       <ExtensionBlock
-        logo={<img src={Vscode} width={45} className={classes.vsCodeLogo} />}
+        logo={<Vscode width={40} height={40} className={classes.vsCodeLogo} />}
         downloadLink="https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime"
         sourceCodeLink="https://github.com/Testausserveri/testaustime-vscode"
         text="Download Testaustime for Visual Studio Code"
       />
       <ExtensionBlock
-        logo={<img src={Neovim} width={40} />}
+        logo={<Neovim width={40} height={40} />}
         downloadLink="https://lajp.fi/static/testaustime-nvim"
         sourceCodeLink="https://github.com/Testaustime/testaustime-nvim"
         text="Download Testaustime for Neovim"

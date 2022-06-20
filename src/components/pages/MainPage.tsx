@@ -6,7 +6,6 @@ import { Dashboard } from "../Dashboard";
 
 const useStyles = createStyles(theme => ({
   downloadButton: {
-    width: "60%",
     height: "90px",
     display: "flex",
     flexDirection: "row",
@@ -15,7 +14,8 @@ const useStyles = createStyles(theme => ({
     alignContent: "center",
     flexWrap: "nowrap",
     fontWeight: "bold",
-    padding: "2rem 3rem",
+    padding: "0px 10%",
+    gap: 15,
     backgroundColor: theme.colorScheme === "dark" ? "#6275bc" : "#7289DA",
     color: "white",
     borderRadius: "6px",
@@ -23,13 +23,6 @@ const useStyles = createStyles(theme => ({
     "&:hover": {
       backgroundColor: "#667bc4",
       textDecoration: "none"
-    },
-    "@media (max-width: 800px)": {
-      width: "80%"
-    },
-    "@media (max-width: 680px)": {
-      paddingLeft: "1rem",
-      fontSize: "0.8rem"
     }
   },
   heroContainer: {
@@ -58,11 +51,7 @@ const useStyles = createStyles(theme => ({
   },
   downloadIcon: {
     height: "50px",
-    display: "flex",
-    "@media (max-width: 680px)": {
-      marginRight: "1rem",
-      width: "50px"
-    }
+    display: "flex"
   }
 }));
 
