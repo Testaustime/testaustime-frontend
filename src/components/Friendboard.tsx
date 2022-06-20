@@ -94,19 +94,17 @@ export const Friendboard = () => {
           <td>{idx + 1}</td>
           <td>{username}</td>
           <td>{prettyDuration(past_month)}</td>
-          <td>
-            {!isMe && <Group position="right">
-              <Button
-                variant="outline"
-                color="red"
-                compact
-                onClick={() => {
-                  unFriend(username).catch(handleErrorWithNotification);
-                }}
-              >
-                Unfriend
-              </Button>
-            </Group>}
+          <td style={{ textAlign: "right" }}>
+            {!isMe && <Button
+              variant="outline"
+              color="red"
+              compact
+              onClick={() => {
+                unFriend(username).catch(handleErrorWithNotification);
+              }}
+            >
+              Unfriend
+            </Button>}
           </td>
         </tr>
       ))}</tbody>

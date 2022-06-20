@@ -8,6 +8,7 @@ import { getOrdinalSuffix } from "../../utils/stringUtils";
 import { LeaderboardModal } from "../Leaderboard/LeaderboardModal";
 import { CreateLeaderboardModal } from "../Leaderboard/CreateLeaderboardModal";
 import { JoinLeaderboardModal } from "../Leaderboard/JoinLeaderboardModal";
+import { EnterIcon, PlusIcon } from "@radix-ui/react-icons";
 
 export const LeaderboardsPage = () => {
   const {
@@ -90,8 +91,19 @@ export const LeaderboardsPage = () => {
     <Group align="center" mb="md" mt="xl" position="apart">
       <Title>Leaderboards</Title>
       <Group spacing="sm">
-        <Button onClick={() => openCreateLeaderboard()} variant="outline">Create new leaderboard</Button>
-        <Button onClick={() => openJoinLeaderboard()}>Join a leaderboard</Button>
+        <Button
+          onClick={() => openCreateLeaderboard()}
+          variant="outline"
+          leftIcon={<PlusIcon />}
+        >
+          Create new leaderboard
+        </Button>
+        <Button
+          onClick={() => openJoinLeaderboard()}
+          leftIcon={<EnterIcon />}
+        >
+          Join a leaderboard
+        </Button>
       </Group>
     </Group>
     <Table>

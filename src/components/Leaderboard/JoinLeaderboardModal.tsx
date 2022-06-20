@@ -5,6 +5,7 @@ import { Group, Button, Text } from "@mantine/core";
 import axios from "axios";
 import { Formik, Form } from "formik";
 import { FormikTextInput } from "../forms/FormikTextInput";
+import { EnterIcon } from "@radix-ui/react-icons";
 
 interface JoinLeaderboardModalProps {
   onJoin: (leaderboardCode: string) => Promise<void>
@@ -60,7 +61,12 @@ export const JoinLeaderboardModal = ({ onJoin }: JoinLeaderboardModalProps) => {
           })}
         />
         <Group position="right" mt="md">
-          <Button type="submit">Join</Button>
+          <Button
+            type="submit"
+            leftIcon={<EnterIcon />}
+          >
+            Join
+          </Button>
         </Group>
       </Form>}
     </Formik>
