@@ -1,5 +1,5 @@
 import { Group, Button, Title, Table, Badge } from "@mantine/core";
-import { ExitIcon } from "@radix-ui/react-icons";
+import { DoubleArrowDownIcon, DoubleArrowUpIcon, ExitIcon } from "@radix-ui/react-icons";
 import { Trash2 } from "react-feather";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { CombinedLeaderboard } from "../../hooks/useLeaderboards";
@@ -68,7 +68,10 @@ export const LeaderboardModal = ({
           <th>Position</th>
           <th>Name</th>
           <th>Time coded</th>
-          {isAdmin && <th />}
+          {isAdmin && <>
+            <th />
+            <th />
+          </>}
         </tr>
       </thead>
       <tbody>
@@ -77,40 +80,56 @@ export const LeaderboardModal = ({
             <td>{i + 1}{getOrdinalSuffix(i + 1)}</td>
             <td>{member.username}{member.admin && <Badge ml="sm">Admin</Badge>}</td>
             <td>{prettyDuration(member.time_coded)}</td>
-            {isAdmin && <td>
-              <Group position="right" spacing="xs">
+            {isAdmin && <>
+              <td style={{
+                width: 0,
+                padding: 0,
+                textAlign: "right",
+                paddingRight: 10
+              }}>
                 {member.username !== username && <>
                   <Button
                     size="xs"
                     variant="subtle"
+                    color="red"
                     onClick={() => {
                       kickUser(member.username).catch(e => console.log(e));
                     }}
                   >
                     Kick
                   </Button>
-                  {(member.admin ?
-                    <Button
-                      size="xs"
-                      variant="subtle"
-                      onClick={() => {
-                        demoteUser(member.username).catch(e => console.log(e));
-                      }}
-                    >
-                      Demote
-                    </Button> :
-                    <Button
-                      size="xs"
-                      variant="subtle"
-                      onClick={() => {
-                        promoteUser(member.username).catch(e => console.log(e));
-                      }}
-                    >
-                      Promote
-                    </Button>)}
                 </>}
-              </Group>
-            </td>}
+              </td>
+              <td style={{
+                width: 0,
+                padding: 0,
+                textAlign: "right"
+              }}>
+                {(member.admin ?
+                  <Button
+                    size="xs"
+                    variant="subtle"
+                    leftIcon={<DoubleArrowDownIcon />}
+                    color="red"
+                    onClick={() => {
+                      demoteUser(member.username).catch(e => console.log(e));
+                    }}
+                  >
+                    Demote
+                  </Button> :
+                  <Button
+                    size="xs"
+                    variant="subtle"
+                    leftIcon={<DoubleArrowUpIcon />}
+                    color="green"
+                    onClick={() => {
+                      promoteUser(member.username).catch(e => console.log(e));
+                    }}
+                  >
+                    Promote
+                  </Button>)}
+              </td>
+            </>}
           </tr>;
         })}
       </tbody>
