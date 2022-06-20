@@ -45,13 +45,17 @@ const useStyles = createStyles(theme => ({
     width: "100%",
     minHeight: "100%",
     alignContent: "flex-start",
+    paddingTop: 40,
     paddingBottom: 100
   },
   innerContainer: {
     minHeight: "100%",
     width: "90%",
     marginLeft: "5%",
-    marginRight: "5%"
+    marginRight: "5%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between"
   },
   testaustimeTitle: {
     paddingTop: 4,
@@ -196,109 +200,117 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
   const { isLoggedIn, username } = useAuthentication();
   const { classes } = useStyles();
 
-  return <Group position="center" mt={40} sx={{ overflow: "hidden" }} className={classes.container}>
+  return <Group className={classes.container}>
     <div className={classes.innerContainer}>
-      <Group position="apart" mb={50}>
-        <Link to="/" className={classes.testaustimeTitle}>
-          Testaustime
-        </Link>
-        <Group>
-          <Group spacing={15} align="center" className={classes.navigation}>
-            <Group>
-              {isLoggedIn ? <>
-                <Anchor component={Link} to="/">Dashboard</Anchor>
-                <Anchor component={Link} to="/friends">Friends</Anchor>
-                <Anchor component={Link} to="/leaderboards">Leaderboards</Anchor>
-                <Menu
-                  trigger="hover"
-                  control={<Button
-                    variant="outline"
-                    size="xs"
-                    leftIcon={<PersonIcon style={{ marginRight: "5px" }} />}
+      <div>
+        <Group position="apart" mb={50}>
+          <Link to="/" className={classes.testaustimeTitle}>
+            Testaustime
+          </Link>
+          <Group>
+            <Group spacing={15} align="center" className={classes.navigation}>
+              <Group>
+                {isLoggedIn ? <>
+                  <Anchor component={Link} to="/">Dashboard</Anchor>
+                  <Anchor component={Link} to="/friends">Friends</Anchor>
+                  <Anchor component={Link} to="/leaderboards">Leaderboards</Anchor>
+                  <Menu
+                    trigger="hover"
+                    control={<Button
+                      variant="outline"
+                      size="xs"
+                      leftIcon={<PersonIcon style={{ marginRight: "5px" }} />}
+                    >
+                      {username}
+                    </Button>}
                   >
-                    {username}
-                  </Button>}
-                >
-                  <Menu.Label>Account</Menu.Label>
-                  <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>Settings</Menu.Item>
-                  <Divider />
-                  <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
-                  <Divider />
-                  <Menu.Item
-                    color="blue"
-                    icon={<ExitIcon />}
-                    onClick={logOutAndRedirect}>
-                    Log out
-                  </Menu.Item>
-                </Menu>
-              </> : <>
-                <Anchor component={Link} to="/extensions">Extensions</Anchor>
-                <Box className={classes.spacer} />
-                <Anchor component={Link} to="/login">Login</Anchor>
-                <Button component={Link} to="/register">Register</Button>
-              </>}
-            </Group>
-            <ThemeToggle label={false} />
-          </Group>
-          <Group className={classes.smallNavigation}>
-            <Menu
-              trigger="hover"
-              control={<Button variant="outline" size="lg">
-                <HamburgerMenuIcon markerHeight={27} />
-              </Button>}
-            >
-              <div
-                style={{ padding: "10px" }}
-                onClick={() => { toggleColorScheme(); }}>
-                <ThemeToggle label={true} />
-              </div>
-              {isLoggedIn ?
-                <>
-                  <Divider />
-                  <Menu.Item component={Link} to="/" icon={<HomeIcon />}>Dashboard</Menu.Item>
-                  <Menu.Item component={Link} to="/friends" icon={<FaceIcon />}>Friends</Menu.Item>
-                  <Menu.Item component={Link} to="/leaderboards" icon={<BarChart2 size={18} />}>Leaderboards</Menu.Item>
-                  <Divider />
-                  <Menu.Label>Account - {username}</Menu.Label>
-                  <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>Settings</Menu.Item>
-                  <Divider />
-                  <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
-                  <Divider />
-                  <Menu.Item
-                    color="blue"
-                    icon={<ExitIcon />}
-                    onClick={logOutAndRedirect}>
-                    Log out
-                  </Menu.Item>
-                </>
-                :
-                <>
-                  <Divider />
-                  <Menu.Item component={Link} to="/login" icon={<EnterIcon />}>Login</Menu.Item>
-                  <Menu.Item color="blue" component={Link} to="/register" icon={<PlusIcon />}>Register</Menu.Item>
-                  <Divider />
-                  <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
+                    <Menu.Label>Account</Menu.Label>
+                    <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>Settings</Menu.Item>
+                    <Divider />
+                    <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
+                    <Divider />
+                    <Menu.Item
+                      color="blue"
+                      icon={<ExitIcon />}
+                      onClick={logOutAndRedirect}>
+                      Log out
+                    </Menu.Item>
+                  </Menu>
+                </> : <>
+                  <Anchor component={Link} to="/extensions">Extensions</Anchor>
+                  <Box className={classes.spacer} />
+                  <Anchor component={Link} to="/login">Login</Anchor>
+                  <Button component={Link} to="/register">Register</Button>
                 </>}
-            </Menu>
+              </Group>
+              <ThemeToggle label={false} />
+            </Group>
+            <Group className={classes.smallNavigation}>
+              <Menu
+                trigger="hover"
+                control={<Button variant="outline" size="lg">
+                  <HamburgerMenuIcon markerHeight={27} />
+                </Button>}
+              >
+                <div
+                  style={{ padding: "10px" }}
+                  onClick={() => { toggleColorScheme(); }}>
+                  <ThemeToggle label={true} />
+                </div>
+                {isLoggedIn ?
+                  <>
+                    <Divider />
+                    <Menu.Item component={Link} to="/" icon={<HomeIcon />}>Dashboard</Menu.Item>
+                    <Menu.Item component={Link} to="/friends" icon={<FaceIcon />}>Friends</Menu.Item>
+                    <Menu.Item
+                      component={Link}
+                      to="/leaderboards"
+                      icon={<BarChart2 size={18} />}
+                    >
+                      Leaderboards
+                    </Menu.Item>
+                    <Divider />
+                    <Menu.Label>Account - {username}</Menu.Label>
+                    <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>Settings</Menu.Item>
+                    <Divider />
+                    <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
+                    <Divider />
+                    <Menu.Item
+                      color="blue"
+                      icon={<ExitIcon />}
+                      onClick={logOutAndRedirect}>
+                      Log out
+                    </Menu.Item>
+                  </>
+                  :
+                  <>
+                    <Divider />
+                    <Menu.Item component={Link} to="/login" icon={<EnterIcon />}>Login</Menu.Item>
+                    <Menu.Item color="blue" component={Link} to="/register" icon={<PlusIcon />}>Register</Menu.Item>
+                    <Divider />
+                    <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
+                  </>}
+              </Menu>
+            </Group>
           </Group>
         </Group>
-      </Group>
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegistrationPage />} />
-        <Route
-          path="/profile"
-          element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
-        <Route
-          path="/friends"
-          element={<PrivateRoute><FriendPage /></PrivateRoute>} />
-        <Route
-          path="/leaderboards"
-          element={<PrivateRoute><LeaderboardsPage /></PrivateRoute>} />
-        <Route path="/extensions" element={<ExtensionsPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegistrationPage />} />
+          <Route
+            path="/profile"
+            element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+          <Route
+            path="/friends"
+            element={<PrivateRoute><FriendPage /></PrivateRoute>} />
+          <Route
+            path="/leaderboards"
+            element={<PrivateRoute><LeaderboardsPage /></PrivateRoute>} />
+          <Route path="/extensions" element={<ExtensionsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </div>
       <Footer />
     </div>
   </Group>;

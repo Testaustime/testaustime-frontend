@@ -89,10 +89,15 @@ export const Footer = () => {
           </a>
           <Text>Supported by Testausserveri ry</Text>
         </Grid.Col>
-        <Grid.Col span={7} className={`${classes.gridItem} ${classes.rightAlign}`}>
-          <Text pb="5px">❤️ Authors: {authorComponents}</Text>
-          <Text pb="5px">&copy; {new Date().getFullYear()} Copyright Testausserveri ry &amp; contributors</Text>
-          <Text pb="5px"><i>Licensed under the MIT license.</i></Text>
+        <Grid.Col
+          span={7}
+          sx={{ display: "flex", gap: 5, flexDirection: "column" }}
+          className={`${classes.gridItem} ${classes.rightAlign}`}
+        >
+          <Text>❤️ Authors: {authorComponents}</Text>
+          <Text>&copy; {new Date().getFullYear()} Copyright Testausserveri ry &amp; contributors</Text>
+          <Text><i>Licensed under the MIT license.</i></Text>
+          <Text><Anchor href="https://github.com/Testaustime">Source code</Anchor></Text>
         </Grid.Col>
       </Grid>
     </div>

@@ -3,6 +3,12 @@
     transition: ease-in-out background-color 0.2s, ease-in-out filter 0.2s, ease-in-out border 0.2s !important;
 }
 
+html, body {
+    margin: 0px;
+    padding: 0px;
+    min-height: 100vh;
+}
+
 /* ubuntu-regular - latin */
 @font-face {
     font-family: 'Ubuntu';
@@ -38,10 +44,8 @@ a {
 
 #root {
     display: flex;
-    align-content: center;
-    align-content: center;
     justify-content: center;
-    align-items: flex-start;
     flex-direction: row;
     flex-wrap: wrap;
+    min-height: 100vh;
 }
