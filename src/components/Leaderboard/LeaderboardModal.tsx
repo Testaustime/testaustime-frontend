@@ -67,7 +67,7 @@ export const LeaderboardModal = ({
         <tr>
           <th>Position</th>
           <th>Name</th>
-          <th>Time coded</th>
+          <th>Time coded last 7 days</th>
           {isAdmin && <>
             <th />
             <th />
