@@ -3,6 +3,7 @@ import { GitHubLogoIcon, QuestionMarkIcon } from "@radix-ui/react-icons";
 import React, { ReactNode } from "react";
 import { ReactComponent as Neovim } from "../../images/neovim.svg";
 import { ReactComponent as Vscode } from "../../images/vscode.svg";
+import { ReactComponent as IntelliJ } from "../../images/intellij.svg";
 
 interface ExtensionBlockProps {
   logo: React.ReactNode,
@@ -74,7 +75,6 @@ const useStyles = createStyles(theme => ({
 }));
 
 export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: ExtensionBlockProps) => {
-  // Classes
   const { classes } = useStyles();
 
   // Icon map for source code icons
@@ -98,24 +98,14 @@ export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: Ext
   </Group>;
 };
 
-const useExtensionsPageStyles = createStyles(() => ({
-  vsCodeLogo: {
-    marginRight: "-5px",
-    "@media (max-width: 320px)": {
-      marginRight: "0px"
-    }
-  }
-}));
 
 export const ExtensionsPage = () => {
-  const { classes } = useExtensionsPageStyles();
-
   return <div style={{ height: "calc(100% - 36px - 50px - 80px)" }}>
     <Title order={1} mb={5}>Extensions</Title>
     <Text>Download the Testaustime extension for your favorite code editor!</Text>
     <Group spacing={25} direction="column" mt={30}>
       <ExtensionBlock
-        logo={<Vscode width={40} height={40} className={classes.vsCodeLogo} />}
+        logo={<Vscode width={40} height={40} />}
         downloadLink="https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime"
         sourceCodeLink="https://github.com/Testausserveri/testaustime-vscode"
         text="Download Testaustime for Visual Studio Code"
@@ -125,6 +115,12 @@ export const ExtensionsPage = () => {
         downloadLink="https://lajp.fi/static/testaustime-nvim"
         sourceCodeLink="https://github.com/Testaustime/testaustime-nvim"
         text="Download Testaustime for Neovim"
+      />
+      <ExtensionBlock
+        logo={<IntelliJ width={40} height={40} />}
+        downloadLink="https://plugins.jetbrains.com/plugin/19408-testaustime/"
+        sourceCodeLink="https://github.com/Testaustime/testaustime-intellij/"
+        text="Download Testaustime for IntelliJ"
       />
     </Group>
   </div>;
