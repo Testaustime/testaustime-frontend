@@ -112,8 +112,8 @@ export const ExtensionsPage = () => {
       />
       <ExtensionBlock
         logo={<Neovim width={40} height={40} />}
-        downloadLink="https://lajp.fi/static/testaustime-nvim"
-        sourceCodeLink="https://github.com/Testaustime/testaustime-nvim"
+        downloadLink="https://github.com/Testaustime/testaustime.nvim"
+        sourceCodeLink="https://github.com/Testaustime/testaustime.nvim"
         text="Download Testaustime for Neovim"
       />
       <ExtensionBlock
