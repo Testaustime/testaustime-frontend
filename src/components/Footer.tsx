@@ -9,7 +9,7 @@ interface Author {
 
 const authors: Author[] = [
   { name: "Luukas Pörtfors", homepage: "https://lajp.fi" },
-  { name: "Ville Järvinen" },
+  { name: "Ville Järvinen", homepage: "https://vilepis.dev" },
   { name: "Eetu Mäenpää", homepage: "https://eetumaenpaa.fi" }
 ];
 
