@@ -25,9 +25,13 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
 
   if (entries.length === 0) return <Text>No data</Text>;
 
-  const languageNames = entries
-    .map(entry => entry.language || "unknown")
-    .filter((item, index, array) => array.indexOf(item) === index);
+  let languageNames = entries
+    .sort((entry1, entry2) => entry2.duration - entry1.duration)
+    .map(entry => entry.language || "other")
+    .filter((item, index, array) => array.indexOf(item) === index)
+    .slice(0, 9);
+  languageNames.push("other");
+  languageNames = languageNames.reverse();
 
   // Get the total time spent on each project
   const projectGroups = groupBy(entries, e => e.project_name ?? "Unknown");
@@ -62,21 +66,18 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
   */
 
   const data: Record<string, string | number>[] = totalTimeByProject
-    .sort((a, b) => b.latestUpdate - a.latestUpdate)
+    .sort((a, b) => sumBy(b.totalTimeByLanguage, e => e.duration) - sumBy(a.totalTimeByLanguage, e => e.duration))
     .slice(0, projectCount)
-    .reverse()
-    .map(project => {
-      return {
-        projectName: project.projectName,
-        ...project.totalTimeByLanguage.reduce<Record<string, number>>(
-          (acc, curr) => {
-            acc[curr.language + "_duration"] = curr.duration;
-            return acc;
-          },
-          {}
-        )
-      };
-    });
+    .map(project => ({
+      projectName: project.projectName,
+      ...project.totalTimeByLanguage.reduce<Record<string, number>>((acc, { language, duration }) => {
+        const k = languageNames.includes(language) ? language : "other";
+        return {
+          ...acc,
+          [k + "_duration"]: (acc[k + "_duration"] ?? 0) + duration
+        };
+      }, {})
+    })).reverse();
 
   const maxDuration = Math.max(...totalTimeByProject.map(p => sumBy(p.totalTimeByLanguage, l => l.duration)));
   const ticks = calculateTickValues(maxDuration);
@@ -86,29 +87,34 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
     .map(project => project.projectName).sort((a, b) => b.length - a.length)[0];
 
   return (
-    <div className={className} style={{ height: 130 * Math.min(totalTimeByProject.length, projectCount) }}>
+    <div className={className} style={{ height: 110 * Math.min(totalTimeByProject.length, projectCount) }}>
       <ResponsiveBar
         data={data}
         keys={[...languageNames.map(l => `${l}_duration`)]}
         labelSkipWidth={10}
         indexBy="projectName"
         margin={{
-          top: 0,
-          right: 30,
+          top: 30,
+          right: 220,
           bottom: 30,
           left: 60 + (longestProjectName.length > 8 ? (longestProjectName.length - 8) * 7 : 0)
         }}
         padding={0.3}
-        enableGridY={false}
         enableGridX
+        enableGridY={false}
         maxValue={ticks[ticks.length - 1]}
         theme={{ textColor: usesDarkMode ? "white" : "black" }}
         axisBottom={{
           format: (d: number) => prettyDuration(d),
           tickValues: ticks
         }}
+        borderRadius={2}
+        labelSkipHeight={20}
+        labelTextColor="black"
         gridXValues={ticks}
-        axisLeft={{ tickPadding: 20 }}
+        axisLeft={{
+          tickPadding: 8
+        }}
         tooltipLabel={d => String(d.data.projectName)}
         tooltip={point => (
           <Paper
@@ -123,6 +129,7 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
             <List>
               {Object.keys(point.data)
                 .filter(k => k.endsWith("_duration"))
+                .reverse()
                 .map(l => (
                   <List.Item key={l}>
                     {prettifyProgrammingLanguageName(l.slice(0, l.length - 9)) ?? "Unknown"}:{" "}
@@ -135,6 +142,21 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
         valueFormat={v => prettyDuration(v)}
         layout="horizontal"
         colors={{ scheme: "paired" }}
+        // TODO: Format the values properly instead of the raw "*_duration" format
+        legendLabel={datum => {
+          const str = String(datum.id);
+          return prettifyProgrammingLanguageName(str.slice(0, str.length - 9)) ?? "Unknown";
+        }}
+        legends={[
+          {
+            dataFrom: "keys",
+            anchor: "bottom-right",
+            direction: "column",
+            translateX: 160,
+            itemWidth: 80,
+            itemHeight: 20
+          }
+        ]}
       />
     </div>
   );

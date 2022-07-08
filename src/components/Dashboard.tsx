@@ -131,45 +131,31 @@ export const Dashboard = () => {
             data={projectNames}
             placeholder="No projects"
             disabled
-          />
-        )}
+          />)}
       </Group>
-      {entriesInRange.length !== 0 ? (
+      {entriesInRange.length !== 0 ?
         <>
           <Group className={classes.dataCard}>
-            <Title mt={10} order={2}>
-              Time per day
-            </Title>
+            <Title mt={10} order={2}>Time per day</Title>
             <DailyCodingTimeChart
               entries={entriesInRange}
               dayCount={dayCount}
               className={classes.dailyCodingTimeChart}
             />
-            <Text mt={15} mb={15}>
-              Total time coded in the last {dayCount} days:{" "}
-              <b>
-                {prettyDuration(
-                  sumBy(entriesInRange, entry => entry.duration)
-                )}
+            <Text
+              mt={15}
+              mb={15}
+            >
+              Total time coded in the last {dayCount} days: <b>
+                {prettyDuration(sumBy(entriesInRange, entry => entry.duration))}
               </b>
             </Text>
           </Group>
           <Group className={classes.dataCard}>
-            <Title mt={10} order={2}>
-              Time per latest projects
-            </Title>
-            <PerProjectChart
-              entries={entriesInRange}
-              className={classes.projectCodingChart}
-            />
+            <Title mt={10} order={2}>Time by time spent per project</Title>
+            <PerProjectChart entries={entriesInRange} className={classes.projectCodingChart} />
           </Group>
-          <Group
-            direction={isSmallScreen ? "column" : "row"}
-            grow
-            mt={20}
-            mb={20}
-            align="start"
-          >
+          <Group direction={isSmallScreen ? "column" : "row"} grow mt={20} mb={20} align="start">
             <div>
               <Title order={2}>Languages</Title>
               <TopLanguages entries={entriesInRange} />
@@ -179,14 +165,13 @@ export const Dashboard = () => {
               <TopProjects entries={entriesInRange} />
             </div>
           </Group>
+          <Title order={2} mt={20} mb={5}>Your sessions</Title>
         </>
-      ) : (
-        <Text>
-          No programming activity data to display.{" "}
-          <a href="/extensions">Install one of the extensions</a> to begin
-          tracking your programming.
-        </Text>
-      )}
+        :
+        <Text>No programming activity data to display.{" "}
+          <a href="/extensions">Install one of the extensions</a>
+          to begin tracking your programming.</Text>
+      }
     </div>
   );
 };
