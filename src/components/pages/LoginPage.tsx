@@ -8,19 +8,21 @@ import useAuthentication from "../../hooks/UseAuthentication";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
 
+const useStyles = createStyles(() => ({
+  loginBox: {
+    display: "flex",
+    height: "calc(100% - 36px - 50px - 80px)",
+    flexDirection: "column",
+    width: "100%"
+  }
+}));
+
 export const LoginPage = () => {
   const { login } = useAuthentication();
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
 
-  const { classes } = createStyles(() => ({
-    loginBox: {
-      display: "flex",
-      height: "calc(100% - 36px - 50px - 80px)",
-      flexDirection: "column",
-      width: "100%"
-    }
-  }))();
+  const { classes } = useStyles();
 
   return <Group className={classes.loginBox}>
     <Title order={1} mb={20}>Login</Title>
@@ -37,7 +39,7 @@ export const LoginPage = () => {
         setVisible(true);
         login(values.username, values.password)
           .then(() => navigate("/"))
-          .catch((...e) => {handleErrorWithNotification(...e); setVisible(false);});
+          .catch((...e) => { handleErrorWithNotification(...e); setVisible(false); });
       }}>
       {() => <Form style={{ width: "100%" }}>
         <FormikTextInput name="username" label="Username" style={{ width: "100%" }} />

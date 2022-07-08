@@ -25,7 +25,8 @@ export const RegistrationPage = () => {
         username: Yup.string()
           .required("Username is required")
           .min(2, "Username must be at least 2 characters long")
-          .max(32, "Username can not be more than 32 characters long"),
+          .max(32, "Username can not be more than 32 characters long")
+          .matches(/^[a-zA-Z0-9]*$/, "Username must only contain alphanumeric characters"),
         password: Yup.string()
           .required("Password is required")
           .min(8, "Password must be at least 8 characters long")
@@ -38,7 +39,7 @@ export const RegistrationPage = () => {
         setVisible(true);
         register(values.username, values.password)
           .then(() => navigate("/"))
-          .catch((...e) => {handleErrorWithNotification(...e); setVisible(false);});
+          .catch((...e) => { handleErrorWithNotification(...e); setVisible(false); });
       }}>
       {() => <Form>
         <FormikTextInput name="username" label="Username" />

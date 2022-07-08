@@ -14,6 +14,8 @@ interface TestUser {
   password: string
 }
 
+type TestUserWithAuthToken = TestUser & { auth_token: string };
+
 const user1: TestUser = {
   username: "myUserName",
   password: "myPassWord"
@@ -29,7 +31,7 @@ let existingUsers: TestUser[] = [];
 describe("useAuthentication", () => {
 
   const server = setupServer(
-    rest.post<{ username: string, password: string }>("/auth/register", (req, res, ctx) => {
+    rest.post<{ username: string, password: string }>("/api/auth/register", (req, res, ctx) => {
       const { username, password } = req.body;
 
       if (existingUsers.find(u => u.username === username)) {
@@ -39,7 +41,7 @@ describe("useAuthentication", () => {
         );
       }
 
-      const user = {
+      const user: TestUserWithAuthToken = {
         username,
         password,
         auth_token: generateAuthToken(username)
@@ -47,7 +49,7 @@ describe("useAuthentication", () => {
       existingUsers.push(user);
       return res(ctx.json(user));
     }),
-    rest.post<{ username: string, password: string }>("/auth/login", (req, res, ctx) => {
+    rest.post<{ username: string, password: string }>("/api/auth/login", (req, res, ctx) => {
       const { username, password } = req.body;
 
       const user = {
@@ -88,7 +90,8 @@ describe("useAuthentication", () => {
   it("returns correct token, and sets it to local storage when registering", async () => {
     const registerResult = await waitFor(() => hook.register(user1.username, user1.password));
     expect(registerResult).toEqual(generateAuthToken(user1.username));
-    expect(localStorage.__STORE__[authTokenLocalStorageKey]).toEqual(generateAuthToken(user1.username));
+
+    expect(localStorage.getItem(authTokenLocalStorageKey)).toEqual(generateAuthToken(user1.username));
   });
 
   it("returns rejected promise, when registering a user with the same username", async () => {

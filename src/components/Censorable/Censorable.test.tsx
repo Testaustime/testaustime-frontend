@@ -7,7 +7,7 @@ it("shows hidden text when unrevealed", () => {
   expect(container).toHaveTextContent("auth");
 
   // Doesn't contain the last "n" letter -> it has been hidden
-  expect(container).not.toHaveTextContent("n"); 
+  expect(container).not.toHaveTextContent("n");
 });
 
 it("shows whole text when revealed", () => {
@@ -16,12 +16,24 @@ it("shows whole text when revealed", () => {
 });
 
 it("has hidden characters while unrevealed", () => {
-  const { container } = render(<Censorable authToken="authtoken" revealed={false} revealLength={4} hiddenCharacter="*" />);
+  const { container } = render(
+    <Censorable
+      authToken="authtoken"
+      revealed={false}
+      revealLength={4}
+      hiddenCharacter="*"
+    />);
   expect(container).toHaveTextContent("auth*****");
 });
 
 it("can have different hidden characters", () => {
-  const { container } = render(<Censorable authToken="authtoken" revealed={false} revealLength={4} hiddenCharacter="X" />);
+  const { container } = render(
+    <Censorable
+      authToken="authtoken"
+      revealed={false}
+      revealLength={4}
+      hiddenCharacter="X"
+    />);
   expect(container).toHaveTextContent("authXXXXX");
 });
 

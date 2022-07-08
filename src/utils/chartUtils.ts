@@ -1,6 +1,12 @@
 import { lerp } from "./mathUtils";
 
 export const calculateTickValues = (maxDurationSeconds: number) => {
+
+  // Split an hour into 10 minute chunks
+  if (maxDurationSeconds === 0) {
+    return Array(7).fill(0).map((_, idx) => idx * 600);
+  }
+
   // If maxDurationSeconds is less than 1 hour, split into 10 minute chunks
   if (maxDurationSeconds <= 3600) {
     return Array(Math.ceil(maxDurationSeconds / 600) + 1).fill(0).map((_, idx) => idx * 600);

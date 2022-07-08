@@ -1,6 +1,7 @@
 import axios from "axios";
 import { startOfDay } from "date-fns";
 import { useEffect, useState } from "react";
+import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
 import useAuthentication from "./UseAuthentication";
 
 export interface ApiUsersUserActivityDataResponseItem {
@@ -10,7 +11,7 @@ export interface ApiUsersUserActivityDataResponseItem {
   project_name?: string | null,
   language?: string,
   editor_name?: string,
-  hostname?: string,
+  hostname?: string
 }
 
 export type ActivityDataEntry = Omit<ApiUsersUserActivityDataResponseItem, "start_time" | "project_name"> & {
@@ -24,14 +25,17 @@ export const useActivityData = () => {
   const [entries, setEntries] = useState<ActivityDataEntry[]>([]);
 
   useEffect(() => {
-    axios.get<ApiUsersUserActivityDataResponseItem[]>("/users/@me/activity/data", { headers: { Authorization: `Bearer ${token}` } }).then(({ data }) => {
+    axios.get<ApiUsersUserActivityDataResponseItem[]>("/api/users/@me/activity/data",
+      { headers: { Authorization: `Bearer ${token ?? ""}` } }
+    ).then(({ data }) => {
       setEntries(data.map(e => ({
         ...e,
         start_time: new Date(e.start_time),
         dayStart: startOfDay(new Date(e.start_time)),
         project_name: e.project_name || undefined, // Change nulls and empty strings to undefineds
+        language: normalizeProgrammingLanguageName(e.language)
       })));
-    });
+    }).catch(e => console.error(e));
   }, []);
 
   return entries;
