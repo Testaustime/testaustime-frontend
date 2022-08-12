@@ -12,11 +12,14 @@ import { sumBy } from "../utils/arrayUtils";
 import { useActivityData } from "../hooks/useActivityData";
 import { addDays, startOfDay } from "date-fns/esm";
 import useAuthentication from "../hooks/UseAuthentication";
+import { useLocation } from "react-router";
 
 export const Friendboard = () => {
   const { addFriend, unFriend, friends } = useFriends();
   const entries = useActivityData();
   const { username } = useAuthentication();
+  const location = useLocation();
+  const urlFriendCode = new URLSearchParams(location.search).get("code");
 
   const entriesInRange = entries.filter(entry => {
     const startOfStatisticsRange = startOfDay(addDays(new Date(), -30));
@@ -42,7 +45,7 @@ export const Friendboard = () => {
     <Title order={2} mb={15}>Add a new friend</Title>
     <Group>
       <Formik
-        initialValues={{ friendCode: "" }}
+        initialValues={{ friendCode: urlFriendCode ?? "" }}
         validationSchema={Yup.object().shape({
           friendCode: Yup
             .string()

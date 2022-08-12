@@ -1,6 +1,6 @@
 import { Badge, Button, Group, Modal, Table, Text, Title } from "@mantine/core";
 import { useModals } from "@mantine/modals";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { useLeaderboards } from "../../hooks/useLeaderboards";
 import { prettyDuration } from "../../utils/dateUtils";
@@ -9,6 +9,7 @@ import { LeaderboardModal } from "../Leaderboard/LeaderboardModal";
 import { CreateLeaderboardModal } from "../Leaderboard/CreateLeaderboardModal";
 import { JoinLeaderboardModal } from "../Leaderboard/JoinLeaderboardModal";
 import { EnterIcon, PlusIcon } from "@radix-ui/react-icons";
+import { useLocation } from "react-router";
 
 export const LeaderboardsPage = () => {
   const {
@@ -27,7 +28,8 @@ export const LeaderboardsPage = () => {
   const [openedLeaderboardName, setOpenedLeaderboardName] = useState<string | undefined>(undefined);
   const openedLeaderboard = leaderboards.find(l => l.name === openedLeaderboardName);
 
-  if (!username) return <Text>No user</Text>;
+  const location = useLocation();
+  const urlLeaderboardCode = new URLSearchParams(location.search).get("code");
 
   const openCreateLeaderboard = () => {
     const id = modals.openModal({
@@ -46,12 +48,18 @@ export const LeaderboardsPage = () => {
     const id = modals.openModal({
       title: <Title>Join a leaderboard</Title>,
       size: "xl",
-      children: <JoinLeaderboardModal onJoin={async code => {
+      children: <JoinLeaderboardModal initialCode={urlLeaderboardCode} onJoin={async code => {
         await joinLeaderboard(code);
         modals.closeModal(id);
       }} />
     });
   };
+
+  useEffect(() => {
+    if (urlLeaderboardCode) openJoinLeaderboard();
+  }, [urlLeaderboardCode]);
+
+  if (!username) return <Text>No user</Text>;
 
   const adminUsernames = openedLeaderboard?.members.filter(m => m.admin).map(m => m.username);
   const isAdmin = Boolean(adminUsernames?.includes(username));

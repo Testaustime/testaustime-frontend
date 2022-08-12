@@ -8,17 +8,18 @@ import { FormikTextInput } from "../forms/FormikTextInput";
 import { EnterIcon } from "@radix-ui/react-icons";
 
 interface JoinLeaderboardModalProps {
+  initialCode: string | null,
   onJoin: (leaderboardCode: string) => Promise<void>
 }
 
-export const JoinLeaderboardModal = ({ onJoin }: JoinLeaderboardModalProps) => {
+export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardModalProps) => {
   const [error, setError] = useState<string>("");
   const [placeholderLeaderboardInviteCode] = useState(generateLeaderboardInviteCode());
 
   return <>
     <Formik
       initialValues={{
-        leaderboardCode: ""
+        leaderboardCode: initialCode ?? ""
       }}
       validationSchema={Yup.object().shape({
         leaderboardCode: Yup
