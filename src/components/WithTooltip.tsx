@@ -10,12 +10,15 @@ export const WithTooltip: FunctionComponent<WithTooltipProps> = ({ tooltipLabel,
   return <Group spacing={10}>
     {children}
     <Tooltip
-      allowPointerEvents
-      wrapLines
+      multiline
       width={250}
       withArrow
       closeDelay={300}
-      label={tooltipLabel}>
+      label={tooltipLabel}
+      sx={{
+        pointerEvents: "all"
+      }}
+    >
       <ActionIcon size={30}>
         <QuestionMarkCircledIcon width={20} height={20} />
       </ActionIcon>

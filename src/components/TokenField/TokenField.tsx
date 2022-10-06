@@ -1,5 +1,5 @@
 import { Button, Group, Text } from "@mantine/core";
-import { useBooleanToggle, useClipboard } from "@mantine/hooks";
+import { useToggle, useClipboard } from "@mantine/hooks";
 import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
@@ -24,7 +24,7 @@ export const TokenField = ({
   textFormatter = (currentValue: string) => currentValue
 }: TokenFieldProps) => {
   const { copy, copied, reset } = useClipboard({ timeout: 2000 });
-  const [isTokenRevealed, toggleIsTokenRevealed] = useBooleanToggle(false);
+  const [isTokenRevealed, toggleIsTokenRevealed] = useToggle([false, true]);
 
   useEffect(() => {
     return reset;

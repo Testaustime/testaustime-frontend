@@ -1,4 +1,4 @@
-import { Anchor, Center, createStyles, Group, Text, Title } from "@mantine/core";
+import { Anchor, Center, createStyles, Group, Stack, Text, Title } from "@mantine/core";
 import { GitHubLogoIcon, QuestionMarkIcon } from "@radix-ui/react-icons";
 import React, { ReactNode } from "react";
 import { ReactComponent as Neovim } from "../../images/neovim.svg";
@@ -103,7 +103,7 @@ export const ExtensionsPage = () => {
   return <div style={{ height: "calc(100% - 36px - 50px - 80px)" }}>
     <Title order={1} mb={5}>Extensions</Title>
     <Text>Download the Testaustime extension for your favorite code editor!</Text>
-    <Group spacing={25} direction="column" mt={30}>
+    <Stack spacing={25} mt={30}>
       <ExtensionBlock
         logo={<Vscode width={40} height={40} />}
         downloadLink="https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime"
@@ -122,6 +122,6 @@ export const ExtensionsPage = () => {
         sourceCodeLink="https://github.com/Testaustime/testaustime-intellij/"
         text="Download Testaustime for IntelliJ"
       />
-    </Group>
+    </Stack>
   </div>;
 };
