@@ -131,7 +131,8 @@ export const Dashboard = () => {
             data={projectNames}
             placeholder="No projects"
             disabled
-          />)}
+          />
+        )}
       </Group>
       {entriesInRange.length !== 0 ?
         <>
@@ -142,17 +143,14 @@ export const Dashboard = () => {
               dayCount={dayCount}
               className={classes.dailyCodingTimeChart}
             />
-            <Text
-              mt={15}
-              mb={15}
-            >
+            <Text mt={15} mb={15}>
               Total time coded in the last {dayCount} days: <b>
                 {prettyDuration(sumBy(entriesInRange, entry => entry.duration))}
               </b>
             </Text>
           </Group>
           <Group className={classes.dataCard}>
-            <Title mt={10} order={2}>Time by time spent per project</Title>
+            <Title mt={10} order={2}>Time spent per project</Title>
             <PerProjectChart entries={entriesInRange} className={classes.projectCodingChart} />
           </Group>
           {isSmallScreen ? (
