@@ -216,25 +216,29 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
                   <Anchor component={Link} to="/leaderboards">Leaderboards</Anchor>
                   <Menu
                     trigger="hover"
-                    control={<Button
-                      variant="outline"
-                      size="xs"
-                      leftIcon={<PersonIcon style={{ marginRight: "5px" }} />}
-                    >
-                      {username}
-                    </Button>}
                   >
-                    <Menu.Label>Account</Menu.Label>
-                    <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>Settings</Menu.Item>
-                    <Divider />
-                    <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
-                    <Divider />
-                    <Menu.Item
-                      color="blue"
-                      icon={<ExitIcon />}
-                      onClick={logOutAndRedirect}>
-                      Log out
-                    </Menu.Item>
+                    <Menu.Target>
+                      <Button
+                        variant="outline"
+                        size="xs"
+                        leftIcon={<PersonIcon style={{ marginRight: "5px" }} />}
+                      >
+                        {username}
+                      </Button>
+                    </Menu.Target>
+                    <Menu.Dropdown>
+                      <Menu.Label>Account</Menu.Label>
+                      <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>Settings</Menu.Item>
+                      <Divider />
+                      <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
+                      <Divider />
+                      <Menu.Item
+                        color="blue"
+                        icon={<ExitIcon />}
+                        onClick={logOutAndRedirect}>
+                        Log out
+                      </Menu.Item>
+                    </Menu.Dropdown>
                   </Menu>
                 </> : <>
                   <Anchor component={Link} to="/extensions">Extensions</Anchor>
@@ -246,50 +250,52 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
               <ThemeToggle label={false} />
             </Group>
             <Group className={classes.smallNavigation}>
-              <Menu
-                trigger="hover"
-                control={<Button variant="outline" size="lg">
-                  <HamburgerMenuIcon markerHeight={27} />
-                </Button>}
-              >
-                <div
-                  style={{ padding: "10px" }}
-                  onClick={() => { toggleColorScheme(); }}>
-                  <ThemeToggle label={true} />
-                </div>
-                {isLoggedIn ?
-                  <>
-                    <Divider />
-                    <Menu.Item component={Link} to="/" icon={<HomeIcon />}>Dashboard</Menu.Item>
-                    <Menu.Item component={Link} to="/friends" icon={<FaceIcon />}>Friends</Menu.Item>
-                    <Menu.Item
-                      component={Link}
-                      to="/leaderboards"
-                      icon={<BarChart2 size={18} />}
-                    >
-                      Leaderboards
-                    </Menu.Item>
-                    <Divider />
-                    <Menu.Label>Account - {username}</Menu.Label>
-                    <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>Settings</Menu.Item>
-                    <Divider />
-                    <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
-                    <Divider />
-                    <Menu.Item
-                      color="blue"
-                      icon={<ExitIcon />}
-                      onClick={logOutAndRedirect}>
-                      Log out
-                    </Menu.Item>
-                  </>
-                  :
-                  <>
-                    <Divider />
-                    <Menu.Item component={Link} to="/login" icon={<EnterIcon />}>Login</Menu.Item>
-                    <Menu.Item color="blue" component={Link} to="/register" icon={<PlusIcon />}>Register</Menu.Item>
-                    <Divider />
-                    <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
-                  </>}
+              <Menu trigger="hover">
+                <Menu.Target>
+                  <Button variant="outline" size="lg">
+                    <HamburgerMenuIcon markerHeight={27} />
+                  </Button>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <div
+                    style={{ padding: "10px" }}
+                    onClick={() => { toggleColorScheme(); }}>
+                    <ThemeToggle label={true} />
+                  </div>
+                  {isLoggedIn ?
+                    <>
+                      <Divider />
+                      <Menu.Item component={Link} to="/" icon={<HomeIcon />}>Dashboard</Menu.Item>
+                      <Menu.Item component={Link} to="/friends" icon={<FaceIcon />}>Friends</Menu.Item>
+                      <Menu.Item
+                        component={Link}
+                        to="/leaderboards"
+                        icon={<BarChart2 size={18} />}
+                      >
+                        Leaderboards
+                      </Menu.Item>
+                      <Divider />
+                      <Menu.Label>Account - {username}</Menu.Label>
+                      <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>Settings</Menu.Item>
+                      <Divider />
+                      <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
+                      <Divider />
+                      <Menu.Item
+                        color="blue"
+                        icon={<ExitIcon />}
+                        onClick={logOutAndRedirect}>
+                        Log out
+                      </Menu.Item>
+                    </>
+                    :
+                    <>
+                      <Divider />
+                      <Menu.Item component={Link} to="/login" icon={<EnterIcon />}>Login</Menu.Item>
+                      <Menu.Item color="blue" component={Link} to="/register" icon={<PlusIcon />}>Register</Menu.Item>
+                      <Divider />
+                      <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>Extensions</Menu.Item>
+                    </>}
+                </Menu.Dropdown>
               </Menu>
             </Group>
           </Group>

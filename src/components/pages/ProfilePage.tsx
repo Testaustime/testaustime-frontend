@@ -1,4 +1,4 @@
-import { Anchor, Checkbox, Group, Text, Title } from "@mantine/core";
+import { Anchor, Checkbox, Group, Stack, Text, Title } from "@mantine/core";
 import { format } from "date-fns/esm";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { WithTooltip } from "../WithTooltip";
@@ -24,7 +24,7 @@ export const ProfilePage = () => {
     <Title order={2}>My profile</Title>
     <Text mt={15}>Username: {username}</Text>
     <Text mt={15}>Registration time: {format(registrationTime, "d.M.yyyy HH:mm")}</Text>
-    <Group direction="column" mt={40} spacing={15}>
+    <Stack mt={40} spacing={15}>
       <WithTooltip
         tooltipLabel={<Text>This token is used for authentication in your code editor.{" "}
           <Anchor component={Link} to="/extensions">Get your extension from here!</Anchor>
@@ -33,8 +33,8 @@ export const ProfilePage = () => {
         <Title order={3}>Authentication token</Title>
       </WithTooltip>
       <TokenField value={token} regenerate={regenerateToken} censorable revealLength={4} />
-    </Group>
-    <Group direction="column" mt={40} spacing={15}>
+    </Stack>
+    <Stack mt={40} spacing={15}>
       <WithTooltip tooltipLabel={<Text>This code is used for sharing your data with your friends.</Text>}>
         <Title order={3}>Friend code</Title>
       </WithTooltip>
@@ -46,7 +46,7 @@ export const ProfilePage = () => {
         copyFormatter={value => `ttfc_${value}`}
         textFormatter={value => `ttfc_${value}`}
       />
-    </Group>
+    </Stack>
     <Title order={2} mt={40}>Settings</Title>
     <Group mt={15}>
       <Checkbox checked={smoothCharts} onChange={e => setSmoothCharts(e.target.checked)} label="Smooth charts" />

@@ -1,4 +1,4 @@
-import { useLocalStorageValue } from "@mantine/hooks";
+import { useLocalStorage } from "@mantine/hooks";
 
 export interface LocalStorageSettings {
   smoothCharts?: boolean
@@ -9,7 +9,7 @@ const defaultValue: LocalStorageSettings = {
 };
 
 export const useSettings = () => {
-  const [settings, setSettings] = useLocalStorageValue({
+  const [settings, setSettings] = useLocalStorage({
     key: "settings",
     defaultValue
   });

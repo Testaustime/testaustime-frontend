@@ -1,5 +1,5 @@
 import { useActivityData } from "../hooks/useActivityData";
-import { Group, MultiSelect, SegmentedControl, Text, Title, createStyles } from "@mantine/core";
+import { Group, MultiSelect, SegmentedControl, Text, Title, createStyles, Stack } from "@mantine/core";
 import TopLanguages from "./TopLanguages";
 import { prettyDuration } from "../utils/dateUtils";
 import { TopProjects } from "./TopProjects/TopProjects";
@@ -155,17 +155,28 @@ export const Dashboard = () => {
             <Title mt={10} order={2}>Time by time spent per project</Title>
             <PerProjectChart entries={entriesInRange} className={classes.projectCodingChart} />
           </Group>
-          <Group direction={isSmallScreen ? "column" : "row"} grow mt={20} mb={20} align="start">
-            <div>
-              <Title order={2}>Languages</Title>
-              <TopLanguages entries={entriesInRange} />
-            </div>
-            <div>
-              <Title order={2}>Projects</Title>
-              <TopProjects entries={entriesInRange} />
-            </div>
-          </Group>
-          <Title order={2} mt={20} mb={5}>Your sessions</Title>
+          {isSmallScreen ? (
+            <Stack align="center">
+              <div>
+                <Title order={2}>Languages</Title>
+                <TopLanguages entries={entriesInRange} />
+              </div>
+              <div>
+                <Title order={2}>Projects</Title>
+                <TopProjects entries={entriesInRange} />
+              </div>
+            </Stack>) : (
+            <Group grow align="flex-start">
+              <div>
+                <Title order={2}>Languages</Title>
+                <TopLanguages entries={entriesInRange} />
+              </div>
+              <div>
+                <Title order={2}>Projects</Title>
+                <TopProjects entries={entriesInRange} />
+              </div>
+            </Group>
+          )}
         </>
         :
         <Text>No programming activity data to display.{" "}
