@@ -134,34 +134,24 @@ export const Dashboard = () => {
           />
         )}
       </Group>
-      {entriesInRange.length !== 0 ? (
+      {entriesInRange.length !== 0 ?
         <>
           <Group className={classes.dataCard}>
-            <Title mt={10} order={2}>
-              Time per day
-            </Title>
+            <Title mt={10} order={2}>Time per day</Title>
             <DailyCodingTimeChart
               entries={entriesInRange}
               dayCount={dayCount}
               className={classes.dailyCodingTimeChart}
             />
             <Text mt={15} mb={15}>
-              Total time coded in the last {dayCount} days:{" "}
-              <b>
-                {prettyDuration(
-                  sumBy(entriesInRange, entry => entry.duration)
-                )}
+              Total time coded in the last {dayCount} days: <b>
+                {prettyDuration(sumBy(entriesInRange, entry => entry.duration))}
               </b>
             </Text>
           </Group>
           <Group className={classes.dataCard}>
-            <Title mt={10} order={2}>
-              Time per latest projects
-            </Title>
-            <PerProjectChart
-              entries={entriesInRange}
-              className={classes.projectCodingChart}
-            />
+            <Title mt={10} order={2}>Time spent per project</Title>
+            <PerProjectChart entries={entriesInRange} className={classes.projectCodingChart} />
           </Group>
           {isSmallScreen ? (
             <Stack align="center">
@@ -186,13 +176,11 @@ export const Dashboard = () => {
             </Group>
           )}
         </>
-      ) : (
-        <Text>
-          No programming activity data to display.{" "}
-          <a href="/extensions">Install one of the extensions</a> to begin
-          tracking your programming.
-        </Text>
-      )}
+        :
+        <Text>No programming activity data to display.{" "}
+          <a href="/extensions">Install one of the extensions</a>
+          to begin tracking your programming.</Text>
+      }
     </div>
   );
 };
