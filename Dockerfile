@@ -1,11 +1,25 @@
-FROM node:alpine AS build-stage
-WORKDIR /usr/src/app
-COPY . .
-RUN npm ci && npm run build
+FROM --platform=$BUILDPLATFORM node:16-alpine AS build
 
-FROM nginx:alpine
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+RUN npm ci
+
+COPY . .
+
+RUN npm run build
+
+
+
+FROM --platform=$TARGETPLATFORM nginx:alpine AS runner
+
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 WORKDIR /usr/share/nginx/html
+
 RUN rm -rf ./*
-COPY --from=build-stage /usr/src/app/dist .
+
+COPY --from=build /app/dist .
+
 CMD ["nginx", "-g", "daemon off;"]
