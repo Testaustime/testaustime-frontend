@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../store";
 import { useAuthentication, UseAuthenticationResult } from "./useAuthentication";
@@ -109,7 +109,7 @@ describe("useAuthentication", () => {
   });
 
   test.todo("removes the auth token from local storage after logging out");
-  test.todo("returns a rejected promise, when loggin in with invalid credentials");
+  test.todo("returns a rejected promise, when logging in with invalid credentials");
   test.todo("saves the new token to local storage after calling regenerateToken");
   test.todo("returns the new token in hook.token after calling regenerateToken");
 });
