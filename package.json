@@ -20,6 +20,7 @@
     "react-redux": "^8.0.4",
     "react-router": "^6.4.2",
     "react-router-dom": "^6.4.2",
+    "typesafe-i18n": "^5.14.0",
     "yup": "^0.32.11"
   },
   "scripts": {
@@ -27,7 +28,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "lint": "eslint src --ext .ts,.tsx"
+    "lint": "eslint src --ext .ts,.tsx",
+    "typesafe-i18n": "typesafe-i18n"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
