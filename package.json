@@ -23,7 +23,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "VITE_API_URL=https://api.testaustime.fi vite",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",

@@ -12,15 +12,6 @@ export default defineConfig({
     svgr(),
     visualizer()
   ],
-  server: {
-    proxy: {
-      "/api": {
-        target: "https://api.testaustime.fi",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    }
-  },
   test: {
     globals: true,
     environment: "jsdom",

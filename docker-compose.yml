@@ -6,5 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=https://api.testaustime.fi
     ports:
       - 3000:80

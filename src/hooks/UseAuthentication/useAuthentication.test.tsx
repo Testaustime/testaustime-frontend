@@ -31,7 +31,7 @@ let existingUsers: TestUser[] = [];
 describe("useAuthentication", () => {
 
   const server = setupServer(
-    rest.post<{ username: string, password: string }>("/api/auth/register", (req, res, ctx) => {
+    rest.post<{ username: string, password: string }>("/auth/register", (req, res, ctx) => {
       const { username, password } = req.body;
 
       if (existingUsers.find(u => u.username === username)) {
@@ -49,7 +49,7 @@ describe("useAuthentication", () => {
       existingUsers.push(user);
       return res(ctx.json(user));
     }),
-    rest.post<{ username: string, password: string }>("/api/auth/login", (req, res, ctx) => {
+    rest.post<{ username: string, password: string }>("/auth/login", (req, res, ctx) => {
       const { username, password } = req.body;
 
       const user = {

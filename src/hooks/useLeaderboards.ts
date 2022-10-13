@@ -26,7 +26,7 @@ export const useLeaderboards = () => {
   const [leaderboardData, setLeaderboardData] = useState<{ [leaderboardName: string]: LeaderboardData }>({});
 
   useEffect(() => {
-    axios.get<Leaderboard[]>("/api/users/@me/leaderboards", {
+    axios.get<Leaderboard[]>("/users/@me/leaderboards", {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     }).then(res => {
       setLeaderboards(res.data);
@@ -35,7 +35,7 @@ export const useLeaderboards = () => {
 
   useEffect(() => {
     const promises = leaderboards.map(leaderboard =>
-      axios.get<LeaderboardData>(`/api/leaderboards/${leaderboard.name}`,
+      axios.get<LeaderboardData>(`/leaderboards/${leaderboard.name}`,
         { headers: { Authorization: `Bearer ${token ?? ""}` } })
     );
 
@@ -51,7 +51,7 @@ export const useLeaderboards = () => {
   const joinLeaderboard = async (leaderboardCode: string) => {
     // TODO: Wait for https://github.com/Testaustime/testaustime-backend/pull/21 to get merged
     // After that member_count can be made non-nullable
-    const res = await axios.post<{ name: string, member_count?: number }>("/api/leaderboards/join", {
+    const res = await axios.post<{ name: string, member_count?: number }>("/leaderboards/join", {
       invite: leaderboardCode
     }, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
@@ -61,14 +61,14 @@ export const useLeaderboards = () => {
   };
 
   const leaveLeaderboard = async (leaderboardName: string) => {
-    await axios.post(`/api/leaderboards/${leaderboardName}/leave`, {}, {
+    await axios.post(`/leaderboards/${leaderboardName}/leave`, {}, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     });
     setLeaderboards(leaderboards.filter(leaderboard => leaderboard.name !== leaderboardName));
   };
 
   const createLeaderboard = async (leaderboardName: string) => {
-    await axios.post<{ invite_code: string }>("/api/leaderboards/create", {
+    await axios.post<{ invite_code: string }>("/leaderboards/create", {
       name: leaderboardName
     }, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
@@ -77,14 +77,14 @@ export const useLeaderboards = () => {
   };
 
   const deleteLeaderboard = async (leaderboardName: string) => {
-    await axios.delete(`/api/leaderboards/${leaderboardName}`, {
+    await axios.delete(`/leaderboards/${leaderboardName}`, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     });
     setLeaderboards(leaderboards.filter(leaderboard => leaderboard.name !== leaderboardName));
   };
 
   const setUserAdminStatus = async (leaderboardName: string, username: string, adminStatus: boolean) => {
-    await axios.post(`/api/leaderboards/${leaderboardName}/${adminStatus ? "promote" : "demote"}`, {
+    await axios.post(`/leaderboards/${leaderboardName}/${adminStatus ? "promote" : "demote"}`, {
       user: username
     }, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
@@ -102,7 +102,7 @@ export const useLeaderboards = () => {
   };
 
   const kickUser = async (leaderboardName: string, username: string) => {
-    await axios.post(`/api/leaderboards/${leaderboardName}/kick`, {
+    await axios.post(`/leaderboards/${leaderboardName}/kick`, {
       user: username
     }, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
@@ -118,7 +118,7 @@ export const useLeaderboards = () => {
   };
 
   const regenerateInviteCode = async (leaderboardName: string) => {
-    const res = await axios.post<{ invite_code: string }>(`/api/leaderboards/${leaderboardName}/regenerate`, {}, {
+    const res = await axios.post<{ invite_code: string }>(`/leaderboards/${leaderboardName}/regenerate`, {}, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     });
     const inviteCode = res.data.invite_code;
