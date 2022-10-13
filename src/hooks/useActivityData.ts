@@ -25,7 +25,7 @@ export const useActivityData = () => {
   const [entries, setEntries] = useState<ActivityDataEntry[]>([]);
 
   useEffect(() => {
-    axios.get<ApiUsersUserActivityDataResponseItem[]>("/api/users/@me/activity/data",
+    axios.get<ApiUsersUserActivityDataResponseItem[]>("/users/@me/activity/data",
       { headers: { Authorization: `Bearer ${token ?? ""}` } }
     ).then(({ data }) => {
       setEntries(data.map(e => ({

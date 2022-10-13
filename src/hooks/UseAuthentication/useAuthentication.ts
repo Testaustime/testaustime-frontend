@@ -76,7 +76,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const regenerateToken = async () => {
     try {
-      const { data } = await axios.post<ApiAuthRegenerateResponse>("/api/auth/regenerate", null,
+      const { data } = await axios.post<ApiAuthRegenerateResponse>("/auth/regenerate", null,
         { headers: { Authorization: `Bearer ${token ?? ""}` } }
       );
       const newToken = data.token;
@@ -91,7 +91,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const regenerateFriendCode = async () => {
     try {
-      const { data } = await axios.post<ApiFriendsRegenerateResponse>("/api/friends/regenerate", null,
+      const { data } = await axios.post<ApiFriendsRegenerateResponse>("/friends/regenerate", null,
         { headers: { Authorization: `Bearer ${token ?? ""}` } }
       );
       const newFriendCode = data.friend_code;
@@ -106,7 +106,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const register = async (username: string, password: string) => {
     try {
-      const { data } = await axios.post<ApiAuthRegisterResponse>("/api/auth/register", { username, password });
+      const { data } = await axios.post<ApiAuthRegisterResponse>("/auth/register", { username, password });
       const { auth_token, friend_code, username: apiUsername, registration_time } = data;
       setToken(auth_token);
       dispatch(setUsername(apiUsername));
@@ -122,7 +122,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const login = async (username: string, password: string) => {
     try {
-      const { data } = await axios.post<ApiAuthLoginResponse>("/api/auth/login", { username, password });
+      const { data } = await axios.post<ApiAuthLoginResponse>("/auth/login", { username, password });
       const { auth_token, friend_code, username: apiUsername, registration_time } = data;
       setToken(auth_token);
       dispatch(setUsername(apiUsername));
@@ -154,7 +154,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
     }
 
     try {
-      const { data } = await axios.get<ApiUsersUserResponse>("/api/users/@me",
+      const { data } = await axios.get<ApiUsersUserResponse>("/users/@me",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       dispatch(setUsername(data.username));
