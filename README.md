@@ -1,6 +1,6 @@
 # Testaustime-frontend
 
-This repository contains the code for the frontend of [Testaustime](https://testaustime.fi). It is a time-tracking application for tracking time spent on coding. Currently we have editor extensions for [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime), [Neovim](https://github.com/Testaustime/testaustime.nvim) and [IntelliJ](https://plugins.jetbrains.com/plugin/19408-testaustime/).
+This repository contains the code for the frontend of [Testaustime](https://testaustime.fi). It is a time-tracking application for tracking time spent on coding. Currently we have editor extensions for [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime), [Neovim](https://github.com/Testaustime/testaustime.nvim), [IntelliJ](https://plugins.jetbrains.com/plugin/19408-testaustime/) and [Micro](https://github.com/Testaustime/testaustime-micro).
 
 ## Development
 

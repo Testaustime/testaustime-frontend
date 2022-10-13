@@ -4,6 +4,7 @@ import React, { ReactNode } from "react";
 import { ReactComponent as Neovim } from "../../images/neovim.svg";
 import { ReactComponent as Vscode } from "../../images/vscode.svg";
 import { ReactComponent as IntelliJ } from "../../images/intellij.svg";
+import { ReactComponent as Micro } from "../../images/micro.svg";
 
 interface ExtensionBlockProps {
   logo: React.ReactNode,
@@ -121,6 +122,12 @@ export const ExtensionsPage = () => {
         downloadLink="https://plugins.jetbrains.com/plugin/19408-testaustime/"
         sourceCodeLink="https://github.com/Testaustime/testaustime-intellij/"
         text="Download Testaustime for IntelliJ"
+      />
+      <ExtensionBlock
+        logo={<Micro width={40} height={40} />}
+        downloadLink="https://github.com/Testaustime/testaustime-micro"
+        sourceCodeLink="https://github.com/Testaustime/testaustime-micro"
+        text="Download Testaustime for Micro"
       />
     </Stack>
   </div>;
