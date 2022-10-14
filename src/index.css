@@ -11,6 +11,15 @@ html, body {
     min-height: 100vh;
 }
 
+body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
 /* ubuntu-regular - latin */
 @font-face {
     font-family: 'Ubuntu';
