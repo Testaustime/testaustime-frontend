@@ -195,9 +195,11 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
           )}
           valueFormat={v => prettyDuration(v)}
           layout="horizontal"
-          // colors={{ scheme: "paired" }}
-          // eslint-disable-next-line max-len
-          colors={l => getLanguageColor(prettifyProgrammingLanguageName(l.id.toString().slice(0, l.id.toString().length - 9)) ?? "Unknown")}
+          colors={l =>
+            getLanguageColor(
+              prettifyProgrammingLanguageName(l.id.toString().slice(0, l.id.toString().length - 9))
+              ?? "Unknown"
+            )}
           // TODO: Format the values properly instead of the raw "*_duration" format
           legendLabel={datum => {
             const str = String(datum.id);
