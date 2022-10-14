@@ -27,7 +27,6 @@ const useStyles = createStyles(theme => ({
     width: "100%"
   },
   projectCodingChart: {
-    // minHeight: "400px",
     width: "100%",
     paddingBottom: "15px"
   },
