@@ -295,6 +295,7 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
                 </Menu.Target>
                 <Menu.Dropdown
                   className={`${classes.dropdown} noDefaultTransition`}
+                  onClick={() => setOpened(false)}
                 >
                   <div
                     style={{ padding: "10px" }}
