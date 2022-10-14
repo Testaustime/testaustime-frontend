@@ -208,8 +208,16 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
   const { classes } = useStyles();
   const { classes: menuClasses } = createStyles(() => ({ item: { height: 60 } }))();
   const [opened, setOpenedOriginal] = useState(false);
+
   const setOpened = (o: boolean | ((arg0: boolean) => boolean)) => { // Patches a bug with Mantine menu alignment
-    setOpenedOriginal(typeof o === "function" ? o(opened) : o);
+    const state = typeof o === "function" ? o(opened) : o;
+
+    // Disable scrolling
+    if (state) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+
+    // Open or close the menu
+    setOpenedOriginal(state);
     requestAnimationFrame(() => {
       const dropdown = document.getElementById("dropdown-menu-dropdown");
       if (dropdown) dropdown.style.left = "0px";
