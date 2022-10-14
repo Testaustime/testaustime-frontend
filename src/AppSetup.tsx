@@ -278,7 +278,6 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
             <Group className={classes.smallNavigation}>
               <Menu
                 opened={opened}
-                onChange={setOpened}
                 id="dropdown-menu"
                 transition={"fade"}
                 position={"left-end"}
