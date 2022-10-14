@@ -27,7 +27,7 @@ const useStyles = createStyles(theme => ({
     width: "100%"
   },
   projectCodingChart: {
-    height: "400px",
+    // minHeight: "400px",
     width: "100%",
     paddingBottom: "15px"
   },
@@ -150,7 +150,7 @@ export const Dashboard = () => {
             </Text>
           </Group>
           <Group className={classes.dataCard}>
-            <Title mt={10} order={2}>Time spent per project</Title>
+            <Title mt={10} order={2}>Time per project</Title>
             <PerProjectChart entries={entriesInRange} className={classes.projectCodingChart} />
           </Group>
           {isSmallScreen ? (
