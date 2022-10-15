@@ -1,12 +1,14 @@
 import {
   Anchor,
   Box,
+  Burger,
   Button,
   ColorScheme,
   ColorSchemeProvider,
   createStyles,
   Group,
-  MantineProvider
+  MantineProvider,
+  Overlay
 } from "@mantine/core";
 import { useColorScheme, useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { Menu, Divider } from "@mantine/core";
@@ -14,7 +16,6 @@ import { NotificationsProvider } from "@mantine/notifications";
 import {
   ExitIcon,
   PersonIcon,
-  HamburgerMenuIcon,
   GearIcon,
   MixIcon,
   EnterIcon,
@@ -22,7 +23,7 @@ import {
   FaceIcon,
   HomeIcon
 } from "@radix-ui/react-icons";
-import { FunctionComponent, useEffect } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { LoginPage } from "./components/pages/LoginPage";
@@ -95,6 +96,12 @@ const useStyles = createStyles(theme => ({
   },
   menu: {
     border: `1px solid ${theme.colorScheme === "dark" ? theme.colors.gray[0] : theme.colors.gray[1]}`
+  },
+  dropdown: {
+    width: "90%",
+    margin: "calc(40px + 36px + 20px) 5% 0 5%",
+    padding: "10px",
+    zIndex: 5
   }
 }));
 
@@ -199,8 +206,26 @@ interface AppProps {
 const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
   const { isLoggedIn, username } = useAuthentication();
   const { classes } = useStyles();
+  const { classes: menuClasses } = createStyles(() => ({ item: { height: 60 } }))();
+  const [opened, setOpenedOriginal] = useState(false);
+
+  const setOpened = (o: boolean | ((arg0: boolean) => boolean)) => { // Patches a bug with Mantine menu alignment
+    const state = typeof o === "function" ? o(opened) : o;
+
+    // Disable scrolling
+    if (state) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+
+    // Open or close the menu
+    setOpenedOriginal(state);
+    requestAnimationFrame(() => {
+      const dropdown = document.getElementById("dropdown-menu-dropdown");
+      if (dropdown) dropdown.style.left = "0px";
+    });
+  };
 
   return <Group className={classes.container}>
+    {opened ? <Overlay opacity={0.6} color="#000" zIndex={5} onClick={() => setOpened(false)} /> : <></>}
     <div className={classes.innerContainer}>
       <div>
         <Group position="apart" mb={50}>
@@ -216,6 +241,7 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
                   <Anchor component={Link} to="/leaderboards">Leaderboards</Anchor>
                   <Menu
                     trigger="hover"
+                    classNames={menuClasses}
                   >
                     <Menu.Target>
                       <Button
@@ -250,13 +276,27 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
               <ThemeToggle label={false} />
             </Group>
             <Group className={classes.smallNavigation}>
-              <Menu trigger="hover">
+              <Menu
+                opened={opened}
+                id="dropdown-menu"
+                transition={"fade"}
+                position={"left-end"}
+                transitionDuration={150}
+                classNames={menuClasses}
+              >
                 <Menu.Target>
-                  <Button variant="outline" size="lg">
-                    <HamburgerMenuIcon markerHeight={27} />
-                  </Button>
+                  <Burger
+                    title="Open navigation"
+                    opened={opened}
+                    color={"#536ab7"}
+                    sx={{ zIndex: 5 }}
+                    onClick={() => setOpened((o: boolean) => !o)}
+                  />
                 </Menu.Target>
-                <Menu.Dropdown>
+                <Menu.Dropdown
+                  className={`${classes.dropdown} noDefaultTransition`}
+                  onClick={() => setOpened(false)}
+                >
                   <div
                     style={{ padding: "10px" }}
                     onClick={() => { toggleColorScheme(); }}>
