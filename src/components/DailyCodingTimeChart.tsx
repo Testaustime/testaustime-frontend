@@ -1,17 +1,33 @@
-import { Paper, Text, useMantineTheme } from "@mantine/core";
+import { Text } from "@mantine/core";
 import { format } from "date-fns";
-import { addDays, isSunday, startOfDay } from "date-fns/esm";
+import { addDays, startOfDay } from "date-fns/esm";
 import { sumBy } from "../utils/arrayUtils";
-import { ResponsiveLine } from "@nivo/line";
 import { calculateTickValues } from "../utils/chartUtils";
-import { prettyDuration } from "../utils/dateUtils";
 import { useSettings } from "../hooks/useSettings";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  PointElement
+} from "chart.js";
+import { prettyDuration } from "../utils/dateUtils";
 
-const isNumber = (value: unknown): value is number => typeof value === "number";
-
-const isDateOrNumber = (value: unknown): value is Date | number => {
-  return isNumber(value) || value instanceof Date;
-};
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  PointElement,
+  LineElement
+);
 
 export interface DailyCodingTimeChartProps {
   entries: {
@@ -30,10 +46,7 @@ export interface DailyCodingTimeChartProps {
 
 export const DailyCodingTimeChart = ({
   entries,
-  dayCount,
-  className
-}: DailyCodingTimeChartProps) => {
-  const usesDarkMode = useMantineTheme().colorScheme === "dark";
+  dayCount }: DailyCodingTimeChartProps) => {
   const { smoothCharts } = useSettings();
 
   if (entries.length === 0) return <Text>No data</Text>;
@@ -53,90 +66,40 @@ export const DailyCodingTimeChart = ({
   const maxDuration = [...data].sort((a, b) => b.duration - a.duration)[0].duration;
   const yticks = calculateTickValues(maxDuration);
 
-  return (
-    <div className={className}>
-      <ResponsiveLine
-        data={[{
-          id: "daily-coding-time",
-          data: data.map(({ date, duration }) => ({
-            x: date,
-            y: duration
-          }))
-        }]}
-        margin={{ top: 10, right: 50, bottom: 50, left: 60 }}
-        xScale={{
-          type: "time",
-          precision: "day",
-          min: data[0].date,
-          max: data[data.length - 1].date
-        }}
-        yScale={{
-          type: "linear",
-          min: 0,
-          max: yticks[yticks.length - 1]
-        }}
-        curve={smoothCharts ? "monotoneX" : "linear"}
-        axisBottom={{
-          format: (date: unknown) => {
-            if (!isDateOrNumber(date)) return "";
-            if (dayCount <= 14) return format(date, "d.M.");
-            return isSunday(date) ? format(date, "d.M.") : "";
+  return <Line
+    options={{
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          mode: "index",
+          intersect: false,
+          callbacks: {
+            label: item => "  " + prettyDuration(Number(item.raw))
           },
-          tickValues: data.map(({ date }) => date)
-        }}
-        axisLeft={{
-          format: durationSeconds => {
-            if (!isNumber(durationSeconds)) return "";
-            return prettyDuration(durationSeconds);
-          },
-          tickValues: yticks
-        }}
-        gridXValues={data.map(({ date }) => date)}
-        gridYValues={yticks}
-        sliceTooltip={p => {
-          const { x, y } = p.slice.points[0].data as { x: Date, y: number };
-          return (
-            <Paper p={10} sx={theme => ({
-              backgroundColor: usesDarkMode
-                ? theme.colors.dark[5]
-                : theme.colors.gray[1]
-            })}>
-              <Text>{"Date: " + format(x, "d.M.yyyy")}</Text>
-              <Text>{"Time spent: " + prettyDuration(y)}</Text>
-            </Paper>
-          );
-        }}
-        useMesh
-        enableSlices="x"
-        pointLabelYOffset={0}
-        pointSize={12}
-        theme={{
-          axis: {
-            ticks: {
-              line: {
-                stroke: usesDarkMode ? "#d8d8d8" : "#e2e2e2"
-              }
-            }
-          },
-          textColor: usesDarkMode ? "#fff" : "#000",
-          grid: {
-            line: {
-              stroke: usesDarkMode ? "#d8d8d8" : "#e2e2e2",
-              strokeWidth: 1
-            }
-          },
-          crosshair: {
-            line: {
-              stroke: usesDarkMode ? "#fff" : "#555",
-              strokeWidth: 3
-            }
+          padding: 8
+        }
+      },
+      scales: {
+        y: {
+          ticks: {
+            count: yticks.length,
+            callback: (_, index) => `${yticks[index] / 3600}h`
           }
-        }}
-        colors={[
-          usesDarkMode ? "#536AB7" : "#3D55A0"
-        ]}
-        enableArea
-      />
-    </div>
-  );
+        }
+      }
+    }}
+    data={{
+      labels: data.map(entry => format(entry.date, "MMM d")),
+      datasets: [{
+        label: "Daily coding time",
+        data: data.map(entry => entry.duration),
+        borderColor: "#1f78b4",
+        borderWidth: 4,
+        pointRadius: 2,
+        tension: smoothCharts ? 0.5 : 0
+      }]
+    }}
+  />;
 };
