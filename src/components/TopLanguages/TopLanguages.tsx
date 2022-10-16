@@ -11,7 +11,7 @@ export interface TopLanguagesProps {
 export const TopLanguages = ({ entries }: TopLanguagesProps) => {
   return <List type="ordered" withPadding>
     {getAllTimeTopLanguages(entries).map(l => <List.Item key={l.language || "null"}>
-      {prettifyProgrammingLanguageName(l.language) || <i>Unknown</i>}: {prettyDuration(l.duration)}
+      <span>{prettifyProgrammingLanguageName(l.language) || <i>Unknown</i>}: {prettyDuration(l.duration)}</span>
     </List.Item>)}
   </List>;
 };
