@@ -16,6 +16,7 @@ import {
   LineElement,
   PointElement
 } from "chart.js";
+import { prettyDuration } from "../utils/dateUtils";
 
 ChartJS.register(
   CategoryScale,
@@ -70,6 +71,13 @@ export const DailyCodingTimeChart = ({
       plugins: {
         legend: {
           display: false
+        },
+        tooltip: {
+          mode: "index",
+          intersect: false,
+          callbacks: {
+            label: item => prettyDuration(Number(item.raw))
+          }
         }
       },
       scales: {
@@ -88,7 +96,7 @@ export const DailyCodingTimeChart = ({
         data: data.map(entry => entry.duration),
         borderColor: "#1f78b4",
         borderWidth: 4,
-        pointRadius: 0,
+        pointRadius: 2,
         tension: smoothCharts ? 0.5 : 0
       }]
     }}
