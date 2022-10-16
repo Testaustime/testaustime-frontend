@@ -7,8 +7,6 @@
     "@mantine/hooks": "^5.5.5",
     "@mantine/modals": "^5.5.5",
     "@mantine/notifications": "^5.5.5",
-    "@nivo/bar": "^0.80.0",
-    "@nivo/line": "^0.80.0",
     "@radix-ui/react-icons": "^1.1.1",
     "@reduxjs/toolkit": "^1.8.6",
     "axios": "^1.1.2",
