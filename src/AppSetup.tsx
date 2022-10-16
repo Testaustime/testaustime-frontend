@@ -22,7 +22,7 @@ import {
   FaceIcon,
   HomeIcon
 } from "@radix-ui/react-icons";
-import { FunctionComponent, useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { LoginPage } from "./components/pages/LoginPage";
@@ -98,10 +98,14 @@ const useStyles = createStyles(theme => ({
   }
 }));
 
-const PrivateRoute: FunctionComponent = ({ children }) => {
+const PrivateRoute = ({ children, redirect }: {
+  children?: ReactNode,
+  redirect?: string
+}) => {
   const { isLoggedOut } = useAuthentication();
   if (isLoggedOut) {
-    return <Navigate to="/login" replace />;
+    const fullUrl = "/login" + (redirect ? "?redirect=" + redirect : "");
+    return <Navigate to={fullUrl} replace />;
   }
 
   return <>{children}</>;
@@ -306,13 +310,13 @@ const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
           <Route path="/register" element={<RegistrationPage />} />
           <Route
             path="/profile"
-            element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+            element={<PrivateRoute redirect="/profile"><ProfilePage /></PrivateRoute>} />
           <Route
             path="/friends"
-            element={<PrivateRoute><FriendPage /></PrivateRoute>} />
+            element={<PrivateRoute redirect="/friends"><FriendPage /></PrivateRoute>} />
           <Route
             path="/leaderboards"
-            element={<PrivateRoute><LeaderboardsPage /></PrivateRoute>} />
+            element={<PrivateRoute redirect="/leaderboards"><LeaderboardsPage /></PrivateRoute>} />
           <Route path="/extensions" element={<ExtensionsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

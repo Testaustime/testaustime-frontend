@@ -26,12 +26,14 @@ export const useLeaderboards = () => {
   const [leaderboardData, setLeaderboardData] = useState<{ [leaderboardName: string]: LeaderboardData }>({});
 
   useEffect(() => {
-    axios.get<Leaderboard[]>("/users/@me/leaderboards", {
-      headers: { Authorization: `Bearer ${token ?? ""}` }
-    }).then(res => {
-      setLeaderboards(res.data);
-    }).catch(e => console.error(e));
-  }, []);
+    if (token) {
+      axios.get<Leaderboard[]>("/users/@me/leaderboards", {
+        headers: { Authorization: `Bearer ${token ?? ""}` }
+      }).then(res => {
+        setLeaderboards(res.data);
+      }).catch(e => console.error(e));
+    }
+  }, [token]);
 
   useEffect(() => {
     const promises = leaderboards.map(leaderboard =>
