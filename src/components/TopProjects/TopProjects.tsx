@@ -10,7 +10,7 @@ export interface TopProjectsProps {
 export const TopProjects = ({ entries }: TopProjectsProps) => {
   return <List type="ordered" withPadding>
     {getAllTimeTopProjects(entries).map(p => <List.Item key={p.project_name || "null"}>
-      {p.project_name || <i>Unknown</i>}: {prettyDuration(p.duration)}
+      <span>{p.project_name || <i>Unknown</i>}: {prettyDuration(p.duration)}</span>
     </List.Item>)}
   </List>;
 };
