@@ -1,11 +1,28 @@
-import { createStyles, Grid, List, Paper, Text, useMantineTheme } from "@mantine/core";
-import { ResponsiveBar } from "@nivo/bar";
-import { Square } from "react-feather";
+import { Text } from "@mantine/core";
 import { groupBy, sumBy } from "../utils/arrayUtils";
 import { calculateTickValues } from "../utils/chartUtils";
-import { prettyDuration } from "../utils/dateUtils";
 import { prettifyProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
 import { colors } from "../colors";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
+import { prettyDuration } from "../utils/dateUtils";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export interface PerProjectChartProps {
   entries: {
@@ -21,22 +38,6 @@ export interface PerProjectChartProps {
   projectCount?: number,
   className: string
 }
-
-const useStyles = createStyles(() => ({
-  legend: {
-    height: "max-content",
-    minHeight: "30px",
-    width: "90%",
-    margin: "5px 5% 0% 5%",
-    justifyContent: "center"
-  },
-  legendItem: {
-    padding: "12px"
-  },
-  legendIcon: {
-    marginRight: "3px"
-  }
-}));
 
 const defaultColors = [
   "#a6cee3",
@@ -72,9 +73,6 @@ function getLanguageColor(str: string): string {
 }
 
 export const PerProjectChart = ({ entries, projectCount = 5, className }: PerProjectChartProps) => {
-  const usesDarkMode = useMantineTheme().colorScheme === "dark";
-  const { classes } = useStyles();
-
   if (entries.length === 0) return <Text>No data</Text>;
 
   let languageNames = entries
@@ -134,93 +132,59 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
   const maxDuration = Math.max(...totalTimeByProject.map(p => sumBy(p.totalTimeByLanguage, l => l.duration)));
   const ticks = calculateTickValues(maxDuration);
 
-  const longestProjectName = totalTimeByProject
-    .slice()
-    .map(project => project.projectName).sort((a, b) => b.length - a.length)[0];
-
   return (
     <div className={className}>
-      <div style={{ height: 110 * Math.min(totalTimeByProject.length, projectCount), width: "100%" }}>
-        <ResponsiveBar
-          data={data}
-          keys={[...languageNames.map(l => `${l}_duration`)]}
-          labelSkipWidth={10}
-          indexBy="projectName"
-          margin={{
-            top: 30,
-            right: (window.innerWidth > 740 ? window.innerWidth * 0.05 : 0),
-            bottom: 30,
-            left: (window.innerWidth > 740 ? window.innerWidth * 0.05 : 0)
-             + (longestProjectName.length > 8 ? longestProjectName.length * 6 : 0)
-          }}
-          padding={0.3}
-          enableGridX
-          enableGridY={false}
-          maxValue={ticks[ticks.length - 1]}
-          theme={{ textColor: usesDarkMode ? "white" : "black" }}
-          axisBottom={{
-            format: (d: number) => prettyDuration(d),
-            tickValues: ticks
-          }}
-          borderRadius={2}
-          labelSkipHeight={20}
-          labelTextColor="black"
-          gridXValues={ticks}
-          axisLeft={{
-            tickPadding: 8
-          }}
-          tooltipLabel={d => String(d.data.projectName)}
-          tooltip={point => (
-            <Paper
-              sx={theme => ({
-                backgroundColor: usesDarkMode
-                  ? theme.colors.dark[5]
-                  : theme.colors.gray[1]
-              })}
-              p={10}
-            >
-              <Text underline>{point.label}</Text>
-              <List>
-                {Object.keys(point.data)
-                  .filter(k => k.endsWith("_duration"))
-                  .reverse()
-                  .map(l => (
-                    <List.Item key={l}>
-                      {prettifyProgrammingLanguageName(l.slice(0, l.length - 9)) ?? "Unknown"}:{" "}
-                      {prettyDuration(Number(point.data[l]))}
-                    </List.Item>
-                  ))}
-              </List>
-            </Paper>
-          )}
-          valueFormat={v => prettyDuration(v)}
-          layout="horizontal"
-          colors={l =>
-            getLanguageColor(
-              prettifyProgrammingLanguageName(l.id.toString().slice(0, l.id.toString().length - 9))
-              ?? "Unknown"
-            )}
-          // TODO: Format the values properly instead of the raw "*_duration" format
-          legendLabel={datum => {
-            const str = String(datum.id);
-            return prettifyProgrammingLanguageName(str.slice(0, str.length - 9)) ?? "Unknown";
-          }}
-        />
-      </div>
-      <Grid grow className={classes.legend}>
-        {[...languageNames.map(l =>
-          <>
-            <Grid className={classes.legendItem}>
-              <Square
-                fill={getLanguageColor(prettifyProgrammingLanguageName(l) ?? l)}
-                color={getLanguageColor(prettifyProgrammingLanguageName(l) ?? l)}
-                className={classes.legendIcon}
-              />
-              {prettifyProgrammingLanguageName(l)}
-            </Grid>
-          </>
-        )]}
-      </Grid>
+      <Bar
+        datasetIdKey="id"
+        data={{
+          labels: data.map(d => d.projectName),
+          datasets: languageNames.map(language => ({
+            id: language,
+            label: prettifyProgrammingLanguageName(language),
+            data: data.map(d => d[language + "_duration"] ?? 0),
+            backgroundColor: getLanguageColor(language),
+            borderColor: getLanguageColor(language),
+            borderWidth: 1
+          }))
+        }}
+        options={{
+          plugins: {
+            tooltip: {
+              mode: "y",
+              intersect: true,
+              filter: item => item.raw !== 0,
+              callbacks: {
+                label: item => `${item.dataset.label || "Unknown"}: ${prettyDuration(Number(item.raw))}`
+              }
+            },
+            legend: {
+              onClick: e => e.native?.stopPropagation()
+            }
+          },
+          indexAxis: "y",
+          responsive: true,
+          scales: {
+            x: {
+              stacked: true,
+              ticks: {
+                count: ticks.length,
+                callback: (_, index) => `${ticks[index] / 3600}h`
+              }
+            },
+            y: {
+              stacked: true
+            }
+          },
+          interaction: {
+            intersect: true,
+            mode: "dataset"
+          },
+          hover: {
+            intersect: true,
+            mode: "dataset"
+          }
+        }}
+      />
     </div>
   );
 };
