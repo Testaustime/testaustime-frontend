@@ -76,8 +76,9 @@ export const DailyCodingTimeChart = ({
           mode: "index",
           intersect: false,
           callbacks: {
-            label: item => prettyDuration(Number(item.raw))
-          }
+            label: item => "  " + prettyDuration(Number(item.raw))
+          },
+          padding: 8
         }
       },
       scales: {
