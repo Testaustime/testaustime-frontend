@@ -168,7 +168,7 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
               stacked: true,
               ticks: {
                 count: ticks.length,
-                callback: (_, index) => `${ticks[index] / 3600}h`
+                callback: (_, index) => prettyDuration(ticks[index])
               }
             },
             y: {
