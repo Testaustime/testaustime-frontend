@@ -39,6 +39,27 @@ const fi: Translation = {
     dark: "Tumma teema",
     light: "Vaalea teema",
     toggle: "Vaihda väriteemaa"
+  },
+  dashboard: {
+    greeting: "Hei, {username}!",
+    languages: "Kielet",
+    noData: {
+      title: "Ei näytettävää tietoa.",
+      installPrompt: "<link>Asenna Testaustime-laajennus<link>, jotta voit nähdä tietoja."
+    },
+    noProjects: "Ei projekteja",
+    notLoggedIn: "Et ole kirjautunut sisään.",
+    projects: "Projektit",
+    projectsFilter: "Valitse projektit",
+    statistics: "Tilastosi",
+    timeFilters: {
+      all: "Aina",
+      month: "Viimeiset 30 päivää",
+      week: "Viimeiset 7 päivää"
+    },
+    timePerDay: "Aika per päivä",
+    timePerProject: "Aika per projekti",
+    totalTime: "Kokonaika viimeisten {days} päivän aikana: {totalTime}"
   }
 };
 

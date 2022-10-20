@@ -39,6 +39,27 @@ const en: BaseTranslation = {
     light: "Light mode",
     dark: "Dark mode",
     toggle: "Toggle color theme"
+  },
+  dashboard: {
+    greeting: "Hello, {username:string}!",
+    statistics: "Your statistics",
+    notLoggedIn: "You are not logged in.",
+    projects: "Projects",
+    noProjects: "No projects",
+    projectsFilter: "Select a project filter",
+    timeFilters: {
+      week: "Last 7 days",
+      month: "Last 30 days",
+      all: "All time"
+    },
+    timePerDay: "Time per day",
+    totalTime: "Total time coded in the last {days:number} days: {totalTime:string}",
+    timePerProject: "Time per project",
+    languages: "Languages",
+    noData: {
+      title: "No programming activity data to display.",
+      installPrompt: "<link>Install one of the extensions<link> to begin tracking your programming."
+    }
   }
 };
 

@@ -135,6 +135,75 @@ type RootTranslation = {
 		 */
 		toggle: string
 	}
+	dashboard: {
+		/**
+		 * H​e​l​l​o​,​ ​{​u​s​e​r​n​a​m​e​}​!
+		 * @param {string} username
+		 */
+		greeting: RequiredParams<'username'>
+		/**
+		 * Y​o​u​r​ ​s​t​a​t​i​s​t​i​c​s
+		 */
+		statistics: string
+		/**
+		 * Y​o​u​ ​a​r​e​ ​n​o​t​ ​l​o​g​g​e​d​ ​i​n​.
+		 */
+		notLoggedIn: string
+		/**
+		 * P​r​o​j​e​c​t​s
+		 */
+		projects: string
+		/**
+		 * N​o​ ​p​r​o​j​e​c​t​s
+		 */
+		noProjects: string
+		/**
+		 * S​e​l​e​c​t​ ​a​ ​p​r​o​j​e​c​t​ ​f​i​l​t​e​r
+		 */
+		projectsFilter: string
+		timeFilters: {
+			/**
+			 * L​a​s​t​ ​7​ ​d​a​y​s
+			 */
+			week: string
+			/**
+			 * L​a​s​t​ ​3​0​ ​d​a​y​s
+			 */
+			month: string
+			/**
+			 * A​l​l​ ​t​i​m​e
+			 */
+			all: string
+		}
+		/**
+		 * T​i​m​e​ ​p​e​r​ ​d​a​y
+		 */
+		timePerDay: string
+		/**
+		 * T​o​t​a​l​ ​t​i​m​e​ ​c​o​d​e​d​ ​i​n​ ​t​h​e​ ​l​a​s​t​ ​{​d​a​y​s​}​ ​d​a​y​s​:​ ​{​t​o​t​a​l​T​i​m​e​}
+		 * @param {number} days
+		 * @param {string} totalTime
+		 */
+		totalTime: RequiredParams<'days' | 'totalTime'>
+		/**
+		 * T​i​m​e​ ​p​e​r​ ​p​r​o​j​e​c​t
+		 */
+		timePerProject: string
+		/**
+		 * L​a​n​g​u​a​g​e​s
+		 */
+		languages: string
+		noData: {
+			/**
+			 * N​o​ ​p​r​o​g​r​a​m​m​i​n​g​ ​a​c​t​i​v​i​t​y​ ​d​a​t​a​ ​t​o​ ​d​i​s​p​l​a​y​.
+			 */
+			title: string
+			/**
+			 * <​l​i​n​k​>​I​n​s​t​a​l​l​ ​o​n​e​ ​o​f​ ​t​h​e​ ​e​x​t​e​n​s​i​o​n​s​<​l​i​n​k​>​ ​t​o​ ​b​e​g​i​n​ ​t​r​a​c​k​i​n​g​ ​y​o​u​r​ ​p​r​o​g​r​a​m​m​i​n​g​.
+			 */
+			installPrompt: string
+		}
+	}
 }
 
 export type TranslationFunctions = {
@@ -257,6 +326,72 @@ export type TranslationFunctions = {
 		 * Toggle color theme
 		 */
 		toggle: () => LocalizedString
+	}
+	dashboard: {
+		/**
+		 * Hello, {username}!
+		 */
+		greeting: (arg: { username: string }) => LocalizedString
+		/**
+		 * Your statistics
+		 */
+		statistics: () => LocalizedString
+		/**
+		 * You are not logged in.
+		 */
+		notLoggedIn: () => LocalizedString
+		/**
+		 * Projects
+		 */
+		projects: () => LocalizedString
+		/**
+		 * No projects
+		 */
+		noProjects: () => LocalizedString
+		/**
+		 * Select a project filter
+		 */
+		projectsFilter: () => LocalizedString
+		timeFilters: {
+			/**
+			 * Last 7 days
+			 */
+			week: () => LocalizedString
+			/**
+			 * Last 30 days
+			 */
+			month: () => LocalizedString
+			/**
+			 * All time
+			 */
+			all: () => LocalizedString
+		}
+		/**
+		 * Time per day
+		 */
+		timePerDay: () => LocalizedString
+		/**
+		 * Total time coded in the last {days} days: {totalTime}
+		 */
+		totalTime: (arg: { days: number, totalTime: string }) => LocalizedString
+		/**
+		 * Time per project
+		 */
+		timePerProject: () => LocalizedString
+		/**
+		 * Languages
+		 */
+		languages: () => LocalizedString
+		noData: {
+			/**
+			 * No programming activity data to display.
+			 */
+			title: () => LocalizedString
+			/**
+			 * <link>Install one of the extensions<link> to begin tracking your programming.
+			 */
+			installPrompt: () => LocalizedString
+		}
 	}
 }
 

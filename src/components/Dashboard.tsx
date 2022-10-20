@@ -10,6 +10,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
 import { addDays, startOfDay } from "date-fns/esm";
 import useAuthentication from "../hooks/UseAuthentication";
+import { useI18nContext } from "../i18n/i18n-react";
 
 const useStyles = createStyles(theme => ({
   dataCard: {
@@ -67,6 +68,8 @@ export const Dashboard = () => {
   const { classes } = useStyles();
   const entries = useActivityData();
 
+  const { LL } = useI18nContext();
+
   const firstCodingDay = entries[0]?.start_time ?? new Date(2022, 2, 14);
 
   const diff = new Date().getTime() - firstCodingDay.getTime();
@@ -93,31 +96,35 @@ export const Dashboard = () => {
     entry.start_time.getTime() <= new Date().getTime()
   );
 
+  if (!username) {
+    return <div>{LL.dashboard.notLoggedIn()}</div>;
+  }
+
+  const [prefix, infix, suffix] = LL.dashboard.noData.installPrompt().split("<link>");
+
   return (
     <div style={{ width: "100%" }}>
       <Group style={{ marginBottom: "1rem" }}>
-        <Text>
-          Welcome, <b>{username}</b>
-        </Text>
+        <Text>{LL.dashboard.greeting({ username })}</Text>
       </Group>
-      <Title mb={5}>Your statistics</Title>
+      <Title mb={5}>{LL.dashboard.statistics()}</Title>
       <Group align="end" position="apart" mt={10} mb={30}>
         {projectNames.length !== 0 ? (
           <>
             <MultiSelect
-              label="Projects"
+              label={LL.dashboard.projects()}
               data={projectNames}
               value={selectedProjects}
               className={classes.multiSelect}
               onChange={selectedProjectNames => setSelectedProjects(selectedProjectNames)}
               clearable
-              placeholder="Select a project filter"
+              placeholder={LL.dashboard.projectsFilter()}
             />
             <SegmentedControl
               data={[
-                { label: "Last week", value: "week" },
-                { label: "Last month", value: "month" },
-                { label: "All time", value: "all" }
+                { label: LL.dashboard.timeFilters.week(), value: "week" },
+                { label: LL.dashboard.timeFilters.month(), value: "month" },
+                { label: LL.dashboard.timeFilters.all(), value: "all" }
               ]}
               value={statisticsRange}
               onChange={(value: DayRange) => setStatisticsRange(value)}
@@ -126,9 +133,9 @@ export const Dashboard = () => {
           </>
         ) : (
           <MultiSelect
-            label="Projects"
+            label={LL.dashboard.projects()}
             data={projectNames}
-            placeholder="No projects"
+            placeholder={LL.dashboard.noProjects()}
             disabled
           />
         )}
@@ -136,49 +143,49 @@ export const Dashboard = () => {
       {entriesInRange.length !== 0 ?
         <>
           <Group className={classes.dataCard}>
-            <Title mt={10} order={2}>Time per day</Title>
+            <Title mt={10} order={2}>{LL.dashboard.timePerProject()}</Title>
             <DailyCodingTimeChart
               entries={entriesInRange}
               dayCount={dayCount}
               className={classes.dailyCodingTimeChart}
             />
             <Text mt={15} mb={15}>
-              Total time coded in the last {dayCount} days: <b>
-                {prettyDuration(sumBy(entriesInRange, entry => entry.duration))}
-              </b>
+              {LL.dashboard.totalTime({
+                days: dayCount,
+                totalTime: prettyDuration(sumBy(entriesInRange, entry => entry.duration))
+              })}
             </Text>
           </Group>
           <Group className={classes.dataCard}>
-            <Title mt={10} order={2}>Time per project</Title>
+            <Title mt={10} order={2}>{LL.dashboard.timePerProject()}</Title>
             <PerProjectChart entries={entriesInRange} className={classes.projectCodingChart} />
           </Group>
           {isSmallScreen ? (
             <Stack align="center">
               <div>
-                <Title order={2}>Languages</Title>
+                <Title order={2}>{LL.dashboard.languages()}</Title>
                 <TopLanguages entries={entriesInRange} />
               </div>
               <div>
-                <Title order={2}>Projects</Title>
+                <Title order={2}>{LL.dashboard.projects()}</Title>
                 <TopProjects entries={entriesInRange} />
               </div>
             </Stack>) : (
             <Group grow align="flex-start">
               <div>
-                <Title order={2}>Languages</Title>
+                <Title order={2}>{LL.dashboard.languages()}</Title>
                 <TopLanguages entries={entriesInRange} />
               </div>
               <div>
-                <Title order={2}>Projects</Title>
+                <Title order={2}>{LL.dashboard.projects()}</Title>
                 <TopProjects entries={entriesInRange} />
               </div>
             </Group>
           )}
         </>
         :
-        <Text>No programming activity data to display.{" "}
-          <a href="/extensions">Install one of the extensions</a>
-          to begin tracking your programming.</Text>
+        <Text>{LL.dashboard.noData.title()}{" "}
+          {prefix}<a href="/extensions">{infix}</a>{suffix}</Text>
       }
     </div>
   );
