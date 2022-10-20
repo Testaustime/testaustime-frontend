@@ -8,6 +8,16 @@ const fi: Translation = {
     neovim: "Lataa Testaustime Neovim:lle",
     intellij: "Lataa Testaustime IntelliJ:lle",
     micro: "Lataa Testaustime Micro:lle"
+  },
+  footer: {
+    authors: {
+      label: "Kehittäjät",
+      and: "ja"
+    },
+    copyright: "© {year} Testausserveri ry & muut",
+    license: "Lisensoitu MIT-lisenssillä.",
+    source: "Lähdekoodi",
+    supportedBy: "Testausserveri ry:n tukema"
   }
 };
 

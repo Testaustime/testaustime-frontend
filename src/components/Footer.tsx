@@ -1,5 +1,6 @@
 import { createStyles, Text, Grid, Anchor } from "@mantine/core";
 import { ReactNode, Fragment } from "react";
+import { useI18nContext } from "../i18n/i18n-react";
 import { ReactComponent as TestausserveriLogo } from "../images/testausserveri.svg";
 
 interface Author {
@@ -60,6 +61,9 @@ export const Footer = () => {
   const { classes } = useStyles();
 
   const authorComponents: ReactNode[] = [];
+  const { LL } = useI18nContext();
+
+  const andWord = LL.footer.authors.and();
 
   authors.forEach((author, index) => {
     const c = author.homepage ?
@@ -68,7 +72,7 @@ export const Footer = () => {
 
     authorComponents.push(c);
     if (index === authors.length - 2) {
-      authorComponents.push(" and ");
+      authorComponents.push(` ${andWord} `);
     }
     else if (index !== authors.length - 1) {
       authorComponents.push(", ");
@@ -87,17 +91,17 @@ export const Footer = () => {
               width={155}
             />
           </a>
-          <Text>Supported by Testausserveri ry</Text>
+          <Text>{LL.footer.supportedBy()}</Text>
         </Grid.Col>
         <Grid.Col
           span={7}
           sx={{ display: "flex", gap: 5, flexDirection: "column" }}
           className={`${classes.gridItem} ${classes.rightAlign}`}
         >
-          <Text>❤️ Authors: {authorComponents}</Text>
-          <Text>&copy; {new Date().getFullYear()} Copyright Testausserveri ry &amp; contributors</Text>
-          <Text><i>Licensed under the MIT license.</i></Text>
-          <Text><Anchor href="https://github.com/Testaustime">Source code</Anchor></Text>
+          <Text>❤️ {LL.footer.authors.label()}: {authorComponents}</Text>
+          <Text>{LL.footer.copyright({ year: new Date().getFullYear() })}</Text>
+          <Text><i>{LL.footer.license()}</i></Text>
+          <Text><Anchor href="https://github.com/Testaustime">{LL.footer.source()}</Anchor></Text>
         </Grid.Col>
       </Grid>
     </div>
