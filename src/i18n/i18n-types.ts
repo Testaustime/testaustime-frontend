@@ -69,6 +69,72 @@ type RootTranslation = {
 		 */
 		source: string
 	}
+	prompt: {
+		/**
+		 * A​r​e​ ​y​o​u​ ​s​u​r​e​?
+		 */
+		confirmation: string
+		/**
+		 * Y​e​s
+		 */
+		yes: string
+		/**
+		 * C​a​n​c​e​l
+		 */
+		cancel: string
+	}
+	navbar: {
+		/**
+		 * D​a​s​h​b​o​a​r​d
+		 */
+		dashboard: string
+		/**
+		 * F​r​i​e​n​d​s
+		 */
+		friends: string
+		/**
+		 * L​e​a​d​e​r​b​o​a​r​d​s
+		 */
+		leaderboards: string
+		/**
+		 * A​c​c​o​u​n​t
+		 */
+		account: string
+		/**
+		 * S​e​t​t​i​n​g​s
+		 */
+		settings: string
+		/**
+		 * E​x​t​e​n​s​i​o​n​s
+		 */
+		extensions: string
+		/**
+		 * L​o​g​ ​o​u​t
+		 */
+		logOut: string
+		/**
+		 * L​o​g​ ​i​n
+		 */
+		login: string
+		/**
+		 * R​e​g​i​s​t​e​r
+		 */
+		register: string
+	}
+	theme: {
+		/**
+		 * L​i​g​h​t​ ​m​o​d​e
+		 */
+		light: string
+		/**
+		 * D​a​r​k​ ​m​o​d​e
+		 */
+		dark: string
+		/**
+		 * T​o​g​g​l​e​ ​c​o​l​o​r​ ​t​h​e​m​e
+		 */
+		toggle: string
+	}
 }
 
 export type TranslationFunctions = {
@@ -125,6 +191,72 @@ export type TranslationFunctions = {
 		 * Source code
 		 */
 		source: () => LocalizedString
+	}
+	prompt: {
+		/**
+		 * Are you sure?
+		 */
+		confirmation: () => LocalizedString
+		/**
+		 * Yes
+		 */
+		yes: () => LocalizedString
+		/**
+		 * Cancel
+		 */
+		cancel: () => LocalizedString
+	}
+	navbar: {
+		/**
+		 * Dashboard
+		 */
+		dashboard: () => LocalizedString
+		/**
+		 * Friends
+		 */
+		friends: () => LocalizedString
+		/**
+		 * Leaderboards
+		 */
+		leaderboards: () => LocalizedString
+		/**
+		 * Account
+		 */
+		account: () => LocalizedString
+		/**
+		 * Settings
+		 */
+		settings: () => LocalizedString
+		/**
+		 * Extensions
+		 */
+		extensions: () => LocalizedString
+		/**
+		 * Log out
+		 */
+		logOut: () => LocalizedString
+		/**
+		 * Log in
+		 */
+		login: () => LocalizedString
+		/**
+		 * Register
+		 */
+		register: () => LocalizedString
+	}
+	theme: {
+		/**
+		 * Light mode
+		 */
+		light: () => LocalizedString
+		/**
+		 * Dark mode
+		 */
+		dark: () => LocalizedString
+		/**
+		 * Toggle color theme
+		 */
+		toggle: () => LocalizedString
 	}
 }
 

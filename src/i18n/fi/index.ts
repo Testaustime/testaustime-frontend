@@ -18,6 +18,27 @@ const fi: Translation = {
     license: "Lisensoitu MIT-lisenssillä.",
     source: "Lähdekoodi",
     supportedBy: "Testausserveri ry:n tukema"
+  },
+  prompt: {
+    confirmation: "Oletko varma?",
+    yes: "Kyllä",
+    cancel: "Peruuta"
+  },
+  navbar: {
+    account: "Tili",
+    dashboard: "Etusivu",
+    friends: "Kaverit",
+    leaderboards: "Tulostaulut",
+    logOut: "Kirjaudu ulos",
+    login: "Kirjaudu sisään",
+    register: "Rekisteröidy",
+    settings: "Asetukset",
+    extensions: "Laajennukset"
+  },
+  theme: {
+    dark: "Tumma teema",
+    light: "Vaalea teema",
+    toggle: "Vaihda väriteemaa"
   }
 };
 
