@@ -1,8 +1,14 @@
-import type { BaseTranslation } from '../i18n-types'
+import type { BaseTranslation } from "../i18n-types";
 
 const en: BaseTranslation = {
-	// TODO: your translations go here
-	HI: 'Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n',
-}
+  extensions: {
+    title: "Extensions",
+    body: "Download the Testaustime extension for your favorite code editor!",
+    vscode: "Download Testaustime for Visual Studio Code",
+    neovim: "Download Testaustime for Neovim",
+    intellij: "Download Testaustime for IntelliJ",
+    micro: "Download Testaustime for Micro"
+  }
+};
 
-export default en
+export default en;

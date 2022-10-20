@@ -39,6 +39,8 @@ import { Footer } from "./components/Footer";
 import { LeaderboardsPage } from "./components/pages/LeaderboardsPage";
 import { ModalsProvider } from "@mantine/modals";
 import { BarChart2 } from "react-feather";
+import TypesafeI18n from "./i18n/i18n-react";
+import { loadAllLocales } from "./i18n/i18n-util.sync";
 
 const useStyles = createStyles(theme => ({
   container: {
@@ -118,6 +120,8 @@ const PrivateRoute = ({ children, redirect }: {
   return <>{children}</>;
 };
 
+loadAllLocales();
+
 export const AppSetup = () => {
   const { logOut, refetchUsername } = useAuthentication();
   const navigate = useNavigate();
@@ -189,14 +193,16 @@ export const AppSetup = () => {
           }
         }}
       >
-        <NotificationsProvider>
-          <ModalsProvider>
-            <App
-              logOutAndRedirect={logOutAndRedirect}
-              toggleColorScheme={toggleColorScheme}
-            />
-          </ModalsProvider>
-        </NotificationsProvider>
+        <TypesafeI18n locale="en">
+          <NotificationsProvider>
+            <ModalsProvider>
+              <App
+                logOutAndRedirect={logOutAndRedirect}
+                toggleColorScheme={toggleColorScheme}
+              />
+            </ModalsProvider>
+          </NotificationsProvider>
+        </TypesafeI18n>
       </MantineProvider>
     </ColorSchemeProvider>
   );
