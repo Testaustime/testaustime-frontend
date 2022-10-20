@@ -1,9 +1,28 @@
-import { List, Paper, Text, useMantineTheme } from "@mantine/core";
-import { ResponsiveBar } from "@nivo/bar";
+import { Text } from "@mantine/core";
 import { groupBy, sumBy } from "../utils/arrayUtils";
 import { calculateTickValues } from "../utils/chartUtils";
-import { prettyDuration } from "../utils/dateUtils";
 import { prettifyProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
+import { colors } from "../colors";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
+import { prettyDuration } from "../utils/dateUtils";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export interface PerProjectChartProps {
   entries: {
@@ -20,9 +39,40 @@ export interface PerProjectChartProps {
   className: string
 }
 
-export const PerProjectChart = ({ entries, projectCount = 5, className }: PerProjectChartProps) => {
-  const usesDarkMode = useMantineTheme().colorScheme === "dark";
+const defaultColors = [
+  "#a6cee3",
+  "#1f78b4",
+  "#b2df8a",
+  "#33a02c",
+  "#fb9a99",
+  "#e31a1c",
+  "#fdbf6f",
+  "#ff7f00",
+  "#cab2d6",
+  "#6a3d9a",
+  "#ffff99",
+  "#b15928"
+];
 
+const chosenRandomColors: Record<string, string> = {};
+
+function getLanguageColor(str: string): string {
+  let language = str.toLowerCase();
+  if (language === undefined) throw new Error("Invalid language name provided");
+  // If the name has multiple parts, try to resolve each one to a color and prioritize first matches
+  if (language.split(" ").length > 1 && colors[language] === undefined) {
+    language = language.split(" ")
+      .filter((possibleName: string) => colors[possibleName] !== undefined)[0];
+  }
+  if (colors[language] === undefined) {
+    if (chosenRandomColors[language] === undefined)
+      chosenRandomColors[language] = defaultColors[Math.floor(defaultColors.length * Math.random())];
+    return chosenRandomColors[language];
+  }
+  return colors[language];
+}
+
+export const PerProjectChart = ({ entries, projectCount = 5, className }: PerProjectChartProps) => {
   if (entries.length === 0) return <Text>No data</Text>;
 
   let languageNames = entries
@@ -82,81 +132,58 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
   const maxDuration = Math.max(...totalTimeByProject.map(p => sumBy(p.totalTimeByLanguage, l => l.duration)));
   const ticks = calculateTickValues(maxDuration);
 
-  const longestProjectName = totalTimeByProject
-    .slice()
-    .map(project => project.projectName).sort((a, b) => b.length - a.length)[0];
-
   return (
-    <div className={className} style={{ height: 110 * Math.min(totalTimeByProject.length, projectCount) }}>
-      <ResponsiveBar
-        data={data}
-        keys={[...languageNames.map(l => `${l}_duration`)]}
-        labelSkipWidth={10}
-        indexBy="projectName"
-        margin={{
-          top: 30,
-          right: 220,
-          bottom: 30,
-          left: 60 + (longestProjectName.length > 8 ? (longestProjectName.length - 8) * 7 : 0)
+    <div className={className}>
+      <Bar
+        datasetIdKey="id"
+        data={{
+          labels: data.map(d => d.projectName),
+          datasets: languageNames.map(language => ({
+            id: language,
+            label: prettifyProgrammingLanguageName(language),
+            data: data.map(d => d[language + "_duration"] ?? 0),
+            backgroundColor: getLanguageColor(language),
+            borderColor: getLanguageColor(language),
+            borderWidth: 1
+          }))
         }}
-        padding={0.3}
-        enableGridX
-        enableGridY={false}
-        maxValue={ticks[ticks.length - 1]}
-        theme={{ textColor: usesDarkMode ? "white" : "black" }}
-        axisBottom={{
-          format: (d: number) => prettyDuration(d),
-          tickValues: ticks
-        }}
-        borderRadius={2}
-        labelSkipHeight={20}
-        labelTextColor="black"
-        gridXValues={ticks}
-        axisLeft={{
-          tickPadding: 8
-        }}
-        tooltipLabel={d => String(d.data.projectName)}
-        tooltip={point => (
-          <Paper
-            sx={theme => ({
-              backgroundColor: usesDarkMode
-                ? theme.colors.dark[5]
-                : theme.colors.gray[1]
-            })}
-            p={10}
-          >
-            <Text underline>{point.label}</Text>
-            <List>
-              {Object.keys(point.data)
-                .filter(k => k.endsWith("_duration"))
-                .reverse()
-                .map(l => (
-                  <List.Item key={l}>
-                    {prettifyProgrammingLanguageName(l.slice(0, l.length - 9)) ?? "Unknown"}:{" "}
-                    {prettyDuration(Number(point.data[l]))}
-                  </List.Item>
-                ))}
-            </List>
-          </Paper>
-        )}
-        valueFormat={v => prettyDuration(v)}
-        layout="horizontal"
-        colors={{ scheme: "paired" }}
-        // TODO: Format the values properly instead of the raw "*_duration" format
-        legendLabel={datum => {
-          const str = String(datum.id);
-          return prettifyProgrammingLanguageName(str.slice(0, str.length - 9)) ?? "Unknown";
-        }}
-        legends={[
-          {
-            dataFrom: "keys",
-            anchor: "bottom-right",
-            direction: "column",
-            translateX: 160,
-            itemWidth: 80,
-            itemHeight: 20
+        options={{
+          plugins: {
+            tooltip: {
+              mode: "y",
+              intersect: true,
+              filter: item => item.raw !== 0,
+              callbacks: {
+                label: item => `${item.dataset.label || "Unknown"}: ${prettyDuration(Number(item.raw))}`
+              }
+            },
+            legend: {
+              onClick: e => e.native?.stopPropagation()
+            }
+          },
+          indexAxis: "y",
+          responsive: true,
+          scales: {
+            x: {
+              stacked: true,
+              ticks: {
+                count: ticks.length,
+                callback: (_, index) => prettyDuration(ticks[index])
+              }
+            },
+            y: {
+              stacked: true
+            }
+          },
+          interaction: {
+            intersect: true,
+            mode: "dataset"
+          },
+          hover: {
+            intersect: true,
+            mode: "dataset"
           }
-        ]}
+        }}
       />
     </div>
   );

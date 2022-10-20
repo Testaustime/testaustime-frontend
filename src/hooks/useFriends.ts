@@ -30,17 +30,15 @@ export const useFriends = () => {
 
   const friends = useSelector<RootState, ApiFriendsResponseItem[]>(state => state.users.friends);
 
-  const fetchFriendData = async () => {
-    const response = await axios.get<ApiFriendsResponseItem[]>("/friends/list", {
-      headers: { Authorization: `Bearer ${token ?? ""}` }
-    });
-
-    dispatch(setFriends(response.data));
-  };
-
   useEffect(() => {
-    fetchFriendData().catch(e => console.error(e));
-  }, []);
+    if (token) {
+      axios.get<ApiFriendsResponseItem[]>("/friends/list", {
+        headers: { Authorization: `Bearer ${token ?? ""}` }
+      })
+        .then(response => dispatch(setFriends(response.data)))
+        .catch(e => console.error(e));
+    }
+  }, [token]);
 
   const addFriend = async (friendCode: string) => {
     try {

@@ -7,6 +7,7 @@ import { useState } from "react";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
+import { useSearchParams } from "react-router-dom";
 
 const useStyles = createStyles(() => ({
   loginBox: {
@@ -17,9 +18,13 @@ const useStyles = createStyles(() => ({
   }
 }));
 
+const allowedRedirects = ["/profile", "/friends", "/leaderboards"];
+
 export const LoginPage = () => {
   const { login } = useAuthentication();
   const navigate = useNavigate();
+  const queryParams = useSearchParams();
+  const unsafeRedirect = queryParams[0].get("redirect") || "/";
   const [visible, setVisible] = useState(false);
 
   const { classes } = useStyles();
@@ -38,7 +43,7 @@ export const LoginPage = () => {
       onSubmit={values => {
         setVisible(true);
         login(values.username, values.password)
-          .then(() => navigate("/"))
+          .then(() => navigate(allowedRedirects.includes(unsafeRedirect) ? unsafeRedirect : "/"))
           .catch((...e) => { handleErrorWithNotification(...e); setVisible(false); });
       }}>
       {() => <Form style={{ width: "100%" }}>

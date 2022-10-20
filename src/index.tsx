@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { AppSetup } from "./AppSetup";
@@ -9,13 +9,14 @@ import { store } from "./store";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <AppSetup />
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+const container = document.getElementById("root");
+if (!container) throw new Error("No root element found");
+
+const root = createRoot(container);
+root.render(<React.StrictMode>
+  <Provider store={store}>
+    <BrowserRouter>
+      <AppSetup />
+    </BrowserRouter>
+  </Provider>
+</React.StrictMode>);
