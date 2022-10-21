@@ -204,6 +204,84 @@ type RootTranslation = {
 			installPrompt: string
 		}
 	}
+	profile: {
+		/**
+		 * M​y​ ​p​r​o​f​i​l​e
+		 */
+		title: string
+		/**
+		 * U​s​e​r​n​a​m​e​:​ ​{​u​s​e​r​n​a​m​e​}
+		 * @param {string} username
+		 */
+		username: RequiredParams<'username'>
+		/**
+		 * R​e​g​i​s​t​r​a​t​i​o​n​ ​t​i​m​e​:​ ​{​r​e​g​i​s​t​r​a​t​i​o​n​T​i​m​e​}
+		 * @param {string} registrationTime
+		 */
+		registrationTime: RequiredParams<'registrationTime'>
+		/**
+		 * Y​o​u​ ​a​r​e​ ​n​o​t​ ​l​o​g​g​e​d​ ​i​n​.
+		 */
+		notLoggedIn: string
+		authenticationToken: {
+			/**
+			 * A​u​t​h​e​n​t​i​c​a​t​i​o​n​ ​t​o​k​e​n
+			 */
+			title: string
+			tooltip: {
+				/**
+				 * T​h​i​s​ ​t​o​k​e​n​ ​i​s​ ​u​s​e​d​ ​f​o​r​ ​a​u​t​h​e​n​t​i​c​a​t​i​o​n​ ​i​n​ ​y​o​u​r​ ​c​o​d​e​ ​e​d​i​t​o​r​.
+				 */
+				label: string
+				/**
+				 * G​e​t​ ​y​o​u​r​ ​e​x​t​e​n​s​i​o​n​ ​f​r​o​m​ ​h​e​r​e​!
+				 */
+				install: string
+			}
+		}
+		friendCode: {
+			/**
+			 * F​r​i​e​n​d​ ​c​o​d​e
+			 */
+			title: string
+			/**
+			 * T​h​i​s​ ​c​o​d​e​ ​i​s​ ​u​s​e​d​ ​f​o​r​ ​s​h​a​r​i​n​g​ ​y​o​u​r​ ​d​a​t​a​ ​w​i​t​h​ ​y​o​u​r​ ​f​r​i​e​n​d​s​.
+			 */
+			tooltip: string
+		}
+		settings: {
+			/**
+			 * S​e​t​t​i​n​g​s
+			 */
+			title: string
+			/**
+			 * S​m​o​o​t​h​ ​c​h​a​r​t​s
+			 */
+			smoothCharts: string
+		}
+	}
+	copyToken: {
+		/**
+		 * C​o​p​y
+		 */
+		copy: string
+		/**
+		 * C​o​p​i​e​d​!
+		 */
+		copied: string
+		/**
+		 * H​i​d​e
+		 */
+		hide: string
+		/**
+		 * R​e​v​e​a​l
+		 */
+		reveal: string
+		/**
+		 * R​e​g​e​n​e​r​a​t​e
+		 */
+		regenerate: string
+	}
 }
 
 export type TranslationFunctions = {
@@ -392,6 +470,82 @@ export type TranslationFunctions = {
 			 */
 			installPrompt: () => LocalizedString
 		}
+	}
+	profile: {
+		/**
+		 * My profile
+		 */
+		title: () => LocalizedString
+		/**
+		 * Username: {username}
+		 */
+		username: (arg: { username: string }) => LocalizedString
+		/**
+		 * Registration time: {registrationTime}
+		 */
+		registrationTime: (arg: { registrationTime: string }) => LocalizedString
+		/**
+		 * You are not logged in.
+		 */
+		notLoggedIn: () => LocalizedString
+		authenticationToken: {
+			/**
+			 * Authentication token
+			 */
+			title: () => LocalizedString
+			tooltip: {
+				/**
+				 * This token is used for authentication in your code editor.
+				 */
+				label: () => LocalizedString
+				/**
+				 * Get your extension from here!
+				 */
+				install: () => LocalizedString
+			}
+		}
+		friendCode: {
+			/**
+			 * Friend code
+			 */
+			title: () => LocalizedString
+			/**
+			 * This code is used for sharing your data with your friends.
+			 */
+			tooltip: () => LocalizedString
+		}
+		settings: {
+			/**
+			 * Settings
+			 */
+			title: () => LocalizedString
+			/**
+			 * Smooth charts
+			 */
+			smoothCharts: () => LocalizedString
+		}
+	}
+	copyToken: {
+		/**
+		 * Copy
+		 */
+		copy: () => LocalizedString
+		/**
+		 * Copied!
+		 */
+		copied: () => LocalizedString
+		/**
+		 * Hide
+		 */
+		hide: () => LocalizedString
+		/**
+		 * Reveal
+		 */
+		reveal: () => LocalizedString
+		/**
+		 * Regenerate
+		 */
+		regenerate: () => LocalizedString
 	}
 }
 

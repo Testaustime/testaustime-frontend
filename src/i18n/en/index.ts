@@ -60,6 +60,34 @@ const en: BaseTranslation = {
       title: "No programming activity data to display.",
       installPrompt: "<link>Install one of the extensions<link> to begin tracking your programming."
     }
+  },
+  profile: {
+    title: "My profile",
+    username: "Username: {username:string}",
+    registrationTime: "Registration time: {registrationTime:string}",
+    notLoggedIn: "You are not logged in.",
+    authenticationToken: {
+      title: "Authentication token",
+      tooltip: {
+        label: "This token is used for authentication in your code editor.",
+        install: "Get your extension from here!"
+      }
+    },
+    friendCode: {
+      title: "Friend code",
+      tooltip: "This code is used for sharing your data with your friends."
+    },
+    settings: {
+      title: "Settings",
+      smoothCharts: "Smooth charts"
+    }
+  },
+  copyToken: {
+    copy: "Copy",
+    copied: "Copied!",
+    hide: "Hide",
+    reveal: "Reveal",
+    regenerate: "Regenerate"
   }
 };
 

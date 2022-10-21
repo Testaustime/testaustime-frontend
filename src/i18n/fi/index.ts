@@ -60,6 +60,34 @@ const fi: Translation = {
     timePerDay: "Aika per päivä",
     timePerProject: "Aika per projekti",
     totalTime: "Kokonaika viimeisten {days} päivän aikana: {totalTime}"
+  },
+  profile: {
+    title: "Profiili",
+    username: "Käyttäjänimi: {username}",
+    authenticationToken: {
+      title: "Tunnistautumistunnus",
+      tooltip: {
+        label: "Tätä tunnusta käytetään tunnistautumiseen koodieditorissasi.",
+        install: "Asenna Testaustime-laajennus täältä!"
+      }
+    },
+    friendCode: {
+      title: "Kaverikoodi",
+      tooltip: "Tätä koodia käytetään, kun haluat jakaa dataa kavereillesi."
+    },
+    notLoggedIn: "Et ole kirjautunut sisään.",
+    registrationTime: "Rekisteröitymisaika: {registrationTime}",
+    settings: {
+      title: "Asetukset",
+      smoothCharts: "Pehmeät kaaviot"
+    }
+  },
+  copyToken: {
+    copy: "Kopioi",
+    copied: "Kopioitu!",
+    hide: "Piilota",
+    reveal: "Näytä",
+    regenerate: "Generoi uudelleen"
   }
 };
 
