@@ -41,6 +41,10 @@ import { ModalsProvider } from "@mantine/modals";
 import { BarChart2 } from "react-feather";
 import TypesafeI18n, { useI18nContext } from "./i18n/i18n-react";
 import { loadAllLocales } from "./i18n/i18n-util.sync";
+import { useSettings } from "./hooks/useSettings";
+import {
+  detectLocale, htmlLangAttributeDetector, navigatorDetector, queryStringDetector
+} from "typesafe-i18n/detectors";
 
 const useStyles = createStyles(theme => ({
   container: {
@@ -121,6 +125,11 @@ const PrivateRoute = ({ children, redirect }: {
 };
 
 loadAllLocales();
+const detectedLanguage = detectLocale("en", ["en", "fi"],
+  queryStringDetector,
+  navigatorDetector,
+  htmlLangAttributeDetector
+);
 
 export const AppSetup = () => {
   const { logOut, refetchUsername } = useAuthentication();
@@ -135,6 +144,8 @@ export const AppSetup = () => {
     key: "testaustime-color-scheme",
     defaultValue: "none"
   });
+
+  const { language } = useSettings();
 
   const colorScheme =
     savedColorScheme === "none" ? preferredColorScheme : savedColorScheme;
@@ -193,7 +204,7 @@ export const AppSetup = () => {
           }
         }}
       >
-        <TypesafeI18n locale="en">
+        <TypesafeI18n locale={language ?? detectedLanguage ?? "en"} key={language ?? detectedLanguage ?? "en"}>
           <NotificationsProvider>
             <ModalsProvider>
               <App

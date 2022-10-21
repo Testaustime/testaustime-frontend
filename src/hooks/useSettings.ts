@@ -1,11 +1,14 @@
 import { useLocalStorage } from "@mantine/hooks";
+import { Locales } from "../i18n/i18n-types";
 
 export interface LocalStorageSettings {
-  smoothCharts?: boolean
+  smoothCharts?: boolean,
+  language?: Locales
 }
 
 const defaultValue: LocalStorageSettings = {
-  smoothCharts: true
+  smoothCharts: true,
+  language: undefined
 };
 
 export const useSettings = () => {
@@ -21,5 +24,16 @@ export const useSettings = () => {
     });
   };
 
-  return { ...settings, setSmoothCharts };
+  const setLanguage = (language: Locales) => {
+    setSettings({
+      ...settings,
+      language
+    });
+  };
+
+  return {
+    ...settings,
+    setSmoothCharts,
+    setLanguage
+  };
 };

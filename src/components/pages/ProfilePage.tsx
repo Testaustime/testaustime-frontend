@@ -1,4 +1,4 @@
-import { Anchor, Checkbox, Group, Stack, Text, Title } from "@mantine/core";
+import { Anchor, Checkbox, Group, MultiSelect, SegmentedControl, Select, Stack, Text, Title } from "@mantine/core";
 import { format } from "date-fns/esm";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { WithTooltip } from "../WithTooltip";
@@ -6,6 +6,7 @@ import { TokenField } from "../TokenField/TokenField";
 import { Link } from "react-router-dom";
 import { useSettings } from "../../hooks/useSettings";
 import { useI18nContext } from "../../i18n/i18n-react";
+import { Locales } from "../../i18n/i18n-types";
 
 export const ProfilePage = () => {
   const {
@@ -17,7 +18,10 @@ export const ProfilePage = () => {
     registrationTime
   } = useAuthentication();
 
-  const { smoothCharts, setSmoothCharts } = useSettings();
+  const {
+    smoothCharts, setSmoothCharts,
+    language, setLanguage
+  } = useSettings();
   const { LL } = useI18nContext();
 
   if (!registrationTime || !token || !friendCode || !username) return <Text>{LL.profile.notLoggedIn()}</Text>;
@@ -51,13 +55,26 @@ export const ProfilePage = () => {
         textFormatter={value => `ttfc_${value}`}
       />
     </Stack>
-    <Title order={2} mt={40}>{LL.profile.settings.title()}</Title>
-    <Group mt={15}>
-      <Checkbox
-        checked={smoothCharts}
-        onChange={e => setSmoothCharts(e.target.checked)}
-        label={LL.profile.settings.smoothCharts()}
-      />
-    </Group>
+    <Stack mt={40} spacing={15}>
+      <Title order={2}>{LL.profile.settings.title()}</Title>
+      <Group>
+        <Checkbox
+          checked={smoothCharts}
+          onChange={e => setSmoothCharts(e.target.checked)}
+          label={LL.profile.settings.smoothCharts()}
+        />
+      </Group>
+      <Group>
+        <Text>{LL.profile.settings.language()}</Text>
+        <SegmentedControl
+          data={[
+            { label: "English 🇺🇸", value: "en" },
+            { label: "Suomi 🇫🇮", value: "fi" }
+          ]}
+          value={language}
+          onChange={value => setLanguage(value as Locales)}
+        />
+      </Group>
+    </Stack>
   </div>;
 };

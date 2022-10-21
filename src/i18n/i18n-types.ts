@@ -258,6 +258,10 @@ type RootTranslation = {
 			 * S​m​o​o​t​h​ ​c​h​a​r​t​s
 			 */
 			smoothCharts: string
+			/**
+			 * L​a​n​g​u​a​g​e
+			 */
+			language: string
 		}
 	}
 	copyToken: {
@@ -703,6 +707,10 @@ export type TranslationFunctions = {
 			 * Smooth charts
 			 */
 			smoothCharts: () => LocalizedString
+			/**
+			 * Language
+			 */
+			language: () => LocalizedString
 		}
 	}
 	copyToken: {

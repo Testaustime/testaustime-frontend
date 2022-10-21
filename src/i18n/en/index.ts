@@ -79,7 +79,8 @@ const en: BaseTranslation = {
     },
     settings: {
       title: "Settings",
-      smoothCharts: "Smooth charts"
+      smoothCharts: "Smooth charts",
+      language: "Language"
     }
   },
   copyToken: {

@@ -79,7 +79,8 @@ const fi: Translation = {
     registrationTime: "Rekisteröitymisaika: {registrationTime}",
     settings: {
       title: "Asetukset",
-      smoothCharts: "Pehmeät kaaviot"
+      smoothCharts: "Pehmeät kaaviot",
+      language: "Kieli"
     }
   },
   copyToken: {
@@ -137,8 +138,7 @@ const fi: Translation = {
       join: "Liity",
       leaderboardCode: "Tulostaulukoodi",
       leaderboardCodeInvalid:
-        "Kutsukoodin tulee alkaa \"ttlic_\", ja sen jälkeen täytyy olla 24 alphanumeerista kirjainta.",
-
+        "Kutsukoodin tulee alkaa \"ttlic_\", ja sen jälkeen täytyy olla 24 alphanumeerista kirjainta."
     }
   }
 };
