@@ -2,6 +2,7 @@ import { Button, Group, Text } from "@mantine/core";
 import { useToggle, useClipboard } from "@mantine/hooks";
 import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
+import { useI18nContext } from "../../i18n/i18n-react";
 import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
 import { ButtonWithConfirmation } from "../ButtonWithConfirmation";
 import Censorable from "../Censorable";
@@ -26,6 +27,8 @@ export const TokenField = ({
   const { copy, copied, reset } = useClipboard({ timeout: 2000 });
   const [isTokenRevealed, toggleIsTokenRevealed] = useToggle([false, true]);
 
+  const { LL } = useI18nContext();
+
   useEffect(() => {
     return reset;
   }, []);
@@ -47,21 +50,21 @@ export const TokenField = ({
         onClick={() => copy(copyFormatter(value))}
         color={copied ? "green" : ""}
         leftIcon={<ClipboardIcon />}>
-        {copied ? "Copied!" : "Copy"}
+        {copied ? LL.copyToken.copied() : LL.copyToken.copy()}
       </Button>
       {censorable &&
         <Button
           variant="outline"
           onClick={() => toggleIsTokenRevealed()}
           leftIcon={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}>
-          {isTokenRevealed ? "Hide" : "Reveal"}
+          {isTokenRevealed ? LL.copyToken.hide() : LL.copyToken.reveal()}
         </Button>}
       {regenerate && <ButtonWithConfirmation
         leftIcon={<UpdateIcon />}
         variant="outline"
         onClick={() => { regenerate().catch(handleErrorWithNotification); }}
       >
-        Regenerate
+        {LL.copyToken.regenerate()}
       </ButtonWithConfirmation>}
     </Group>
   </div>;

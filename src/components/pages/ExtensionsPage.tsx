@@ -5,6 +5,7 @@ import { ReactComponent as Neovim } from "../../images/neovim.svg";
 import { ReactComponent as Vscode } from "../../images/vscode.svg";
 import { ReactComponent as IntelliJ } from "../../images/intellij.svg";
 import { ReactComponent as Micro } from "../../images/micro.svg";
+import { useI18nContext } from "../../i18n/i18n-react";
 
 interface ExtensionBlockProps {
   logo: React.ReactNode,
@@ -101,33 +102,35 @@ export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: Ext
 
 
 export const ExtensionsPage = () => {
+  const { LL } = useI18nContext();
+
   return <div style={{ height: "calc(100% - 36px - 50px - 80px)" }}>
-    <Title order={1} mb={5}>Extensions</Title>
-    <Text>Download the Testaustime extension for your favorite code editor!</Text>
+    <Title order={1} mb={5}>{LL.extensions.title()}</Title>
+    <Text>{LL.extensions.body()}</Text>
     <Stack spacing={25} mt={30}>
       <ExtensionBlock
         logo={<Vscode width={40} height={40} />}
         downloadLink="https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime"
         sourceCodeLink="https://github.com/Testausserveri/testaustime-vscode"
-        text="Download Testaustime for Visual Studio Code"
+        text={LL.extensions.vscode()}
       />
       <ExtensionBlock
         logo={<Neovim width={40} height={40} />}
         downloadLink="https://github.com/Testaustime/testaustime.nvim"
         sourceCodeLink="https://github.com/Testaustime/testaustime.nvim"
-        text="Download Testaustime for Neovim"
+        text={LL.extensions.neovim()}
       />
       <ExtensionBlock
         logo={<IntelliJ width={40} height={40} />}
         downloadLink="https://plugins.jetbrains.com/plugin/19408-testaustime/"
         sourceCodeLink="https://github.com/Testaustime/testaustime-intellij/"
-        text="Download Testaustime for IntelliJ"
+        text={LL.extensions.intellij()}
       />
       <ExtensionBlock
         logo={<Micro width={40} height={40} />}
         downloadLink="https://github.com/Testaustime/testaustime-micro"
         sourceCodeLink="https://github.com/Testaustime/testaustime-micro"
-        text="Download Testaustime for Micro"
+        text={LL.extensions.micro()}
       />
     </Stack>
   </div>;

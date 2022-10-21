@@ -1,4 +1,4 @@
-import { Button, Title, Table, Group, useMantineTheme } from "@mantine/core";
+import { Button, Title, Table, Group, useMantineTheme, Text } from "@mantine/core";
 import { useFriends } from "../hooks/useFriends";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { Form, Formik } from "formik";
@@ -13,6 +13,7 @@ import { useActivityData } from "../hooks/useActivityData";
 import { addDays, startOfDay } from "date-fns/esm";
 import useAuthentication from "../hooks/UseAuthentication";
 import { useLocation } from "react-router";
+import { useI18nContext } from "../i18n/i18n-react";
 
 export const Friendboard = () => {
   const { addFriend, unFriend, friends } = useFriends();
@@ -20,6 +21,17 @@ export const Friendboard = () => {
   const { username } = useAuthentication();
   const location = useLocation();
   const urlFriendCode = new URLSearchParams(location.search).get("code");
+
+  // We have to use useState, so it stays the same when the component is re-rendered
+  const [placeholderFriendCode] = useState(generateFriendCode());
+
+  const theme = useMantineTheme();
+
+  const { LL } = useI18nContext();
+
+  if (!username) {
+    return <Text>{LL.friends.notLoggedIn()}</Text>;
+  }
 
   const entriesInRange = entries.filter(entry => {
     const startOfStatisticsRange = startOfDay(addDays(new Date(), -30));
@@ -33,26 +45,19 @@ export const Friendboard = () => {
       past_week: 0
     },
     isMe: true,
-    username: username ?? "Me"
+    username
   })].sort((a, b) => b.coding_time.past_month - a.coding_time.past_month);
 
-  // We have to use useState, so it stays the same when the component is re-rendered
-  const [placeholderFriendCode] = useState(generateFriendCode());
-
-  const theme = useMantineTheme();
-
   return <div>
-    <Title order={2} mb={15}>Add a new friend</Title>
+    <Title order={2} mb={15}>{LL.friends.addNewFriend()}</Title>
     <Group>
       <Formik
         initialValues={{ friendCode: urlFriendCode ?? "" }}
         validationSchema={Yup.object().shape({
           friendCode: Yup
             .string()
-            .required("Friend code is required")
-            .matches(
-              /^ttfc_[a-zA-Z0-9]{24}$/,
-              "Friend code must start with \"ttfc_\", and be followed by 24 alphanumeric characters.")
+            .required(LL.friends.friendCodeRequired())
+            .matches(/^ttfc_[a-zA-Z0-9]{24}$/, LL.friends.friendCodeInvalid())
         })}
         onSubmit={({ friendCode }, { resetForm }) => {
           addFriend(friendCode)
@@ -64,7 +69,7 @@ export const Friendboard = () => {
             <FormikTextInput
               icon={<PersonIcon />}
               name="friendCode"
-              label="Friend code"
+              label={LL.friends.friendCode()}
               placeholder={placeholderFriendCode}
               sx={{ flex: 1 }}
               styles={theme => ({
@@ -75,18 +80,18 @@ export const Friendboard = () => {
                 }
               })}
             />
-            <Button type="submit" mt={27.5}>Add</Button>
+            <Button type="submit" mt={27.5}>{LL.friends.add()}</Button>
           </Group>
         </Form>}
       </Formik>
     </Group>
-    <Title order={2} mt={40}>Your friends</Title>
+    <Title order={2} mt={40}>{LL.friends.yourFriends()}</Title>
     <Table>
       <thead>
         <tr>
-          <th>Index</th>
-          <th>Friend name</th>
-          <th>Time coded during last 30 days</th>
+          <th>{LL.friends.index()}</th>
+          <th>{LL.friends.friendName()}</th>
+          <th>{LL.friends.timeCoded({ days: 30 })}</th>
           <th />
         </tr>
       </thead>
@@ -106,7 +111,7 @@ export const Friendboard = () => {
                 unFriend(username).catch(handleErrorWithNotification);
               }}
             >
-              Unfriend
+              {LL.friends.unfriend()}
             </Button>}
           </td>
         </tr>

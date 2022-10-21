@@ -3,6 +3,7 @@ import { DoubleArrowDownIcon, DoubleArrowUpIcon, ExitIcon } from "@radix-ui/reac
 import { Trash2 } from "react-feather";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { CombinedLeaderboard } from "../../hooks/useLeaderboards";
+import { useI18nContext } from "../../i18n/i18n-react";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
 import { ButtonWithConfirmation } from "../ButtonWithConfirmation";
@@ -33,6 +34,8 @@ export const LeaderboardModal = ({
 }: LeaderboardModalProps) => {
   const { username } = useAuthentication();
 
+  const { LL } = useI18nContext();
+
   return <>
     <Group mb="md">
       <ButtonWithConfirmation
@@ -42,17 +45,17 @@ export const LeaderboardModal = ({
         onClick={() => { leaveLeaderboard().catch(e => console.log(e)); }}
         disabled={isLastAdmin}
       >
-        Leave leaderboard
+        {LL.leaderboards.leaveLeaderboard()}
       </ButtonWithConfirmation>
       {isAdmin && <ButtonWithConfirmation
         color="red"
         size="xs"
         leftIcon={<Trash2 size={18} />}
         onClick={() => { deleteLeaderboard().catch(e => console.log(e)); }}>
-        Delete leaderboard
+        {LL.leaderboards.deleteLeaderboard()}
       </ButtonWithConfirmation>}
     </Group>
-    <Title order={2} my="md">Invite code</Title>
+    <Title order={2} my="md">{LL.leaderboards.inviteCode()}</Title>
     <TokenField
       value={leaderboard.invite}
       regenerate={isAdmin ? regenerateInviteCode : undefined}
@@ -61,13 +64,13 @@ export const LeaderboardModal = ({
       textFormatter={(currentValue: string) => `ttlic_${currentValue}`}
       copyFormatter={(currentValue: string) => `ttlic_${currentValue}`}
     />
-    <Title order={2} my="md">Members</Title>
+    <Title order={2} my="md">{LL.leaderboards.members()}</Title>
     <Table>
       <thead>
         <tr>
-          <th>Position</th>
-          <th>Name</th>
-          <th>Time coded last 7 days</th>
+          <th>{LL.leaderboards.position()}</th>
+          <th>{LL.leaderboards.name()}</th>
+          <th>{LL.leaderboards.timeCoded({ days: 7 })}</th>
           {isAdmin && <>
             <th />
             <th />
@@ -78,7 +81,7 @@ export const LeaderboardModal = ({
         {[...leaderboard.members].sort((a, b) => b.time_coded - a.time_coded).map((member, i) => {
           return <tr key={member.username}>
             <td>{i + 1}{getOrdinalSuffix(i + 1)}</td>
-            <td>{member.username}{member.admin && <Badge ml="sm">Admin</Badge>}</td>
+            <td>{member.username}{member.admin && <Badge ml="sm">{LL.leaderboards.admin()}</Badge>}</td>
             <td>{prettyDuration(member.time_coded)}</td>
             {isAdmin && <>
               <td style={{
@@ -96,7 +99,7 @@ export const LeaderboardModal = ({
                       kickUser(member.username).catch(e => console.log(e));
                     }}
                   >
-                    Kick
+                    {LL.leaderboards.kick()}
                   </Button>
                 </>}
               </td>
@@ -115,7 +118,7 @@ export const LeaderboardModal = ({
                       demoteUser(member.username).catch(e => console.log(e));
                     }}
                   >
-                    Demote
+                    {LL.leaderboards.demote()}
                   </Button> :
                   <Button
                     size="xs"
@@ -126,7 +129,7 @@ export const LeaderboardModal = ({
                       promoteUser(member.username).catch(e => console.log(e));
                     }}
                   >
-                    Promote
+                    {LL.leaderboards.promote()}
                   </Button>)}
               </td>
             </>}
