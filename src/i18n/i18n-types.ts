@@ -282,6 +282,53 @@ type RootTranslation = {
 		 */
 		regenerate: string
 	}
+	friends: {
+		/**
+		 * Y​o​u​ ​a​r​e​ ​n​o​t​ ​l​o​g​g​e​d​ ​i​n​.
+		 */
+		notLoggedIn: string
+		/**
+		 * A​d​d​ ​a​ ​n​e​w​ ​f​r​i​e​n​d
+		 */
+		addNewFriend: string
+		/**
+		 * F​r​i​e​n​d​ ​c​o​d​e​ ​i​s​ ​r​e​q​u​i​r​e​d
+		 */
+		friendCodeRequired: string
+		/**
+		 * F​r​i​e​n​d​ ​c​o​d​e​ ​m​u​s​t​ ​s​t​a​r​t​ ​w​i​t​h​ ​"​t​t​f​c​_​"​,​ ​a​n​d​ ​b​e​ ​f​o​l​l​o​w​e​d​ ​b​y​ ​2​4​ ​a​l​p​h​a​n​u​m​e​r​i​c​ ​c​h​a​r​a​c​t​e​r​s​.
+		 */
+		friendCodeInvalid: string
+		/**
+		 * F​r​i​e​n​d​ ​c​o​d​e
+		 */
+		friendCode: string
+		/**
+		 * A​d​d
+		 */
+		add: string
+		/**
+		 * Y​o​u​r​ ​f​r​i​e​n​d​s
+		 */
+		yourFriends: string
+		/**
+		 * I​n​d​e​x
+		 */
+		index: string
+		/**
+		 * F​r​i​e​n​d​ ​n​a​m​e
+		 */
+		friendName: string
+		/**
+		 * T​i​m​e​ ​c​o​d​e​d​ ​d​u​r​i​n​g​ ​l​a​s​t​ ​{​d​a​y​s​}​ ​d​a​y​s
+		 * @param {number} days
+		 */
+		timeCoded: RequiredParams<'days'>
+		/**
+		 * U​n​f​r​i​e​n​d
+		 */
+		unfriend: string
+	}
 }
 
 export type TranslationFunctions = {
@@ -546,6 +593,52 @@ export type TranslationFunctions = {
 		 * Regenerate
 		 */
 		regenerate: () => LocalizedString
+	}
+	friends: {
+		/**
+		 * You are not logged in.
+		 */
+		notLoggedIn: () => LocalizedString
+		/**
+		 * Add a new friend
+		 */
+		addNewFriend: () => LocalizedString
+		/**
+		 * Friend code is required
+		 */
+		friendCodeRequired: () => LocalizedString
+		/**
+		 * Friend code must start with "ttfc_", and be followed by 24 alphanumeric characters.
+		 */
+		friendCodeInvalid: () => LocalizedString
+		/**
+		 * Friend code
+		 */
+		friendCode: () => LocalizedString
+		/**
+		 * Add
+		 */
+		add: () => LocalizedString
+		/**
+		 * Your friends
+		 */
+		yourFriends: () => LocalizedString
+		/**
+		 * Index
+		 */
+		index: () => LocalizedString
+		/**
+		 * Friend name
+		 */
+		friendName: () => LocalizedString
+		/**
+		 * Time coded during last {days} days
+		 */
+		timeCoded: (arg: { days: number }) => LocalizedString
+		/**
+		 * Unfriend
+		 */
+		unfriend: () => LocalizedString
 	}
 }
 

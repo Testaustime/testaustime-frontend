@@ -88,6 +88,19 @@ const en: BaseTranslation = {
     hide: "Hide",
     reveal: "Reveal",
     regenerate: "Regenerate"
+  },
+  friends: {
+    notLoggedIn: "You are not logged in.",
+    addNewFriend: "Add a new friend",
+    friendCodeRequired: "Friend code is required",
+    friendCodeInvalid: "Friend code must start with \"ttfc_\", and be followed by 24 alphanumeric characters.",
+    friendCode: "Friend code",
+    add: "Add",
+    yourFriends: "Your friends",
+    index: "Index",
+    friendName: "Friend name",
+    timeCoded: "Time coded during last {days:number} days",
+    unfriend: "Unfriend"
   }
 };
 

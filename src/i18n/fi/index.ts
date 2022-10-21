@@ -88,6 +88,19 @@ const fi: Translation = {
     hide: "Piilota",
     reveal: "Näytä",
     regenerate: "Generoi uudelleen"
+  },
+  friends: {
+    add: "Lisää",
+    addNewFriend: "Lisää uusi kaveri",
+    friendCode: "Kaverikoodi",
+    friendCodeInvalid: "Kaverikoodin tulee alkaa \"ttfc_\", ja sen jälkeen täytyy olla 24 alphanumeerista kirjainta.",
+    friendCodeRequired: "Kaverikoodi vaaditaan.",
+    friendName: "Kaverin nimi",
+    index: "Järjestys",
+    notLoggedIn: "Et ole kirjautunut sisään.",
+    yourFriends: "Kaverisi",
+    unfriend: "Poista",
+    timeCoded: "Aika koodattu viimeisen {days} päivän aikana"
   }
 };
 
