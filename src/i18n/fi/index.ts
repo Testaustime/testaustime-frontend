@@ -112,7 +112,7 @@ const fi: Translation = {
     name: "Nimi",
     seeMore: "Katso lisää",
     topMember: "Paras jäsen",
-    yourPosition: "Sijaintisi",
+    yourPosition: "Sija",
     leaveLeaderboard: "Poistu tulostaulusta",
     deleteLeaderboard: "Poista tulostaulu",
     demote: "Alenna",
