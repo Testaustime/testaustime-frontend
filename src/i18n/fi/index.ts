@@ -1,51 +1,20 @@
 import type { Translation } from "../i18n-types";
 
+/* eslint sort-keys: ["error", "asc"] */
 const fi: Translation = {
-  extensions: {
-    title: "Laajennukset",
-    body: "Lataa Testaustime-laajennus suosikkieditorillesi!",
-    vscode: "Lataa Testaustime Visual Studio Code:lle",
-    neovim: "Lataa Testaustime Neovim:lle",
-    intellij: "Lataa Testaustime IntelliJ:lle",
-    micro: "Lataa Testaustime Micro:lle"
-  },
-  footer: {
-    authors: {
-      label: "Kehittäjät",
-      and: "ja"
-    },
-    copyright: "© {year} Testausserveri ry & muut",
-    license: "Lisensoitu MIT-lisenssillä.",
-    source: "Lähdekoodi",
-    supportedBy: "Testausserveri ry:n tukema"
-  },
-  prompt: {
-    confirmation: "Oletko varma?",
-    yes: "Kyllä",
-    cancel: "Peruuta"
-  },
-  navbar: {
-    account: "Tili",
-    dashboard: "Etusivu",
-    friends: "Kaverit",
-    leaderboards: "Tulostaulut",
-    logOut: "Kirjaudu ulos",
-    login: "Kirjaudu sisään",
-    register: "Rekisteröidy",
-    settings: "Asetukset",
-    extensions: "Laajennukset"
-  },
-  theme: {
-    dark: "Tumma teema",
-    light: "Vaalea teema",
-    toggle: "Vaihda väriteemaa"
+  copyToken: {
+    copied: "Kopioitu!",
+    copy: "Kopioi",
+    hide: "Piilota",
+    regenerate: "Generoi uudelleen",
+    reveal: "Näytä"
   },
   dashboard: {
     greeting: "Hei, {username}!",
     languages: "Kielet",
     noData: {
-      title: "Ei näytettävää tietoa.",
-      installPrompt: "<link>Asenna Testaustime-laajennus<link>, jotta voit nähdä tietoja."
+      installPrompt: "<link>Asenna Testaustime-laajennus<link>, jotta voit nähdä tietoja.",
+      title: "Ei näytettävää tietoa."
     },
     noProjects: "Ei projekteja",
     notLoggedIn: "Et ole kirjautunut sisään.",
@@ -61,34 +30,23 @@ const fi: Translation = {
     timePerProject: "Aika per projekti",
     totalTime: "Kokonaisaika viimeisten {days} päivän aikana: {totalTime}"
   },
-  profile: {
-    title: "Profiili",
-    username: "Käyttäjänimi: {username}",
-    authenticationToken: {
-      title: "Tunnistautumistunnus",
-      tooltip: {
-        label: "Tätä tunnusta käytetään tunnistautumiseen koodieditorissasi.",
-        install: "Asenna Testaustime-laajennus täältä!"
-      }
-    },
-    friendCode: {
-      title: "Kaverikoodi",
-      tooltip: "Tätä koodia käytetään, kun haluat jakaa dataa kavereillesi."
-    },
-    notLoggedIn: "Et ole kirjautunut sisään.",
-    registrationTime: "Rekisteröitymisaika: {registrationTime}",
-    settings: {
-      title: "Asetukset",
-      smoothCharts: "Pehmeät kaaviot",
-      language: "Kieli"
-    }
+  extensions: {
+    body: "Lataa Testaustime-laajennus suosikkieditorillesi!",
+    intellij: "Lataa Testaustime IntelliJ:lle",
+    micro: "Lataa Testaustime Micro:lle",
+    neovim: "Lataa Testaustime Neovim:lle",
+    title: "Laajennukset",
+    vscode: "Lataa Testaustime Visual Studio Code:lle"
   },
-  copyToken: {
-    copy: "Kopioi",
-    copied: "Kopioitu!",
-    hide: "Piilota",
-    reveal: "Näytä",
-    regenerate: "Generoi uudelleen"
+  footer: {
+    authors: {
+      and: "ja",
+      label: "Kehittäjät"
+    },
+    copyright: "© {year} Testausserveri ry & muut",
+    license: "Lisensoitu MIT-lisenssillä.",
+    source: "Lähdekoodi",
+    supportedBy: "Testausserveri ry:n tukema"
   },
   friends: {
     add: "Lisää",
@@ -99,47 +57,90 @@ const fi: Translation = {
     friendName: "Kaverin nimi",
     index: "Järjestys",
     notLoggedIn: "Et ole kirjautunut sisään.",
-    yourFriends: "Kaverisi",
+    timeCoded: "Aika koodattu viimeisen {days} päivän aikana",
     unfriend: "Poista",
-    timeCoded: "Aika koodattu viimeisen {days} päivän aikana"
+    yourFriends: "Kaverisi"
   },
   leaderboards: {
     admin: "Ylläpitäjä",
+    create: "Luo",
     createNewLeaderboard: "Luo uusi tulostaulu",
-    joinLeaderboard: "Liity tulostauluun",
-    leaderboards: "Tulostaulut",
-    notLoggedIn: "Et ole kirjautunut sisään.",
-    name: "Nimi",
-    seeMore: "Katso lisää",
-    topMember: "Paras jäsen",
-    yourPosition: "Sija",
-    leaveLeaderboard: "Poistu tulostaulusta",
     deleteLeaderboard: "Poista tulostaulu",
     demote: "Alenna",
     inviteCode: "Kutsukoodi",
-    kick: "Erota",
-    members: "Jäsenet",
-    position: "Sija",
-    promote: "Ylennä",
-    timeCoded: "Aika koodattu viimeisen {days} päivän aikana",
-    create: "Luo",
-    leaderboardCreateError: "Tulostaulun luominen epäonnistui.",
-    leaderboardExists: "Tulostaulu on jo olemassa.",
-    validation: {
-      min: "Tulostaulun nimen tulee olla vähintään {min} merkkiä pitkä.",
-      max: "Tulostaulun nimen tulee olla enintään {max} merkkiä pitkä.",
-      required: "Tulostaulun nimi vaaditaan.",
-      regex: "Tulostaulun nimi voi sisältää vain alphanumeerisia kirjaimia."
-    },
     join: {
-      leaderboardCodeRequired: "Kutsukoodi vaaditaan.",
       alreadyMember: "Olet jo tämän tulostaulun jäsen.",
-      genericError: "Tulosauluun liittyminen epäonnistui.",
+      genericError: "Tulostauluun liittyminen epäonnistui.",
       join: "Liity",
       leaderboardCode: "Tulostaulukoodi",
       leaderboardCodeInvalid:
-        "Kutsukoodin tulee alkaa \"ttlic_\", ja sen jälkeen täytyy olla 24 alphanumeerista kirjainta."
-    }
+        "Kutsukoodin tulee alkaa \"ttlic_\", ja sen jälkeen täytyy olla 24 alphanumeerista kirjainta.",
+      leaderboardCodeRequired: "Kutsukoodi vaaditaan."
+    },
+    joinLeaderboard: "Liity tulostauluun",
+    kick: "Erota",
+    leaderboardCreateError: "Tulostaulun luominen epäonnistui.",
+    leaderboardExists: "Tulostaulu on jo olemassa.",
+    leaderboards: "Tulostaulut",
+    leaveLeaderboard: "Poistu tulostaulusta",
+    members: "Jäsenet",
+    name: "Nimi",
+    notLoggedIn: "Et ole kirjautunut sisään.",
+    position: "Sija",
+    promote: "Ylennä",
+    seeMore: "Katso lisää",
+    timeCoded: "Aika koodattu viimeisen {days} päivän aikana",
+    topMember: "Paras jäsen",
+    validation: {
+      max: "Tulostaulun nimen tulee olla enintään {max} merkkiä pitkä.",
+      min: "Tulostaulun nimen tulee olla vähintään {min} merkkiä pitkä.",
+      regex: "Tulostaulun nimi voi sisältää vain alphanumeerisia kirjaimia.",
+      required: "Tulostaulun nimi vaaditaan."
+    },
+    yourPosition: "Sija"
+  },
+  navbar: {
+    account: "Tili",
+    dashboard: "Etusivu",
+    extensions: "Laajennukset",
+    friends: "Kaverit",
+    leaderboards: "Tulostaulut",
+    logOut: "Kirjaudu ulos",
+    login: "Kirjaudu sisään",
+    register: "Rekisteröidy",
+    settings: "Asetukset"
+  },
+  profile: {
+    authenticationToken: {
+      title: "Tunnistautumistunnus",
+      tooltip: {
+        install: "Asenna Testaustime-laajennus täältä!",
+        label: "Tätä tunnusta käytetään tunnistautumiseen koodieditorissasi."
+      }
+    },
+    friendCode: {
+      title: "Kaverikoodi",
+      tooltip: "Tätä koodia käytetään, kun haluat jakaa dataa kavereillesi."
+    },
+    notLoggedIn: "Et ole kirjautunut sisään.",
+    registrationTime: "Rekisteröitymisaika: {registrationTime}",
+    settings: {
+      language: "Kieli",
+      smoothCharts: "Pehmeät kaaviot",
+      title: "Asetukset"
+    },
+    title: "Profiili",
+    username: "Käyttäjänimi: {username}"
+  },
+  prompt: {
+    cancel: "Peruuta",
+    confirmation: "Oletko varma?",
+    yes: "Kyllä"
+  },
+  theme: {
+    dark: "Tumma teema",
+    light: "Vaalea teema",
+    toggle: "Vaihda väriteemaa"
   }
 };
 

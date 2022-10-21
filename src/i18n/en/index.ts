@@ -1,145 +1,146 @@
 import type { BaseTranslation } from "../i18n-types";
 
+/* eslint sort-keys: ["error", "asc"] */
 const en: BaseTranslation = {
-  extensions: {
-    title: "Extensions",
-    body: "Download the Testaustime extension for your favorite code editor!",
-    vscode: "Download Testaustime for Visual Studio Code",
-    neovim: "Download Testaustime for Neovim",
-    intellij: "Download Testaustime for IntelliJ",
-    micro: "Download Testaustime for Micro"
-  },
-  footer: {
-    supportedBy: "Supported by Testausserveri ry",
-    authors: {
-      label: "Authors",
-      and: "and"
-    },
-    copyright: "© {year:number} Testausserveri ry & contributors",
-    license: "Licensed under the MIT license.",
-    source: "Source code"
-  },
-  prompt: {
-    confirmation: "Are you sure?",
-    yes: "Yes",
-    cancel: "Cancel"
-  },
-  navbar: {
-    dashboard: "Dashboard",
-    friends: "Friends",
-    leaderboards: "Leaderboards",
-    account: "Account",
-    settings: "Settings",
-    extensions: "Extensions",
-    logOut: "Log out",
-    login: "Log in",
-    register: "Register"
-  },
-  theme: {
-    light: "Light mode",
-    dark: "Dark mode",
-    toggle: "Toggle color theme"
+  copyToken: {
+    copied: "Copied!",
+    copy: "Copy",
+    hide: "Hide",
+    regenerate: "Regenerate",
+    reveal: "Reveal"
   },
   dashboard: {
     greeting: "Hello, {username:string}!",
-    statistics: "Your statistics",
-    notLoggedIn: "You are not logged in.",
-    projects: "Projects",
-    noProjects: "No projects",
-    projectsFilter: "Select a project filter",
-    timeFilters: {
-      week: "Last 7 days",
-      month: "Last 30 days",
-      all: "All time"
-    },
-    timePerDay: "Time per day",
-    totalTime: "Total time coded in the last {days:number} days: {totalTime:string}",
-    timePerProject: "Time per project",
     languages: "Languages",
     noData: {
-      title: "No programming activity data to display.",
-      installPrompt: "<link>Install one of the extensions<link> to begin tracking your programming."
-    }
+      installPrompt: "<link>Install one of the extensions<link> to begin tracking your programming.",
+      title: "No programming activity data to display."
+    },
+    noProjects: "No projects",
+    notLoggedIn: "You are not logged in.",
+    projects: "Projects",
+    projectsFilter: "Select a project filter",
+    statistics: "Your statistics",
+    timeFilters: {
+      all: "All time",
+      month: "Last 30 days",
+      week: "Last 7 days"
+    },
+    timePerDay: "Time per day",
+    timePerProject: "Time per project",
+    totalTime: "Total time coded in the last {days:number} days: {totalTime:string}"
+  },
+  extensions: {
+    body: "Download the Testaustime extension for your favorite code editor!",
+    intellij: "Download Testaustime for IntelliJ",
+    micro: "Download Testaustime for Micro",
+    neovim: "Download Testaustime for Neovim",
+    title: "Extensions",
+    vscode: "Download Testaustime for Visual Studio Code"
+  },
+  footer: {
+    authors: {
+      and: "and",
+      label: "Authors"
+    },
+    copyright: "© {year:number} Testausserveri ry & contributors",
+    license: "Licensed under the MIT license.",
+    source: "Source code",
+    supportedBy: "Supported by Testausserveri ry"
+  },
+  friends: {
+    add: "Add",
+    addNewFriend: "Add a new friend",
+    friendCode: "Friend code",
+    friendCodeInvalid: "Friend code must start with \"ttfc_\", and be followed by 24 alphanumeric characters.",
+    friendCodeRequired: "Friend code is required",
+    friendName: "Friend name",
+    index: "Index",
+    notLoggedIn: "You are not logged in.",
+    timeCoded: "Time coded during last {days:number} days",
+    unfriend: "Unfriend",
+    yourFriends: "Your friends"
+  },
+  leaderboards: {
+    admin: "Admin",
+    create: "Create",
+    createNewLeaderboard: "Create new leaderboard",
+    deleteLeaderboard: "Delete leaderboard",
+    demote: "Demote",
+    inviteCode: "Invite code",
+    join: {
+      alreadyMember: "You are already a member of this leaderboard",
+      genericError: "Error joining leaderboard",
+      join: "Join",
+      leaderboardCode: "Leaderboard code",
+      leaderboardCodeInvalid:
+        "Leaderboard code must start with \"ttlic_\", and be followed by 24 alphanumeric characters.",
+      leaderboardCodeRequired: "Leaderboard code is required"
+    },
+    joinLeaderboard: "Join a leaderboard",
+    kick: "Kick",
+    leaderboardCreateError: "Error creating leaderboard",
+    leaderboardExists: "Leaderboard already exists",
+    leaderboards: "Leaderboards",
+    leaveLeaderboard: "Leave leaderboard",
+    members: "Members",
+    name: "Name",
+    notLoggedIn: "You are not logged in.",
+    position: "Position",
+    promote: "Promote",
+    seeMore: "See more",
+    timeCoded: "Time coded last {days:number} days",
+    topMember: "Top member",
+    validation: {
+      max: "Leaderboard name must be at most {max:number} characters long",
+      min: "Leaderboard name must be at least {min:number} characters long",
+      regex: "Leaderboard name must only contain alphanumeric characters",
+      required: "Leaderboard name is required"
+    },
+    yourPosition: "Your position"
+  },
+  navbar: {
+    account: "Account",
+    dashboard: "Dashboard",
+    extensions: "Extensions",
+    friends: "Friends",
+    leaderboards: "Leaderboards",
+    logOut: "Log out",
+    login: "Log in",
+    register: "Register",
+    settings: "Settings"
   },
   profile: {
-    title: "My profile",
-    username: "Username: {username:string}",
-    registrationTime: "Registration time: {registrationTime:string}",
-    notLoggedIn: "You are not logged in.",
     authenticationToken: {
       title: "Authentication token",
       tooltip: {
-        label: "This token is used for authentication in your code editor.",
-        install: "Get your extension from here!"
+        install: "Get your extension from here!",
+        label: "This token is used for authentication in your code editor."
       }
     },
     friendCode: {
       title: "Friend code",
       tooltip: "This code is used for sharing your data with your friends."
     },
+    notLoggedIn: "You are not logged in.",
+    registrationTime: "Registration time: {registrationTime:string}",
     settings: {
-      title: "Settings",
+      language: "Language",
       smoothCharts: "Smooth charts",
-      language: "Language"
-    }
-  },
-  copyToken: {
-    copy: "Copy",
-    copied: "Copied!",
-    hide: "Hide",
-    reveal: "Reveal",
-    regenerate: "Regenerate"
-  },
-  friends: {
-    notLoggedIn: "You are not logged in.",
-    addNewFriend: "Add a new friend",
-    friendCodeRequired: "Friend code is required",
-    friendCodeInvalid: "Friend code must start with \"ttfc_\", and be followed by 24 alphanumeric characters.",
-    friendCode: "Friend code",
-    add: "Add",
-    yourFriends: "Your friends",
-    index: "Index",
-    friendName: "Friend name",
-    timeCoded: "Time coded during last {days:number} days",
-    unfriend: "Unfriend"
-  },
-  leaderboards: {
-    createNewLeaderboard: "Create new leaderboard",
-    joinLeaderboard: "Join a leaderboard",
-    notLoggedIn: "You are not logged in.",
-    leaderboards: "Leaderboards",
-    name: "Name",
-    topMember: "Top member",
-    yourPosition: "Your position",
-    admin: "Admin",
-    seeMore: "See more",
-    leaveLeaderboard: "Leave leaderboard",
-    deleteLeaderboard: "Delete leaderboard",
-    members: "Members",
-    position: "Position",
-    timeCoded: "Time coded last {days:number} days",
-    kick: "Kick",
-    demote: "Demote",
-    promote: "Promote",
-    inviteCode: "Invite code",
-    leaderboardExists: "Leaderboard already exists",
-    leaderboardCreateError: "Error creating leaderboard",
-    validation: {
-      required: "Leaderboard name is required",
-      min: "Leaderboard name must be at least {min:number} characters long",
-      max: "Leaderboard name must be at most {max:number} characters long",
-      regex: "Leaderboard name must only contain alphanumeric characters"
+      title: "Settings"
     },
-    create: "Create",
-    join: {
-      leaderboardCodeRequired: "Leaderboard code is required",
-      leaderboardCodeInvalid:
-        "Leaderboard code must start with \"ttlic_\", and be followed by 24 alphanumeric characters.",
-      alreadyMember: "You are already a member of this leaderboard",
-      genericError: "Error joining leaderboard",
-      leaderboardCode: "Leaderboard code",
-      join: "Join"
-    }
+    title: "My profile",
+    username: "Username: {username:string}"
+  },
+  prompt: {
+    cancel: "Cancel",
+    confirmation: "Are you sure?",
+    yes: "Yes"
+  },
+  theme: {
+    dark: "Dark mode",
+    light: "Light mode",
+    toggle: "Toggle color theme"
   }
 };
 
