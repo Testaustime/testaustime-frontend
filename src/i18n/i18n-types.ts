@@ -329,6 +329,139 @@ type RootTranslation = {
 		 */
 		unfriend: string
 	}
+	leaderboards: {
+		/**
+		 * C​r​e​a​t​e​ ​n​e​w​ ​l​e​a​d​e​r​b​o​a​r​d
+		 */
+		createNewLeaderboard: string
+		/**
+		 * J​o​i​n​ ​a​ ​l​e​a​d​e​r​b​o​a​r​d
+		 */
+		joinLeaderboard: string
+		/**
+		 * Y​o​u​ ​a​r​e​ ​n​o​t​ ​l​o​g​g​e​d​ ​i​n​.
+		 */
+		notLoggedIn: string
+		/**
+		 * L​e​a​d​e​r​b​o​a​r​d​s
+		 */
+		leaderboards: string
+		/**
+		 * N​a​m​e
+		 */
+		name: string
+		/**
+		 * T​o​p​ ​m​e​m​b​e​r
+		 */
+		topMember: string
+		/**
+		 * Y​o​u​r​ ​p​o​s​i​t​i​o​n
+		 */
+		yourPosition: string
+		/**
+		 * A​d​m​i​n
+		 */
+		admin: string
+		/**
+		 * S​e​e​ ​m​o​r​e
+		 */
+		seeMore: string
+		/**
+		 * L​e​a​v​e​ ​l​e​a​d​e​r​b​o​a​r​d
+		 */
+		leaveLeaderboard: string
+		/**
+		 * D​e​l​e​t​e​ ​l​e​a​d​e​r​b​o​a​r​d
+		 */
+		deleteLeaderboard: string
+		/**
+		 * M​e​m​b​e​r​s
+		 */
+		members: string
+		/**
+		 * P​o​s​i​t​i​o​n
+		 */
+		position: string
+		/**
+		 * T​i​m​e​ ​c​o​d​e​d​ ​l​a​s​t​ ​{​d​a​y​s​}​ ​d​a​y​s
+		 * @param {number} days
+		 */
+		timeCoded: RequiredParams<'days'>
+		/**
+		 * K​i​c​k
+		 */
+		kick: string
+		/**
+		 * D​e​m​o​t​e
+		 */
+		demote: string
+		/**
+		 * P​r​o​m​o​t​e
+		 */
+		promote: string
+		/**
+		 * I​n​v​i​t​e​ ​c​o​d​e
+		 */
+		inviteCode: string
+		/**
+		 * L​e​a​d​e​r​b​o​a​r​d​ ​a​l​r​e​a​d​y​ ​e​x​i​s​t​s
+		 */
+		leaderboardExists: string
+		/**
+		 * E​r​r​o​r​ ​c​r​e​a​t​i​n​g​ ​l​e​a​d​e​r​b​o​a​r​d
+		 */
+		leaderboardCreateError: string
+		validation: {
+			/**
+			 * L​e​a​d​e​r​b​o​a​r​d​ ​n​a​m​e​ ​i​s​ ​r​e​q​u​i​r​e​d
+			 */
+			required: string
+			/**
+			 * L​e​a​d​e​r​b​o​a​r​d​ ​n​a​m​e​ ​m​u​s​t​ ​b​e​ ​a​t​ ​l​e​a​s​t​ ​{​m​i​n​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+			 * @param {number} min
+			 */
+			min: RequiredParams<'min'>
+			/**
+			 * L​e​a​d​e​r​b​o​a​r​d​ ​n​a​m​e​ ​m​u​s​t​ ​b​e​ ​a​t​ ​m​o​s​t​ ​{​m​a​x​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+			 * @param {number} max
+			 */
+			max: RequiredParams<'max'>
+			/**
+			 * L​e​a​d​e​r​b​o​a​r​d​ ​n​a​m​e​ ​m​u​s​t​ ​o​n​l​y​ ​c​o​n​t​a​i​n​ ​a​l​p​h​a​n​u​m​e​r​i​c​ ​c​h​a​r​a​c​t​e​r​s
+			 */
+			regex: string
+		}
+		/**
+		 * C​r​e​a​t​e
+		 */
+		create: string
+		join: {
+			/**
+			 * L​e​a​d​e​r​b​o​a​r​d​ ​c​o​d​e​ ​i​s​ ​r​e​q​u​i​r​e​d
+			 */
+			leaderboardCodeRequired: string
+			/**
+			 * L​e​a​d​e​r​b​o​a​r​d​ ​c​o​d​e​ ​m​u​s​t​ ​s​t​a​r​t​ ​w​i​t​h​ ​"​t​t​l​i​c​_​"​,​ ​a​n​d​ ​b​e​ ​f​o​l​l​o​w​e​d​ ​b​y​ ​2​4​ ​a​l​p​h​a​n​u​m​e​r​i​c​ ​c​h​a​r​a​c​t​e​r​s​.
+			 */
+			leaderboardCodeInvalid: string
+			/**
+			 * Y​o​u​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​a​ ​m​e​m​b​e​r​ ​o​f​ ​t​h​i​s​ ​l​e​a​d​e​r​b​o​a​r​d
+			 */
+			alreadyMember: string
+			/**
+			 * E​r​r​o​r​ ​j​o​i​n​i​n​g​ ​l​e​a​d​e​r​b​o​a​r​d
+			 */
+			genericError: string
+			/**
+			 * L​e​a​d​e​r​b​o​a​r​d​ ​c​o​d​e
+			 */
+			leaderboardCode: string
+			/**
+			 * J​o​i​n
+			 */
+			join: string
+		}
+	}
 }
 
 export type TranslationFunctions = {
@@ -639,6 +772,136 @@ export type TranslationFunctions = {
 		 * Unfriend
 		 */
 		unfriend: () => LocalizedString
+	}
+	leaderboards: {
+		/**
+		 * Create new leaderboard
+		 */
+		createNewLeaderboard: () => LocalizedString
+		/**
+		 * Join a leaderboard
+		 */
+		joinLeaderboard: () => LocalizedString
+		/**
+		 * You are not logged in.
+		 */
+		notLoggedIn: () => LocalizedString
+		/**
+		 * Leaderboards
+		 */
+		leaderboards: () => LocalizedString
+		/**
+		 * Name
+		 */
+		name: () => LocalizedString
+		/**
+		 * Top member
+		 */
+		topMember: () => LocalizedString
+		/**
+		 * Your position
+		 */
+		yourPosition: () => LocalizedString
+		/**
+		 * Admin
+		 */
+		admin: () => LocalizedString
+		/**
+		 * See more
+		 */
+		seeMore: () => LocalizedString
+		/**
+		 * Leave leaderboard
+		 */
+		leaveLeaderboard: () => LocalizedString
+		/**
+		 * Delete leaderboard
+		 */
+		deleteLeaderboard: () => LocalizedString
+		/**
+		 * Members
+		 */
+		members: () => LocalizedString
+		/**
+		 * Position
+		 */
+		position: () => LocalizedString
+		/**
+		 * Time coded last {days} days
+		 */
+		timeCoded: (arg: { days: number }) => LocalizedString
+		/**
+		 * Kick
+		 */
+		kick: () => LocalizedString
+		/**
+		 * Demote
+		 */
+		demote: () => LocalizedString
+		/**
+		 * Promote
+		 */
+		promote: () => LocalizedString
+		/**
+		 * Invite code
+		 */
+		inviteCode: () => LocalizedString
+		/**
+		 * Leaderboard already exists
+		 */
+		leaderboardExists: () => LocalizedString
+		/**
+		 * Error creating leaderboard
+		 */
+		leaderboardCreateError: () => LocalizedString
+		validation: {
+			/**
+			 * Leaderboard name is required
+			 */
+			required: () => LocalizedString
+			/**
+			 * Leaderboard name must be at least {min} characters long
+			 */
+			min: (arg: { min: number }) => LocalizedString
+			/**
+			 * Leaderboard name must be at most {max} characters long
+			 */
+			max: (arg: { max: number }) => LocalizedString
+			/**
+			 * Leaderboard name must only contain alphanumeric characters
+			 */
+			regex: () => LocalizedString
+		}
+		/**
+		 * Create
+		 */
+		create: () => LocalizedString
+		join: {
+			/**
+			 * Leaderboard code is required
+			 */
+			leaderboardCodeRequired: () => LocalizedString
+			/**
+			 * Leaderboard code must start with "ttlic_", and be followed by 24 alphanumeric characters.
+			 */
+			leaderboardCodeInvalid: () => LocalizedString
+			/**
+			 * You are already a member of this leaderboard
+			 */
+			alreadyMember: () => LocalizedString
+			/**
+			 * Error joining leaderboard
+			 */
+			genericError: () => LocalizedString
+			/**
+			 * Leaderboard code
+			 */
+			leaderboardCode: () => LocalizedString
+			/**
+			 * Join
+			 */
+			join: () => LocalizedString
+		}
 	}
 }
 

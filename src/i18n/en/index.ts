@@ -101,6 +101,44 @@ const en: BaseTranslation = {
     friendName: "Friend name",
     timeCoded: "Time coded during last {days:number} days",
     unfriend: "Unfriend"
+  },
+  leaderboards: {
+    createNewLeaderboard: "Create new leaderboard",
+    joinLeaderboard: "Join a leaderboard",
+    notLoggedIn: "You are not logged in.",
+    leaderboards: "Leaderboards",
+    name: "Name",
+    topMember: "Top member",
+    yourPosition: "Your position",
+    admin: "Admin",
+    seeMore: "See more",
+    leaveLeaderboard: "Leave leaderboard",
+    deleteLeaderboard: "Delete leaderboard",
+    members: "Members",
+    position: "Position",
+    timeCoded: "Time coded last {days:number} days",
+    kick: "Kick",
+    demote: "Demote",
+    promote: "Promote",
+    inviteCode: "Invite code",
+    leaderboardExists: "Leaderboard already exists",
+    leaderboardCreateError: "Error creating leaderboard",
+    validation: {
+      required: "Leaderboard name is required",
+      min: "Leaderboard name must be at least {min:number} characters long",
+      max: "Leaderboard name must be at most {max:number} characters long",
+      regex: "Leaderboard name must only contain alphanumeric characters"
+    },
+    create: "Create",
+    join: {
+      leaderboardCodeRequired: "Leaderboard code is required",
+      leaderboardCodeInvalid:
+        "Leaderboard code must start with \"ttlic_\", and be followed by 24 alphanumeric characters.",
+      alreadyMember: "You are already a member of this leaderboard",
+      genericError: "Error joining leaderboard",
+      leaderboardCode: "Leaderboard code",
+      join: "Join"
+    }
   }
 };
 

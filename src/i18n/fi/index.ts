@@ -59,7 +59,7 @@ const fi: Translation = {
     },
     timePerDay: "Aika per päivä",
     timePerProject: "Aika per projekti",
-    totalTime: "Kokonaika viimeisten {days} päivän aikana: {totalTime}"
+    totalTime: "Kokonaisaika viimeisten {days} päivän aikana: {totalTime}"
   },
   profile: {
     title: "Profiili",
@@ -101,6 +101,45 @@ const fi: Translation = {
     yourFriends: "Kaverisi",
     unfriend: "Poista",
     timeCoded: "Aika koodattu viimeisen {days} päivän aikana"
+  },
+  leaderboards: {
+    admin: "Ylläpitäjä",
+    createNewLeaderboard: "Luo uusi tulostaulu",
+    joinLeaderboard: "Liity tulostauluun",
+    leaderboards: "Tulostaulut",
+    notLoggedIn: "Et ole kirjautunut sisään.",
+    name: "Nimi",
+    seeMore: "Katso lisää",
+    topMember: "Paras jäsen",
+    yourPosition: "Sijaintisi",
+    leaveLeaderboard: "Poistu tulostaulusta",
+    deleteLeaderboard: "Poista tulostaulu",
+    demote: "Alenna",
+    inviteCode: "Kutsukoodi",
+    kick: "Erota",
+    members: "Jäsenet",
+    position: "Sija",
+    promote: "Ylennä",
+    timeCoded: "Aika koodattu viimeisen {days} päivän aikana",
+    create: "Luo",
+    leaderboardCreateError: "Tulostaulun luominen epäonnistui.",
+    leaderboardExists: "Tulostaulu on jo olemassa.",
+    validation: {
+      min: "Tulostaulun nimen tulee olla vähintään {min} merkkiä pitkä.",
+      max: "Tulostaulun nimen tulee olla enintään {max} merkkiä pitkä.",
+      required: "Tulostaulun nimi vaaditaan.",
+      regex: "Tulostaulun nimi voi sisältää vain alphanumeerisia kirjaimia."
+    },
+    join: {
+      leaderboardCodeRequired: "Kutsukoodi vaaditaan.",
+      alreadyMember: "Olet jo tämän tulostaulun jäsen.",
+      genericError: "Tulosauluun liittyminen epäonnistui.",
+      join: "Liity",
+      leaderboardCode: "Tulostaulukoodi",
+      leaderboardCodeInvalid:
+        "Kutsukoodin tulee alkaa \"ttlic_\", ja sen jälkeen täytyy olla 24 alphanumeerista kirjainta.",
+
+    }
   }
 };
 

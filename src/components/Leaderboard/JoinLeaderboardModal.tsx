@@ -6,6 +6,7 @@ import axios from "axios";
 import { Formik, Form } from "formik";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { EnterIcon } from "@radix-ui/react-icons";
+import { useI18nContext } from "../../i18n/i18n-react";
 
 interface JoinLeaderboardModalProps {
   initialCode: string | null,
@@ -15,6 +16,7 @@ interface JoinLeaderboardModalProps {
 export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardModalProps) => {
   const [error, setError] = useState<string>("");
   const [placeholderLeaderboardInviteCode] = useState(generateLeaderboardInviteCode());
+  const { LL } = useI18nContext();
 
   return <>
     <Formik
@@ -24,24 +26,22 @@ export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardMod
       validationSchema={Yup.object().shape({
         leaderboardCode: Yup
           .string()
-          .required("Invite code is required")
-          .matches(
-            /^ttlic_[a-zA-Z0-9]{32}$/,
-            "Friend code must start with \"ttlic_\", and be followed by 24 alphanumeric characters.")
+          .required(LL.leaderboards.join.leaderboardCodeRequired())
+          .matches(/^ttlic_[a-zA-Z0-9]{32}$/, LL.leaderboards.join.leaderboardCodeInvalid())
       })}
       onSubmit={values => {
         onJoin(values.leaderboardCode).catch((e: unknown) => {
           console.log(e);
           if (axios.isAxiosError(e)) {
             if (e.response?.status === 409) {
-              setError("You are already a member of this leaderboard");
+              setError(LL.leaderboards.join.alreadyMember());
             }
             else {
-              setError("Error joining leaderboard");
+              setError(LL.leaderboards.join.genericError());
             }
           }
           else {
-            setError("Error joining leaderboard");
+            setError(LL.leaderboards.join.genericError());
           }
         });
       }}
@@ -51,7 +51,7 @@ export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardMod
       }}>
         <FormikTextInput
           name="leaderboardCode"
-          label="Leaderboard Code"
+          label={LL.leaderboards.join.leaderboardCode()}
           placeholder={placeholderLeaderboardInviteCode}
           styles={theme => ({
             invalid: {
@@ -66,7 +66,7 @@ export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardMod
             type="submit"
             leftIcon={<EnterIcon />}
           >
-            Join
+            {LL.leaderboards.join.join()}
           </Button>
         </Group>
       </Form>}

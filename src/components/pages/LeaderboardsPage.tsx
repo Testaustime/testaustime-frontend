@@ -10,6 +10,7 @@ import { CreateLeaderboardModal } from "../Leaderboard/CreateLeaderboardModal";
 import { JoinLeaderboardModal } from "../Leaderboard/JoinLeaderboardModal";
 import { EnterIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useLocation } from "react-router";
+import { useI18nContext } from "../../i18n/i18n-react";
 
 export const LeaderboardsPage = () => {
   const {
@@ -31,9 +32,11 @@ export const LeaderboardsPage = () => {
   const location = useLocation();
   const urlLeaderboardCode = new URLSearchParams(location.search).get("code");
 
+  const { LL } = useI18nContext();
+
   const openCreateLeaderboard = () => {
     const id = modals.openModal({
-      title: <Title>Create new leaderboard</Title>,
+      title: <Title>{LL.leaderboards.createNewLeaderboard()}</Title>,
       size: "xl",
       children: <CreateLeaderboardModal
         onCreate={async (leaderboardName: string) => {
@@ -46,7 +49,7 @@ export const LeaderboardsPage = () => {
 
   const openJoinLeaderboard = () => {
     const id = modals.openModal({
-      title: <Title>Join a leaderboard</Title>,
+      title: <Title>{LL.leaderboards.joinLeaderboard()}</Title>,
       size: "xl",
       children: <JoinLeaderboardModal initialCode={urlLeaderboardCode} onJoin={async code => {
         await joinLeaderboard(code);
@@ -59,7 +62,7 @@ export const LeaderboardsPage = () => {
     if (urlLeaderboardCode) openJoinLeaderboard();
   }, [urlLeaderboardCode]);
 
-  if (!username) return <Text>No user</Text>;
+  if (!username) return <Text>{LL.leaderboards.notLoggedIn()}</Text>;
 
   const adminUsernames = openedLeaderboard?.members.filter(m => m.admin).map(m => m.username);
   const isAdmin = Boolean(adminUsernames?.includes(username));
@@ -97,29 +100,29 @@ export const LeaderboardsPage = () => {
       />}
     </Modal>
     <Group align="center" mb="md" mt="xl" position="apart">
-      <Title>Leaderboards</Title>
+      <Title>{LL.leaderboards.leaderboards()}</Title>
       <Group spacing="sm">
         <Button
           onClick={() => openCreateLeaderboard()}
           variant="outline"
           leftIcon={<PlusIcon />}
         >
-          Create new leaderboard
+          {LL.leaderboards.createNewLeaderboard()}
         </Button>
         <Button
           onClick={() => openJoinLeaderboard()}
           leftIcon={<EnterIcon />}
         >
-          Join a leaderboard
+          {LL.leaderboards.joinLeaderboard()}
         </Button>
       </Group>
     </Group>
     <Table>
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Top member</th>
-          <th>Your position</th>
+          <th>{LL.leaderboards.name()}</th>
+          <th>{LL.leaderboards.topMember()}</th>
+          <th>{LL.leaderboards.yourPosition()}</th>
           <th />
         </tr>
       </thead>
@@ -132,7 +135,7 @@ export const LeaderboardsPage = () => {
           const userIsAdmin = Boolean(leaderboard.members.find(member => member.username === username)?.admin);
 
           return <tr key={leaderboard.invite}>
-            <td>{leaderboard.name}{userIsAdmin && <Badge ml="sm">Admin</Badge>}</td>
+            <td>{leaderboard.name}{userIsAdmin && <Badge ml="sm">{LL.leaderboards.admin()}</Badge>}</td>
             <td>{topMember.username} ({prettyDuration(topMember.time_coded)})</td>
             <td>{yourPosition}{getOrdinalSuffix(yourPosition)} {yourPosition === 1 ? "🏆" : ""}</td>
             <td style={{ display: "flex", justifyContent: "end" }}>
@@ -142,7 +145,7 @@ export const LeaderboardsPage = () => {
                 variant="outline"
                 onClick={() => setOpenedLeaderboardName(leaderboard.name)}
               >
-                See more
+                {LL.leaderboards.seeMore()}
               </Button>
             </td>
           </tr>;
