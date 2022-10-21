@@ -5,7 +5,7 @@
   "dependencies": {
     "@mantine/core": "^5.5.5",
     "@mantine/hooks": "^5.5.5",
-    "@mantine/modals": "^5.5.5",
+    "@mantine/modals": "^5.6.0",
     "@mantine/notifications": "^5.5.5",
     "@radix-ui/react-icons": "^1.1.1",
     "@reduxjs/toolkit": "^1.8.6",
