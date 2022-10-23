@@ -1,12 +1,12 @@
-import { Anchor, Checkbox, Group, SegmentedControl, Stack, Text, Title } from "@mantine/core";
+import { Anchor, Stack, Text, Title } from "@mantine/core";
 import { format } from "date-fns/esm";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { WithTooltip } from "../WithTooltip";
 import { TokenField } from "../TokenField/TokenField";
 import { Link } from "react-router-dom";
-import { useSettings } from "../../hooks/useSettings";
 import { useI18nContext } from "../../i18n/i18n-react";
-import { Locales } from "../../i18n/i18n-types";
+import { LanguageSelector } from "../LanguageSelector";
+import { SmoothChartsSelector } from "../SmoothChartsSelector";
 
 export const ProfilePage = () => {
   const {
@@ -18,10 +18,6 @@ export const ProfilePage = () => {
     registrationTime
   } = useAuthentication();
 
-  const {
-    smoothCharts, setSmoothCharts,
-    language, setLanguage
-  } = useSettings();
   const { LL } = useI18nContext();
 
   if (!registrationTime || !token || !friendCode || !username) return <Text>{LL.profile.notLoggedIn()}</Text>;
@@ -57,24 +53,8 @@ export const ProfilePage = () => {
     </Stack>
     <Stack mt={40} spacing={15}>
       <Title order={2}>{LL.profile.settings.title()}</Title>
-      <Group>
-        <Checkbox
-          checked={smoothCharts}
-          onChange={e => setSmoothCharts(e.target.checked)}
-          label={LL.profile.settings.smoothCharts()}
-        />
-      </Group>
-      <Group>
-        <Text>{LL.profile.settings.language()}</Text>
-        <SegmentedControl
-          data={[
-            { label: "English 🇺🇸", value: "en" },
-            { label: "Suomi 🇫🇮", value: "fi" }
-          ]}
-          value={language}
-          onChange={value => setLanguage(value as Locales)}
-        />
-      </Group>
+      <SmoothChartsSelector />
+      <LanguageSelector />
     </Stack>
   </div>;
 };
