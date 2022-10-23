@@ -1,39 +1,25 @@
 import { useLocalStorage } from "@mantine/hooks";
+import { useContext } from "react";
+import { SettingsContext } from "../contexts/SettingsContext";
 import { Locales } from "../i18n/i18n-types";
 
-export interface LocalStorageSettings {
-  smoothCharts?: boolean,
-  language?: Locales
-}
-
-const defaultValue: LocalStorageSettings = {
-  smoothCharts: true,
-  language: undefined
-};
-
-export const useSettings = () => {
-  const [settings, setSettings] = useLocalStorage({
-    key: "settings",
-    defaultValue
+export const useCreateSettings = () => {
+  const [smoothCharts, setSmoothCharts] = useLocalStorage({
+    key: "testaustime-smooth-charts",
+    defaultValue: true
   });
 
-  const setSmoothCharts = (smoothCharts: boolean) => {
-    setSettings({
-      ...settings,
-      smoothCharts
-    });
-  };
-
-  const setLanguage = (language: Locales) => {
-    setSettings({
-      ...settings,
-      language
-    });
-  };
+  const [language, setLanguage] = useLocalStorage<Locales | undefined>({
+    key: "testaustime-language",
+    defaultValue: undefined
+  });
 
   return {
-    ...settings,
+    smoothCharts,
     setSmoothCharts,
+    language,
     setLanguage
   };
 };
+
+export const useSettings = () => useContext(SettingsContext);

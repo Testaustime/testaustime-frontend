@@ -11,11 +11,12 @@ import useAuthentication from "./hooks/UseAuthentication";
 import { ModalsProvider } from "@mantine/modals";
 import TypesafeI18n from "./i18n/i18n-react";
 import { loadAllLocales } from "./i18n/i18n-util.sync";
-import { useSettings } from "./hooks/useSettings";
+import { useCreateSettings } from "./hooks/useSettings";
 import {
   detectLocale, htmlLangAttributeDetector, navigatorDetector, queryStringDetector
 } from "typesafe-i18n/detectors";
 import { App } from "./components/App";
+import { SettingsContext } from "./contexts/SettingsContext";
 
 loadAllLocales();
 const detectedLanguage = detectLocale("en", ["en", "fi"],
@@ -30,7 +31,6 @@ export const AppSetup = () => {
 
   // Save colorScheme to localStorage and the default value is the preferred colorScheme
   const preferredColorScheme = useColorScheme();
-
   const [savedColorScheme, setColorScheme] = useLocalStorage<
     ColorScheme | "none"
   >({
@@ -38,7 +38,7 @@ export const AppSetup = () => {
     defaultValue: "none"
   });
 
-  const { language } = useSettings();
+  const createdSettings = useCreateSettings();
 
   const colorScheme =
     savedColorScheme === "none" ? preferredColorScheme : savedColorScheme;
@@ -97,16 +97,21 @@ export const AppSetup = () => {
           }
         }}
       >
-        <TypesafeI18n locale={language ?? detectedLanguage ?? "en"} key={language ?? detectedLanguage ?? "en"}>
-          <NotificationsProvider>
-            <ModalsProvider>
-              <App
-                logOutAndRedirect={logOutAndRedirect}
-                toggleColorScheme={toggleColorScheme}
-              />
-            </ModalsProvider>
-          </NotificationsProvider>
-        </TypesafeI18n>
+        <SettingsContext.Provider value={createdSettings}>
+          <TypesafeI18n
+            locale={(createdSettings.language || detectedLanguage) ?? "en"}
+            key={(createdSettings.language || detectedLanguage) ?? "en"}
+          >
+            <NotificationsProvider>
+              <ModalsProvider>
+                <App
+                  logOutAndRedirect={logOutAndRedirect}
+                  toggleColorScheme={toggleColorScheme}
+                />
+              </ModalsProvider>
+            </NotificationsProvider>
+          </TypesafeI18n>
+        </SettingsContext.Provider>
       </MantineProvider>
     </ColorSchemeProvider>
   );
