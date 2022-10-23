@@ -23,8 +23,8 @@ import {
   FaceIcon,
   HomeIcon
 } from "@radix-ui/react-icons";
-import { ReactNode, useEffect, useState } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { Route, Routes, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { LoginPage } from "./components/pages/LoginPage";
 import { MainPage } from "./components/pages/MainPage";
@@ -45,6 +45,7 @@ import { useSettings } from "./hooks/useSettings";
 import {
   detectLocale, htmlLangAttributeDetector, navigatorDetector, queryStringDetector
 } from "typesafe-i18n/detectors";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 const useStyles = createStyles(theme => ({
   container: {
@@ -110,19 +111,6 @@ const useStyles = createStyles(theme => ({
     zIndex: 5
   }
 }));
-
-const PrivateRoute = ({ children, redirect }: {
-  children?: ReactNode,
-  redirect?: string
-}) => {
-  const { isLoggedOut } = useAuthentication();
-  if (isLoggedOut) {
-    const fullUrl = "/login" + (redirect ? "?redirect=" + redirect : "");
-    return <Navigate to={fullUrl} replace />;
-  }
-
-  return <>{children}</>;
-};
 
 loadAllLocales();
 const detectedLanguage = detectLocale("en", ["en", "fi"],
