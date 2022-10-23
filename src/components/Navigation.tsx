@@ -9,40 +9,6 @@ import { useI18nContext } from "../i18n/i18n-react";
 import ThemeToggle from "./ThemeToggle";
 
 const useStyles = createStyles(theme => ({
-  container: {
-    maxWidth: "calc(800px + 10%)",
-    width: "100%",
-    minHeight: "100%",
-    alignContent: "flex-start",
-    paddingTop: 40,
-    paddingBottom: 100
-  },
-  innerContainer: {
-    minHeight: "100%",
-    width: "90%",
-    marginLeft: "5%",
-    marginRight: "5%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between"
-  },
-  testaustimeTitle: {
-    paddingTop: 4,
-    fontFamily: "Poppins, sans-serif",
-    background: "linear-gradient(51deg, rgba(60,112,157,1) 0%, rgba(34,65,108,1) 100%)",
-    fontSize: "2.5rem",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    fontWeight: 800,
-    textDecoration: "none",
-    "@media (max-width: 450px)": {
-      width: "60%",
-      fontSize: "8vw"
-    }
-  },
-  profileButton: {
-    display: "flex"
-  },
   navigation: {
     [`@media (max-width: ${theme.breakpoints.md}px)`]: {
       display: "none"
@@ -61,9 +27,6 @@ const useStyles = createStyles(theme => ({
     width: "10px",
     height: "1px",
     backgroundColor: theme.colorScheme === "dark" ? "#bbb" : "#333"
-  },
-  menu: {
-    border: `1px solid ${theme.colorScheme === "dark" ? theme.colors.gray[0] : theme.colors.gray[1]}`
   },
   dropdown: {
     width: "90%",

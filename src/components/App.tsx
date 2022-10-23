@@ -13,7 +13,7 @@ import { ProfilePage } from "./pages/ProfilePage";
 import { RegistrationPage } from "./pages/RegistrationPage";
 import { PrivateRoute } from "./PrivateRoute";
 
-const useStyles = createStyles(theme => ({
+const useStyles = createStyles(() => ({
   container: {
     maxWidth: "calc(800px + 10%)",
     width: "100%",
@@ -44,37 +44,6 @@ const useStyles = createStyles(theme => ({
       width: "60%",
       fontSize: "8vw"
     }
-  },
-  profileButton: {
-    display: "flex"
-  },
-  navigation: {
-    [`@media (max-width: ${theme.breakpoints.md}px)`]: {
-      display: "none"
-    }
-  },
-  smallNavigation: {
-    display: "none",
-    [`@media (max-width: ${theme.breakpoints.md}px)`]: {
-      display: "flex"
-    },
-    "@media (max-width: 450px)": {
-      width: "39%"
-    }
-  },
-  spacer: {
-    width: "10px",
-    height: "1px",
-    backgroundColor: theme.colorScheme === "dark" ? "#bbb" : "#333"
-  },
-  menu: {
-    border: `1px solid ${theme.colorScheme === "dark" ? theme.colors.gray[0] : theme.colors.gray[1]}`
-  },
-  dropdown: {
-    width: "90%",
-    margin: "calc(40px + 36px + 20px) 5% 0 5%",
-    padding: "10px",
-    zIndex: 5
   }
 }));
 
