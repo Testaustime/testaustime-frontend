@@ -1,13 +1,8 @@
-import { Anchor, Box, Burger, Button, ColorScheme, createStyles, Divider, Group, Menu, Overlay } from "@mantine/core";
-import {
-  EnterIcon, ExitIcon, FaceIcon, GearIcon, HomeIcon, MixIcon, PersonIcon, PlusIcon
-} from "@radix-ui/react-icons";
+import { ColorScheme, createStyles, Group, Overlay } from "@mantine/core";
 import { useState } from "react";
-import { BarChart2 } from "react-feather";
 import { Link, Route, Routes } from "react-router-dom";
-import useAuthentication from "../hooks/UseAuthentication";
-import { useI18nContext } from "../i18n/i18n-react";
 import { Footer } from "./Footer";
+import { Navigation } from "./Navigation";
 import { NotFoundPage } from "./NotFoundPage";
 import { ExtensionsPage } from "./pages/ExtensionsPage";
 import { FriendPage } from "./pages/FriendPage";
@@ -17,7 +12,6 @@ import { MainPage } from "./pages/MainPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { RegistrationPage } from "./pages/RegistrationPage";
 import { PrivateRoute } from "./PrivateRoute";
-import ThemeToggle from "./ThemeToggle";
 
 const useStyles = createStyles(theme => ({
   container: {
@@ -90,11 +84,8 @@ interface AppProps {
 }
 
 export const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
-  const { isLoggedIn, username } = useAuthentication();
   const { classes } = useStyles();
   const [opened, setOpenedOriginal] = useState(false);
-
-  const { LL } = useI18nContext();
 
   const setOpened = (o: boolean | ((arg0: boolean) => boolean)) => { // Patches a bug with Mantine menu alignment
     const state = typeof o === "function" ? o(opened) : o;
@@ -119,116 +110,12 @@ export const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
           <Link to="/" className={classes.testaustimeTitle}>
             Testaustime
           </Link>
-          <Group>
-            <Group spacing={15} align="center" className={classes.navigation}>
-              <Group>
-                {isLoggedIn ? <>
-                  <Anchor component={Link} to="/">{LL.navbar.dashboard()}</Anchor>
-                  <Anchor component={Link} to="/friends">{LL.navbar.friends()}</Anchor>
-                  <Anchor component={Link} to="/leaderboards">{LL.navbar.leaderboards()}</Anchor>
-                  <Menu
-                    trigger="hover"
-                  >
-                    <Menu.Target>
-                      <Button
-                        variant="outline"
-                        size="xs"
-                        leftIcon={<PersonIcon style={{ marginRight: "5px" }} />}
-                      >
-                        {username}
-                      </Button>
-                    </Menu.Target>
-                    <Menu.Dropdown>
-                      <Menu.Label>{LL.navbar.account()}</Menu.Label>
-                      <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>{LL.navbar.settings()}</Menu.Item>
-                      <Divider />
-                      <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>
-                        {LL.navbar.extensions()}
-                      </Menu.Item>
-                      <Divider />
-                      <Menu.Item
-                        color="blue"
-                        icon={<ExitIcon />}
-                        onClick={logOutAndRedirect}>
-                        {LL.navbar.logOut()}
-                      </Menu.Item>
-                    </Menu.Dropdown>
-                  </Menu>
-                </> : <>
-                  <Anchor component={Link} to="/extensions">{LL.navbar.extensions()}</Anchor>
-                  <Box className={classes.spacer} />
-                  <Anchor component={Link} to="/login">{LL.navbar.login()}</Anchor>
-                  <Button component={Link} to="/register">{LL.navbar.register()}</Button>
-                </>}
-              </Group>
-              <ThemeToggle label={false} />
-            </Group>
-            <Group className={classes.smallNavigation}>
-              <Menu
-                opened={opened}
-                id="dropdown-menu"
-                transition={"fade"}
-                position={"left-end"}
-                transitionDuration={150}
-              >
-                <Menu.Target>
-                  <Burger
-                    title="Open navigation"
-                    opened={opened}
-                    color={"#536ab7"}
-                    sx={{ zIndex: 5 }}
-                    onClick={() => setOpened((o: boolean) => !o)}
-                  />
-                </Menu.Target>
-                <Menu.Dropdown
-                  className={`${classes.dropdown} noDefaultTransition`}
-                  onClick={() => setOpened(false)}
-                >
-                  <div
-                    style={{ padding: "10px" }}
-                    onClick={() => { toggleColorScheme(); }}>
-                    <ThemeToggle label={true} />
-                  </div>
-                  {isLoggedIn ?
-                    <>
-                      <Divider />
-                      <Menu.Item component={Link} to="/" icon={<HomeIcon />}>{LL.navbar.dashboard()}</Menu.Item>
-                      <Menu.Item component={Link} to="/friends" icon={<FaceIcon />}>{LL.navbar.friends()}</Menu.Item>
-                      <Menu.Item
-                        component={Link}
-                        to="/leaderboards"
-                        icon={<BarChart2 size={18} />}
-                      >
-                        {LL.navbar.leaderboards()}
-                      </Menu.Item>
-                      <Divider />
-                      <Menu.Label>{LL.navbar.account()} - {username}</Menu.Label>
-                      <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>{LL.navbar.settings()}</Menu.Item>
-                      <Divider />
-                      <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>
-                        {LL.navbar.extensions()}
-                      </Menu.Item>
-                      <Divider />
-                      <Menu.Item color="blue" icon={<ExitIcon />} onClick={logOutAndRedirect}>
-                        {LL.navbar.logOut()}
-                      </Menu.Item>
-                    </>
-                    :
-                    <>
-                      <Divider />
-                      <Menu.Item component={Link} to="/login" icon={<EnterIcon />}>{LL.navbar.login()}</Menu.Item>
-                      <Menu.Item color="blue" component={Link} to="/register" icon={<PlusIcon />}>
-                        {LL.navbar.register()}
-                      </Menu.Item>
-                      <Divider />
-                      <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>
-                        {LL.navbar.extensions()}
-                      </Menu.Item>
-                    </>}
-                </Menu.Dropdown>
-              </Menu>
-            </Group>
-          </Group>
+          <Navigation
+            logOutAndRedirect={logOutAndRedirect}
+            toggleColorScheme={toggleColorScheme}
+            opened={opened}
+            setOpened={setOpened}
+          />
         </Group>
         <Routes>
           <Route path="/" element={<MainPage />} />
