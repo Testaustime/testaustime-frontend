@@ -1,9 +1,9 @@
-import { Anchor, Box, Burger, Button, ColorScheme, createStyles, Divider, Group, Menu } from "@mantine/core";
+import { Anchor, Box, Burger, Button, createStyles, Divider, Group, Menu, useMantineColorScheme } from "@mantine/core";
 import {
   EnterIcon, ExitIcon, FaceIcon, GearIcon, HomeIcon, MixIcon, PersonIcon, PlusIcon
 } from "@radix-ui/react-icons";
 import { BarChart2 } from "react-feather";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuthentication from "../hooks/UseAuthentication";
 import { useI18nContext } from "../i18n/i18n-react";
 import ThemeToggle from "./ThemeToggle";
@@ -37,22 +37,26 @@ const useStyles = createStyles(theme => ({
 }));
 
 export interface NavigationProps {
-  logOutAndRedirect: () => void,
-  toggleColorScheme: (value?: ColorScheme) => void,
   opened: boolean,
   setOpened: (o: boolean | ((arg0: boolean) => boolean)) => void
 }
 
 export const Navigation = ({
-  logOutAndRedirect,
-  toggleColorScheme,
   opened,
   setOpened
 }: NavigationProps) => {
   const { LL } = useI18nContext();
-  const { isLoggedIn, username } = useAuthentication();
+  const { isLoggedIn, username, logOut } = useAuthentication();
+  const navigate = useNavigate();
+
+  const { toggleColorScheme } = useMantineColorScheme();
 
   const { classes } = useStyles();
+
+  const logOutAndRedirect = () => {
+    logOut();
+    navigate("/");
+  };
 
   return <Group>
     <Group spacing={15} align="center" className={classes.navigation}>

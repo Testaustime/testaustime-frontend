@@ -6,7 +6,6 @@ import {
 import { useColorScheme, useHotkeys } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
 import useAuthentication from "./hooks/UseAuthentication";
 import { ModalsProvider } from "@mantine/modals";
 import TypesafeI18n from "./i18n/i18n-react";
@@ -17,19 +16,18 @@ import {
 } from "typesafe-i18n/detectors";
 import { App } from "./components/App";
 import { SettingsContext } from "./contexts/SettingsContext";
+import { Locales } from "./i18n/i18n-types";
 
 loadAllLocales();
-const detectedLanguage = detectLocale("en", ["en", "fi"],
+const detectedLanguage = detectLocale<Locales>("en", ["en", "fi"],
   queryStringDetector,
   navigatorDetector,
   htmlLangAttributeDetector
 );
 
 export const AppSetup = () => {
-  const { logOut, refetchUsername } = useAuthentication();
-  const navigate = useNavigate();
+  const { refetchUsername } = useAuthentication();
 
-  // Save colorScheme to localStorage and the default value is the preferred colorScheme
   const preferredColorScheme = useColorScheme();
 
   const settings = useCreateSettings();
@@ -46,11 +44,6 @@ export const AppSetup = () => {
   useEffect(() => {
     refetchUsername().catch(e => console.error(e));
   }, []);
-
-  const logOutAndRedirect = () => {
-    logOut();
-    navigate("/");
-  };
 
   return (
     <ColorSchemeProvider
@@ -99,10 +92,7 @@ export const AppSetup = () => {
           >
             <NotificationsProvider>
               <ModalsProvider>
-                <App
-                  logOutAndRedirect={logOutAndRedirect}
-                  toggleColorScheme={toggleColorScheme}
-                />
+                <App />
               </ModalsProvider>
             </NotificationsProvider>
           </TypesafeI18n>

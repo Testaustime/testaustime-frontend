@@ -1,4 +1,4 @@
-import { ColorScheme, createStyles, Group, Overlay } from "@mantine/core";
+import { createStyles, Group, Overlay } from "@mantine/core";
 import { useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import { Footer } from "./Footer";
@@ -47,12 +47,7 @@ const useStyles = createStyles(() => ({
   }
 }));
 
-interface AppProps {
-  logOutAndRedirect: () => void,
-  toggleColorScheme: (value?: ColorScheme) => void
-}
-
-export const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
+export const App = () => {
   const { classes } = useStyles();
   const [opened, setOpenedOriginal] = useState(false);
 
@@ -80,8 +75,6 @@ export const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
             Testaustime
           </Link>
           <Navigation
-            logOutAndRedirect={logOutAndRedirect}
-            toggleColorScheme={toggleColorScheme}
             opened={opened}
             setOpened={setOpened}
           />
