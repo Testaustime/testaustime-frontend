@@ -1,12 +1,12 @@
 import { ActionIcon, Group, Tooltip } from "@mantine/core";
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
-import { FunctionComponent } from "react";
+import { PropsWithChildren } from "react";
 
 export interface WithTooltipProps {
   tooltipLabel: React.ReactNode
 }
 
-export const WithTooltip: FunctionComponent<WithTooltipProps> = ({ tooltipLabel, children }) => {
+export const WithTooltip = ({ tooltipLabel, children }: PropsWithChildren<WithTooltipProps>) => {
   return <Group spacing={10}>
     {children}
     <Tooltip
