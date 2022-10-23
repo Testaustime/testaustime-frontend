@@ -5,7 +5,7 @@ import { useAuthentication, UseAuthenticationResult } from "./useAuthentication"
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { waitFor } from "@testing-library/react";
-import { authTokenLocalStorageKey } from "../../constants";
+import { authTokenLocalStorageKey } from "../../utils/constants";
 
 const generateAuthToken = (username: string) => `${username}_authtoken`;
 

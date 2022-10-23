@@ -47,8 +47,6 @@ const useStyles = createStyles(theme => ({
   }
 }));
 
-
-
 export const Dashboard = () => {
   const [statisticsRange, setStatisticsRange] = useState<DayRange>("week");
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);

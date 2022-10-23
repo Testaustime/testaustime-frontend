@@ -1,3 +1,4 @@
+/* eslint sort-keys: "error" */
 export const colors: Record<string, string> = {
   "1c enterprise": "#814CCC",
   "2-dimensional array": "#38761D",
@@ -525,8 +526,8 @@ export const colors: Record<string, string> = {
   twig: "#c1d026",
   txl: "#0178b8",
   typescript: "#3178c6",
-  typescriptreact: "#61dafb",
   "typescript with react": "#61dafb",
+  typescriptreact: "#61dafb",
   "unified parallel c": "#4e3617",
   "unity3d asset": "#222c37",
   "unix assembly": "#fff",
