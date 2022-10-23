@@ -3,7 +3,7 @@ import {
   ColorSchemeProvider,
   MantineProvider
 } from "@mantine/core";
-import { useColorScheme, useHotkeys, useLocalStorage } from "@mantine/hooks";
+import { useColorScheme, useHotkeys } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
@@ -31,20 +31,15 @@ export const AppSetup = () => {
 
   // Save colorScheme to localStorage and the default value is the preferred colorScheme
   const preferredColorScheme = useColorScheme();
-  const [savedColorScheme, setColorScheme] = useLocalStorage<
-    ColorScheme | "none"
-  >({
-    key: "testaustime-color-scheme",
-    defaultValue: "none"
-  });
 
-  const createdSettings = useCreateSettings();
+  const settings = useCreateSettings();
 
-  const colorScheme =
-    savedColorScheme === "none" ? preferredColorScheme : savedColorScheme;
+  const colorScheme = (settings.colorScheme === undefined || settings.colorScheme === "none")
+    ? preferredColorScheme
+    : settings.colorScheme;
 
   const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+    settings.setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
   useHotkeys([["mod+J", () => toggleColorScheme()]]);
 
@@ -97,10 +92,10 @@ export const AppSetup = () => {
           }
         }}
       >
-        <SettingsContext.Provider value={createdSettings}>
+        <SettingsContext.Provider value={settings}>
           <TypesafeI18n
-            locale={(createdSettings.language || detectedLanguage) ?? "en"}
-            key={(createdSettings.language || detectedLanguage) ?? "en"}
+            locale={(settings.language || detectedLanguage) ?? "en"}
+            key={(settings.language || detectedLanguage) ?? "en"}
           >
             <NotificationsProvider>
               <ModalsProvider>

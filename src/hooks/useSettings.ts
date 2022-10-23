@@ -1,3 +1,4 @@
+import { ColorScheme } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
@@ -14,11 +15,19 @@ export const useCreateSettings = () => {
     defaultValue: undefined
   });
 
+  // FIXME: "none" is obsolete, but still requires support. Can be removed in the future.
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme | undefined | "none">({
+    key: "testaustime-color-scheme",
+    defaultValue: undefined
+  });
+
   return {
     smoothCharts,
     setSmoothCharts,
     language,
-    setLanguage
+    setLanguage,
+    colorScheme,
+    setColorScheme
   };
 };
 
