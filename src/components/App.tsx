@@ -103,7 +103,7 @@ export const App = ({ logOutAndRedirect, toggleColorScheme }: AppProps) => {
   };
 
   return <Group className={classes.container}>
-    {opened ? <Overlay opacity={0.6} color="#000" zIndex={5} onClick={() => setOpened(false)} /> : <></>}
+    {opened && <Overlay opacity={0.6} color="#000" zIndex={5} onClick={() => setOpened(false)} />}
     <div className={classes.innerContainer}>
       <div>
         <Group position="apart" mb={50}>
