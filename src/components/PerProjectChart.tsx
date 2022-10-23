@@ -182,7 +182,8 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
           hover: {
             intersect: true,
             mode: "dataset"
-          }
+          },
+          maintainAspectRatio: false
         }}
       />
     </div>

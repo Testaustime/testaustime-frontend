@@ -29,7 +29,8 @@ const useStyles = createStyles(theme => ({
   },
   projectCodingChart: {
     width: "100%",
-    paddingBottom: "15px"
+    paddingBottom: "15px",
+    minHeight: "400px"
   },
   multiSelect: {
     minWidth: "400px",
