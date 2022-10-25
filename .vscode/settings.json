@@ -1,3 +1,4 @@
 {
-  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix"
 }
