@@ -1,6 +1,6 @@
 import { Anchor, Text } from "@mantine/core";
 import { Fragment, ReactNode } from "react";
-import { useI18nContext } from "../i18n/i18n-react";
+import { useI18nContext } from "../../i18n/i18n-react";
 
 interface Author {
   name: string,

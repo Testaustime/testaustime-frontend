@@ -1,7 +1,7 @@
 import { createStyles, Text, Grid, Anchor } from "@mantine/core";
 import { useI18nContext } from "../i18n/i18n-react";
 import { ReactComponent as TestausserveriLogo } from "../images/testausserveri.svg";
-import { AuthorsList } from "./AuthorsList";
+import { AuthorsList } from "./AuthorsList/AuthorsList";
 
 const useStyles = createStyles(theme => ({
   container: {
