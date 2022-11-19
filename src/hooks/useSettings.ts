@@ -1,5 +1,5 @@
 import { ColorScheme } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
+import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
 import { Locales } from "../i18n/i18n-types";
@@ -21,13 +21,22 @@ export const useCreateSettings = () => {
     defaultValue: undefined
   });
 
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
+  const preferredColorScheme = useColorScheme();
+  const finalColorScheme = (colorScheme === undefined || colorScheme === "none")
+    ? preferredColorScheme
+    : colorScheme;
+
   return {
     smoothCharts,
     setSmoothCharts,
     language,
     setLanguage,
-    colorScheme,
-    setColorScheme
+    colorScheme: finalColorScheme,
+    setColorScheme,
+    toggleColorScheme
   };
 };
 

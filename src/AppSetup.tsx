@@ -1,9 +1,8 @@
 import {
-  ColorScheme,
   ColorSchemeProvider,
   MantineProvider
 } from "@mantine/core";
-import { useColorScheme, useHotkeys } from "@mantine/hooks";
+import { useHotkeys } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
 import { useEffect } from "react";
 import useAuthentication from "./hooks/UseAuthentication";
@@ -28,18 +27,9 @@ const detectedLanguage = detectLocale<Locales>("en", ["en", "fi"],
 export const AppSetup = () => {
   const { refetchUsername } = useAuthentication();
 
-  const preferredColorScheme = useColorScheme();
-
   const settings = useCreateSettings();
 
-  const colorScheme = (settings.colorScheme === undefined || settings.colorScheme === "none")
-    ? preferredColorScheme
-    : settings.colorScheme;
-
-  const toggleColorScheme = (value?: ColorScheme) =>
-    settings.setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
-
-  useHotkeys([["mod+J", () => toggleColorScheme()]]);
+  useHotkeys([["mod+J", () => settings.toggleColorScheme()]]);
 
   useEffect(() => {
     refetchUsername().catch(e => console.error(e));
@@ -47,13 +37,13 @@ export const AppSetup = () => {
 
   return (
     <ColorSchemeProvider
-      colorScheme={colorScheme}
-      toggleColorScheme={toggleColorScheme}
+      colorScheme={settings.colorScheme}
+      toggleColorScheme={settings.toggleColorScheme}
     >
       <MantineProvider
         withGlobalStyles
         theme={{
-          colorScheme: colorScheme,
+          colorScheme: settings.colorScheme,
           fontFamily: "Ubuntu, sans-serif",
           white: "#eee",
           black: "#121212",
