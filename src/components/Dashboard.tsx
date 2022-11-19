@@ -119,7 +119,7 @@ export const Dashboard = () => {
       {entries.length !== 0 ?
         <>
           <Group className={classes.dataCard}>
-            <Title mt={10} order={2}>{LL.dashboard.timePerProject()}</Title>
+            <Title mt={10} order={2}>{LL.dashboard.timePerDay()}</Title>
             <DailyCodingTimeChart
               entries={entries}
               dayCount={dayCount}
