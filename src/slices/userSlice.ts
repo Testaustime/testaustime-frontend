@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { authTokenLocalStorageKey } from "../constants";
+import { authTokenLocalStorageKey } from "../utils/constants";
 import { ApiFriendsResponseItem } from "../hooks/useFriends";
 
 export interface UsersSlice {

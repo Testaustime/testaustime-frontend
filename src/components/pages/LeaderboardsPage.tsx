@@ -1,16 +1,15 @@
-import { Badge, Button, Group, Modal, Table, Text, Title } from "@mantine/core";
+import { Button, Group, Modal, Text, Title } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { useEffect, useState } from "react";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { useLeaderboards } from "../../hooks/useLeaderboards";
-import { prettyDuration } from "../../utils/dateUtils";
-import { getOrdinalSuffix } from "../../utils/stringUtils";
-import { LeaderboardModal } from "../Leaderboard/LeaderboardModal";
-import { CreateLeaderboardModal } from "../Leaderboard/CreateLeaderboardModal";
-import { JoinLeaderboardModal } from "../Leaderboard/JoinLeaderboardModal";
+import { LeaderboardModal } from "../leaderboard/LeaderboardModal";
+import { CreateLeaderboardModal } from "../leaderboard/CreateLeaderboardModal";
+import { JoinLeaderboardModal } from "../leaderboard/JoinLeaderboardModal";
 import { EnterIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useLocation } from "react-router";
 import { useI18nContext } from "../../i18n/i18n-react";
+import { LeaderboardsList } from "../leaderboard/LeaderboardsList";
 
 export const LeaderboardsPage = () => {
   const {
@@ -117,40 +116,6 @@ export const LeaderboardsPage = () => {
         </Button>
       </Group>
     </Group>
-    <Table>
-      <thead>
-        <tr>
-          <th>{LL.leaderboards.name()}</th>
-          <th>{LL.leaderboards.topMember()}</th>
-          <th>{LL.leaderboards.yourPosition()}</th>
-          <th />
-        </tr>
-      </thead>
-      <tbody>
-        {leaderboards.map(leaderboard => {
-          if (!leaderboard || !leaderboard.members) return null;
-          const membersSorted = [...leaderboard.members].sort((a, b) => b.time_coded - a.time_coded);
-          const topMember = membersSorted[0];
-          const yourPosition = membersSorted.findIndex(member => member.username === username) + 1;
-          const userIsAdmin = Boolean(leaderboard.members.find(member => member.username === username)?.admin);
-
-          return <tr key={leaderboard.invite}>
-            <td>{leaderboard.name}{userIsAdmin && <Badge ml="sm">{LL.leaderboards.admin()}</Badge>}</td>
-            <td>{topMember.username} ({prettyDuration(topMember.time_coded)})</td>
-            <td>{yourPosition}{getOrdinalSuffix(yourPosition)} {yourPosition === 1 ? "🏆" : ""}</td>
-            <td style={{ display: "flex", justifyContent: "end" }}>
-              <Button
-                compact
-                size="sm"
-                variant="outline"
-                onClick={() => setOpenedLeaderboardName(leaderboard.name)}
-              >
-                {LL.leaderboards.seeMore()}
-              </Button>
-            </td>
-          </tr>;
-        })}
-      </tbody>
-    </Table>
+    <LeaderboardsList setOpenedLeaderboardName={setOpenedLeaderboardName} />
   </>;
 };

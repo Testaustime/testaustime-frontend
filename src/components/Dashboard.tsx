@@ -1,14 +1,13 @@
 import { useActivityData } from "../hooks/useActivityData";
 import { Group, MultiSelect, SegmentedControl, Text, Title, createStyles, Stack } from "@mantine/core";
 import TopLanguages from "./TopLanguages";
-import { prettyDuration } from "../utils/dateUtils";
+import { DayRange, getDayCount, prettyDuration } from "../utils/dateUtils";
 import { TopProjects } from "./TopProjects/TopProjects";
 import { sumBy } from "../utils/arrayUtils";
 import { DailyCodingTimeChart } from "./DailyCodingTimeChart";
 import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
-import { addDays, startOfDay } from "date-fns/esm";
 import useAuthentication from "../hooks/UseAuthentication";
 import { useI18nContext } from "../i18n/i18n-react";
 
@@ -48,54 +47,30 @@ const useStyles = createStyles(theme => ({
   }
 }));
 
-type DayRange = "month" | "week" | "all";
-
-const getDayCount = (dayRange: DayRange, allCount: number) => {
-  switch (dayRange) {
-    case "month":
-      return 30;
-    case "week":
-      return 7;
-    case "all":
-      return allCount;
-  }
-};
-
 export const Dashboard = () => {
   const [statisticsRange, setStatisticsRange] = useState<DayRange>("week");
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const { username } = useAuthentication();
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
   const { classes } = useStyles();
-  const entries = useActivityData();
+  const entries = useActivityData({
+    projectFilter: selectedProjects.length === 0 ? undefined : selectedProjects,
+    dayFilter: statisticsRange
+  });
 
   const { LL } = useI18nContext();
 
-  const firstCodingDay = entries[0]?.start_time ?? new Date(2022, 2, 14);
+  const firstCodingDay = [...entries]
+    .sort((a, b) => a.dayStart.getTime() - b.dayStart.getTime())[0]?.start_time ?? new Date(2022, 2, 14);
 
   const diff = new Date().getTime() - firstCodingDay.getTime();
   const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
-  const dayCount = getDayCount(statisticsRange, diffDays);
+  const dayCount = statisticsRange === "all" ? diffDays : getDayCount(statisticsRange);
 
   const projectNames = entries.reduce<string[]>((acc, entry) => {
     const name = entry.project_name || "Unknown";
     return acc.includes(name) ? acc : [...acc, name];
   }, []);
-
-  const shouldFilter = selectedProjects.length > 0;
-
-  const filteredEntries = shouldFilter
-    ? entries.filter(entry =>
-      selectedProjects.includes(entry.project_name || "Unknown")
-    )
-    : entries;
-
-  const startOfStatisticsRange = startOfDay(addDays(new Date(), -dayCount + 1));
-
-  const entriesInRange = filteredEntries.filter(entry =>
-    entry.start_time.getTime() >= startOfStatisticsRange.getTime() &&
-    entry.start_time.getTime() <= new Date().getTime()
-  );
 
   if (!username) {
     return <div>{LL.dashboard.notLoggedIn()}</div>;
@@ -141,45 +116,45 @@ export const Dashboard = () => {
           />
         )}
       </Group>
-      {entriesInRange.length !== 0 ?
+      {entries.length !== 0 ?
         <>
           <Group className={classes.dataCard}>
             <Title mt={10} order={2}>{LL.dashboard.timePerDay()}</Title>
             <DailyCodingTimeChart
-              entries={entriesInRange}
+              entries={entries}
               dayCount={dayCount}
               className={classes.dailyCodingTimeChart}
             />
             <Text mt={15} mb={15}>
               {LL.dashboard.totalTime({
                 days: dayCount,
-                totalTime: prettyDuration(sumBy(entriesInRange, entry => entry.duration))
+                totalTime: prettyDuration(sumBy(entries, entry => entry.duration))
               })}
             </Text>
           </Group>
           <Group className={classes.dataCard}>
             <Title mt={10} order={2}>{LL.dashboard.timePerProject()}</Title>
-            <PerProjectChart entries={entriesInRange} className={classes.projectCodingChart} />
+            <PerProjectChart entries={entries} className={classes.projectCodingChart} />
           </Group>
           {isSmallScreen ? (
             <Stack align="center">
               <div>
                 <Title order={2}>{LL.dashboard.languages()}</Title>
-                <TopLanguages entries={entriesInRange} />
+                <TopLanguages entries={entries} />
               </div>
               <div>
                 <Title order={2}>{LL.dashboard.projects()}</Title>
-                <TopProjects entries={entriesInRange} />
+                <TopProjects entries={entries} />
               </div>
             </Stack>) : (
             <Group grow align="flex-start">
               <div>
                 <Title order={2}>{LL.dashboard.languages()}</Title>
-                <TopLanguages entries={entriesInRange} />
+                <TopLanguages entries={entries} />
               </div>
               <div>
                 <Title order={2}>{LL.dashboard.projects()}</Title>
-                <TopProjects entries={entriesInRange} />
+                <TopProjects entries={entries} />
               </div>
             </Group>
           )}

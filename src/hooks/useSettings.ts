@@ -1,39 +1,43 @@
-import { useLocalStorage } from "@mantine/hooks";
+import { ColorScheme } from "@mantine/core";
+import { useColorScheme, useLocalStorage } from "@mantine/hooks";
+import { useContext } from "react";
+import { SettingsContext } from "../contexts/SettingsContext";
 import { Locales } from "../i18n/i18n-types";
 
-export interface LocalStorageSettings {
-  smoothCharts?: boolean,
-  language?: Locales
-}
-
-const defaultValue: LocalStorageSettings = {
-  smoothCharts: true,
-  language: undefined
-};
-
-export const useSettings = () => {
-  const [settings, setSettings] = useLocalStorage({
-    key: "settings",
-    defaultValue
+export const useCreateSettings = () => {
+  const [smoothCharts, setSmoothCharts] = useLocalStorage({
+    key: "testaustime-smooth-charts",
+    defaultValue: true
   });
 
-  const setSmoothCharts = (smoothCharts: boolean) => {
-    setSettings({
-      ...settings,
-      smoothCharts
-    });
-  };
+  const [language, setLanguage] = useLocalStorage<Locales | undefined>({
+    key: "testaustime-language",
+    defaultValue: undefined
+  });
 
-  const setLanguage = (language: Locales) => {
-    setSettings({
-      ...settings,
-      language
-    });
-  };
+  // FIXME: "none" is obsolete, but still requires support. Can be removed in the future.
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme | undefined | "none">({
+    key: "testaustime-color-scheme",
+    defaultValue: undefined
+  });
+
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
+  const preferredColorScheme = useColorScheme();
+  const finalColorScheme = (colorScheme === undefined || colorScheme === "none")
+    ? preferredColorScheme
+    : colorScheme;
 
   return {
-    ...settings,
+    smoothCharts,
     setSmoothCharts,
-    setLanguage
+    language,
+    setLanguage,
+    colorScheme: finalColorScheme,
+    setColorScheme,
+    toggleColorScheme
   };
 };
+
+export const useSettings = () => useContext(SettingsContext);

@@ -1,18 +1,7 @@
 import { createStyles, Text, Grid, Anchor } from "@mantine/core";
-import { ReactNode, Fragment } from "react";
 import { useI18nContext } from "../i18n/i18n-react";
 import { ReactComponent as TestausserveriLogo } from "../images/testausserveri.svg";
-
-interface Author {
-  name: string,
-  homepage?: string
-}
-
-const authors: Author[] = [
-  { name: "Luukas Pörtfors", homepage: "https://lajp.fi" },
-  { name: "Ville Järvinen", homepage: "https://vilepis.dev" },
-  { name: "Eetu Mäenpää", homepage: "https://eetumaenpaa.fi" }
-];
+import { AuthorsList } from "./AuthorsList";
 
 const useStyles = createStyles(theme => ({
   container: {
@@ -28,8 +17,7 @@ const useStyles = createStyles(theme => ({
   },
   line: {
     width: "100%",
-    height: "1px",
-    backgroundColor: theme.colorScheme === "dark" ? "#333" : "#ddd"
+    color: theme.colorScheme === "dark" ? "#333" : "#ddd"
   },
   grid: {
     "@media (max-width: 495px)": {
@@ -60,28 +48,11 @@ const useStyles = createStyles(theme => ({
 export const Footer = () => {
   const { classes } = useStyles();
 
-  const authorComponents: ReactNode[] = [];
   const { LL } = useI18nContext();
-
-  const andWord = LL.footer.authors.and();
-
-  authors.forEach((author, index) => {
-    const c = author.homepage ?
-      <Anchor key={author.name} href={author.homepage}>{author.name}</Anchor> :
-      <Fragment key={author.name}>{author.name}</Fragment>;
-
-    authorComponents.push(c);
-    if (index === authors.length - 2) {
-      authorComponents.push(` ${andWord} `);
-    }
-    else if (index !== authors.length - 1) {
-      authorComponents.push(", ");
-    }
-  });
 
   return <>
     <div className={classes.container}>
-      <span className={classes.line} />
+      <hr className={classes.line} />
       <Grid justify="space-between" mt="40px" className={classes.grid}>
         <Grid.Col span={4} className={classes.gridItem}>
           <a href="https://testausserveri.fi">
@@ -98,7 +69,11 @@ export const Footer = () => {
           sx={{ display: "flex", gap: 5, flexDirection: "column" }}
           className={`${classes.gridItem} ${classes.rightAlign}`}
         >
-          <Text>❤️ {LL.footer.authors.label()}: {authorComponents}</Text>
+          <AuthorsList authors={[
+            { name: "Luukas Pörtfors", homepage: "https://lajp.fi" },
+            { name: "Ville Järvinen", homepage: "https://vilepis.dev" },
+            { name: "Eetu Mäenpää", homepage: "https://eetumaenpaa.fi" }
+          ]} />
           <Text>{LL.footer.copyright({ year: new Date().getFullYear() })}</Text>
           <Text><i>{LL.footer.license()}</i></Text>
           <Text><Anchor href="https://github.com/Testaustime">{LL.footer.source()}</Anchor></Text>

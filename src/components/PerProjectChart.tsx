@@ -2,7 +2,7 @@ import { Text } from "@mantine/core";
 import { groupBy, sumBy } from "../utils/arrayUtils";
 import { calculateTickValues } from "../utils/chartUtils";
 import { prettifyProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
-import { colors } from "../colors";
+import { colors } from "../utils/colors";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,

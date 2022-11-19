@@ -22,3 +22,16 @@ export const prettyDuration = (seconds: number) => formatDuration(
       }
     }
   }) || "None";
+
+export type DayRange = "month" | "week" | "all";
+
+export const getDayCount = (dayRange: Omit<DayRange, "all">) => {
+  switch (dayRange) {
+    case "month":
+      return 30;
+    case "week":
+      return 7;
+    default:
+      throw new Error("Invalid day range");
+  }
+};
