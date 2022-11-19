@@ -17,7 +17,7 @@ import { useI18nContext } from "../i18n/i18n-react";
 
 export const Friendboard = () => {
   const { addFriend, unFriend, friends } = useFriends();
-  const entries = useActivityData();
+  const entries = useActivityData({ dayFilter: "month" });
   const { username } = useAuthentication();
   const location = useLocation();
   const urlFriendCode = new URLSearchParams(location.search).get("code");
