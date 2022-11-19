@@ -43,7 +43,7 @@ export const TokenField = ({
           textFormatter={textFormatter}
         />
       </Text> :
-      <Text><code>{value}</code></Text>}
+      <Text><code>{textFormatter(value)}</code></Text>}
     <Group spacing="md" mt="sm">
       <Button
         variant="filled"

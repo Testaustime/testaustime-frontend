@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { AppSetup } from "./AppSetup";
+import { App } from "./components/App";
 import "./index.css";
 import { store } from "./store";
 
@@ -16,7 +17,9 @@ const root = createRoot(container);
 root.render(<React.StrictMode>
   <Provider store={store}>
     <BrowserRouter>
-      <AppSetup />
+      <AppSetup>
+        <App />
+      </AppSetup>
     </BrowserRouter>
   </Provider>
 </React.StrictMode>);

@@ -18,7 +18,8 @@
     "noImplicitAny": true
   },
   "include": [
-    "src"
+    "src",
+    ".storybook/withSetup.tsx"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
