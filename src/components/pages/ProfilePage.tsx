@@ -6,7 +6,7 @@ import { TokenField } from "../TokenField/TokenField";
 import { Link } from "react-router-dom";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
-import { SmoothChartsSelector } from "../SmoothChartsSelector";
+import { SmoothChartsSelector } from "../SmoothChartsSelector/SmoothChartsSelector";
 
 export const ProfilePage = () => {
   const {

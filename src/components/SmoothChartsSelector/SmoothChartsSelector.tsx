@@ -1,6 +1,6 @@
 import { Checkbox, Group } from "@mantine/core";
-import { useSettings } from "../hooks/useSettings";
-import { useI18nContext } from "../i18n/i18n-react";
+import { useSettings } from "../../hooks/useSettings";
+import { useI18nContext } from "../../i18n/i18n-react";
 
 export const SmoothChartsSelector = () => {
   const { smoothCharts, setSmoothCharts } = useSettings();
