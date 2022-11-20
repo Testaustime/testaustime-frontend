@@ -416,6 +416,10 @@ type RootTranslation = {
 		registrationTime: RequiredParams<'registrationTime'>
 		settings: {
 			/**
+			 * D​e​f​a​u​l​t​ ​d​a​y​ ​r​a​n​g​e
+			 */
+			defaultDayRange: string
+			/**
 			 * L​a​n​g​u​a​g​e
 			 */
 			language: string
@@ -861,6 +865,10 @@ export type TranslationFunctions = {
 		 */
 		registrationTime: (arg: { registrationTime: string }) => LocalizedString
 		settings: {
+			/**
+			 * Default day range
+			 */
+			defaultDayRange: () => LocalizedString
 			/**
 			 * Language
 			 */

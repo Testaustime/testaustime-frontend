@@ -125,6 +125,7 @@ const en: BaseTranslation = {
     notLoggedIn: "You are not logged in.",
     registrationTime: "Registration time: {registrationTime:string}",
     settings: {
+      defaultDayRange: "Default day range",
       language: "Language",
       smoothCharts: "Smooth charts",
       title: "Settings"

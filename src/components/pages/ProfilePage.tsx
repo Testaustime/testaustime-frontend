@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
 import { SmoothChartsSelector } from "../SmoothChartsSelector/SmoothChartsSelector";
+import { DefaultDayRangeSelector } from "../DefaultDayRangeSelector/DefaultDayRangeSelector";
 
 export const ProfilePage = () => {
   const {
@@ -55,6 +56,7 @@ export const ProfilePage = () => {
       <Title order={2}>{LL.profile.settings.title()}</Title>
       <SmoothChartsSelector />
       <LanguageSelector />
+      <DefaultDayRangeSelector />
     </Stack>
   </div>;
 };
