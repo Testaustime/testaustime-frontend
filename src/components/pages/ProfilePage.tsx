@@ -1,7 +1,7 @@
 import { Anchor, Stack, Text, Title } from "@mantine/core";
 import { format } from "date-fns/esm";
 import useAuthentication from "../../hooks/UseAuthentication";
-import { WithTooltip } from "../WithTooltip";
+import { WithTooltip } from "../WithTooltip/WithTooltip";
 import { TokenField } from "../TokenField/TokenField";
 import { Link } from "react-router-dom";
 import { useI18nContext } from "../../i18n/i18n-react";

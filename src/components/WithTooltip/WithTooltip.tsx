@@ -2,11 +2,11 @@ import { ActionIcon, Group, Tooltip } from "@mantine/core";
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import { PropsWithChildren } from "react";
 
-export interface WithTooltipProps {
+export type WithTooltipProps = PropsWithChildren<{
   tooltipLabel: React.ReactNode
-}
+}>
 
-export const WithTooltip = ({ tooltipLabel, children }: PropsWithChildren<WithTooltipProps>) => {
+export const WithTooltip = ({ tooltipLabel, children }: WithTooltipProps) => {
   return <Group spacing={10}>
     {children}
     <Tooltip
