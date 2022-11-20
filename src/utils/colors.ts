@@ -249,6 +249,7 @@ export const colors: Record<string, string> = {
   "java server pages": "#2A6277",
   javascript: "#f1e05a",
   "javascript+erb": "#f1e05a",
+  javascriptreact: "#f1e05a",
   "jest snapshot": "#15c213",
   "jetbrains mps": "#21D789",
   jflex: "#DBCA00",

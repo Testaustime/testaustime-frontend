@@ -27,6 +27,7 @@ export const prettifyProgrammingLanguageName = (name?: string) => {
     "typescript": "TypeScript",
     "typescriptreact": "TypeScript with React",
     "javascript": "JavaScript",
+    "javascriptreact": "JavaScript with React",
     "json": "JSON",
     "html": "HTML",
     "css": "CSS",
