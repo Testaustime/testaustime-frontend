@@ -6,7 +6,7 @@ import { BarChart2 } from "react-feather";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthentication from "../hooks/UseAuthentication";
 import { useI18nContext } from "../i18n/i18n-react";
-import ThemeToggle from "./ThemeToggle";
+import ThemeToggle from "./ThemeToggle/ThemeToggle";
 
 const useStyles = createStyles(theme => ({
   navigation: {
