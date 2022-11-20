@@ -1,8 +1,8 @@
 import { ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { Sun, Moon } from "react-feather";
-import { useI18nContext } from "../i18n/i18n-react";
+import { useI18nContext } from "../../i18n/i18n-react";
 
-interface ThemeToggleProps {
+export interface ThemeToggleProps {
   label: boolean
 }
 

@@ -1,7 +1,7 @@
 import { createStyles, Group, Overlay } from "@mantine/core";
 import { useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
-import { Footer } from "./Footer";
+import { Footer } from "./Footer/Footer";
 import { Navigation } from "./Navigation";
 import { NotFoundPage } from "./NotFoundPage";
 import { ExtensionsPage } from "./pages/ExtensionsPage";

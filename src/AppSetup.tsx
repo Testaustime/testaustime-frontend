@@ -13,7 +13,6 @@ import { useCreateSettings } from "./hooks/useSettings";
 import {
   detectLocale, htmlLangAttributeDetector, navigatorDetector, queryStringDetector
 } from "typesafe-i18n/detectors";
-import { App } from "./components/App";
 import { SettingsContext } from "./contexts/SettingsContext";
 import { Locales } from "./i18n/i18n-types";
 
@@ -24,7 +23,7 @@ const detectedLanguage = detectLocale<Locales>("en", ["en", "fi"],
   htmlLangAttributeDetector
 );
 
-export const AppSetup = () => {
+export const AppSetup = ({ children }: { children?: React.ReactNode }) => {
   const { refetchUsername } = useAuthentication();
 
   const settings = useCreateSettings();
@@ -82,7 +81,7 @@ export const AppSetup = () => {
           >
             <NotificationsProvider>
               <ModalsProvider>
-                <App />
+                {children}
               </ModalsProvider>
             </NotificationsProvider>
           </TypesafeI18n>

@@ -4,7 +4,7 @@ import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui
 import { useEffect } from "react";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
-import { ButtonWithConfirmation } from "../ButtonWithConfirmation";
+import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
 import Censorable from "../Censorable";
 
 export interface TokenFieldProps {
@@ -43,7 +43,7 @@ export const TokenField = ({
           textFormatter={textFormatter}
         />
       </Text> :
-      <Text><code>{value}</code></Text>}
+      <Text><code>{textFormatter(value)}</code></Text>}
     <Group spacing="md" mt="sm">
       <Button
         variant="filled"
