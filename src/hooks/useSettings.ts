@@ -3,6 +3,7 @@ import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
 import { Locales } from "../i18n/i18n-types";
+import { DayRange } from "../utils/dateUtils";
 
 export const useCreateSettings = () => {
   const [smoothCharts, setSmoothCharts] = useLocalStorage({
@@ -29,6 +30,11 @@ export const useCreateSettings = () => {
     ? preferredColorScheme
     : colorScheme;
 
+  const [defaultDayRange, setDefaultDayRange] = useLocalStorage<DayRange | undefined>({
+    key: "testaustime-default-day-count",
+    defaultValue: undefined
+  });
+
   return {
     smoothCharts,
     setSmoothCharts,
@@ -36,7 +42,9 @@ export const useCreateSettings = () => {
     setLanguage,
     colorScheme: finalColorScheme,
     setColorScheme,
-    toggleColorScheme
+    toggleColorScheme,
+    defaultDayRange: defaultDayRange ?? "week",
+    setDefaultDayRange
   };
 };
 

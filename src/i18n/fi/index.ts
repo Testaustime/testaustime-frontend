@@ -125,6 +125,7 @@ const fi: Translation = {
     notLoggedIn: "Et ole kirjautunut sisään.",
     registrationTime: "Rekisteröitymisaika: {registrationTime}",
     settings: {
+      defaultDayRange: "Oletuksena näytettävä aikaväli",
       language: "Kieli",
       smoothCharts: "Pehmeät kaaviot",
       title: "Asetukset"

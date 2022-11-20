@@ -10,6 +10,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
 import useAuthentication from "../hooks/UseAuthentication";
 import { useI18nContext } from "../i18n/i18n-react";
+import { useSettings } from "../hooks/useSettings";
 
 const useStyles = createStyles(theme => ({
   dataCard: {
@@ -48,7 +49,8 @@ const useStyles = createStyles(theme => ({
 }));
 
 export const Dashboard = () => {
-  const [statisticsRange, setStatisticsRange] = useState<DayRange>("week");
+  const { defaultDayRange } = useSettings();
+  const [statisticsRange, setStatisticsRange] = useState<DayRange>(defaultDayRange || "week");
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const { username } = useAuthentication();
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
