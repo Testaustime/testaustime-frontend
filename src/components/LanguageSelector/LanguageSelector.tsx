@@ -1,7 +1,7 @@
 import { Group, SegmentedControl, Text } from "@mantine/core";
-import { useSettings } from "../hooks/useSettings";
-import { useI18nContext } from "../i18n/i18n-react";
-import { Locales } from "../i18n/i18n-types";
+import { useSettings } from "../../hooks/useSettings";
+import { useI18nContext } from "../../i18n/i18n-react";
+import { Locales } from "../../i18n/i18n-types";
 
 export const LanguageSelector = () => {
   const { LL } = useI18nContext();
