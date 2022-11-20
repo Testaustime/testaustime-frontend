@@ -6,7 +6,7 @@ import { CombinedLeaderboard } from "../../hooks/useLeaderboards";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
-import { ButtonWithConfirmation } from "../ButtonWithConfirmation";
+import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
 import { TokenField } from "../TokenField/TokenField";
 
 interface LeaderboardModalProps {
