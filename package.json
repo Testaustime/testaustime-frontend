@@ -20,7 +20,7 @@
     "react-redux": "^8.0.5",
     "react-router": "^6.5.0",
     "react-router-dom": "^6.5.0",
-    "typesafe-i18n": "^5.17.1",
+    "typesafe-i18n": "^5.17.2",
     "yup": "^0.32.11"
   },
   "scripts": {
