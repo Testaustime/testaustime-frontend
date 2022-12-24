@@ -14,13 +14,13 @@
     "date-fns": "^2.29.3",
     "formik": "^2.2.9",
     "react": "^18.2.0",
-    "react-chartjs-2": "^5.0.1",
+    "react-chartjs-2": "^5.1.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-redux": "^8.0.5",
-    "react-router": "^6.5.0",
-    "react-router-dom": "^6.5.0",
-    "typesafe-i18n": "^5.17.2",
+    "react-router": "^6.6.1",
+    "react-router-dom": "^6.6.1",
+    "typesafe-i18n": "^5.18.0",
     "yup": "^0.32.11"
   },
   "scripts": {
@@ -46,10 +46,10 @@
     "@types/jest": "^29.2.4",
     "@types/node": "^18.11.17",
     "@types/react": "^18.0.26",
-    "@types/react-dom": "^18.0.9",
-    "@types/react-router": "^5.1.19",
-    "@typescript-eslint/eslint-plugin": "^5.46.1",
-    "@typescript-eslint/parser": "^5.46.1",
+    "@types/react-dom": "^18.0.10",
+    "@types/react-router": "^5.1.20",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
     "@vitejs/plugin-react": "^3.0.0",
     "eslint": "^8.30.0",
     "eslint-plugin-react": "^7.31.11",
@@ -63,8 +63,8 @@
     "rollup-plugin-visualizer": "^5.8.3",
     "storybook": "^7.0.0-beta.14",
     "typescript": "^4.9.4",
-    "vite": "^4.0.2",
+    "vite": "^4.0.3",
     "vite-plugin-svgr": "^2.4.0",
-    "vitest": "^0.25.8"
+    "vitest": "^0.26.2"
   }
 }
