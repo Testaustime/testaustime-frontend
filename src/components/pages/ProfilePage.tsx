@@ -8,6 +8,7 @@ import { useI18nContext } from "../../i18n/i18n-react";
 import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
 import { SmoothChartsSelector } from "../SmoothChartsSelector/SmoothChartsSelector";
 import { DefaultDayRangeSelector } from "../DefaultDayRangeSelector/DefaultDayRangeSelector";
+import ChangePasswordForm from "../ChangePasswordForm";
 
 export const ProfilePage = () => {
   const {
@@ -16,7 +17,8 @@ export const ProfilePage = () => {
     regenerateFriendCode,
     username,
     friendCode,
-    registrationTime
+    registrationTime,
+    changePassword
   } = useAuthentication();
 
   const { LL } = useI18nContext();
@@ -29,6 +31,10 @@ export const ProfilePage = () => {
     <Text mt={15}>{LL.profile.registrationTime({
       registrationTime: format(registrationTime, "d.M.yyyy HH:mm")
     })}</Text>
+    <Stack mt={40} spacing={15}>
+      <Title order={3}>{LL.profile.changePassword.title()}</Title>
+      <ChangePasswordForm onChangePassword={changePassword} />
+    </Stack>
     <Stack mt={40} spacing={15}>
       <WithTooltip
         tooltipLabel={<Text>{LL.profile.authenticationToken.tooltip.label()}{" "}

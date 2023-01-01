@@ -118,6 +118,33 @@ const en: BaseTranslation = {
         label: "This token is used for authentication in your code editor."
       }
     },
+    changePassword: {
+      confirm: {
+        noMatch: "New passwords must match",
+        required: "Password confirmation is required"
+      },
+      new: {
+        invalid: "New password is invalid",
+        required: "New password is required",
+        tooLong: "Password can not be more than {max:number} characters long",
+        tooShort: "Password must be at least {min:number} characters long"
+      },
+      newPassword: "New password",
+      newPasswordConfirm: "Confirm password",
+      old: {
+        incorrect: "Old password is incorrect",
+        required: "Old password is required",
+        tooLong: "Password can not be more than {max:number} characters long",
+        tooShort: "Password must be at least {min:number} characters long"
+      },
+      oldPassword: "Old password",
+      submit: "Change password",
+      success: {
+        message: "Your password has been changed successfully.",
+        title: "Password changed"
+      },
+      title: "Change password"
+    },
     friendCode: {
       title: "Friend code",
       tooltip: "This code is used for sharing your data with your friends."
