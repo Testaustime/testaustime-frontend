@@ -48,14 +48,19 @@ const useStyles = createStyles(theme => ({
   }
 }));
 
-export const Dashboard = () => {
+export interface DashboardProps {
+  username: string,
+  isFrontPage: boolean
+}
+
+export const Dashboard = ({ username, isFrontPage }: DashboardProps) => {
   const { defaultDayRange } = useSettings();
   const [statisticsRange, setStatisticsRange] = useState<DayRange>(defaultDayRange || "week");
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
-  const { username } = useAuthentication();
+  const { username: authenticatedUsername } = useAuthentication();
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
   const { classes } = useStyles();
-  const entries = useActivityData({
+  const entries = useActivityData(username, {
     projectFilter: selectedProjects.length === 0 ? undefined : selectedProjects,
     dayFilter: statisticsRange
   });
@@ -74,18 +79,20 @@ export const Dashboard = () => {
     return acc.includes(name) ? acc : [...acc, name];
   }, []);
 
-  if (!username) {
+  const [prefix, infix, suffix] = LL.dashboard.noData.installPrompt().split("<link>");
+
+  if (!authenticatedUsername) {
     return <div>{LL.dashboard.notLoggedIn()}</div>;
   }
 
-  const [prefix, infix, suffix] = LL.dashboard.noData.installPrompt().split("<link>");
-
   return (
     <div style={{ width: "100%" }}>
-      <Group style={{ marginBottom: "1rem" }}>
-        <Text>{LL.dashboard.greeting({ username })}</Text>
-      </Group>
-      <Title mb={5}>{LL.dashboard.statistics()}</Title>
+      {isFrontPage && <>
+        <Group style={{ marginBottom: "1rem" }}>
+          <Text>{LL.dashboard.greeting({ username: username === "@me" ? authenticatedUsername : username })}</Text>
+        </Group>
+        <Title mb={5}>{LL.dashboard.statistics()}</Title>
+      </>}
       <Group align="end" position="apart" mt={10} mb={30}>
         {projectNames.length !== 0 ? (
           <>

@@ -21,7 +21,7 @@ export type ActivityDataEntry = Omit<ApiUsersUserActivityDataResponseItem, "star
   project_name?: string
 }
 
-export const useActivityData = (filter: {
+export const useActivityData = (username: string, filter: {
   projectFilter?: string[],
   dayFilter: DayRange
 }) => {
@@ -30,7 +30,7 @@ export const useActivityData = (filter: {
 
   useEffect(() => {
     if (token) {
-      axios.get<ApiUsersUserActivityDataResponseItem[]>("/users/@me/activity/data",
+      axios.get<ApiUsersUserActivityDataResponseItem[]>(`/users/${username}/activity/data`,
         { headers: { Authorization: `Bearer ${token ?? ""}` } }
       ).then(({ data }) => {
         const mappedData = data
