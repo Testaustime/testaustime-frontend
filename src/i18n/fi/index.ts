@@ -40,8 +40,9 @@ const fi: Translation = {
   },
   footer: {
     authors: {
-      and: "ja",
-      label: "Kehittäjät"
+      core: "Pääkehittäjät",
+      rest: " ja muut",
+      suffix: "Tehnyt: "
     },
     copyright: "© {year} Testausserveri ry & muut",
     license: "Lisensoitu MIT-lisenssillä.",

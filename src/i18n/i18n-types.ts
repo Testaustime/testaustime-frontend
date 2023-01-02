@@ -134,13 +134,17 @@ type RootTranslation = {
 	footer: {
 		authors: {
 			/**
-			 * a​n​d
+			 * L​e​a​d​ ​d​e​v​e​l​o​p​e​r​s
 			 */
-			and: string
+			core: string
 			/**
-			 * A​u​t​h​o​r​s
+			 * a​n​d​ ​c​o​n​t​r​i​b​u​t​o​r​s
 			 */
-			label: string
+			rest: string
+			/**
+			 * B​y​:
+			 */
+			suffix: string
 		}
 		/**
 		 * ©​ ​{​y​e​a​r​}​ ​T​e​s​t​a​u​s​s​e​r​v​e​r​i​ ​r​y​ ​&​ ​c​o​n​t​r​i​b​u​t​o​r​s
@@ -681,13 +685,17 @@ export type TranslationFunctions = {
 	footer: {
 		authors: {
 			/**
-			 * and
+			 * Lead developers
 			 */
-			and: () => LocalizedString
+			core: () => LocalizedString
 			/**
-			 * Authors
+			 * and contributors
 			 */
-			label: () => LocalizedString
+			rest: () => LocalizedString
+			/**
+			 * By:
+			 */
+			suffix: () => LocalizedString
 		}
 		/**
 		 * © {year} Testausserveri ry & contributors

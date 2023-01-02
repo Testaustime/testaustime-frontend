@@ -40,8 +40,9 @@ const en: BaseTranslation = {
   },
   footer: {
     authors: {
-      and: "and",
-      label: "Authors"
+      core: "Lead developers",
+      rest: " and contributors",
+      suffix: "By: "
     },
     copyright: "© {year:number} Testausserveri ry & contributors",
     license: "Licensed under the MIT license.",
