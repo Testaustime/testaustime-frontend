@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { authTokenLocalStorageKey } from "../../utils/constants";
 import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
@@ -42,6 +42,12 @@ export interface ApiUsersUserResponse {
   registration_time: string
 }
 
+export enum PasswordChangeResult {
+  Success,
+  OldPasswordIncorrect,
+  NewPasswordInvalid,
+}
+
 export interface UseAuthenticationResult {
   token?: string,
   setToken: (newToken: string) => void,
@@ -56,7 +62,8 @@ export interface UseAuthenticationResult {
   username?: string,
   friendCode?: string,
   refetchUsername: () => Promise<string>,
-  loginInitialized: boolean
+  loginInitialized: boolean,
+  changePassword: (oldPassword: string, newPassword: string) => Promise<PasswordChangeResult>
 }
 
 export const useAuthentication = (): UseAuthenticationResult => {
@@ -170,6 +177,27 @@ export const useAuthentication = (): UseAuthenticationResult => {
     }
   };
 
+  const changePassword = async (oldPassword: string, newPassword: string) => {
+    try {
+      await axios.post(
+        "/auth/changepassword",
+        { old: oldPassword, new: newPassword },
+        { headers: { Authorization: `Bearer ${token ?? ""}` } }
+      );
+      return PasswordChangeResult.Success;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          return PasswordChangeResult.OldPasswordIncorrect;
+        }
+        else if (error.response?.status === 400) {
+          return PasswordChangeResult.NewPasswordInvalid;
+        }
+      }
+      throw getErrorMessage(error);
+    }
+  };
+
   return {
     token,
     setToken,
@@ -184,6 +212,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
     refetchUsername,
     loginInitialized,
     isLoggedIn: Boolean(loginInitialized && !!username),
-    isLoggedOut: Boolean(loginInitialized && !username)
+    isLoggedOut: Boolean(loginInitialized && !username),
+    changePassword
   };
 };

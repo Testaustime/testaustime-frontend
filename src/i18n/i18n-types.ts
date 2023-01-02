@@ -395,6 +395,88 @@ type RootTranslation = {
 				label: string
 			}
 		}
+		changePassword: {
+			confirm: {
+				/**
+				 * N​e​w​ ​p​a​s​s​w​o​r​d​s​ ​m​u​s​t​ ​m​a​t​c​h
+				 */
+				noMatch: string
+				/**
+				 * P​a​s​s​w​o​r​d​ ​c​o​n​f​i​r​m​a​t​i​o​n​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+			}
+			'new': {
+				/**
+				 * N​e​w​ ​p​a​s​s​w​o​r​d​ ​i​s​ ​i​n​v​a​l​i​d
+				 */
+				invalid: string
+				/**
+				 * N​e​w​ ​p​a​s​s​w​o​r​d​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+				/**
+				 * P​a​s​s​w​o​r​d​ ​c​a​n​ ​n​o​t​ ​b​e​ ​m​o​r​e​ ​t​h​a​n​ ​{​m​a​x​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+				 * @param {number} max
+				 */
+				tooLong: RequiredParams<'max'>
+				/**
+				 * P​a​s​s​w​o​r​d​ ​m​u​s​t​ ​b​e​ ​a​t​ ​l​e​a​s​t​ ​{​m​i​n​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+				 * @param {number} min
+				 */
+				tooShort: RequiredParams<'min'>
+			}
+			/**
+			 * N​e​w​ ​p​a​s​s​w​o​r​d
+			 */
+			newPassword: string
+			/**
+			 * C​o​n​f​i​r​m​ ​p​a​s​s​w​o​r​d
+			 */
+			newPasswordConfirm: string
+			old: {
+				/**
+				 * O​l​d​ ​p​a​s​s​w​o​r​d​ ​i​s​ ​i​n​c​o​r​r​e​c​t
+				 */
+				incorrect: string
+				/**
+				 * O​l​d​ ​p​a​s​s​w​o​r​d​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+				/**
+				 * P​a​s​s​w​o​r​d​ ​c​a​n​ ​n​o​t​ ​b​e​ ​m​o​r​e​ ​t​h​a​n​ ​{​m​a​x​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+				 * @param {number} max
+				 */
+				tooLong: RequiredParams<'max'>
+				/**
+				 * P​a​s​s​w​o​r​d​ ​m​u​s​t​ ​b​e​ ​a​t​ ​l​e​a​s​t​ ​{​m​i​n​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+				 * @param {number} min
+				 */
+				tooShort: RequiredParams<'min'>
+			}
+			/**
+			 * O​l​d​ ​p​a​s​s​w​o​r​d
+			 */
+			oldPassword: string
+			/**
+			 * C​h​a​n​g​e​ ​p​a​s​s​w​o​r​d
+			 */
+			submit: string
+			success: {
+				/**
+				 * Y​o​u​r​ ​p​a​s​s​w​o​r​d​ ​h​a​s​ ​b​e​e​n​ ​c​h​a​n​g​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y​.
+				 */
+				message: string
+				/**
+				 * P​a​s​s​w​o​r​d​ ​c​h​a​n​g​e​d
+				 */
+				title: string
+			}
+			/**
+			 * C​h​a​n​g​e​ ​p​a​s​s​w​o​r​d
+			 */
+			title: string
+		}
 		friendCode: {
 			/**
 			 * F​r​i​e​n​d​ ​c​o​d​e
@@ -845,6 +927,84 @@ export type TranslationFunctions = {
 				 */
 				label: () => LocalizedString
 			}
+		}
+		changePassword: {
+			confirm: {
+				/**
+				 * New passwords must match
+				 */
+				noMatch: () => LocalizedString
+				/**
+				 * Password confirmation is required
+				 */
+				required: () => LocalizedString
+			}
+			'new': {
+				/**
+				 * New password is invalid
+				 */
+				invalid: () => LocalizedString
+				/**
+				 * New password is required
+				 */
+				required: () => LocalizedString
+				/**
+				 * Password can not be more than {max} characters long
+				 */
+				tooLong: (arg: { max: number }) => LocalizedString
+				/**
+				 * Password must be at least {min} characters long
+				 */
+				tooShort: (arg: { min: number }) => LocalizedString
+			}
+			/**
+			 * New password
+			 */
+			newPassword: () => LocalizedString
+			/**
+			 * Confirm password
+			 */
+			newPasswordConfirm: () => LocalizedString
+			old: {
+				/**
+				 * Old password is incorrect
+				 */
+				incorrect: () => LocalizedString
+				/**
+				 * Old password is required
+				 */
+				required: () => LocalizedString
+				/**
+				 * Password can not be more than {max} characters long
+				 */
+				tooLong: (arg: { max: number }) => LocalizedString
+				/**
+				 * Password must be at least {min} characters long
+				 */
+				tooShort: (arg: { min: number }) => LocalizedString
+			}
+			/**
+			 * Old password
+			 */
+			oldPassword: () => LocalizedString
+			/**
+			 * Change password
+			 */
+			submit: () => LocalizedString
+			success: {
+				/**
+				 * Your password has been changed successfully.
+				 */
+				message: () => LocalizedString
+				/**
+				 * Password changed
+				 */
+				title: () => LocalizedString
+			}
+			/**
+			 * Change password
+			 */
+			title: () => LocalizedString
 		}
 		friendCode: {
 			/**

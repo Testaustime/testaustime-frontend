@@ -118,6 +118,33 @@ const fi: Translation = {
         label: "Tätä tunnusta käytetään tunnistautumiseen koodieditorissasi."
       }
     },
+    changePassword: {
+      confirm: {
+        noMatch: "Uusien salasanojen tulee olla samat",
+        required: "Salasanavahvistus vaaditaan"
+      },
+      new: {
+        invalid: "Uusi salasana ei ole kelvollinen",
+        required: "Uusi salasana vaaditaan",
+        tooLong: "Salasanan tulee olla enintään {max} merkkiä pitkä",
+        tooShort: "Salasanan tulee olla vähintään {min} merkkiä pitkä"
+      },
+      newPassword: "Uusi salasana",
+      newPasswordConfirm: "Vahvista salasana",
+      old: {
+        incorrect: "Vanha salasana on väärä",
+        required: "Vanha salasana vaaditaan",
+        tooLong: "Salasanan tulee olla enintään {max} merkkiä pitkä",
+        tooShort: "Salasanan tulee olla vähintään {min} merkkiä pitkä"
+      },
+      oldPassword: "Vanha salasana",
+      submit: "Vaihda salasana",
+      success: {
+        message: "Salasanasi on vaihdettu onnistuneesti.",
+        title: "Salasana vaihdettu"
+      },
+      title: "Vaihda salasana"
+    },
     friendCode: {
       title: "Kaverikoodi",
       tooltip: "Tätä koodia käytetään, kun haluat jakaa dataa kavereillesi."
