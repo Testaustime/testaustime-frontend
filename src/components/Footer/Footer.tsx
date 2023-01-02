@@ -1,7 +1,6 @@
 import { createStyles, Text, Grid, Anchor } from "@mantine/core";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { ReactComponent as TestausserveriLogo } from "../../images/testausserveri.svg";
-import { AuthorsList } from "../AuthorsList/AuthorsList";
 
 const useStyles = createStyles(theme => ({
   container: {
@@ -69,11 +68,11 @@ export const Footer = () => {
           sx={{ display: "flex", gap: 5, flexDirection: "column" }}
           className={`${classes.gridItem} ${classes.rightAlign}`}
         >
-          <AuthorsList authors={[
-            { name: "Luukas Pörtfors", homepage: "https://lajp.fi" },
-            { name: "Ville Järvinen", homepage: "https://vilepis.dev" },
-            { name: "Eetu Mäenpää", homepage: "https://eetumaenpaa.fi" }
-          ]} />
+          <Text>
+            ❤️ {LL.footer.authors.suffix()}
+            <Anchor href="https://github.com/orgs/Testaustime/people">{LL.footer.authors.core()}</Anchor>
+            {LL.footer.authors.rest()}
+          </Text>
           <Text>{LL.footer.copyright({ year: new Date().getFullYear() })}</Text>
           <Text><i>{LL.footer.license()}</i></Text>
           <Text><Anchor href="https://github.com/Testaustime">{LL.footer.source()}</Anchor></Text>
