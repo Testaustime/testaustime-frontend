@@ -85,6 +85,7 @@ export const DailyCodingTimeChart = ({
         y: {
           ticks: {
             count: yticks.length,
+            stepSize: yticks[1] - yticks[0],
             callback: (_, index) => prettyDuration(yticks[index])
           }
         }
