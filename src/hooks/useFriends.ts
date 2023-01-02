@@ -1,10 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import useAuthentication from "./UseAuthentication";
-import { setFriends } from "../slices/userSlice";
-import { RootState } from "../store";
 import axios from "axios";
-import { getErrorMessage } from "../lib/errorHandling/errorHandler";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export interface ApiFriendsResponseItem {
   username: string,
@@ -26,57 +22,49 @@ export interface ApiFriendsAddResponse {
 
 export const useFriends = () => {
   const { token } = useAuthentication();
-  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
-  const friends = useSelector<RootState, ApiFriendsResponseItem[]>(state => state.users.friends);
+  const { data: friends } = useQuery("friends", async () => {
+    const response = await axios.get<ApiFriendsResponseItem[]>("/friends/list", {
+      headers: { Authorization: `Bearer ${token ?? ""}` }
+    });
+    return response.data;
+  }, {
+    staleTime: 2 * 60 * 1000 // 2 minutes
+  });
 
-  useEffect(() => {
-    if (token) {
-      axios.get<ApiFriendsResponseItem[]>("/friends/list", {
-        headers: { Authorization: `Bearer ${token ?? ""}` }
-      })
-        .then(response => dispatch(setFriends(response.data)))
-        .catch(e => console.error(e));
+  const { mutateAsync: addFriend } = useMutation(async (friendCode: string) => {
+    const response = await axios.post<ApiFriendsAddResponse>("/friends/add", friendCode, {
+      headers: {
+        Authorization: `Bearer ${token ?? ""}`,
+        "Content-Type": "text/plain"
+      }
+    });
+    return response.data;
+  }, {
+    onSuccess: data => {
+      queryClient.setQueryData("friends", (friends ?? []).concat(data));
     }
-  }, [token]);
+  });
 
-  const addFriend = async (friendCode: string) => {
-    try {
-      const response = await axios.post<ApiFriendsAddResponse>("/friends/add", friendCode, {
-        headers: {
-          Authorization: `Bearer ${token ?? ""}`,
-          "Content-Type": "text/plain"
-        }
-      });
-
-      const friend = response.data;
-      dispatch(setFriends([...friends, friend]));
-      return friend;
-    } catch (error) {
-      throw getErrorMessage(error);
+  const { mutateAsync: unFriend } = useMutation(async (username: string) => {
+    await axios.delete("/friends/remove", {
+      data: username,
+      headers: {
+        Authorization: `Bearer ${token ?? ""}`,
+        "Content-Type": "text/plain"
+      }
+    });
+    return username;
+  }, {
+    onSuccess: username => {
+      queryClient.setQueryData("friends", (friends ?? []).filter(f => f.username !== username));
     }
-  };
-
-  const unFriend = async (username: string) => {
-    try {
-      await axios.delete("/friends/remove", {
-        data: username,
-        headers: {
-          Authorization: `Bearer ${token ?? ""}`,
-          "Content-Type": "text/plain"
-        }
-      });
-
-      dispatch(setFriends(friends.filter(f => f.username !== username)));
-    } catch (error) {
-      throw getErrorMessage(error);
-    }
-  };
-
+  });
 
   return {
     addFriend,
     unFriend,
-    friends
+    friends: friends ?? []
   };
 };
