@@ -182,6 +182,11 @@ type RootTranslation = {
 		 */
 		friendCodeRequired: string
 		/**
+		 * S​t​a​t​i​s​t​i​c​s​ ​f​o​r​ ​u​s​e​r​ ​{​u​s​e​r​n​a​m​e​}
+		 * @param {string} username
+		 */
+		friendDashboardTitle: RequiredParams<'username'>
+		/**
 		 * F​r​i​e​n​d​ ​n​a​m​e
 		 */
 		friendName: string
@@ -193,6 +198,10 @@ type RootTranslation = {
 		 * Y​o​u​ ​a​r​e​ ​n​o​t​ ​l​o​g​g​e​d​ ​i​n​.
 		 */
 		notLoggedIn: string
+		/**
+		 * V​i​e​w
+		 */
+		showDashboard: string
 		/**
 		 * T​i​m​e​ ​c​o​d​e​d​ ​d​u​r​i​n​g​ ​l​a​s​t​ ​{​d​a​y​s​}​ ​d​a​y​s
 		 * @param {number} days
@@ -719,6 +728,10 @@ export type TranslationFunctions = {
 		 */
 		friendCodeRequired: () => LocalizedString
 		/**
+		 * Statistics for user {username}
+		 */
+		friendDashboardTitle: (arg: { username: string }) => LocalizedString
+		/**
 		 * Friend name
 		 */
 		friendName: () => LocalizedString
@@ -730,6 +743,10 @@ export type TranslationFunctions = {
 		 * You are not logged in.
 		 */
 		notLoggedIn: () => LocalizedString
+		/**
+		 * View
+		 */
+		showDashboard: () => LocalizedString
 		/**
 		 * Time coded during last {days} days
 		 */

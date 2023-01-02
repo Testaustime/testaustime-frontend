@@ -60,7 +60,7 @@ export const MainPage = () => {
   const { classes } = useStyles();
 
   return <div className={!isLoggedIn ? classes.heroContainer : classes.dashboardContainer}>
-    {isLoggedIn ? <Dashboard /> : <>
+    {isLoggedIn ? <Dashboard username="@me" isFrontPage={true} /> : <>
       <Text mb={20} className={classes.heroText}>
         The ultimate tool for tracking time of your coding sessions.
         Show the world how dedicated you are to your projects!

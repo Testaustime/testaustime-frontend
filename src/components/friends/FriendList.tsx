@@ -1,4 +1,4 @@
-import { Button, Table, Text, useMantineTheme } from "@mantine/core";
+import { Button, Table, Text, Title, useMantineTheme } from "@mantine/core";
 import { addDays, startOfDay } from "date-fns";
 import { useActivityData } from "../../hooks/useActivityData";
 import useAuthentication from "../../hooks/UseAuthentication";
@@ -7,10 +7,12 @@ import { useI18nContext } from "../../i18n/i18n-react";
 import { sumBy } from "../../utils/arrayUtils";
 import { prettyDuration } from "../../utils/dateUtils";
 import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
+import { useModals } from "@mantine/modals";
+import { Dashboard } from "../Dashboard";
 
 export const FriendList = () => {
   const { unFriend, friends } = useFriends();
-  const entries = useActivityData({ dayFilter: "month" });
+  const entries = useActivityData("@me", { dayFilter: "month" });
   const entriesInRange = entries.filter(entry => {
     const startOfStatisticsRange = startOfDay(addDays(new Date(), -30));
     return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
@@ -18,6 +20,7 @@ export const FriendList = () => {
   const { LL } = useI18nContext();
   const { username } = useAuthentication();
   const theme = useMantineTheme();
+  const modals = useModals();
 
   if (!username) {
     return <Text>{LL.friends.notLoggedIn()}</Text>;
@@ -33,12 +36,21 @@ export const FriendList = () => {
     username
   })].sort((a, b) => b.coding_time.past_month - a.coding_time.past_month);
 
+  const openFriendDashboard = (friendUsername: string) => {
+    modals.openModal({
+      title: <Title>{LL.friends.friendDashboardTitle({ username: friendUsername })}</Title>,
+      size: "calc(800px + 10%)",
+      children: <Dashboard username={friendUsername} isFrontPage={false} />
+    });
+  };
+
   return <Table>
     <thead>
       <tr>
         <th>{LL.friends.index()}</th>
         <th>{LL.friends.friendName()}</th>
         <th>{LL.friends.timeCoded({ days: 30 })}</th>
+        <th />
         <th />
       </tr>
     </thead>
@@ -49,7 +61,17 @@ export const FriendList = () => {
         <td>{idx + 1}</td>
         <td>{username}</td>
         <td>{prettyDuration(past_month)}</td>
-        <td style={{ textAlign: "right" }}>
+        <td style={{ textAlign: "right", padding: "7px 0px" }}>
+          {!isMe && <Button
+            variant="filled"
+            color="blue"
+            compact
+            onClick={() => openFriendDashboard(username)}
+          >
+            {LL.friends.showDashboard()}
+          </Button>}
+        </td>
+        <td style={{ textAlign: "right", padding: "7px 0px" }}>
           {!isMe && <Button
             variant="outline"
             color="red"

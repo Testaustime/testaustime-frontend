@@ -54,9 +54,11 @@ const en: BaseTranslation = {
     friendCode: "Friend code",
     friendCodeInvalid: "Friend code must start with \"ttfc_\", and be followed by 24 alphanumeric characters.",
     friendCodeRequired: "Friend code is required",
+    friendDashboardTitle: "Statistics for user {username:string}",
     friendName: "Friend name",
     index: "Index",
     notLoggedIn: "You are not logged in.",
+    showDashboard: "View",
     timeCoded: "Time coded during last {days:number} days",
     unfriend: "Unfriend",
     yourFriends: "Your friends"

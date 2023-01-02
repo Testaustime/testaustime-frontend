@@ -54,9 +54,11 @@ const fi: Translation = {
     friendCode: "Kaverikoodi",
     friendCodeInvalid: "Kaverikoodin tulee alkaa \"ttfc_\", ja sen jälkeen täytyy olla 24 alphanumeerista kirjainta.",
     friendCodeRequired: "Kaverikoodi vaaditaan.",
+    friendDashboardTitle: "Käyttäjän {username} tilastot",
     friendName: "Kaverin nimi",
     index: "Järjestys",
     notLoggedIn: "Et ole kirjautunut sisään.",
+    showDashboard: "Näytä",
     timeCoded: "Aika koodattu viimeisen {days} päivän aikana",
     unfriend: "Poista",
     yourFriends: "Kaverisi"
