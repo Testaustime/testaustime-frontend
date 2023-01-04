@@ -27,7 +27,7 @@ export const useActivityData = (username: string, filter: {
 }) => {
   const { token } = useAuthentication();
 
-  const { data: entries } = useQuery(["activityData", username, filter], async () => {
+  const { data: entries } = useQuery(["activityData", username], async () => {
     const response = await axios.get<ApiUsersUserActivityDataResponseItem[]>(`/users/${username}/activity/data`,
       { headers: { Authorization: `Bearer ${token ?? ""}` } }
     );
