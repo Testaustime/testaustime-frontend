@@ -138,11 +138,11 @@ type RootTranslation = {
 			 */
 			core: string
 			/**
-			 * a​n​d​ ​c​o​n​t​r​i​b​u​t​o​r​s
+			 *  ​a​n​d​ ​c​o​n​t​r​i​b​u​t​o​r​s
 			 */
 			rest: string
 			/**
-			 * B​y​:
+			 * B​y​:​ 
 			 */
 			suffix: string
 		}
@@ -270,6 +270,10 @@ type RootTranslation = {
 			 * L​e​a​d​e​r​b​o​a​r​d​ ​c​o​d​e​ ​i​s​ ​r​e​q​u​i​r​e​d
 			 */
 			leaderboardCodeRequired: string
+			/**
+			 * L​e​a​d​e​r​b​o​a​r​d​ ​n​o​t​ ​f​o​u​n​d
+			 */
+			notFound: string
 		}
 		/**
 		 * J​o​i​n​ ​a​ ​l​e​a​d​e​r​b​o​a​r​d
@@ -689,11 +693,11 @@ export type TranslationFunctions = {
 			 */
 			core: () => LocalizedString
 			/**
-			 * and contributors
+			 *  and contributors
 			 */
 			rest: () => LocalizedString
 			/**
-			 * By:
+			 * By: 
 			 */
 			suffix: () => LocalizedString
 		}
@@ -818,6 +822,10 @@ export type TranslationFunctions = {
 			 * Leaderboard code is required
 			 */
 			leaderboardCodeRequired: () => LocalizedString
+			/**
+			 * Leaderboard not found
+			 */
+			notFound: () => LocalizedString
 		}
 		/**
 		 * Join a leaderboard

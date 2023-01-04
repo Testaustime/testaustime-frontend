@@ -78,7 +78,8 @@ const fi: Translation = {
       leaderboardCode: "Tulostaulukoodi",
       leaderboardCodeInvalid:
         "Kutsukoodin tulee alkaa \"ttlic_\", ja sen jälkeen täytyy olla 24 alphanumeerista kirjainta.",
-      leaderboardCodeRequired: "Kutsukoodi vaaditaan."
+      leaderboardCodeRequired: "Kutsukoodi vaaditaan.",
+      notFound: "Tulostaulua ei löytynyt."
     },
     joinLeaderboard: "Liity tulostauluun",
     kick: "Erota",

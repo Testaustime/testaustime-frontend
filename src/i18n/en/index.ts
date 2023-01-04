@@ -78,7 +78,8 @@ const en: BaseTranslation = {
       leaderboardCode: "Leaderboard code",
       leaderboardCodeInvalid:
         "Leaderboard code must start with \"ttlic_\", and be followed by 24 alphanumeric characters.",
-      leaderboardCodeRequired: "Leaderboard code is required"
+      leaderboardCodeRequired: "Leaderboard code is required",
+      notFound: "Leaderboard not found"
     },
     joinLeaderboard: "Join a leaderboard",
     kick: "Kick",
