@@ -162,7 +162,9 @@ export const useLeaderboards = () => {
 
   const combined: CombinedLeaderboard[] = existingLeaderboardNames
     .map(name => {
-      const d = leaderboardData.find(leaderboard => leaderboard.data?.name === name)!.data!;
+      const dt = leaderboardData.find(leaderboard => leaderboard.data?.name === name);
+      if (dt === undefined || dt.data === undefined) throw Error("This should never happen");
+      const d = dt.data;
       return {
         name,
         creation_time: d.creation_time,
