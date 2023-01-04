@@ -27,14 +27,14 @@ const detectedLanguage = detectLocale<Locales>("en", ["en", "fi"],
 const queryClient = new QueryClient();
 
 const AppSetupInner = ({ children }: { children?: React.ReactNode }) => {
-  const { refetchUsername } = useAuthentication();
+  const { refetchUser } = useAuthentication();
 
   const settings = useCreateSettings();
 
   useHotkeys([["mod+J", () => settings.toggleColorScheme()]]);
 
   useEffect(() => {
-    refetchUsername().catch(e => console.error(e));
+    refetchUser().catch(e => console.error(e));
   }, []);
 
   return (
