@@ -36,6 +36,9 @@ export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardMod
             if (e.response?.status === 409) {
               setError(LL.leaderboards.join.alreadyMember());
             }
+            else if (e.response?.status === 404) {
+              setError(LL.leaderboards.join.notFound());
+            }
             else {
               setError(LL.leaderboards.join.genericError());
             }
