@@ -6,6 +6,7 @@ import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { waitFor } from "@testing-library/react";
 import { authTokenLocalStorageKey } from "../../utils/constants";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const generateAuthToken = (username: string) => `${username}_authtoken`;
 
@@ -73,9 +74,14 @@ describe("useAuthentication", () => {
 
   beforeEach(() => {
     hook = renderHook(() => useAuthentication(), {
-      wrapper: ({ children }) => <Provider store={store}>
-        {children}
-      </Provider>
+      wrapper: ({ children }) => {
+        const queryClient = new QueryClient();
+        return <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            {children}
+          </QueryClientProvider>
+        </Provider>;
+      }
     }).result.current;
   });
 
