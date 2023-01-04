@@ -54,8 +54,9 @@ export const useLeaderboards = () => {
     });
     return res.data;
   }, {
-    onSuccess: data => {
+    onSuccess: async data => {
       queryClient.setQueriesData("leaderboards", (leaderboards ?? []).concat(data));
+      await queryClient.invalidateQueries(["leaderboardData", data.name]);
     }
   });
 
@@ -155,11 +156,24 @@ export const useLeaderboards = () => {
     }
   });
 
+  const existingLeaderboardNames = leaderboardData
+    .map(leaderboard => leaderboard.data?.name)
+    .filter(name => name !== undefined) as string[];
+
+  const combined: CombinedLeaderboard[] = existingLeaderboardNames
+    .map(name => {
+      const d = leaderboardData.find(leaderboard => leaderboard.data?.name === name)!.data!;
+      return {
+        name,
+        creation_time: d.creation_time,
+        invite: d.invite,
+        member_count: d.members.length,
+        members: d.members
+      } satisfies CombinedLeaderboard;
+    });
+
   return {
-    leaderboards: (leaderboards ?? []).map(l => ({
-      ...l,
-      ...(leaderboardData.find(leaderboard => leaderboard.data?.name === l.name)?.data)
-    })),
+    leaderboards: combined,
     joinLeaderboard,
     leaveLeaderboard,
     createLeaderboard,
@@ -175,7 +189,8 @@ export const useLeaderboards = () => {
       adminStatus: false
     }),
     setUserAdminStatus,
-    kickUser,
-    regenerateInviteCode
+    kickUser: (leaderboardName: string, username: string) => kickUser({ leaderboardName, username }),
+    regenerateInviteCode:
+      async (leaderboardName: string) => { return (await regenerateInviteCode(leaderboardName)).inviteCode; }
   };
 };
