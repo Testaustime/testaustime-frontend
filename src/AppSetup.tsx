@@ -15,6 +15,7 @@ import {
 } from "typesafe-i18n/detectors";
 import { SettingsContext } from "./contexts/SettingsContext";
 import { Locales } from "./i18n/i18n-types";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 loadAllLocales();
 const detectedLanguage = detectLocale<Locales>("en", ["en", "fi"],
@@ -23,15 +24,17 @@ const detectedLanguage = detectLocale<Locales>("en", ["en", "fi"],
   htmlLangAttributeDetector
 );
 
-export const AppSetup = ({ children }: { children?: React.ReactNode }) => {
-  const { refetchUsername } = useAuthentication();
+const queryClient = new QueryClient();
+
+const AppSetupInner = ({ children }: { children?: React.ReactNode }) => {
+  const { refetchUser } = useAuthentication();
 
   const settings = useCreateSettings();
 
   useHotkeys([["mod+J", () => settings.toggleColorScheme()]]);
 
   useEffect(() => {
-    refetchUsername().catch(e => console.error(e));
+    refetchUser().catch(e => console.error(e));
   }, []);
 
   return (
@@ -89,4 +92,12 @@ export const AppSetup = ({ children }: { children?: React.ReactNode }) => {
       </MantineProvider>
     </ColorSchemeProvider>
   );
+};
+
+export const AppSetup = ({ children }: { children?: React.ReactNode }) => {
+  return <QueryClientProvider client={queryClient}>
+    <AppSetupInner>
+      {children}
+    </AppSetupInner>
+  </QueryClientProvider>;
 };

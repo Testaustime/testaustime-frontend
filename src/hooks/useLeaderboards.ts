@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
 import useAuthentication from "./UseAuthentication";
+import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
 
 export interface Leaderboard {
   member_count: number,
@@ -22,133 +22,177 @@ export type CombinedLeaderboard = Leaderboard & LeaderboardData;
 
 export const useLeaderboards = () => {
   const { token } = useAuthentication();
-  const [leaderboards, setLeaderboards] = useState<Leaderboard[]>([]);
-  const [leaderboardData, setLeaderboardData] = useState<{ [leaderboardName: string]: LeaderboardData }>({});
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (token) {
-      axios.get<Leaderboard[]>("/users/@me/leaderboards", {
-        headers: { Authorization: `Bearer ${token ?? ""}` }
-      }).then(res => {
-        setLeaderboards(res.data);
-      }).catch(e => console.error(e));
+  const { data: leaderboards } = useQuery("leaderboards", async () => {
+    const response = await axios.get<Leaderboard[]>("/users/@me/leaderboards", {
+      headers: { Authorization: `Bearer ${token ?? ""}` }
+    });
+    return response.data;
+  }, {
+    staleTime: 2 * 60 * 1000 // 2 minutes
+  });
+
+  const leaderboardData = useQueries((leaderboards ?? []).map(leaderboard => ({
+    queryKey: ["leaderboardData", leaderboard.name],
+    queryFn: async () => {
+      const response = await axios.get<LeaderboardData>(`/leaderboards/${leaderboard.name}`,
+        { headers: { Authorization: `Bearer ${token ?? ""}` } });
+      return response.data;
+    },
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    onSuccess: (leaderboard: LeaderboardData) => {
+      queryClient.setQueriesData(["leaderboardData", leaderboard.name], leaderboard);
     }
-  }, [token]);
+  })));
 
-  useEffect(() => {
-    const promises = leaderboards.map(leaderboard =>
-      axios.get<LeaderboardData>(`/leaderboards/${leaderboard.name}`,
-        { headers: { Authorization: `Bearer ${token ?? ""}` } })
-    );
-
-    Promise.all(promises).then(values => {
-      const data = values.reduce<Record<string, LeaderboardData>>((acc, cur) => {
-        acc[cur.data.name] = cur.data;
-        return acc;
-      }, {});
-      setLeaderboardData(data);
-    }).catch(e => console.error(e));
-  }, [leaderboards]);
-
-  const joinLeaderboard = async (leaderboardCode: string) => {
-    // TODO: Wait for https://github.com/Testaustime/testaustime-backend/pull/21 to get merged
-    // After that member_count can be made non-nullable
-    const res = await axios.post<{ name: string, member_count?: number }>("/leaderboards/join", {
+  const { mutateAsync: joinLeaderboard } = useMutation(async (leaderboardCode: string) => {
+    const res = await axios.post<{ name: string, member_count: number }>("/leaderboards/join", {
       invite: leaderboardCode
     }, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     });
+    return res.data;
+  }, {
+    onSuccess: async data => {
+      queryClient.setQueriesData("leaderboards", (leaderboards ?? []).concat(data));
+      await queryClient.invalidateQueries(["leaderboardData", data.name]);
+    }
+  });
 
-    setLeaderboards([...leaderboards, { name: res.data.name, member_count: res.data.member_count ?? 0 }]);
-  };
-
-  const leaveLeaderboard = async (leaderboardName: string) => {
+  const { mutateAsync: leaveLeaderboard } = useMutation(async (leaderboardName: string) => {
     await axios.post(`/leaderboards/${leaderboardName}/leave`, {}, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     });
-    setLeaderboards(leaderboards.filter(leaderboard => leaderboard.name !== leaderboardName));
-  };
+    return leaderboardName;
+  }, {
+    onSuccess: leaderboardName => {
+      queryClient.setQueriesData("leaderboards",
+        (leaderboards ?? []).filter(leaderboard => leaderboard.name !== leaderboardName));
+    }
+  });
 
-  const createLeaderboard = async (leaderboardName: string) => {
-    await axios.post<{ invite_code: string }>("/leaderboards/create", {
+  const { mutateAsync: createLeaderboard } = useMutation(async (leaderboardName: string) => {
+    const res = await axios.post<{ invite_code: string }>("/leaderboards/create", {
       name: leaderboardName
     }, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     });
-    setLeaderboards([...leaderboards, { name: leaderboardName, member_count: 0 }]);
-  };
+    return res.data;
+  }, {
+    onSuccess: (_data, leaderboardName) => {
+      queryClient.setQueriesData("leaderboards", (leaderboards ?? []).concat({
+        member_count: 0,
+        name: leaderboardName
+      }));
+    }
+  });
 
-  const deleteLeaderboard = async (leaderboardName: string) => {
+  const { mutateAsync: deleteLeaderboard } = useMutation(async (leaderboardName: string) => {
     await axios.delete(`/leaderboards/${leaderboardName}`, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     });
-    setLeaderboards(leaderboards.filter(leaderboard => leaderboard.name !== leaderboardName));
-  };
+    return leaderboardName;
+  }, {
+    onSuccess: leaderboardName => {
+      queryClient.setQueriesData("leaderboards",
+        (leaderboards ?? []).filter(leaderboard => leaderboard.name !== leaderboardName));
+    }
+  });
 
-  const setUserAdminStatus = async (leaderboardName: string, username: string, adminStatus: boolean) => {
+  const { mutateAsync: setUserAdminStatus } = useMutation(async (
+    { leaderboardName, adminStatus, username }: { leaderboardName: string, username: string, adminStatus: boolean }
+  ) => {
     await axios.post(`/leaderboards/${leaderboardName}/${adminStatus ? "promote" : "demote"}`, {
       user: username
     }, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     });
+    return { leaderboardName, username, adminStatus };
+  }, {
+    onSuccess: ({ leaderboardName, username, adminStatus }) => {
+      const leaderboard = leaderboardData.find(leaderboard => leaderboard.data?.name === leaderboardName)?.data;
 
-    setLeaderboardData({
-      ...leaderboardData,
-      [leaderboardName]: {
-        ...leaderboardData[leaderboardName],
-        members: leaderboardData[leaderboardName].members.map(member => {
+      queryClient.setQueriesData(["leaderboardData", leaderboardName], {
+        ...leaderboard,
+        members: leaderboard?.members.map(member => {
           return member.username === username ? { ...member, admin: adminStatus } : member;
         })
-      }
-    });
-  };
+      });
+    }
+  });
 
-  const kickUser = async (leaderboardName: string, username: string) => {
+  const { mutateAsync: kickUser } = useMutation(async (
+    { leaderboardName, username }: { leaderboardName: string, username: string }
+  ) => {
     await axios.post(`/leaderboards/${leaderboardName}/kick`, {
       user: username
     }, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     });
+    return { leaderboardName, username };
+  }, {
+    onSuccess: ({ leaderboardName, username }) => {
+      const leaderboard = leaderboardData.find(leaderboard => leaderboard.data?.name === leaderboardName)?.data;
+      queryClient.setQueriesData(["leaderboardData", leaderboardName], {
+        ...leaderboard,
+        members: leaderboard?.members.filter(member => member.username !== username)
+      });
+    }
+  });
 
-    setLeaderboardData({
-      ...leaderboardData,
-      [leaderboardName]: {
-        ...leaderboardData[leaderboardName],
-        members: leaderboardData[leaderboardName].members.filter(member => member.username !== username)
-      }
-    });
-  };
-
-  const regenerateInviteCode = async (leaderboardName: string) => {
+  const { mutateAsync: regenerateInviteCode } = useMutation(async (leaderboardName: string) => {
     const res = await axios.post<{ invite_code: string }>(`/leaderboards/${leaderboardName}/regenerate`, {}, {
       headers: { Authorization: `Bearer ${token ?? ""}` }
     });
-    const inviteCode = res.data.invite_code;
-
-    setLeaderboardData({
-      ...leaderboardData,
-      [leaderboardName]: {
-        ...leaderboardData[leaderboardName],
+    return { leaderboardName, inviteCode: res.data.invite_code };
+  }, {
+    onSuccess: ({ leaderboardName, inviteCode }) => {
+      const leaderboard = leaderboardData.find(leaderboard => leaderboard.data?.name === leaderboardName)?.data;
+      queryClient.setQueriesData(["leaderboardData", leaderboardName], {
+        ...leaderboard,
         invite: inviteCode
-      }
+      });
+    }
+  });
+
+  const existingLeaderboardNames = leaderboardData
+    .map(leaderboard => leaderboard.data?.name)
+    .filter(name => name !== undefined) as string[];
+
+  const combined: CombinedLeaderboard[] = existingLeaderboardNames
+    .map(name => {
+      const dt = leaderboardData.find(leaderboard => leaderboard.data?.name === name);
+      if (dt === undefined || dt.data === undefined) throw Error("This should never happen");
+      const d = dt.data;
+      return {
+        name,
+        creation_time: d.creation_time,
+        invite: d.invite,
+        member_count: d.members.length,
+        members: d.members
+      } satisfies CombinedLeaderboard;
     });
 
-    return inviteCode;
-  };
-
   return {
-    leaderboards: leaderboards.map(l => ({
-      ...l,
-      ...leaderboardData[l.name]
-    })),
+    leaderboards: combined,
     joinLeaderboard,
     leaveLeaderboard,
     createLeaderboard,
     deleteLeaderboard,
-    promoteUser: (leaderboardName: string, username: string) => setUserAdminStatus(leaderboardName, username, true),
-    demoteUser: (leaderboardName: string, username: string) => setUserAdminStatus(leaderboardName, username, false),
+    promoteUser: (leaderboardName: string, username: string) => setUserAdminStatus({
+      leaderboardName,
+      username,
+      adminStatus: true
+    }),
+    demoteUser: (leaderboardName: string, username: string) => setUserAdminStatus({
+      leaderboardName,
+      username,
+      adminStatus: false
+    }),
     setUserAdminStatus,
-    kickUser,
-    regenerateInviteCode
+    kickUser: (leaderboardName: string, username: string) => kickUser({ leaderboardName, username }),
+    regenerateInviteCode:
+      async (leaderboardName: string) => { return (await regenerateInviteCode(leaderboardName)).inviteCode; }
   };
 };
