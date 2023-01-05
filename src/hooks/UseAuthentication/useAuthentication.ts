@@ -21,7 +21,9 @@ export interface ApiAuthLoginResponse {
   auth_token: string,
   friend_code: string,
   username: string,
-  registration_time: string
+  registration_time: string,
+  // TODO: is_public doesn't exist yet, depends on https://github.com/Testaustime/testaustime-backend/issues/62
+  is_public?: boolean
 }
 
 export interface ApiAuthRegenerateResponse {
@@ -36,7 +38,16 @@ export interface ApiUsersUserResponse {
   id: number,
   username: string,
   friend_code: string,
-  registration_time: string
+  registration_time: string,
+  is_public: boolean
+}
+
+export interface User {
+  id: number,
+  username: string,
+  friendCode: string,
+  registrationTime: Date,
+  isPublic: boolean
 }
 
 export enum PasswordChangeResult {
@@ -55,6 +66,7 @@ export interface UseAuthenticationResult {
   register: (username: string, password: string) => Promise<string>,
   login: (username: string, password: string) => Promise<string>,
   registrationTime?: Date,
+  isPublic?: boolean,
   logOut: () => void,
   username?: string,
   friendCode?: string,
@@ -89,7 +101,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
       return {
         username: data.username,
         friendCode: data.friend_code,
-        registrationTime: new Date(data.registration_time)
+        registrationTime: new Date(data.registration_time),
+        isPublic: data.is_public
       };
     }
     catch (error) {
@@ -123,10 +136,12 @@ export const useAuthentication = (): UseAuthenticationResult => {
         { headers: { Authorization: `Bearer ${token ?? ""}` } }
       );
       const newFriendCode = data.friend_code;
-      queryClient.setQueryData("fetchUser", {
-        friendCode: newFriendCode,
-        username: userData?.username,
-        registrationTime: userData?.registrationTime
+      queryClient.setQueryData("fetchUser", (oldData: User | undefined) => {
+        if (!oldData) throw new Error("User data not found");
+        return ({
+          ...oldData,
+          friendCode: newFriendCode
+        });
       });
       dispatch(setLoginInitialized(true));
       return newFriendCode;
@@ -144,11 +159,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
       const authToken = data.auth_token;
       setToken(authToken);
       dispatch(setLoginInitialized(true));
-      queryClient.setQueryData("fetchUser", {
-        username: data.username,
-        friendCode: data.friend_code,
-        registrationTime: new Date(data.registration_time)
-      });
+      await queryClient.invalidateQueries("fetchUser");
       return authToken;
     } catch (error) {
       dispatch(setLoginInitialized(true));
@@ -161,13 +172,9 @@ export const useAuthentication = (): UseAuthenticationResult => {
   ) => {
     try {
       const { data } = await axios.post<ApiAuthLoginResponse>("/auth/login", { username, password });
-      const { auth_token, friend_code, username: apiUsername, registration_time } = data;
+      const { auth_token } = data;
       setToken(auth_token);
-      queryClient.setQueryData("fetchUser", {
-        username: apiUsername,
-        friendCode: friend_code,
-        registrationTime: new Date(registration_time)
-      });
+      await queryClient.invalidateQueries("fetchUser");
       dispatch(setLoginInitialized(true));
       return auth_token;
     } catch (error) {
@@ -220,6 +227,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
     username,
     registrationTime: userData?.registrationTime,
     friendCode: userData?.friendCode,
+    isPublic: userData?.isPublic,
     refetchUser: async () => { await refetchUser(); },
     loginInitialized,
     isLoggedIn: Boolean(loginInitialized && !!username),

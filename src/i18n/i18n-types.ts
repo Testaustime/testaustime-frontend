@@ -418,6 +418,30 @@ type RootTranslation = {
 		settings: string
 	}
 	profile: {
+		account: {
+			/**
+			 * M​y​ ​a​c​c​o​u​n​t
+			 */
+			title: string
+		}
+		accountVisibility: {
+			/**
+			 * I​f​ ​y​o​u​ ​m​a​k​e​ ​y​o​u​r​ ​a​c​c​o​u​n​t​ ​p​u​b​l​i​c​,​ ​o​t​h​e​r​s​ ​c​a​n​ ​ ​ ​ ​ ​ ​ ​s​e​a​r​c​h​ ​f​o​r​ ​y​o​u​r​ ​p​r​o​f​i​l​e​ ​a​n​d​ ​y​o​u​r​ ​p​r​o​g​r​a​m​m​i​n​g​ ​s​t​a​t​i​s​t​i​c​s​ ​w​i​l​l​ ​b​e​ ​p​u​b​l​i​c​.
+			 */
+			description: string
+			/**
+			 * M​a​k​e​ ​m​y​ ​a​c​c​o​u​n​t​ ​p​r​i​v​a​t​e
+			 */
+			makePrivate: string
+			/**
+			 * M​a​k​e​ ​m​y​ ​a​c​c​o​u​n​t​ ​p​u​b​l​i​c
+			 */
+			makePublic: string
+			/**
+			 * A​c​c​o​u​n​t​ ​v​i​s​i​b​i​l​i​t​y
+			 */
+			title: string
+		}
 		authenticationToken: {
 			/**
 			 * A​u​t​h​e​n​t​i​c​a​t​i​o​n​ ​t​o​k​e​n
@@ -993,6 +1017,30 @@ export type TranslationFunctions = {
 		settings: () => LocalizedString
 	}
 	profile: {
+		account: {
+			/**
+			 * My account
+			 */
+			title: () => LocalizedString
+		}
+		accountVisibility: {
+			/**
+			 * If you make your account public, others can       search for your profile and your programming statistics will be public.
+			 */
+			description: () => LocalizedString
+			/**
+			 * Make my account private
+			 */
+			makePrivate: () => LocalizedString
+			/**
+			 * Make my account public
+			 */
+			makePublic: () => LocalizedString
+			/**
+			 * Account visibility
+			 */
+			title: () => LocalizedString
+		}
 		authenticationToken: {
 			/**
 			 * Authentication token
