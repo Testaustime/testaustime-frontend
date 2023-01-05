@@ -105,6 +105,10 @@ type RootTranslation = {
 		 */
 		totalTime: RequiredParams<'days' | 'totalTime'>
 	}
+	/**
+	 * E​r​r​o​r
+	 */
+	error: string
 	extensions: {
 		/**
 		 * D​o​w​n​l​o​a​d​ ​t​h​e​ ​T​e​s​t​a​u​s​t​i​m​e​ ​e​x​t​e​n​s​i​o​n​ ​f​o​r​ ​y​o​u​r​ ​f​a​v​o​r​i​t​e​ ​c​o​d​e​ ​e​d​i​t​o​r​!
@@ -173,6 +177,24 @@ type RootTranslation = {
 		 * A​d​d​ ​a​ ​n​e​w​ ​f​r​i​e​n​d
 		 */
 		addNewFriend: string
+		error: {
+			/**
+			 * Y​o​u​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​f​r​i​e​n​d​s​ ​w​i​t​h​ ​t​h​i​s​ ​u​s​e​r​.
+			 */
+			alreadyFriends: string
+			/**
+			 * U​s​e​r​ ​n​o​t​ ​f​o​u​n​d​.
+			 */
+			notFound: string
+			/**
+			 * U​n​k​n​o​w​n​ ​e​r​r​o​r​.
+			 */
+			unknownError: string
+		}
+		/**
+		 * E​r​r​o​r​ ​r​e​m​o​v​i​n​g​ ​f​r​i​e​n​d
+		 */
+		errorRemovingFriend: string
 		/**
 		 * F​r​i​e​n​d​ ​c​o​d​e
 		 */
@@ -569,6 +591,10 @@ type RootTranslation = {
 		 */
 		toggle: string
 	}
+	/**
+	 * A​n​ ​u​n​k​n​o​w​n​ ​e​r​r​o​r​ ​o​c​c​u​r​r​e​d​.
+	 */
+	unknownErrorOccurred: string
 }
 
 export type TranslationFunctions = {
@@ -660,6 +686,10 @@ export type TranslationFunctions = {
 		 */
 		totalTime: (arg: { days: number, totalTime: string }) => LocalizedString
 	}
+	/**
+	 * Error
+	 */
+	error: () => LocalizedString
 	extensions: {
 		/**
 		 * Download the Testaustime extension for your favorite code editor!
@@ -727,6 +757,24 @@ export type TranslationFunctions = {
 		 * Add a new friend
 		 */
 		addNewFriend: () => LocalizedString
+		error: {
+			/**
+			 * You are already friends with this user.
+			 */
+			alreadyFriends: () => LocalizedString
+			/**
+			 * User not found.
+			 */
+			notFound: () => LocalizedString
+			/**
+			 * Unknown error.
+			 */
+			unknownError: () => LocalizedString
+		}
+		/**
+		 * Error removing friend
+		 */
+		errorRemovingFriend: () => LocalizedString
 		/**
 		 * Friend code
 		 */
@@ -1112,6 +1160,10 @@ export type TranslationFunctions = {
 		 */
 		toggle: () => LocalizedString
 	}
+	/**
+	 * An unknown error occurred.
+	 */
+	unknownErrorOccurred: () => LocalizedString
 }
 
 export type Formatters = {}

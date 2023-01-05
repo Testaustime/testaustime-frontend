@@ -14,9 +14,7 @@ import { LeaderboardsList } from "../leaderboard/LeaderboardsList";
 export const LeaderboardsPage = () => {
   const {
     leaderboards,
-    joinLeaderboard,
     leaveLeaderboard,
-    createLeaderboard,
     deleteLeaderboard,
     promoteUser,
     demoteUser,
@@ -38,10 +36,7 @@ export const LeaderboardsPage = () => {
       title: <Title>{LL.leaderboards.createNewLeaderboard()}</Title>,
       size: "xl",
       children: <CreateLeaderboardModal
-        onCreate={async (leaderboardName: string) => {
-          await createLeaderboard(leaderboardName);
-          modals.closeModal(id);
-        }}
+        onCreate={() => { modals.closeModal(id); }}
       />
     });
   };
@@ -50,10 +45,7 @@ export const LeaderboardsPage = () => {
     const id = modals.openModal({
       title: <Title>{LL.leaderboards.joinLeaderboard()}</Title>,
       size: "xl",
-      children: <JoinLeaderboardModal initialCode={urlLeaderboardCode} onJoin={async code => {
-        await joinLeaderboard(code);
-        modals.closeModal(id);
-      }} />
+      children: <JoinLeaderboardModal initialCode={urlLeaderboardCode} onJoin={() => { modals.closeModal(id); }} />
     });
   };
 

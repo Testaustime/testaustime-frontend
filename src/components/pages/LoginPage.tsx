@@ -6,8 +6,8 @@ import * as Yup from "yup";
 import { useState } from "react";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
-import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
 import { useSearchParams } from "react-router-dom";
+import { showNotification } from "@mantine/notifications";
 
 const useStyles = createStyles(() => ({
   loginBox: {
@@ -44,7 +44,14 @@ export const LoginPage = () => {
         setVisible(true);
         login(values.username, values.password)
           .then(() => navigate(allowedRedirects.includes(unsafeRedirect) ? unsafeRedirect : "/"))
-          .catch((...e) => { handleErrorWithNotification(...e); setVisible(false); });
+          .catch(() => {
+            showNotification({
+              title: "Error",
+              color: "red",
+              message: "Invalid credentials"
+            });
+            setVisible(false);
+          });
       }}>
       {() => <Form style={{ width: "100%" }}>
         <FormikTextInput name="username" label="Username" style={{ width: "100%" }} />

@@ -3,9 +3,9 @@ import { useToggle, useClipboard } from "@mantine/hooks";
 import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 import { useI18nContext } from "../../i18n/i18n-react";
-import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
 import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
 import Censorable from "../Censorable";
+import { showNotification } from "@mantine/notifications";
 
 export interface TokenFieldProps {
   value: string,
@@ -62,7 +62,15 @@ export const TokenField = ({
       {regenerate && <ButtonWithConfirmation
         leftIcon={<UpdateIcon />}
         variant="outline"
-        onClick={() => { regenerate().catch(handleErrorWithNotification); }}
+        onClick={() => {
+          regenerate().catch(() => {
+            showNotification({
+              title: LL.error(),
+              color: "red",
+              message: LL.unknownErrorOccurred()
+            });
+          });
+        }}
       >
         {LL.copyToken.regenerate()}
       </ButtonWithConfirmation>}

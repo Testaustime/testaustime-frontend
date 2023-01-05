@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { useState } from "react";
 import useAuthentication from "../../hooks/UseAuthentication";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
-import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
+import { showNotification } from "@mantine/notifications";
 
 export const RegistrationPage = () => {
   const { register } = useAuthentication();
@@ -39,7 +39,14 @@ export const RegistrationPage = () => {
         setVisible(true);
         register(values.username, values.password)
           .then(() => navigate("/"))
-          .catch((...e) => { handleErrorWithNotification(...e); setVisible(false); });
+          .catch(() => {
+            showNotification({
+              title: "Error",
+              color: "red",
+              message: "Invalid credentials"
+            });
+            setVisible(false);
+          });
       }}>
       {() => <Form>
         <FormikTextInput name="username" label="Username" />

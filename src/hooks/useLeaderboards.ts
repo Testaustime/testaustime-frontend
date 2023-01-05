@@ -20,6 +20,17 @@ export interface LeaderboardData {
 
 export type CombinedLeaderboard = Leaderboard & LeaderboardData;
 
+export enum JoinLeaderboardError {
+  AlreadyMember,
+  NotFound,
+  UnknownError
+}
+
+export enum CreateLeaderboardError {
+  AlreadyExists,
+  UnknownError
+}
+
 export const useLeaderboards = () => {
   const { token } = useAuthentication();
   const queryClient = useQueryClient();
@@ -176,9 +187,41 @@ export const useLeaderboards = () => {
 
   return {
     leaderboards: combined,
-    joinLeaderboard,
+    joinLeaderboard: async (inviteCode: string) => {
+      try {
+        return await joinLeaderboard(inviteCode);
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          if (e.response?.status === 409
+            // TODO: The 403 status is a bug with the backend.
+            // It can be removed when https://github.com/Testaustime/testaustime-backend/pull/61 is merged
+            || e.response?.status === 403) {
+            return JoinLeaderboardError.AlreadyMember;
+          }
+          else if (e.response?.status === 404) {
+            return JoinLeaderboardError.NotFound;
+          }
+        }
+        return JoinLeaderboardError.UnknownError;
+      }
+    },
     leaveLeaderboard,
-    createLeaderboard,
+    createLeaderboard: async (leaderboardName: string) => {
+      try {
+        return await createLeaderboard(leaderboardName);
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          if (e.response?.status === 409
+            // TODO: The 403 status is a bug with the backend.
+            // It can be removed when https://github.com/Testaustime/testaustime-backend/pull/61 is merged
+            || e.response?.status === 403
+          ) {
+            return CreateLeaderboardError.AlreadyExists;
+          }
+        }
+        return CreateLeaderboardError.UnknownError;
+      }
+    },
     deleteLeaderboard,
     promoteUser: (leaderboardName: string, username: string) => setUserAdminStatus({
       leaderboardName,
