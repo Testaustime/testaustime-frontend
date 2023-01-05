@@ -79,7 +79,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
-  const token = useSelector<RootState, string | undefined>(state => state.users.authToken);
+  const token = useSelector<RootState, string | undefined>(state => state.users.authToken)
+    ?? localStorage.getItem(authTokenLocalStorageKey) ?? undefined;
   const loginInitialized = useSelector<RootState, boolean>(state => state.users.loginInitialized);
 
   const setToken = (newToken: string) => {
