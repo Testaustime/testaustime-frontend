@@ -155,7 +155,12 @@ export const useAuthentication = (): UseAuthenticationResult => {
       const authToken = data.auth_token;
       setToken(authToken);
       dispatch(setLoginInitialized(true));
-      await queryClient.invalidateQueries("fetchUser");
+      queryClient.setQueryData("fetchUser", {
+        username: data.username,
+        friendCode: data.friend_code,
+        registrationTime: new Date(data.registration_time),
+        isPublic: false
+      });
       return authToken;
     } catch (error) {
       dispatch(setLoginInitialized(true));
@@ -168,9 +173,15 @@ export const useAuthentication = (): UseAuthenticationResult => {
   ) => {
     try {
       const { data } = await axios.post<ApiAuthLoginResponse>("/auth/login", { username, password });
-      const { auth_token } = data;
+      const { auth_token, friend_code, username: apiUsername, registration_time, is_public } = data;
       setToken(auth_token);
-      await queryClient.invalidateQueries("fetchUser");
+      queryClient.setQueryData("fetchUser", {
+        username: apiUsername,
+        friendCode: friend_code,
+        registrationTime: new Date(registration_time),
+        // TODO: Remove this when https://github.com/Testaustime/testaustime-backend/pull/63 is merged
+        isPublic: is_public ?? false
+      });
       dispatch(setLoginInitialized(true));
       return auth_token;
     } catch (error) {
