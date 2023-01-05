@@ -3,7 +3,6 @@ import * as Yup from "yup";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
-import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
 import { showNotification } from "@mantine/notifications";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { PasswordChangeResult } from "../../hooks/UseAuthentication/useAuthentication";
@@ -35,26 +34,27 @@ export const ChangePasswordForm = ({ onChangePassword }: ChangePasswordFormProps
         .required(LL.profile.changePassword.confirm.required())
         .oneOf([Yup.ref("newPassword"), null], LL.profile.changePassword.confirm.noMatch())
     })}
-    onSubmit={(values, helpers) => {
-      onChangePassword(values.oldPassword, values.newPassword)
-        .then(result => {
-          if (result === PasswordChangeResult.Success) {
-            showNotification({
-              title: LL.profile.changePassword.success.title(),
-              color: "green",
-              message: LL.profile.changePassword.success.message()
-            });
-            helpers.resetForm();
-          }
-          else if (result === PasswordChangeResult.OldPasswordIncorrect) {
-            handleErrorWithNotification(LL.profile.changePassword.old.incorrect());
-          }
-          else if (result === PasswordChangeResult.NewPasswordInvalid) {
-            handleErrorWithNotification(LL.profile.changePassword.new.invalid());
-          }
-        })
-        .catch(handleErrorWithNotification)
-        .finally(() => setVisible(false));
+    onSubmit={async (values, helpers) => {
+      const result = await onChangePassword(values.oldPassword, values.newPassword);
+      if (result === PasswordChangeResult.Success) {
+        showNotification({
+          title: LL.profile.changePassword.success.title(),
+          color: "green",
+          message: LL.profile.changePassword.success.message()
+        });
+        helpers.resetForm();
+      }
+      else {
+        showNotification({
+          title: LL.error(),
+          color: "red",
+          message: {
+            [PasswordChangeResult.OldPasswordIncorrect]: LL.profile.changePassword.old.incorrect(),
+            [PasswordChangeResult.NewPasswordInvalid]: LL.profile.changePassword.new.invalid()
+          }[result]
+        });
+      }
+      setVisible(false);
     }}>
     {() => <Form>
       <FormikPasswordInput name="oldPassword" label={LL.profile.changePassword.oldPassword()} />

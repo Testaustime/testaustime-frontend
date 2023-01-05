@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { generateLeaderboardInviteCode } from "../../utils/codeUtils";
 import * as Yup from "yup";
-import { Group, Button, Text } from "@mantine/core";
+import { Group, Button } from "@mantine/core";
 import { Formik, Form } from "formik";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { EnterIcon } from "@radix-ui/react-icons";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { JoinLeaderboardError, useLeaderboards } from "../../hooks/useLeaderboards";
+import { showNotification } from "@mantine/notifications";
 
 interface JoinLeaderboardModalProps {
   initialCode: string | null,
@@ -14,7 +15,6 @@ interface JoinLeaderboardModalProps {
 }
 
 export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardModalProps) => {
-  const [error, setError] = useState<string>("");
   const [placeholderLeaderboardInviteCode] = useState(generateLeaderboardInviteCode());
   const { LL } = useI18nContext();
   const { joinLeaderboard } = useLeaderboards();
@@ -36,17 +36,19 @@ export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardMod
           onJoin(values.leaderboardCode);
         }
         else {
-          setError({
-            [JoinLeaderboardError.AlreadyMember]: LL.leaderboards.join.alreadyMember(),
-            [JoinLeaderboardError.NotFound]: LL.leaderboards.join.notFound(),
-            [JoinLeaderboardError.UnknownError]: LL.leaderboards.join.genericError()
-          }[result]);
+          showNotification({
+            title: LL.error(),
+            color: "red",
+            message: {
+              [JoinLeaderboardError.AlreadyMember]: LL.leaderboards.join.alreadyMember(),
+              [JoinLeaderboardError.NotFound]: LL.leaderboards.join.notFound(),
+              [JoinLeaderboardError.UnknownError]: LL.leaderboards.join.genericError()
+            }[result]
+          });
         }
       }}
     >
-      {() => <Form onChange={() => {
-        setError("");
-      }}>
+      {() => <Form>
         <FormikTextInput
           name="leaderboardCode"
           label={LL.leaderboards.join.leaderboardCode()}
@@ -69,6 +71,5 @@ export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardMod
         </Group>
       </Form>}
     </Formik>
-    {error && <Text color="red">{error}</Text>}
   </>;
 };

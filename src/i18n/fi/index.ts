@@ -30,6 +30,7 @@ const fi: Translation = {
     timePerProject: "Aika per projekti",
     totalTime: "Kokonaisaika viimeisten {days} päivän aikana: {totalTime}"
   },
+  error: "Virhe",
   extensions: {
     body: "Lataa Testaustime-laajennus suosikkieditorillesi!",
     intellij: "Lataa Testaustime IntelliJ:lle",
@@ -57,6 +58,7 @@ const fi: Translation = {
       notFound: "Käyttäjää ei löytynyt",
       unknownError: "Tuntematon virhe"
     },
+    errorRemovingFriend: "Kaverin poistamisessa tapahtui virhe.",
     friendCode: "Kaverikoodi",
     friendCodeInvalid: "Kaverikoodin tulee alkaa \"ttfc_\", ja sen jälkeen täytyy olla 24 alphanumeerista kirjainta.",
     friendCodeRequired: "Kaverikoodi vaaditaan.",
@@ -178,7 +180,8 @@ const fi: Translation = {
     dark: "Tumma teema",
     light: "Vaalea teema",
     toggle: "Vaihda väriteemaa"
-  }
+  },
+  unknownErrorOccurred: "Tapahtui tuntematon virhe."
 };
 
 export default fi;

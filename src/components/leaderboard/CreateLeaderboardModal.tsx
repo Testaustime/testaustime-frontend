@@ -1,17 +1,16 @@
-import { Group, Button, Text } from "@mantine/core";
+import { Group, Button } from "@mantine/core";
 import { Form, Formik } from "formik";
-import { useState } from "react";
 import * as Yup from "yup";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { CreateLeaderboardError, useLeaderboards } from "../../hooks/useLeaderboards";
+import { showNotification } from "@mantine/notifications";
 
 interface CreateLeaderboardModalProps {
   onCreate: (leaderboardName: string) => void
 }
 
 export const CreateLeaderboardModal = ({ onCreate }: CreateLeaderboardModalProps) => {
-  const [error, setError] = useState<string>("");
   const { LL } = useI18nContext();
   const { createLeaderboard } = useLeaderboards();
 
@@ -26,10 +25,14 @@ export const CreateLeaderboardModal = ({ onCreate }: CreateLeaderboardModalProps
           onCreate(values.leaderboardName);
         }
         else {
-          setError({
-            [CreateLeaderboardError.AlreadyExists]: LL.leaderboards.leaderboardExists(),
-            [CreateLeaderboardError.UnknownError]: LL.leaderboards.leaderboardCreateError()
-          }[result]);
+          showNotification({
+            title: LL.error(),
+            color: "red",
+            message: {
+              [CreateLeaderboardError.AlreadyExists]: LL.leaderboards.leaderboardExists(),
+              [CreateLeaderboardError.UnknownError]: LL.leaderboards.leaderboardCreateError()
+            }[result]
+          });
         }
       }}
       validationSchema={Yup.object().shape({
@@ -47,6 +50,5 @@ export const CreateLeaderboardModal = ({ onCreate }: CreateLeaderboardModalProps
         </Group>
       </Form>}
     </Formik>
-    {error && <Text color="red">{error}</Text>}
   </>;
 };

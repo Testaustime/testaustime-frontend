@@ -30,6 +30,7 @@ const en: BaseTranslation = {
     timePerProject: "Time per project",
     totalTime: "Total time coded in the last {days:number} days: {totalTime:string}"
   },
+  error: "Error",
   extensions: {
     body: "Download the Testaustime extension for your favorite code editor!",
     intellij: "Download Testaustime for IntelliJ",
@@ -57,6 +58,7 @@ const en: BaseTranslation = {
       notFound: "User not found.",
       unknownError: "Unknown error."
     },
+    errorRemovingFriend: "Error removing friend",
     friendCode: "Friend code",
     friendCodeInvalid: "Friend code must start with \"ttfc_\", and be followed by 24 alphanumeric characters.",
     friendCodeRequired: "Friend code is required",
@@ -178,7 +180,8 @@ const en: BaseTranslation = {
     dark: "Dark mode",
     light: "Light mode",
     toggle: "Toggle color theme"
-  }
+  },
+  unknownErrorOccurred: "An unknown error occurred."
 };
 
 export default en;

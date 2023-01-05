@@ -105,6 +105,10 @@ type RootTranslation = {
 		 */
 		totalTime: RequiredParams<'days' | 'totalTime'>
 	}
+	/**
+	 * E​r​r​o​r
+	 */
+	error: string
 	extensions: {
 		/**
 		 * D​o​w​n​l​o​a​d​ ​t​h​e​ ​T​e​s​t​a​u​s​t​i​m​e​ ​e​x​t​e​n​s​i​o​n​ ​f​o​r​ ​y​o​u​r​ ​f​a​v​o​r​i​t​e​ ​c​o​d​e​ ​e​d​i​t​o​r​!
@@ -187,6 +191,10 @@ type RootTranslation = {
 			 */
 			unknownError: string
 		}
+		/**
+		 * E​r​r​o​r​ ​r​e​m​o​v​i​n​g​ ​f​r​i​e​n​d
+		 */
+		errorRemovingFriend: string
 		/**
 		 * F​r​i​e​n​d​ ​c​o​d​e
 		 */
@@ -583,6 +591,10 @@ type RootTranslation = {
 		 */
 		toggle: string
 	}
+	/**
+	 * A​n​ ​u​n​k​n​o​w​n​ ​e​r​r​o​r​ ​o​c​c​u​r​r​e​d​.
+	 */
+	unknownErrorOccurred: string
 }
 
 export type TranslationFunctions = {
@@ -674,6 +686,10 @@ export type TranslationFunctions = {
 		 */
 		totalTime: (arg: { days: number, totalTime: string }) => LocalizedString
 	}
+	/**
+	 * Error
+	 */
+	error: () => LocalizedString
 	extensions: {
 		/**
 		 * Download the Testaustime extension for your favorite code editor!
@@ -755,6 +771,10 @@ export type TranslationFunctions = {
 			 */
 			unknownError: () => LocalizedString
 		}
+		/**
+		 * Error removing friend
+		 */
+		errorRemovingFriend: () => LocalizedString
 		/**
 		 * Friend code
 		 */
@@ -1140,6 +1160,10 @@ export type TranslationFunctions = {
 		 */
 		toggle: () => LocalizedString
 	}
+	/**
+	 * An unknown error occurred.
+	 */
+	unknownErrorOccurred: () => LocalizedString
 }
 
 export type Formatters = {}

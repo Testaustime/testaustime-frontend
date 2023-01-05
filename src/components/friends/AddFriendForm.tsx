@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import { AddFriendError, useFriends } from "../../hooks/useFriends";
 import { useLocation } from "react-router";
 import { useI18nContext } from "../../i18n/i18n-react";
-import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
+import { showNotification } from "@mantine/notifications";
 
 export const AddFriendForm = () => {
   const [placeholderFriendCode] = useState(generateFriendCode());
@@ -32,11 +32,15 @@ export const AddFriendForm = () => {
           resetForm();
         }
         else {
-          handleErrorWithNotification({
-            [AddFriendError.AlreadyFriends]: LL.friends.error.alreadyFriends(),
-            [AddFriendError.NotFound]: LL.friends.error.notFound(),
-            [AddFriendError.UnknownError]: LL.friends.error.unknownError()
-          }[result]);
+          showNotification({
+            title: LL.error(),
+            message: {
+              [AddFriendError.AlreadyFriends]: LL.friends.error.alreadyFriends(),
+              [AddFriendError.NotFound]: LL.friends.error.notFound(),
+              [AddFriendError.UnknownError]: LL.friends.error.unknownError()
+            }[result],
+            color: "red"
+          });
         }
       }}>
       {() => <Form style={{ width: "100%" }}>

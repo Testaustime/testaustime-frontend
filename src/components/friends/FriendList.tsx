@@ -6,9 +6,9 @@ import { useFriends } from "../../hooks/useFriends";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { sumBy } from "../../utils/arrayUtils";
 import { prettyDuration } from "../../utils/dateUtils";
-import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
 import { useModals } from "@mantine/modals";
 import { Dashboard } from "../Dashboard";
+import { showNotification } from "@mantine/notifications";
 
 export const FriendList = () => {
   const { unFriend, friends } = useFriends();
@@ -77,7 +77,13 @@ export const FriendList = () => {
             color="red"
             compact
             onClick={() => {
-              unFriend(username).catch(handleErrorWithNotification);
+              unFriend(username).catch(() => {
+                showNotification({
+                  title: LL.error(),
+                  color: "red",
+                  message: LL.friends.errorRemovingFriend()
+                });
+              });
             }}
           >
             {LL.friends.unfriend()}
