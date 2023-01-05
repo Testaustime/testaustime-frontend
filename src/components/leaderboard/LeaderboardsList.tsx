@@ -1,5 +1,5 @@
 import { Badge, Button, Table } from "@mantine/core";
-import useAuthentication from "../../hooks/UseAuthentication";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import { useLeaderboards } from "../../hooks/useLeaderboards";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { prettyDuration } from "../../utils/dateUtils";

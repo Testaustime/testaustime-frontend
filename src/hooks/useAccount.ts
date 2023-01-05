@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
-import useAuthentication from "./UseAuthentication";
-import { User } from "./UseAuthentication/useAuthentication";
+import { useAuthentication } from "./useAuthentication";
+import { User } from "./useAuthentication";
 
 export const useAccount = () => {
   const { token } = useAuthentication();

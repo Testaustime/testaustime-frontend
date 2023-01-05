@@ -1,7 +1,7 @@
 import { Button, Group, Modal, Text, Title } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { useEffect, useState } from "react";
-import useAuthentication from "../../hooks/UseAuthentication";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import { useLeaderboards } from "../../hooks/useLeaderboards";
 import { LeaderboardModal } from "../leaderboard/LeaderboardModal";
 import { CreateLeaderboardModal } from "../leaderboard/CreateLeaderboardModal";

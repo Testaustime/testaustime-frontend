@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
 import { useState } from "react";
-import useAuthentication from "../../hooks/UseAuthentication";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { showNotification } from "@mantine/notifications";
 

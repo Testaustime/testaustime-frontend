@@ -5,7 +5,7 @@ import {
 import { useHotkeys } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
 import { useEffect } from "react";
-import useAuthentication from "./hooks/UseAuthentication";
+import { useAuthentication } from "./hooks/useAuthentication";
 import { ModalsProvider } from "@mantine/modals";
 import TypesafeI18n from "./i18n/i18n-react";
 import { loadAllLocales } from "./i18n/i18n-util.sync";

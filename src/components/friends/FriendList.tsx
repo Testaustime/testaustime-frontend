@@ -1,7 +1,7 @@
 import { Button, Table, Text, Title, useMantineTheme } from "@mantine/core";
 import { addDays, startOfDay } from "date-fns";
 import { useActivityData } from "../../hooks/useActivityData";
-import useAuthentication from "../../hooks/UseAuthentication";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import { useFriends } from "../../hooks/useFriends";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { sumBy } from "../../utils/arrayUtils";

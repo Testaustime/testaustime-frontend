@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Navigate } from "react-router";
-import useAuthentication from "../hooks/UseAuthentication";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 export const PrivateRoute = ({ children, redirect }: {
   children?: ReactNode,

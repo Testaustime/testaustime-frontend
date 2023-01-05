@@ -1,12 +1,12 @@
 import axios, { isAxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { authTokenLocalStorageKey } from "../../utils/constants";
-import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
+import { authTokenLocalStorageKey } from "../utils/constants";
+import { getErrorMessage } from "../lib/errorHandling/errorHandler";
 import {
   setAuthToken,
   setLoginInitialized
-} from "../../slices/userSlice";
-import { RootState } from "../../store";
+} from "../slices/userSlice";
+import { RootState } from "../store";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export interface ApiAuthRegisterResponse {

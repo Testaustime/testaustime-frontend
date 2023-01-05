@@ -1,6 +1,6 @@
 import { Anchor, Stack, Text, Title } from "@mantine/core";
 import { format } from "date-fns/esm";
-import useAuthentication from "../../hooks/UseAuthentication";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import { WithTooltip } from "../WithTooltip/WithTooltip";
 import { TokenField } from "../TokenField/TokenField";
 import { Link } from "react-router-dom";

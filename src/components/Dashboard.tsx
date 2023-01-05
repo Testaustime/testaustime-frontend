@@ -8,7 +8,7 @@ import { DailyCodingTimeChart } from "./DailyCodingTimeChart";
 import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
-import useAuthentication from "../hooks/UseAuthentication";
+import { useAuthentication } from "../hooks/useAuthentication";
 import { useI18nContext } from "../i18n/i18n-react";
 import { useSettings } from "../hooks/useSettings";
 

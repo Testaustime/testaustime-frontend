@@ -1,7 +1,7 @@
 import { Group, Button, Title, Table, Badge } from "@mantine/core";
 import { DoubleArrowDownIcon, DoubleArrowUpIcon, ExitIcon } from "@radix-ui/react-icons";
 import { Trash2 } from "react-feather";
-import useAuthentication from "../../hooks/UseAuthentication";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import { CombinedLeaderboard } from "../../hooks/useLeaderboards";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { prettyDuration } from "../../utils/dateUtils";
