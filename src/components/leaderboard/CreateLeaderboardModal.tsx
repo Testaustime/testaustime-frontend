@@ -1,39 +1,36 @@
 import { Group, Button, Text } from "@mantine/core";
-import axios from "axios";
 import { Form, Formik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { FormikTextInput } from "../forms/FormikTextInput";
+import { CreateLeaderboardError, useLeaderboards } from "../../hooks/useLeaderboards";
 
 interface CreateLeaderboardModalProps {
-  onCreate: (leaderboardName: string) => Promise<void>
+  onCreate: (leaderboardName: string) => void
 }
 
 export const CreateLeaderboardModal = ({ onCreate }: CreateLeaderboardModalProps) => {
   const [error, setError] = useState<string>("");
   const { LL } = useI18nContext();
+  const { createLeaderboard } = useLeaderboards();
 
   return <>
     <Formik
       initialValues={{
         leaderboardName: ""
       }}
-      onSubmit={values => {
-        onCreate(values.leaderboardName)
-          .catch(e => {
-            if (axios.isAxiosError(e)) {
-              if (e.response?.status === 409) {
-                setError(LL.leaderboards.leaderboardExists());
-              }
-              else {
-                setError(LL.leaderboards.leaderboardCreateError());
-              }
-            }
-            else {
-              setError(LL.leaderboards.leaderboardCreateError());
-            }
-          });
+      onSubmit={async values => {
+        const result = await createLeaderboard(values.leaderboardName);
+        if (typeof result === "object") {
+          onCreate(values.leaderboardName);
+        }
+        else {
+          setError({
+            [CreateLeaderboardError.AlreadyExists]: LL.leaderboards.leaderboardExists(),
+            [CreateLeaderboardError.UnknownError]: LL.leaderboards.leaderboardCreateError()
+          }[result]);
+        }
       }}
       validationSchema={Yup.object().shape({
         leaderboardName: Yup.string()
