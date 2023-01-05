@@ -52,6 +52,11 @@ const en: BaseTranslation = {
   friends: {
     add: "Add",
     addNewFriend: "Add a new friend",
+    error: {
+      alreadyFriends: "You are already friends with this user.",
+      notFound: "User not found.",
+      unknownError: "Unknown error."
+    },
     friendCode: "Friend code",
     friendCodeInvalid: "Friend code must start with \"ttfc_\", and be followed by 24 alphanumeric characters.",
     friendCodeRequired: "Friend code is required",

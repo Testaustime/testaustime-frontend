@@ -20,6 +20,12 @@ export interface ApiFriendsAddResponse {
   }
 }
 
+export enum AddFriendError {
+  AlreadyFriends,
+  NotFound,
+  UnknownError
+}
+
 export const useFriends = () => {
   const { token } = useAuthentication();
   const queryClient = useQueryClient();
@@ -63,7 +69,23 @@ export const useFriends = () => {
   });
 
   return {
-    addFriend,
+    addFriend: async (friendCode: string) => {
+      try {
+        return await addFriend(friendCode);
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          if (e.response?.status === 409
+            // TODO: The 403 status is a bug with the backend.
+            // It can be removed when https://github.com/Testaustime/testaustime-backend/pull/61 is merged
+            || e.response?.status === 403) {
+            return AddFriendError.AlreadyFriends;
+          } else if (e.response?.status === 404) {
+            return AddFriendError.NotFound;
+          }
+        }
+        return AddFriendError.UnknownError;
+      }
+    },
     unFriend,
     friends: friends ?? []
   };

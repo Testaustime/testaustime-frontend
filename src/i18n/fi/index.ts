@@ -52,6 +52,11 @@ const fi: Translation = {
   friends: {
     add: "Lisää",
     addNewFriend: "Lisää uusi kaveri",
+    error: {
+      alreadyFriends: "Olet jo kaveri tämän henkilön kanssa.",
+      notFound: "Käyttäjää ei löytynyt",
+      unknownError: "Tuntematon virhe"
+    },
     friendCode: "Kaverikoodi",
     friendCodeInvalid: "Kaverikoodin tulee alkaa \"ttfc_\", ja sen jälkeen täytyy olla 24 alphanumeerista kirjainta.",
     friendCodeRequired: "Kaverikoodi vaaditaan.",

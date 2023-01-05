@@ -173,6 +173,20 @@ type RootTranslation = {
 		 * A​d​d​ ​a​ ​n​e​w​ ​f​r​i​e​n​d
 		 */
 		addNewFriend: string
+		error: {
+			/**
+			 * Y​o​u​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​f​r​i​e​n​d​s​ ​w​i​t​h​ ​t​h​i​s​ ​u​s​e​r​.
+			 */
+			alreadyFriends: string
+			/**
+			 * U​s​e​r​ ​n​o​t​ ​f​o​u​n​d​.
+			 */
+			notFound: string
+			/**
+			 * U​n​k​n​o​w​n​ ​e​r​r​o​r​.
+			 */
+			unknownError: string
+		}
 		/**
 		 * F​r​i​e​n​d​ ​c​o​d​e
 		 */
@@ -727,6 +741,20 @@ export type TranslationFunctions = {
 		 * Add a new friend
 		 */
 		addNewFriend: () => LocalizedString
+		error: {
+			/**
+			 * You are already friends with this user.
+			 */
+			alreadyFriends: () => LocalizedString
+			/**
+			 * User not found.
+			 */
+			notFound: () => LocalizedString
+			/**
+			 * Unknown error.
+			 */
+			unknownError: () => LocalizedString
+		}
 		/**
 		 * Friend code
 		 */

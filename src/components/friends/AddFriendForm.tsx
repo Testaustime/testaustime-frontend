@@ -5,7 +5,7 @@ import { useState } from "react";
 import { generateFriendCode } from "../../utils/codeUtils";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
-import { useFriends } from "../../hooks/useFriends";
+import { AddFriendError, useFriends } from "../../hooks/useFriends";
 import { useLocation } from "react-router";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { handleErrorWithNotification } from "../../utils/notificationErrorHandler";
@@ -26,10 +26,18 @@ export const AddFriendForm = () => {
           .required(LL.friends.friendCodeRequired())
           .matches(/^ttfc_[a-zA-Z0-9]{24}$/, LL.friends.friendCodeInvalid())
       })}
-      onSubmit={({ friendCode }, { resetForm }) => {
-        addFriend(friendCode)
-          .then(() => resetForm())
-          .catch(handleErrorWithNotification);
+      onSubmit={async ({ friendCode }, { resetForm }) => {
+        const result = await addFriend(friendCode);
+        if (typeof result === "object") {
+          resetForm();
+        }
+        else {
+          handleErrorWithNotification({
+            [AddFriendError.AlreadyFriends]: LL.friends.error.alreadyFriends(),
+            [AddFriendError.NotFound]: LL.friends.error.notFound(),
+            [AddFriendError.UnknownError]: LL.friends.error.unknownError()
+          }[result]);
+        }
       }}>
       {() => <Form style={{ width: "100%" }}>
         <Group align="start">
