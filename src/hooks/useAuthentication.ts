@@ -88,14 +88,9 @@ export const useAuthentication = (): UseAuthenticationResult => {
   };
 
   const { data: userData, refetch: refetchUser } = useQuery("fetchUser", async () => {
-    if (!token) {
-      logOut();
-      return undefined;
-    }
-
     try {
       const { data } = await axios.get<ApiUsersUserResponse>("/users/@me",
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token ?? ""}` } }
       );
       dispatch(setLoginInitialized(true));
       return {
