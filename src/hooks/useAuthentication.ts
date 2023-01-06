@@ -22,8 +22,7 @@ export interface ApiAuthLoginResponse {
   friend_code: string,
   username: string,
   registration_time: string,
-  // TODO: is_public doesn't exist yet, depends on https://github.com/Testaustime/testaustime-backend/issues/62
-  is_public?: boolean
+  is_public: boolean
 }
 
 export interface ApiAuthRegenerateResponse {
@@ -179,8 +178,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
         username: apiUsername,
         friendCode: friend_code,
         registrationTime: new Date(registration_time),
-        // TODO: Remove this when https://github.com/Testaustime/testaustime-backend/pull/63 is merged
-        isPublic: is_public ?? false
+        isPublic: is_public
       });
       dispatch(setLoginInitialized(true));
       return auth_token;
