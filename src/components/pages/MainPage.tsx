@@ -1,6 +1,6 @@
 import { Anchor, Text, createStyles } from "@mantine/core";
 import { Link } from "react-router-dom";
-import useAuthentication from "../../hooks/UseAuthentication";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { Dashboard } from "../Dashboard";
 

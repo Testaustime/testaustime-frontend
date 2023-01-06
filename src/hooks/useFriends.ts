@@ -1,4 +1,4 @@
-import useAuthentication from "./UseAuthentication";
+import { useAuthentication } from "./useAuthentication";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 

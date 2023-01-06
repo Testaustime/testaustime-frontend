@@ -1,7 +1,7 @@
 import { Meta, StoryFn } from "@storybook/react";
 import { withSetup } from "../../../.storybook/withSetup";
 import { ChangePasswordForm, ChangePasswordFormProps } from "./ChangePasswordForm";
-import { PasswordChangeResult } from "../../hooks/UseAuthentication/useAuthentication";
+import { PasswordChangeResult } from "../../hooks/useAuthentication";
 
 export default {
   title: "ChangePasswordForm",

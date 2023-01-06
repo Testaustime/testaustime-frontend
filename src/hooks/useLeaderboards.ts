@@ -1,5 +1,5 @@
 import axios from "axios";
-import useAuthentication from "./UseAuthentication";
+import { useAuthentication } from "./useAuthentication";
 import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
 
 export interface Leaderboard {

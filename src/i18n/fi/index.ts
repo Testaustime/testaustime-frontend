@@ -122,6 +122,16 @@ const fi: Translation = {
     settings: "Asetukset"
   },
   profile: {
+    account: {
+      title: "Minun tilini"
+    },
+    accountVisibility: {
+      description: "Jos teet tilistäsi julkisen, muut \
+      käyttäjät voivat etsiä profiilisi ja ohjelmointitilastosi ovat julkisia.",
+      makePrivate: "Muuta yksityiseksi",
+      makePublic: "Muuta julkiseksi",
+      title: "Tilin näkyvyys"
+    },
     authenticationToken: {
       title: "Tunnistautumistunnus",
       tooltip: {

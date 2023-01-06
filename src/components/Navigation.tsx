@@ -4,7 +4,7 @@ import {
 } from "@radix-ui/react-icons";
 import { BarChart2 } from "react-feather";
 import { Link, useNavigate } from "react-router-dom";
-import useAuthentication from "../hooks/UseAuthentication";
+import { useAuthentication } from "../hooks/useAuthentication";
 import { useI18nContext } from "../i18n/i18n-react";
 import ThemeToggle from "./ThemeToggle/ThemeToggle";
 

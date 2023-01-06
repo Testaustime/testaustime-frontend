@@ -1,6 +1,6 @@
 import { Anchor, Stack, Text, Title } from "@mantine/core";
 import { format } from "date-fns/esm";
-import useAuthentication from "../../hooks/UseAuthentication";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import { WithTooltip } from "../WithTooltip/WithTooltip";
 import { TokenField } from "../TokenField/TokenField";
 import { Link } from "react-router-dom";
@@ -9,6 +9,9 @@ import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
 import { SmoothChartsSelector } from "../SmoothChartsSelector/SmoothChartsSelector";
 import { DefaultDayRangeSelector } from "../DefaultDayRangeSelector/DefaultDayRangeSelector";
 import ChangePasswordForm from "../ChangePasswordForm";
+import { useAccount } from "../../hooks/useAccount";
+import { showNotification } from "@mantine/notifications";
+import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
 
 export const ProfilePage = () => {
   const {
@@ -18,10 +21,12 @@ export const ProfilePage = () => {
     username,
     friendCode,
     registrationTime,
-    changePassword
+    changePassword,
+    isPublic
   } = useAuthentication();
 
   const { LL } = useI18nContext();
+  const { changeAccountVisibility } = useAccount();
 
   if (!registrationTime || !token || !friendCode || !username) return <Text>{LL.profile.notLoggedIn()}</Text>;
 
@@ -32,8 +37,27 @@ export const ProfilePage = () => {
       registrationTime: format(registrationTime, "d.M.yyyy HH:mm")
     })}</Text>
     <Stack mt={40} spacing={15}>
+      <Title order={2}>{LL.profile.account.title()}</Title>
       <Title order={3}>{LL.profile.changePassword.title()}</Title>
       <ChangePasswordForm onChangePassword={changePassword} />
+      <WithTooltip
+        tooltipLabel={<Text>{LL.profile.accountVisibility.description()}</Text>}
+      >
+        <Title order={3}>{LL.profile.accountVisibility.title()}</Title>
+      </WithTooltip>
+      <div>
+        <ButtonWithConfirmation
+          color={"red"}
+          onClick={() => {
+            changeAccountVisibility(!isPublic).catch(() => showNotification({
+              title: LL.error(),
+              color: "red",
+              message: LL.unknownErrorOccurred()
+            }));
+          }}>
+          {isPublic ? LL.profile.accountVisibility.makePrivate() : LL.profile.accountVisibility.makePublic()}
+        </ButtonWithConfirmation>
+      </div>
     </Stack>
     <Stack mt={40} spacing={15}>
       <WithTooltip

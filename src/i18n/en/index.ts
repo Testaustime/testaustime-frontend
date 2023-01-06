@@ -122,6 +122,16 @@ const en: BaseTranslation = {
     settings: "Settings"
   },
   profile: {
+    account: {
+      title: "My account"
+    },
+    accountVisibility: {
+      description: "If you make your account public, others can\
+       search for your profile and your programming statistics will be public.",
+      makePrivate: "Make my account private",
+      makePublic: "Make my account public",
+      title: "Account visibility"
+    },
     authenticationToken: {
       title: "Authentication token",
       tooltip: {

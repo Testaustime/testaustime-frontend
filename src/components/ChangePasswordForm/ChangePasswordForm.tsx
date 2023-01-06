@@ -5,7 +5,7 @@ import { Button, LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
 import { showNotification } from "@mantine/notifications";
 import { useI18nContext } from "../../i18n/i18n-react";
-import { PasswordChangeResult } from "../../hooks/UseAuthentication/useAuthentication";
+import { PasswordChangeResult } from "../../hooks/useAuthentication";
 
 export interface ChangePasswordFormProps {
   onChangePassword: (oldPassword: string, newPassword: string) => Promise<PasswordChangeResult>
