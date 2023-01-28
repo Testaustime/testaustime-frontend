@@ -94,36 +94,26 @@ export const Dashboard = ({ username, isFrontPage }: DashboardProps) => {
         <Title mb={5}>{LL.dashboard.statistics()}</Title>
       </>}
       <Group align="end" position="apart" mt={10} mb={30}>
-        {projectNames.length !== 0 ? (
-          <>
-            <MultiSelect
-              label={LL.dashboard.projects()}
-              data={projectNames}
-              value={selectedProjects}
-              className={classes.multiSelect}
-              onChange={selectedProjectNames => setSelectedProjects(selectedProjectNames)}
-              clearable
-              placeholder={LL.dashboard.projectsFilter()}
-            />
-            <SegmentedControl
-              data={[
-                { label: LL.dashboard.timeFilters.week(), value: "week" },
-                { label: LL.dashboard.timeFilters.month(), value: "month" },
-                { label: LL.dashboard.timeFilters.all(), value: "all" }
-              ]}
-              value={statisticsRange}
-              onChange={(value: DayRange) => setStatisticsRange(value)}
-              className={classes.segmentControl}
-            />
-          </>
-        ) : (
-          <MultiSelect
-            label={LL.dashboard.projects()}
-            data={projectNames}
-            placeholder={LL.dashboard.noProjects()}
-            disabled
-          />
-        )}
+        <MultiSelect
+          label={LL.dashboard.projects()}
+          data={projectNames}
+          value={selectedProjects}
+          className={classes.multiSelect}
+          onChange={selectedProjectNames => setSelectedProjects(selectedProjectNames)}
+          clearable
+          placeholder={projectNames.length === 0 ? LL.dashboard.noProjects() : LL.dashboard.projectsFilter()}
+          disabled={projectNames.length === 0}
+        />
+        <SegmentedControl
+          data={[
+            { label: LL.dashboard.timeFilters.week(), value: "week" },
+            { label: LL.dashboard.timeFilters.month(), value: "month" },
+            { label: LL.dashboard.timeFilters.all(), value: "all" }
+          ]}
+          value={statisticsRange}
+          onChange={(value: DayRange) => setStatisticsRange(value)}
+          className={classes.segmentControl}
+        />
       </Group>
       {entries.length !== 0 ?
         <>
