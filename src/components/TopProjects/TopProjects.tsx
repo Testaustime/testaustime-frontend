@@ -1,7 +1,7 @@
 import { List } from "@mantine/core";
 import { ActivityDataEntry } from "../../hooks/useActivityData";
-import { prettyDuration } from "../../utils/dateUtils";
 import getAllTimeTopProjects from "../../lib/topProjectsStatistics";
+import { ProjectEntry } from "./ProjectEntry";
 
 export interface TopProjectsProps {
   entries: ActivityDataEntry[]
@@ -9,8 +9,10 @@ export interface TopProjectsProps {
 
 export const TopProjects = ({ entries }: TopProjectsProps) => {
   return <List type="ordered" withPadding>
-    {getAllTimeTopProjects(entries).map(p => <List.Item key={p.project_name || "null"}>
-      <span>{p.project_name || <i>Unknown</i>}: {prettyDuration(p.duration)}</span>
-    </List.Item>)}
+    {getAllTimeTopProjects(entries).map(p => <ProjectEntry
+      key={p.project_name ?? "null"}
+      name={p.project_name}
+      durationSeconds={p.duration}
+    />)}
   </List>;
 };
