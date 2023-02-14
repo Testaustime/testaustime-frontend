@@ -7,7 +7,8 @@ import { useI18nContext } from "../../i18n/i18n-react";
 
 export type ProjectEntryProps = {
   name?: string | undefined | null,
-  durationSeconds: number
+  durationSeconds: number,
+  allowEditing?: boolean
 }
 
 const useStyles = createStyles(theme => ({
@@ -18,7 +19,7 @@ const useStyles = createStyles(theme => ({
   }
 }));
 
-export const ProjectEntry = ({ name, durationSeconds }: ProjectEntryProps) => {
+export const ProjectEntry = ({ name, durationSeconds, allowEditing }: ProjectEntryProps) => {
   const { classes } = useStyles();
   const modals = useModals();
   const { LL } = useI18nContext();
@@ -36,9 +37,9 @@ export const ProjectEntry = ({ name, durationSeconds }: ProjectEntryProps) => {
   return <li>
     <div className={classes.container}>
       <span>{name || <i>{LL.dashboard.unknownProject()}</i>}: {prettyDuration(durationSeconds)}</span>
-      <ActionIcon size="sm" onClick={() => openModal()}>
+      {allowEditing && <ActionIcon size="sm" onClick={() => openModal()}>
         <Pencil1Icon />
-      </ActionIcon>
+      </ActionIcon>}
     </div>
   </li>;
 };
