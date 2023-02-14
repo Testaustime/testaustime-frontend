@@ -28,7 +28,13 @@ const fi: Translation = {
     },
     timePerDay: "Aika per päivä",
     timePerProject: "Aika per projekti",
-    totalTime: "Kokonaisaika viimeisten {days} päivän aikana: {totalTime}"
+    totalTime: "Kokonaisaika viimeisten {days} päivän aikana: {totalTime}",
+    unknownProject: "Tuntematon"
+  },
+  editProject: {
+    projectName: "Projektin nimi",
+    save: "Tallenna",
+    title: "Muokataan {projectName}"
   },
   error: "Virhe",
   extensions: {
