@@ -85,11 +85,13 @@ export const Dashboard = ({ username, isFrontPage }: DashboardProps) => {
     return <div>{LL.dashboard.notLoggedIn()}</div>;
   }
 
+  const isOwnDashboard = username === "@me";
+
   return (
     <div style={{ width: "100%" }}>
       {isFrontPage && <>
         <Group style={{ marginBottom: "1rem" }}>
-          <Text>{LL.dashboard.greeting({ username: username === "@me" ? authenticatedUsername : username })}</Text>
+          <Text>{LL.dashboard.greeting({ username: isOwnDashboard ? authenticatedUsername : username })}</Text>
         </Group>
         <Title mb={5}>{LL.dashboard.statistics()}</Title>
       </>}
@@ -143,7 +145,7 @@ export const Dashboard = ({ username, isFrontPage }: DashboardProps) => {
               </div>
               <div>
                 <Title order={2}>{LL.dashboard.projects()}</Title>
-                <TopProjects entries={entries} />
+                <TopProjects entries={entries} allowEditing={isOwnDashboard} />
               </div>
             </Stack>) : (
             <Group grow align="flex-start">
@@ -153,7 +155,7 @@ export const Dashboard = ({ username, isFrontPage }: DashboardProps) => {
               </div>
               <div>
                 <Title order={2}>{LL.dashboard.projects()}</Title>
-                <TopProjects entries={entries} />
+                <TopProjects entries={entries} allowEditing={isOwnDashboard} />
               </div>
             </Group>
           )}

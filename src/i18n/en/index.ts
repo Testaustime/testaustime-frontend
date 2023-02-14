@@ -28,7 +28,13 @@ const en: BaseTranslation = {
     },
     timePerDay: "Time per day",
     timePerProject: "Time per project",
-    totalTime: "Total time coded in the last {days:number} days: {totalTime:string}"
+    totalTime: "Total time coded in the last {days:number} days: {totalTime:string}",
+    unknownProject: "Unknown"
+  },
+  editProject: {
+    projectName: "Project name",
+    save: "Save",
+    title: "Editing {projectName:string}"
   },
   error: "Error",
   extensions: {

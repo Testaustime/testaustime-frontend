@@ -104,6 +104,25 @@ type RootTranslation = {
 		 * @param {string} totalTime
 		 */
 		totalTime: RequiredParams<'days' | 'totalTime'>
+		/**
+		 * U​n​k​n​o​w​n
+		 */
+		unknownProject: string
+	}
+	editProject: {
+		/**
+		 * P​r​o​j​e​c​t​ ​n​a​m​e
+		 */
+		projectName: string
+		/**
+		 * S​a​v​e
+		 */
+		save: string
+		/**
+		 * E​d​i​t​i​n​g​ ​{​p​r​o​j​e​c​t​N​a​m​e​}
+		 * @param {string} projectName
+		 */
+		title: RequiredParams<'projectName'>
 	}
 	/**
 	 * E​r​r​o​r
@@ -709,6 +728,24 @@ export type TranslationFunctions = {
 		 * Total time coded in the last {days} days: {totalTime}
 		 */
 		totalTime: (arg: { days: number, totalTime: string }) => LocalizedString
+		/**
+		 * Unknown
+		 */
+		unknownProject: () => LocalizedString
+	}
+	editProject: {
+		/**
+		 * Project name
+		 */
+		projectName: () => LocalizedString
+		/**
+		 * Save
+		 */
+		save: () => LocalizedString
+		/**
+		 * Editing {projectName}
+		 */
+		title: (arg: { projectName: string }) => LocalizedString
 	}
 	/**
 	 * Error
