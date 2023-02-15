@@ -620,6 +620,76 @@ type RootTranslation = {
 		 */
 		yes: string
 	}
+	registrationPage: {
+		/**
+		 * I​n​v​a​l​i​d​ ​c​r​e​d​e​n​t​i​a​l​s
+		 */
+		invalidCredentials: string
+		/**
+		 * P​a​s​s​w​o​r​d
+		 */
+		password: string
+		/**
+		 * C​o​n​f​i​r​m​ ​p​a​s​s​w​o​r​d
+		 */
+		passwordConfirm: string
+		/**
+		 * R​e​g​i​s​t​e​r
+		 */
+		registerButton: string
+		/**
+		 * U​s​e​r​n​a​m​e
+		 */
+		username: string
+		validation: {
+			password: {
+				/**
+				 * P​a​s​s​w​o​r​d​ ​c​a​n​ ​n​o​t​ ​b​e​ ​m​o​r​e​ ​t​h​a​n​ ​{​m​a​x​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+				 * @param {number} max
+				 */
+				max: RequiredParams<'max'>
+				/**
+				 * P​a​s​s​w​o​r​d​ ​m​u​s​t​ ​b​e​ ​a​t​ ​l​e​a​s​t​ ​{​m​i​n​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+				 * @param {number} min
+				 */
+				min: RequiredParams<'min'>
+				/**
+				 * P​a​s​s​w​o​r​d​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+			}
+			passwordConfirm: {
+				/**
+				 * P​a​s​s​w​o​r​d​s​ ​m​u​s​t​ ​m​a​t​c​h
+				 */
+				noMatch: string
+				/**
+				 * P​a​s​s​w​o​r​d​ ​c​o​n​f​i​r​m​a​t​i​o​n​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+			}
+			username: {
+				/**
+				 * U​s​e​r​n​a​m​e​ ​c​a​n​ ​n​o​t​ ​b​e​ ​m​o​r​e​ ​t​h​a​n​ ​{​m​a​x​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+				 * @param {number} max
+				 */
+				max: RequiredParams<'max'>
+				/**
+				 * U​s​e​r​n​a​m​e​ ​m​u​s​t​ ​b​e​ ​a​t​ ​l​e​a​s​t​ ​{​m​i​n​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+				 * @param {number} min
+				 */
+				min: RequiredParams<'min'>
+				/**
+				 * U​s​e​r​n​a​m​e​ ​m​u​s​t​ ​o​n​l​y​ ​c​o​n​t​a​i​n​ ​a​l​p​h​a​n​u​m​e​r​i​c​ ​c​h​a​r​a​c​t​e​r​s
+				 */
+				regex: string
+				/**
+				 * U​s​e​r​n​a​m​e​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+			}
+		}
+	}
 	theme: {
 		/**
 		 * D​a​r​k​ ​m​o​d​e
@@ -1230,6 +1300,72 @@ export type TranslationFunctions = {
 		 * Yes
 		 */
 		yes: () => LocalizedString
+	}
+	registrationPage: {
+		/**
+		 * Invalid credentials
+		 */
+		invalidCredentials: () => LocalizedString
+		/**
+		 * Password
+		 */
+		password: () => LocalizedString
+		/**
+		 * Confirm password
+		 */
+		passwordConfirm: () => LocalizedString
+		/**
+		 * Register
+		 */
+		registerButton: () => LocalizedString
+		/**
+		 * Username
+		 */
+		username: () => LocalizedString
+		validation: {
+			password: {
+				/**
+				 * Password can not be more than {max} characters long
+				 */
+				max: (arg: { max: number }) => LocalizedString
+				/**
+				 * Password must be at least {min} characters long
+				 */
+				min: (arg: { min: number }) => LocalizedString
+				/**
+				 * Password is required
+				 */
+				required: () => LocalizedString
+			}
+			passwordConfirm: {
+				/**
+				 * Passwords must match
+				 */
+				noMatch: () => LocalizedString
+				/**
+				 * Password confirmation is required
+				 */
+				required: () => LocalizedString
+			}
+			username: {
+				/**
+				 * Username can not be more than {max} characters long
+				 */
+				max: (arg: { max: number }) => LocalizedString
+				/**
+				 * Username must be at least {min} characters long
+				 */
+				min: (arg: { min: number }) => LocalizedString
+				/**
+				 * Username must only contain alphanumeric characters
+				 */
+				regex: () => LocalizedString
+				/**
+				 * Username is required
+				 */
+				required: () => LocalizedString
+			}
+		}
 	}
 	theme: {
 		/**

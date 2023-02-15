@@ -192,6 +192,30 @@ const en: BaseTranslation = {
     confirmation: "Are you sure?",
     yes: "Yes"
   },
+  registrationPage: {
+    invalidCredentials: "Invalid credentials",
+    password: "Password",
+    passwordConfirm: "Confirm password",
+    registerButton: "Register",
+    username: "Username",
+    validation: {
+      password: {
+        max: "Password can not be more than {max:number} characters long",
+        min: "Password must be at least {min:number} characters long",
+        required: "Password is required"
+      },
+      passwordConfirm: {
+        noMatch: "Passwords must match",
+        required: "Password confirmation is required"
+      },
+      username: {
+        max: "Username can not be more than {max:number} characters long",
+        min: "Username must be at least {min:number} characters long",
+        regex: "Username must only contain alphanumeric characters",
+        required: "Username is required"
+      }
+    }
+  },
   theme: {
     dark: "Dark mode",
     light: "Light mode",

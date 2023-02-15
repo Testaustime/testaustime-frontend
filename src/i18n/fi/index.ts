@@ -192,6 +192,30 @@ const fi: Translation = {
     confirmation: "Oletko varma?",
     yes: "Kyllä"
   },
+  registrationPage: {
+    invalidCredentials: "Virheelliset tunnukset",
+    password: "Salasana",
+    passwordConfirm: "Vahvista salasana",
+    registerButton: "Rekisteröidy",
+    username: "Käyttäjänimi",
+    validation: {
+      password: {
+        max: "Salasana voi olla enintään {max} merkkiä pitkä",
+        min: "Salasanan tulee olla vähintään {min} merkkiä pitkä",
+        required: "Salasana vaaditaan"
+      },
+      passwordConfirm: {
+        noMatch: "Salasanat eivät täsmää",
+        required: "Salasanavahvistus vaaditaan"
+      },
+      username: {
+        max: "Käyttäjänimi voi olla enintään {max} merkkiä pitkä",
+        min: "Käyttäjänimen tulee olla vähintään {min} merkkiä pitkä",
+        regex: "Käyttäjänimi voi sisältää vain alphanumeerisia merkkejä",
+        required: "Käyttäjänimi vaaditaan"
+      }
+    }
+  },
   theme: {
     dark: "Tumma teema",
     light: "Vaalea teema",
