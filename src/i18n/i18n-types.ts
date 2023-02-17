@@ -398,6 +398,52 @@ type RootTranslation = {
 		 */
 		yourPosition: string
 	}
+	loginPage: {
+		/**
+		 * I​n​v​a​l​i​d​ ​c​r​e​d​e​n​t​i​a​l​s
+		 */
+		invalidCredentials: string
+		/**
+		 * L​o​g​ ​i​n
+		 */
+		loginButton: string
+		/**
+		 * P​a​s​s​w​o​r​d
+		 */
+		password: string
+		/**
+		 * L​o​g​i​n
+		 */
+		title: string
+		/**
+		 * U​s​e​r​n​a​m​e
+		 */
+		username: string
+		validation: {
+			password: {
+				/**
+				 * P​a​s​s​w​o​r​d​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+			}
+			username: {
+				/**
+				 * U​s​e​r​n​a​m​e​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+			}
+		}
+	}
+	mainPage: {
+		/**
+		 * D​o​w​n​l​o​a​d​ ​n​o​w​ ​f​o​r​ ​y​o​u​r​ ​f​a​v​o​r​i​t​e​ ​e​d​i​t​o​r
+		 */
+		download: string
+		/**
+		 * T​h​e​ ​u​l​t​i​m​a​t​e​ ​t​o​o​l​ ​f​o​r​ ​t​r​a​c​k​i​n​g​ ​t​i​m​e​ ​o​f​ ​y​o​u​r​ ​c​o​d​i​n​g​ ​s​e​s​s​i​o​n​s​.​ ​ ​ ​ ​S​h​o​w​ ​t​h​e​ ​w​o​r​l​d​ ​h​o​w​ ​d​e​d​i​c​a​t​e​d​ ​y​o​u​ ​a​r​e​ ​t​o​ ​y​o​u​r​ ​p​r​o​j​e​c​t​s​!
+		 */
+		hero: string
+	}
 	navbar: {
 		/**
 		 * A​c​c​o​u​n​t
@@ -619,6 +665,76 @@ type RootTranslation = {
 		 * Y​e​s
 		 */
 		yes: string
+	}
+	registrationPage: {
+		/**
+		 * I​n​v​a​l​i​d​ ​c​r​e​d​e​n​t​i​a​l​s
+		 */
+		invalidCredentials: string
+		/**
+		 * P​a​s​s​w​o​r​d
+		 */
+		password: string
+		/**
+		 * C​o​n​f​i​r​m​ ​p​a​s​s​w​o​r​d
+		 */
+		passwordConfirm: string
+		/**
+		 * R​e​g​i​s​t​e​r
+		 */
+		registerButton: string
+		/**
+		 * U​s​e​r​n​a​m​e
+		 */
+		username: string
+		validation: {
+			password: {
+				/**
+				 * P​a​s​s​w​o​r​d​ ​c​a​n​ ​n​o​t​ ​b​e​ ​m​o​r​e​ ​t​h​a​n​ ​{​m​a​x​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+				 * @param {number} max
+				 */
+				max: RequiredParams<'max'>
+				/**
+				 * P​a​s​s​w​o​r​d​ ​m​u​s​t​ ​b​e​ ​a​t​ ​l​e​a​s​t​ ​{​m​i​n​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+				 * @param {number} min
+				 */
+				min: RequiredParams<'min'>
+				/**
+				 * P​a​s​s​w​o​r​d​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+			}
+			passwordConfirm: {
+				/**
+				 * P​a​s​s​w​o​r​d​s​ ​m​u​s​t​ ​m​a​t​c​h
+				 */
+				noMatch: string
+				/**
+				 * P​a​s​s​w​o​r​d​ ​c​o​n​f​i​r​m​a​t​i​o​n​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+			}
+			username: {
+				/**
+				 * U​s​e​r​n​a​m​e​ ​c​a​n​ ​n​o​t​ ​b​e​ ​m​o​r​e​ ​t​h​a​n​ ​{​m​a​x​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+				 * @param {number} max
+				 */
+				max: RequiredParams<'max'>
+				/**
+				 * U​s​e​r​n​a​m​e​ ​m​u​s​t​ ​b​e​ ​a​t​ ​l​e​a​s​t​ ​{​m​i​n​}​ ​c​h​a​r​a​c​t​e​r​s​ ​l​o​n​g
+				 * @param {number} min
+				 */
+				min: RequiredParams<'min'>
+				/**
+				 * U​s​e​r​n​a​m​e​ ​m​u​s​t​ ​o​n​l​y​ ​c​o​n​t​a​i​n​ ​a​l​p​h​a​n​u​m​e​r​i​c​ ​c​h​a​r​a​c​t​e​r​s
+				 */
+				regex: string
+				/**
+				 * U​s​e​r​n​a​m​e​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+			}
+		}
 	}
 	theme: {
 		/**
@@ -1015,6 +1131,52 @@ export type TranslationFunctions = {
 		 */
 		yourPosition: () => LocalizedString
 	}
+	loginPage: {
+		/**
+		 * Invalid credentials
+		 */
+		invalidCredentials: () => LocalizedString
+		/**
+		 * Log in
+		 */
+		loginButton: () => LocalizedString
+		/**
+		 * Password
+		 */
+		password: () => LocalizedString
+		/**
+		 * Login
+		 */
+		title: () => LocalizedString
+		/**
+		 * Username
+		 */
+		username: () => LocalizedString
+		validation: {
+			password: {
+				/**
+				 * Password is required
+				 */
+				required: () => LocalizedString
+			}
+			username: {
+				/**
+				 * Username is required
+				 */
+				required: () => LocalizedString
+			}
+		}
+	}
+	mainPage: {
+		/**
+		 * Download now for your favorite editor
+		 */
+		download: () => LocalizedString
+		/**
+		 * The ultimate tool for tracking time of your coding sessions.    Show the world how dedicated you are to your projects!
+		 */
+		hero: () => LocalizedString
+	}
 	navbar: {
 		/**
 		 * Account
@@ -1230,6 +1392,72 @@ export type TranslationFunctions = {
 		 * Yes
 		 */
 		yes: () => LocalizedString
+	}
+	registrationPage: {
+		/**
+		 * Invalid credentials
+		 */
+		invalidCredentials: () => LocalizedString
+		/**
+		 * Password
+		 */
+		password: () => LocalizedString
+		/**
+		 * Confirm password
+		 */
+		passwordConfirm: () => LocalizedString
+		/**
+		 * Register
+		 */
+		registerButton: () => LocalizedString
+		/**
+		 * Username
+		 */
+		username: () => LocalizedString
+		validation: {
+			password: {
+				/**
+				 * Password can not be more than {max} characters long
+				 */
+				max: (arg: { max: number }) => LocalizedString
+				/**
+				 * Password must be at least {min} characters long
+				 */
+				min: (arg: { min: number }) => LocalizedString
+				/**
+				 * Password is required
+				 */
+				required: () => LocalizedString
+			}
+			passwordConfirm: {
+				/**
+				 * Passwords must match
+				 */
+				noMatch: () => LocalizedString
+				/**
+				 * Password confirmation is required
+				 */
+				required: () => LocalizedString
+			}
+			username: {
+				/**
+				 * Username can not be more than {max} characters long
+				 */
+				max: (arg: { max: number }) => LocalizedString
+				/**
+				 * Username must be at least {min} characters long
+				 */
+				min: (arg: { min: number }) => LocalizedString
+				/**
+				 * Username must only contain alphanumeric characters
+				 */
+				regex: () => LocalizedString
+				/**
+				 * Username is required
+				 */
+				required: () => LocalizedString
+			}
+		}
 	}
 	theme: {
 		/**

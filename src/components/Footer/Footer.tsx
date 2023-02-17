@@ -1,6 +1,7 @@
-import { createStyles, Text, Grid, Anchor } from "@mantine/core";
+import { createStyles, Text, Anchor } from "@mantine/core";
 import { useI18nContext } from "../../i18n/i18n-react";
 import { ReactComponent as TestausserveriLogo } from "../../images/testausserveri.svg";
+import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
 
 const useStyles = createStyles(theme => ({
   container: {
@@ -16,21 +17,17 @@ const useStyles = createStyles(theme => ({
   },
   line: {
     width: "100%",
-    color: theme.colorScheme === "dark" ? "#333" : "#ddd"
+    color: theme.colorScheme === "dark" ? "#333" : "#ddd",
+    marginBlockEnd: "3rem"
   },
-  grid: {
-    "@media (max-width: 495px)": {
-      flexDirection: "column"
-    }
-  },
-  gridItem: {
-    "@media (max-width: 495px)": {
-      minWidth: "100%"
-    }
-  },
-  rightAlign: {
+  rightSection: {
+    display: "inline-flex",
+    gap: 8,
+    flexDirection: "column",
+    alignItems: "flex-end",
     textAlign: "right",
-    "@media (max-width: 495px)": {
+    "@media (max-width: 550px)": {
+      alignItems: "flex-start",
       textAlign: "left"
     }
   },
@@ -41,6 +38,14 @@ const useStyles = createStyles(theme => ({
     ":hover": {
       opacity: "1"
     }
+  },
+  content: {
+    display: "flex",
+    justifyContent: "space-between",
+    gap: 32,
+    "@media (max-width: 550px)": {
+      flexDirection: "column"
+    }
   }
 }));
 
@@ -49,35 +54,31 @@ export const Footer = () => {
 
   const { LL } = useI18nContext();
 
-  return <>
-    <div className={classes.container}>
-      <hr className={classes.line} />
-      <Grid justify="space-between" mt="40px" className={classes.grid}>
-        <Grid.Col span={4} className={classes.gridItem}>
-          <a href="https://testausserveri.fi">
-            <TestausserveriLogo
-              className={classes.bwLogo}
-              height={90}
-              width={155}
-            />
-          </a>
-          <Text>{LL.footer.supportedBy()}</Text>
-        </Grid.Col>
-        <Grid.Col
-          span={7}
-          sx={{ display: "flex", gap: 5, flexDirection: "column" }}
-          className={`${classes.gridItem} ${classes.rightAlign}`}
-        >
-          <Text>
-            ❤️ {LL.footer.authors.suffix()}
-            <Anchor href="https://github.com/orgs/Testaustime/people">{LL.footer.authors.core()}</Anchor>
-            {LL.footer.authors.rest()}
-          </Text>
-          <Text>{LL.footer.copyright({ year: new Date().getFullYear() })}</Text>
-          <Text><i>{LL.footer.license()}</i></Text>
-          <Text><Anchor href="https://github.com/Testaustime">{LL.footer.source()}</Anchor></Text>
-        </Grid.Col>
-      </Grid>
+  return <div className={classes.container}>
+    <hr className={classes.line} />
+    <div className={classes.content}>
+      <div>
+        <a href="https://testausserveri.fi">
+          <TestausserveriLogo
+            className={classes.bwLogo}
+            height={90}
+            width={155}
+          />
+        </a>
+        <Text>{LL.footer.supportedBy()}</Text>
+      </div>
+      <div className={classes.rightSection}>
+        <Text>
+          ❤️ {LL.footer.authors.suffix()}
+          <Anchor href="https://github.com/orgs/Testaustime/people">{LL.footer.authors.core()}</Anchor>
+          {LL.footer.authors.rest()}
+        </Text>
+        <Text>{LL.footer.copyright({ year: new Date().getFullYear() })}</Text>
+        <Text>
+          <i>{LL.footer.license()}</i> <Anchor href="https://github.com/Testaustime">{LL.footer.source()}</Anchor>
+        </Text>
+        <LanguageSelector type="dropdown" showLabel={false} size="sm" />
+      </div>
     </div>
-  </>;
+  </div>;
 };

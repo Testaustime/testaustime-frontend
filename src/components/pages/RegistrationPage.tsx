@@ -7,14 +7,16 @@ import { useState } from "react";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { showNotification } from "@mantine/notifications";
+import { useI18nContext } from "../../i18n/i18n-react";
 
 export const RegistrationPage = () => {
   const { register } = useAuthentication();
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
+  const { LL } = useI18nContext();
 
   return <div>
-    <Title order={1} mb={20}>Register</Title>
+    <Title order={1} mb={20}>{LL.navbar.register()}</Title>
     <Formik
       initialValues={{
         username: "",
@@ -23,17 +25,17 @@ export const RegistrationPage = () => {
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string()
-          .required("Username is required")
-          .min(2, "Username must be at least 2 characters long")
-          .max(32, "Username can not be more than 32 characters long")
-          .matches(/^[a-zA-Z0-9]*$/, "Username must only contain alphanumeric characters"),
+          .required(LL.registrationPage.validation.username.required())
+          .min(2, LL.registrationPage.validation.username.min({ min: 2 }))
+          .max(32, LL.registrationPage.validation.username.max({ max: 32 }))
+          .matches(/^[a-zA-Z0-9]*$/, LL.registrationPage.validation.username.regex()),
         password: Yup.string()
-          .required("Password is required")
-          .min(8, "Password must be at least 8 characters long")
-          .max(128, "Password can not be more than 128 characters long"),
+          .required(LL.registrationPage.validation.password.required())
+          .min(8, LL.registrationPage.validation.password.min({ min: 8 }))
+          .max(128, LL.registrationPage.validation.password.max({ max: 128 })),
         passwordConfirmation: Yup.string()
-          .required("Password confirmation is required")
-          .oneOf([Yup.ref("password"), null], "Passwords must match")
+          .required(LL.registrationPage.validation.passwordConfirm.required())
+          .oneOf([Yup.ref("password")], LL.registrationPage.validation.passwordConfirm.noMatch())
       })}
       onSubmit={values => {
         setVisible(true);
@@ -41,18 +43,20 @@ export const RegistrationPage = () => {
           .then(() => navigate("/"))
           .catch(() => {
             showNotification({
-              title: "Error",
+              title: LL.error(),
               color: "red",
-              message: "Invalid credentials"
+              message: LL.registrationPage.invalidCredentials()
             });
             setVisible(false);
           });
       }}>
       {() => <Form>
-        <FormikTextInput name="username" label="Username" />
-        <FormikPasswordInput name="password" label="Password" mt={15} />
-        <FormikPasswordInput name="passwordConfirmation" label="Confirm password" mt={15} />
-        <Button mt={20} type="submit"><LoadingOverlay visible={visible} />Register</Button>
+        <FormikTextInput name="username" label={LL.registrationPage.username()} />
+        <FormikPasswordInput name="password" label={LL.registrationPage.password()} mt={15} />
+        <FormikPasswordInput name="passwordConfirmation" label={LL.registrationPage.passwordConfirm()} mt={15} />
+        <Button mt={20} type="submit">
+          <LoadingOverlay visible={visible} />{LL.registrationPage.registerButton()}
+        </Button>
       </Form>}
     </Formik>
   </div>;

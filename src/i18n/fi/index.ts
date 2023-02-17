@@ -116,6 +116,26 @@ const fi: Translation = {
     },
     yourPosition: "Sija"
   },
+  loginPage: {
+    invalidCredentials: "Virheelliset tunnukset",
+    loginButton: "Kirjaudu",
+    password: "Salasana",
+    title: "Kirjautuminen",
+    username: "Käyttäjänimi",
+    validation: {
+      password: {
+        required: "Salasana vaaditaan"
+      },
+      username: {
+        required: "Käyttäjänimi vaaditaan"
+      }
+    }
+  },
+  mainPage: {
+    download: "Lataa nyt suosikkieditorillesi!",
+    hero: "Paras työkalu ohjelmointituokioidesi ajankäytön seuraamiseen.\
+    Näytä maailmalle, kuinka omistautunut olet projekteillesi!"
+  },
   navbar: {
     account: "Tili",
     dashboard: "Etusivu",
@@ -191,6 +211,30 @@ const fi: Translation = {
     cancel: "Peruuta",
     confirmation: "Oletko varma?",
     yes: "Kyllä"
+  },
+  registrationPage: {
+    invalidCredentials: "Virheelliset tunnukset",
+    password: "Salasana",
+    passwordConfirm: "Vahvista salasana",
+    registerButton: "Rekisteröidy",
+    username: "Käyttäjänimi",
+    validation: {
+      password: {
+        max: "Salasana voi olla enintään {max} merkkiä pitkä",
+        min: "Salasanan tulee olla vähintään {min} merkkiä pitkä",
+        required: "Salasana vaaditaan"
+      },
+      passwordConfirm: {
+        noMatch: "Salasanat eivät täsmää",
+        required: "Salasanavahvistus vaaditaan"
+      },
+      username: {
+        max: "Käyttäjänimi voi olla enintään {max} merkkiä pitkä",
+        min: "Käyttäjänimen tulee olla vähintään {min} merkkiä pitkä",
+        regex: "Käyttäjänimi voi sisältää vain alphanumeerisia merkkejä",
+        required: "Käyttäjänimi vaaditaan"
+      }
+    }
   },
   theme: {
     dark: "Tumma teema",

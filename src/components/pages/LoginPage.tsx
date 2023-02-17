@@ -4,6 +4,7 @@ import { useAuthentication } from "../../hooks/useAuthentication";
 import { useSearchParams } from "react-router-dom";
 import { showNotification } from "@mantine/notifications";
 import LoginForm from "../LoginForm";
+import { useI18nContext } from "../../i18n/i18n-react";
 
 const useStyles = createStyles(() => ({
   loginBox: {
@@ -21,11 +22,11 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const queryParams = useSearchParams();
   const unsafeRedirect = queryParams[0].get("redirect") || "/";
-
+  const { LL } = useI18nContext();
   const { classes } = useStyles();
 
   return <Group className={classes.loginBox}>
-    <Title order={1} mb={20}>Login</Title>
+    <Title order={1} mb={20}>{LL.loginPage.title()}</Title>
     <LoginForm
       onLogin={async (username, password) => {
         try {
@@ -34,9 +35,9 @@ export const LoginPage = () => {
         }
         catch (e) {
           showNotification({
-            title: "Error",
+            title: LL.error(),
             color: "red",
-            message: "Invalid credentials"
+            message: LL.loginPage.invalidCredentials()
           });
         }
       }} />
