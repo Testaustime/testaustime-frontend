@@ -16,7 +16,7 @@ export const LanguageSelector = ({
   showLabel = true,
   size
 }: LanguageSelectorProps) => {
-  const { LL } = useI18nContext();
+  const { LL, locale } = useI18nContext();
   const { language, setLanguage } = useSettings();
 
   const data = [
@@ -28,12 +28,12 @@ export const LanguageSelector = ({
   const Component = type === "segmented" ? <SegmentedControl
     size={size}
     data={data}
-    value={language}
+    value={language || locale}
     onChange={onChange}
   /> : <Select
     size={size}
     data={data}
-    value={language}
+    value={language || locale}
     onChange={onChange}
     style={{ width: 150 }}
   />;
