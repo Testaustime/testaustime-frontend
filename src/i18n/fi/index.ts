@@ -116,6 +116,26 @@ const fi: Translation = {
     },
     yourPosition: "Sija"
   },
+  loginPage: {
+    invalidCredentials: "Virheelliset tunnukset",
+    loginButton: "Kirjaudu",
+    password: "Salasana",
+    title: "Kirjautuminen",
+    username: "Käyttäjänimi",
+    validation: {
+      password: {
+        required: "Salasana vaaditaan"
+      },
+      username: {
+        required: "Käyttäjänimi vaaditaan"
+      }
+    }
+  },
+  mainPage: {
+    download: "Lataa nyt suosikkieditorillesi!",
+    hero: "Paras työkalu ohjelmointituokioidesi ajankäytön seuraamiseen.\
+    Näytä maailmalle, kuinka omistautunut olet projekteillesi"
+  },
   navbar: {
     account: "Tili",
     dashboard: "Etusivu",

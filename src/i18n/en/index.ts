@@ -116,6 +116,26 @@ const en: BaseTranslation = {
     },
     yourPosition: "Your position"
   },
+  loginPage: {
+    invalidCredentials: "Invalid credentials",
+    loginButton: "Log in",
+    password: "Password",
+    title: "Login",
+    username: "Username",
+    validation: {
+      password: {
+        required: "Password is required"
+      },
+      username: {
+        required: "Username is required"
+      }
+    }
+  },
+  mainPage: {
+    download: "Download now for your favorite editor",
+    hero: "The ultimate tool for tracking time of your coding sessions.\
+    Show the world how dedicated you are to your projects!"
+  },
   navbar: {
     account: "Account",
     dashboard: "Dashboard",

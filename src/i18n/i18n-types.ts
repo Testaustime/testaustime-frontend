@@ -398,6 +398,52 @@ type RootTranslation = {
 		 */
 		yourPosition: string
 	}
+	loginPage: {
+		/**
+		 * I​n​v​a​l​i​d​ ​c​r​e​d​e​n​t​i​a​l​s
+		 */
+		invalidCredentials: string
+		/**
+		 * L​o​g​ ​i​n
+		 */
+		loginButton: string
+		/**
+		 * P​a​s​s​w​o​r​d
+		 */
+		password: string
+		/**
+		 * L​o​g​i​n
+		 */
+		title: string
+		/**
+		 * U​s​e​r​n​a​m​e
+		 */
+		username: string
+		validation: {
+			password: {
+				/**
+				 * P​a​s​s​w​o​r​d​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+			}
+			username: {
+				/**
+				 * U​s​e​r​n​a​m​e​ ​i​s​ ​r​e​q​u​i​r​e​d
+				 */
+				required: string
+			}
+		}
+	}
+	mainPage: {
+		/**
+		 * D​o​w​n​l​o​a​d​ ​n​o​w​ ​f​o​r​ ​y​o​u​r​ ​f​a​v​o​r​i​t​e​ ​e​d​i​t​o​r
+		 */
+		download: string
+		/**
+		 * T​h​e​ ​u​l​t​i​m​a​t​e​ ​t​o​o​l​ ​f​o​r​ ​t​r​a​c​k​i​n​g​ ​t​i​m​e​ ​o​f​ ​y​o​u​r​ ​c​o​d​i​n​g​ ​s​e​s​s​i​o​n​s​.​ ​ ​ ​ ​S​h​o​w​ ​t​h​e​ ​w​o​r​l​d​ ​h​o​w​ ​d​e​d​i​c​a​t​e​d​ ​y​o​u​ ​a​r​e​ ​t​o​ ​y​o​u​r​ ​p​r​o​j​e​c​t​s​!
+		 */
+		hero: string
+	}
 	navbar: {
 		/**
 		 * A​c​c​o​u​n​t
@@ -1084,6 +1130,52 @@ export type TranslationFunctions = {
 		 * Your position
 		 */
 		yourPosition: () => LocalizedString
+	}
+	loginPage: {
+		/**
+		 * Invalid credentials
+		 */
+		invalidCredentials: () => LocalizedString
+		/**
+		 * Log in
+		 */
+		loginButton: () => LocalizedString
+		/**
+		 * Password
+		 */
+		password: () => LocalizedString
+		/**
+		 * Login
+		 */
+		title: () => LocalizedString
+		/**
+		 * Username
+		 */
+		username: () => LocalizedString
+		validation: {
+			password: {
+				/**
+				 * Password is required
+				 */
+				required: () => LocalizedString
+			}
+			username: {
+				/**
+				 * Username is required
+				 */
+				required: () => LocalizedString
+			}
+		}
+	}
+	mainPage: {
+		/**
+		 * Download now for your favorite editor
+		 */
+		download: () => LocalizedString
+		/**
+		 * The ultimate tool for tracking time of your coding sessions.    Show the world how dedicated you are to your projects!
+		 */
+		hero: () => LocalizedString
 	}
 	navbar: {
 		/**

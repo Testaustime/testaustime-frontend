@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { Dashboard } from "../Dashboard";
+import { useI18nContext } from "../../i18n/i18n-react";
 
 const useStyles = createStyles(theme => ({
   downloadButton: {
@@ -58,16 +59,14 @@ const useStyles = createStyles(theme => ({
 export const MainPage = () => {
   const { isLoggedIn } = useAuthentication();
   const { classes } = useStyles();
+  const { LL } = useI18nContext();
 
   return <div className={!isLoggedIn ? classes.heroContainer : classes.dashboardContainer}>
     {isLoggedIn ? <Dashboard username="@me" isFrontPage={true} /> : <>
-      <Text mb={20} className={classes.heroText}>
-        The ultimate tool for tracking time of your coding sessions.
-        Show the world how dedicated you are to your projects!
-      </Text>
+      <Text mb={20} className={classes.heroText}>{LL.mainPage.hero()}</Text>
       <Anchor className={classes.downloadButton} component={Link} to="/extensions">
         <DownloadIcon height={30} width={30} className={classes.downloadIcon} />
-        Download now for your favorite editor
+        {LL.mainPage.download()}
       </Anchor>
     </>}
   </div>;
