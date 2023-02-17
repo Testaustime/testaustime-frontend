@@ -134,7 +134,7 @@ const fi: Translation = {
   mainPage: {
     download: "Lataa nyt suosikkieditorillesi!",
     hero: "Paras työkalu ohjelmointituokioidesi ajankäytön seuraamiseen.\
-    Näytä maailmalle, kuinka omistautunut olet projekteillesi"
+    Näytä maailmalle, kuinka omistautunut olet projekteillesi!"
   },
   navbar: {
     account: "Tili",
