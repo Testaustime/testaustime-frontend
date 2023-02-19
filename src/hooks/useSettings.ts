@@ -23,7 +23,7 @@ export const useCreateSettings = () => {
   });
 
   const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+    setColorScheme(value || (!colorScheme || colorScheme === "dark" ? "light" : "dark"));
 
   const preferredColorScheme = useColorScheme();
   const finalColorScheme = (colorScheme === undefined || colorScheme === "none")
