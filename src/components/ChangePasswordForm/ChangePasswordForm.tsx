@@ -32,7 +32,7 @@ export const ChangePasswordForm = ({ onChangePassword }: ChangePasswordFormProps
         .max(128, LL.profile.changePassword.new.tooLong({ max: 128 })),
       newPasswordConfirmation: Yup.string()
         .required(LL.profile.changePassword.confirm.required())
-        .oneOf([Yup.ref("newPassword"), null], LL.profile.changePassword.confirm.noMatch())
+        .oneOf([Yup.ref("newPassword")], LL.profile.changePassword.confirm.noMatch())
     })}
     onSubmit={async (values, helpers) => {
       const result = await onChangePassword(values.oldPassword, values.newPassword);

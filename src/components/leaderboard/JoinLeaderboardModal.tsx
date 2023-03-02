@@ -53,13 +53,13 @@ export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardMod
           name="leaderboardCode"
           label={LL.leaderboards.join.leaderboardCode()}
           placeholder={placeholderLeaderboardInviteCode}
-          styles={theme => ({
-            invalid: {
-              "::placeholder": {
-                color: theme.fn.rgba(theme.colors.red[5], 0.4)
+          styles={{
+            input: {
+              "&[data-invalid]::placeholder": {
+                opacity: 0.5
               }
             }
-          })}
+          }}
         />
         <Group position="right" mt="md">
           <Button
