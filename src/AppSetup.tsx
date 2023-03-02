@@ -3,7 +3,7 @@ import {
   MantineProvider
 } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
-import { NotificationsProvider } from "@mantine/notifications";
+import { Notifications } from "@mantine/notifications";
 import { useEffect } from "react";
 import { useAuthentication } from "./hooks/useAuthentication";
 import { ModalsProvider } from "@mantine/modals";
@@ -73,7 +73,7 @@ const AppSetupInner = ({ children }: { children?: React.ReactNode }) => {
             }
           },
           breakpoints: {
-            md: 860
+            md: "53.75em"
           }
         }}
       >
@@ -82,11 +82,10 @@ const AppSetupInner = ({ children }: { children?: React.ReactNode }) => {
             locale={(settings.language || detectedLanguage) ?? "en"}
             key={(settings.language || detectedLanguage) ?? "en"}
           >
-            <NotificationsProvider>
-              <ModalsProvider>
-                {children}
-              </ModalsProvider>
-            </NotificationsProvider>
+            <Notifications />
+            <ModalsProvider>
+              {children}
+            </ModalsProvider>
           </TypesafeI18n>
         </SettingsContext.Provider>
       </MantineProvider>

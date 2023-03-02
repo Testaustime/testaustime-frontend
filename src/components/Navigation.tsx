@@ -106,9 +106,11 @@ export const Navigation = ({
       <Menu
         opened={opened}
         id="dropdown-menu"
-        transition={"fade"}
+        transitionProps={{
+          transition: "fade",
+          duration: 150
+        }}
         position={"left-end"}
-        transitionDuration={150}
       >
         <Menu.Target>
           <Burger

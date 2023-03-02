@@ -51,13 +51,13 @@ export const AddFriendForm = () => {
             label={LL.friends.friendCode()}
             placeholder={placeholderFriendCode}
             sx={{ flex: 1 }}
-            styles={theme => ({
-              invalid: {
-                "::placeholder": {
-                  color: theme.fn.rgba(theme.colors.red[5], 0.4)
+            styles={{
+              input: {
+                "&[data-invalid]::placeholder": {
+                  opacity: 0.5
                 }
               }
-            })}
+            }}
           />
           <Button type="submit" mt={27.5}>{LL.friends.add()}</Button>
         </Group>
