@@ -192,6 +192,15 @@ const fi: Translation = {
       },
       title: "Vaihda salasana"
     },
+    deleteAccount: {
+      button: "Poista tili",
+      modal: {
+        button: "Poista",
+        text: "Kirjoita salasanasi vahvistaaksesi tilisi poistaminen. Tätä toimintoa ei voi peruuttaa.",
+        title: "Käyttäjän poistaminen"
+      },
+      title: "Poista tili"
+    },
     friendCode: {
       title: "Kaverikoodi",
       tooltip: "Tätä koodia käytetään, kun haluat jakaa dataa kavereillesi."

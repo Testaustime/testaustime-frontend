@@ -605,6 +605,30 @@ type RootTranslation = {
 			 */
 			title: string
 		}
+		deleteAccount: {
+			/**
+			 * D​e​l​e​t​e​ ​a​c​c​o​u​n​t
+			 */
+			button: string
+			modal: {
+				/**
+				 * D​e​l​e​t​e
+				 */
+				button: string
+				/**
+				 * T​y​p​e​ ​y​o​u​r​ ​p​a​s​s​w​o​r​d​ ​t​o​ ​c​o​n​f​i​r​m​ ​t​h​e​ ​d​e​l​e​t​i​o​n​.​ ​T​h​i​s​ ​a​c​t​i​o​n​ ​c​a​n​ ​n​o​t​ ​b​e​ ​u​n​d​o​n​e​.
+				 */
+				text: string
+				/**
+				 * D​e​l​e​t​e​ ​a​c​c​o​u​n​t
+				 */
+				title: string
+			}
+			/**
+			 * D​e​l​e​t​e​ ​a​c​c​o​u​n​t
+			 */
+			title: string
+		}
 		friendCode: {
 			/**
 			 * F​r​i​e​n​d​ ​c​o​d​e
@@ -1331,6 +1355,30 @@ export type TranslationFunctions = {
 			}
 			/**
 			 * Change password
+			 */
+			title: () => LocalizedString
+		}
+		deleteAccount: {
+			/**
+			 * Delete account
+			 */
+			button: () => LocalizedString
+			modal: {
+				/**
+				 * Delete
+				 */
+				button: () => LocalizedString
+				/**
+				 * Type your password to confirm the deletion. This action can not be undone.
+				 */
+				text: () => LocalizedString
+				/**
+				 * Delete account
+				 */
+				title: () => LocalizedString
+			}
+			/**
+			 * Delete account
 			 */
 			title: () => LocalizedString
 		}

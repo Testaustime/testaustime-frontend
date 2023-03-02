@@ -192,6 +192,15 @@ const en: BaseTranslation = {
       },
       title: "Change password"
     },
+    deleteAccount: {
+      button: "Delete account",
+      modal: {
+        button: "Delete",
+        text: "Type your password to confirm the deletion. This action can not be undone.",
+        title: "Delete account"
+      },
+      title: "Delete account"
+    },
     friendCode: {
       title: "Friend code",
       tooltip: "This code is used for sharing your data with your friends."
