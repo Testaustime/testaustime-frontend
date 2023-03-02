@@ -6,8 +6,9 @@ export const PrivateRoute = ({ children, redirect }: {
   children?: ReactNode,
   redirect?: string
 }) => {
-  const { isLoggedOut } = useAuthentication();
-  if (isLoggedOut) {
+  const { isLoggedIn } = useAuthentication();
+
+  if (!isLoggedIn) {
     const fullUrl = "/login" + (redirect ? "?redirect=" + redirect : "");
     return <Navigate to={fullUrl} replace />;
   }
