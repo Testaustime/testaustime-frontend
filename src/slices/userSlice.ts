@@ -7,8 +7,7 @@ export interface UsersSlice {
   username?: string,
   registrationTime?: string,
   friendCode?: string,
-  friends: ApiFriendsResponseItem[],
-  loginInitialized: boolean
+  friends: ApiFriendsResponseItem[]
 }
 
 const initialState: UsersSlice = {
@@ -16,8 +15,7 @@ const initialState: UsersSlice = {
   username: undefined,
   registrationTime: undefined,
   friendCode: undefined,
-  friends: [],
-  loginInitialized: false
+  friends: []
 };
 
 export const usersSlice = createSlice({
@@ -38,9 +36,6 @@ export const usersSlice = createSlice({
     },
     setFriends: (state, action: PayloadAction<ApiFriendsResponseItem[]>) => {
       state.friends = action.payload;
-    },
-    setLoginInitialized: (state, action: PayloadAction<boolean>) => {
-      state.loginInitialized = action.payload;
     }
   }
 });
@@ -50,7 +45,6 @@ export const {
   setUsername,
   setRegisterTime,
   setFriendCode,
-  setFriends,
-  setLoginInitialized
+  setFriends
 } = usersSlice.actions;
 export default usersSlice.reducer;

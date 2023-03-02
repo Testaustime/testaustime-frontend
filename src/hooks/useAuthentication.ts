@@ -2,10 +2,7 @@ import axios, { isAxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { authTokenLocalStorageKey } from "../utils/constants";
 import { getErrorMessage } from "../lib/errorHandling/errorHandler";
-import {
-  setAuthToken,
-  setLoginInitialized
-} from "../slices/userSlice";
+import { setAuthToken } from "../slices/userSlice";
 import { RootState } from "../store";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
@@ -59,7 +56,6 @@ export interface UseAuthenticationResult {
   token?: string,
   setToken: (newToken: string) => void,
   isLoggedIn: boolean,
-  isLoggedOut: boolean,
   regenerateToken: () => Promise<string>,
   regenerateFriendCode: () => Promise<string>,
   register: (username: string, password: string) => Promise<string>,
@@ -70,7 +66,6 @@ export interface UseAuthenticationResult {
   username?: string,
   friendCode?: string,
   refetchUser: () => Promise<void>,
-  loginInitialized: boolean,
   changePassword: (oldPassword: string, newPassword: string) => Promise<PasswordChangeResult>
 }
 
@@ -80,7 +75,6 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const token = useSelector<RootState, string | undefined>(state => state.users.authToken)
     ?? localStorage.getItem(authTokenLocalStorageKey) ?? undefined;
-  const loginInitialized = useSelector<RootState, boolean>(state => state.users.loginInitialized);
 
   const setToken = (newToken: string) => {
     dispatch(setAuthToken(newToken));
@@ -92,7 +86,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
       const { data } = await axios.get<ApiUsersUserResponse>("/users/@me",
         { headers: { Authorization: `Bearer ${token ?? ""}` } }
       );
-      dispatch(setLoginInitialized(true));
+
       return {
         username: data.username,
         friendCode: data.friend_code,
@@ -102,7 +96,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
     }
     catch (error) {
       queryClient.setQueryData("fetchUser", undefined);
-      dispatch(setLoginInitialized(true));
+
       logOut();
       return undefined;
     }
@@ -117,10 +111,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
       );
       const newToken = data.token;
       setToken(newToken);
-      dispatch(setLoginInitialized(true));
       return newToken;
     } catch (error) {
-      dispatch(setLoginInitialized(true));
       throw getErrorMessage(error);
     }
   });
@@ -138,10 +130,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
           friendCode: newFriendCode
         });
       });
-      dispatch(setLoginInitialized(true));
       return newFriendCode;
     } catch (error) {
-      dispatch(setLoginInitialized(true));
       throw getErrorMessage(error);
     }
   });
@@ -153,7 +143,6 @@ export const useAuthentication = (): UseAuthenticationResult => {
       const { data } = await axios.post<ApiAuthRegisterResponse>("/auth/register", { username, password });
       const authToken = data.auth_token;
       setToken(authToken);
-      dispatch(setLoginInitialized(true));
       queryClient.setQueryData("fetchUser", {
         username: data.username,
         friendCode: data.friend_code,
@@ -162,7 +151,6 @@ export const useAuthentication = (): UseAuthenticationResult => {
       });
       return authToken;
     } catch (error) {
-      dispatch(setLoginInitialized(true));
       throw getErrorMessage(error);
     }
   });
@@ -180,10 +168,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
         registrationTime: new Date(registration_time),
         isPublic: is_public
       });
-      dispatch(setLoginInitialized(true));
       return auth_token;
     } catch (error) {
-      dispatch(setLoginInitialized(true));
       throw getErrorMessage(error);
     }
   });
@@ -193,7 +179,6 @@ export const useAuthentication = (): UseAuthenticationResult => {
     dispatch(setAuthToken(undefined));
     queryClient.setQueryData("fetchUser", undefined);
     queryClient.setQueryData("friends", undefined);
-    dispatch(setLoginInitialized(true));
   };
 
   const { mutateAsync: changePassword } = useMutation(async (
@@ -234,9 +219,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
     friendCode: userData?.friendCode,
     isPublic: userData?.isPublic,
     refetchUser: async () => { await refetchUser(); },
-    loginInitialized,
-    isLoggedIn: Boolean(loginInitialized && !!username),
-    isLoggedOut: Boolean(loginInitialized && !username),
+    isLoggedIn: !!token,
     changePassword: (oldPassword: string, newPassword: string) => changePassword({ oldPassword, newPassword })
   };
 };
