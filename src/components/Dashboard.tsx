@@ -4,7 +4,7 @@ import TopLanguages from "./TopLanguages";
 import { DayRange, getDayCount, prettyDuration } from "../utils/dateUtils";
 import { TopProjects } from "./TopProjects/TopProjects";
 import { sumBy } from "../utils/arrayUtils";
-import { DailyCodingTimeChart } from "./DailyCodingTimeChart";
+import DailyCodingTimeChart, { transformData as transformDailyData } from "./DailyCodingTimeChart";
 import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
@@ -121,11 +121,9 @@ export const Dashboard = ({ username, isFrontPage }: DashboardProps) => {
         <>
           <Group className={classes.dataCard}>
             <Title mt={10} order={2}>{LL.dashboard.timePerDay()}</Title>
-            <DailyCodingTimeChart
-              entries={entries}
-              dayCount={dayCount}
-              className={classes.dailyCodingTimeChart}
-            />
+            {entries.length > 0 ?
+              <DailyCodingTimeChart data={transformDailyData(entries, dayCount)} /> :
+              <Text>{LL.dashboard.noData.title()}</Text>}
             <Text mt={15} mb={15}>
               {LL.dashboard.totalTime({
                 days: dayCount,

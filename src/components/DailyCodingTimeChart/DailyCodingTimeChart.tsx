@@ -1,9 +1,8 @@
-import { Text } from "@mantine/core";
 import { format } from "date-fns";
 import { addDays, startOfDay } from "date-fns/esm";
-import { sumBy } from "../utils/arrayUtils";
-import { calculateTickValues } from "../utils/chartUtils";
-import { useSettings } from "../hooks/useSettings";
+import { sumBy } from "../../utils/arrayUtils";
+import { calculateTickValues } from "../../utils/chartUtils";
+import { useSettings } from "../../hooks/useSettings";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -16,7 +15,7 @@ import {
   LineElement,
   PointElement
 } from "chart.js";
-import { prettyDuration } from "../utils/dateUtils";
+import { prettyDuration } from "../../utils/dateUtils";
 
 ChartJS.register(
   CategoryScale,
@@ -30,27 +29,16 @@ ChartJS.register(
 );
 
 export interface DailyCodingTimeChartProps {
-  entries: {
-    language?: string,
-    duration: number,
-    id: number,
-    project_name?: string,
-    editor_name?: string,
-    hostname?: string,
-    start_time: Date,
-    dayStart: Date
-  }[],
-  dayCount: number,
-  className: string
+  data: {
+    date: Date,
+    duration: number
+  }[]
 }
 
-export const DailyCodingTimeChart = ({
-  entries,
-  dayCount }: DailyCodingTimeChartProps) => {
-  const { smoothCharts } = useSettings();
-
-  if (entries.length === 0) return <Text>No data</Text>;
-
+export const transformData = (entries: {
+  duration: number,
+  dayStart: Date
+}[], dayCount: number) => {
   const data = Array(dayCount)
     .fill(0)
     .map((_, dayIndex) => {
@@ -63,7 +51,14 @@ export const DailyCodingTimeChart = ({
     })
     .sort((a, b) => a.date.getTime() - b.date.getTime());
 
-  const maxDuration = [...data].sort((a, b) => b.duration - a.duration)[0].duration;
+  return data;
+};
+
+export const DailyCodingTimeChart = ({ data: dataRaw }: DailyCodingTimeChartProps) => {
+  const { smoothCharts } = useSettings();
+
+  const data = [...dataRaw].sort((a, b) => a.date.getTime() - b.date.getTime());
+  const maxDuration = Math.max(...data.map(d => d.duration));
   const yticks = calculateTickValues(maxDuration);
 
   return <Line
@@ -83,6 +78,11 @@ export const DailyCodingTimeChart = ({
       },
       scales: {
         y: {
+          min: 0,
+          max: yticks[yticks.length - 1],
+          afterBuildTicks: axis => {
+            axis.ticks = yticks.map(tick => ({ value: tick }));
+          },
           ticks: {
             count: yticks.length,
             stepSize: yticks[1] - yticks[0],
