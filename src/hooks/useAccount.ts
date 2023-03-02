@@ -2,10 +2,12 @@ import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuthentication } from "./useAuthentication";
 import { User } from "./useAuthentication";
+import { useNavigate } from "react-router";
 
 export const useAccount = () => {
-  const { token } = useAuthentication();
+  const { token, logOut, username } = useAuthentication();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { mutateAsync: changeAccountVisibility } =
     useMutation("changeUserVisibility", (visibility: boolean) => axios.post("/account/settings", {
@@ -26,7 +28,26 @@ export const useAccount = () => {
       }
     });
 
+  const { mutateAsync: deleteAccount } = useMutation("deleteAccount",
+    (password: string) => axios.delete("/users/@me/delete", {
+      headers: {
+        Authorization: `Bearer ${token ?? ""}`
+      },
+      data: {
+        username,
+        password
+      }
+    }),
+    {
+      onSuccess: () => {
+        queryClient.removeQueries("fetchUser");
+        logOut();
+        navigate("/");
+      }
+    });
+
   return {
-    changeAccountVisibility: (visibility: boolean) => changeAccountVisibility(visibility)
+    changeAccountVisibility: (visibility: boolean) => changeAccountVisibility(visibility),
+    deleteAccount: (password: string) => deleteAccount(password)
   };
 };

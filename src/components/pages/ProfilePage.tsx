@@ -12,6 +12,8 @@ import ChangePasswordForm from "../ChangePasswordForm";
 import { useAccount } from "../../hooks/useAccount";
 import { showNotification } from "@mantine/notifications";
 import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
+import { useModals } from "@mantine/modals";
+import ConfirmAccountDeletionModal from "../ConfirmAccountDeletionModal";
 
 export const ProfilePage = () => {
   const {
@@ -26,9 +28,25 @@ export const ProfilePage = () => {
   } = useAuthentication();
 
   const { LL } = useI18nContext();
-  const { changeAccountVisibility } = useAccount();
+  const { changeAccountVisibility, deleteAccount } = useAccount();
+
+  const modals = useModals();
 
   if (!registrationTime || !token || !friendCode || !username) return <Text>{LL.profile.notLoggedIn()}</Text>;
+
+  const openDeleteAccountModal = () => {
+    const id = modals.openModal({
+      title: <Title>{LL.profile.deleteAccount.modal.title()}</Title>,
+      size: "xl",
+      children: <ConfirmAccountDeletionModal
+        onCancel={() => modals.closeModal(id)}
+        onConfirm={async password => {
+          await deleteAccount(password);
+          modals.closeModal(id);
+        }}
+      />
+    });
+  };
 
   return <div>
     <Title order={2}>{LL.profile.title()}</Title>
@@ -56,6 +74,16 @@ export const ProfilePage = () => {
             }));
           }}>
           {isPublic ? LL.profile.accountVisibility.makePrivate() : LL.profile.accountVisibility.makePublic()}
+        </ButtonWithConfirmation>
+      </div>
+      <Title order={3}>{LL.profile.deleteAccount.title()}</Title>
+      <div>
+        <ButtonWithConfirmation
+          color={"red"}
+          onClick={() => {
+            openDeleteAccountModal();
+          }}>
+          {LL.profile.deleteAccount.button()}
         </ButtonWithConfirmation>
       </div>
     </Stack>
