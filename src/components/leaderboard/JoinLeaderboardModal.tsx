@@ -5,7 +5,7 @@ import { Group, Button } from "@mantine/core";
 import { Formik, Form } from "formik";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { EnterIcon } from "@radix-ui/react-icons";
-import { useI18nContext } from "../../i18n/i18n-react";
+import { useTranslation } from "react-i18next";
 import { JoinLeaderboardError, useLeaderboards } from "../../hooks/useLeaderboards";
 import { showNotification } from "@mantine/notifications";
 
@@ -16,7 +16,7 @@ interface JoinLeaderboardModalProps {
 
 export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardModalProps) => {
   const [placeholderLeaderboardInviteCode] = useState(generateLeaderboardInviteCode());
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
   const { joinLeaderboard } = useLeaderboards();
 
   return <>
@@ -27,8 +27,8 @@ export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardMod
       validationSchema={Yup.object().shape({
         leaderboardCode: Yup
           .string()
-          .required(LL.leaderboards.join.leaderboardCodeRequired())
-          .matches(/^ttlic_[a-zA-Z0-9]{32}$/, LL.leaderboards.join.leaderboardCodeInvalid())
+          .required(t("leaderboards.join.leaderboardCodeRequired"))
+          .matches(/^ttlic_[a-zA-Z0-9]{32}$/, t("leaderboards.join.leaderboardCodeInvalid"))
       })}
       onSubmit={async values => {
         const result = await joinLeaderboard(values.leaderboardCode);
@@ -37,12 +37,12 @@ export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardMod
         }
         else {
           showNotification({
-            title: LL.error(),
+            title: t("error"),
             color: "red",
             message: {
-              [JoinLeaderboardError.AlreadyMember]: LL.leaderboards.join.alreadyMember(),
-              [JoinLeaderboardError.NotFound]: LL.leaderboards.join.notFound(),
-              [JoinLeaderboardError.UnknownError]: LL.leaderboards.join.genericError()
+              [JoinLeaderboardError.AlreadyMember]: t("leaderboards.join.alreadyMember"),
+              [JoinLeaderboardError.NotFound]: t("leaderboards.join.notFound"),
+              [JoinLeaderboardError.UnknownError]: t("leaderboards.join.genericError")
             }[result]
           });
         }
@@ -51,7 +51,7 @@ export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardMod
       {() => <Form>
         <FormikTextInput
           name="leaderboardCode"
-          label={LL.leaderboards.join.leaderboardCode()}
+          label={t("leaderboards.join.leaderboardCode")}
           placeholder={placeholderLeaderboardInviteCode}
           styles={{
             input: {
@@ -66,7 +66,7 @@ export const JoinLeaderboardModal = ({ initialCode, onJoin }: JoinLeaderboardMod
             type="submit"
             leftIcon={<EnterIcon />}
           >
-            {LL.leaderboards.join.join()}
+            {t("leaderboards.join.join")}
           </Button>
         </Group>
       </Form>}

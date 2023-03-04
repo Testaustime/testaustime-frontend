@@ -9,8 +9,8 @@ import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
 import { useAuthentication } from "../hooks/useAuthentication";
-import { useI18nContext } from "../i18n/i18n-react";
 import { useSettings } from "../hooks/useSettings";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles(theme => ({
   dataCard: {
@@ -65,7 +65,7 @@ export const Dashboard = ({ username, isFrontPage }: DashboardProps) => {
     dayFilter: statisticsRange
   });
 
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
 
   const firstCodingDay = [...entries]
     .sort((a, b) => a.dayStart.getTime() - b.dayStart.getTime())[0]?.start_time ?? new Date(2022, 2, 14);
@@ -79,10 +79,10 @@ export const Dashboard = ({ username, isFrontPage }: DashboardProps) => {
     return acc.includes(name) ? acc : [...acc, name];
   }, []);
 
-  const [prefix, infix, suffix] = LL.dashboard.noData.installPrompt().split("<link>");
+  const [prefix, infix, suffix] = t("dashboard.noData.installPrompt").split("<link>");
 
   if (!authenticatedUsername) {
-    return <div>{LL.dashboard.notLoggedIn()}</div>;
+    return <div>{t("dashboard.notLoggedIn")}</div>;
   }
 
   const isOwnDashboard = username === "@me";
@@ -91,26 +91,26 @@ export const Dashboard = ({ username, isFrontPage }: DashboardProps) => {
     <div style={{ width: "100%" }}>
       {isFrontPage && <>
         <Group style={{ marginBottom: "1rem" }}>
-          <Text>{LL.dashboard.greeting({ username: isOwnDashboard ? authenticatedUsername : username })}</Text>
+          <Text>{t("dashboard.greeting", { username: isOwnDashboard ? authenticatedUsername : username })}</Text>
         </Group>
-        <Title mb={5}>{LL.dashboard.statistics()}</Title>
+        <Title mb={5}>{t("dashboard.statistics")}</Title>
       </>}
       <Group align="end" position="apart" mt={10} mb={30}>
         <MultiSelect
-          label={LL.dashboard.projects()}
+          label={t("dashboard.projects")}
           data={projectNames}
           value={selectedProjects}
           className={classes.multiSelect}
           onChange={selectedProjectNames => setSelectedProjects(selectedProjectNames)}
           clearable
-          placeholder={projectNames.length === 0 ? LL.dashboard.noProjects() : LL.dashboard.projectsFilter()}
+          placeholder={projectNames.length === 0 ? t("dashboard.noProjects") : t("dashboard.projectsFilter")}
           disabled={projectNames.length === 0}
         />
         <SegmentedControl
           data={[
-            { label: LL.dashboard.timeFilters.week(), value: "week" },
-            { label: LL.dashboard.timeFilters.month(), value: "month" },
-            { label: LL.dashboard.timeFilters.all(), value: "all" }
+            { label: t("dashboard.timeFilters.week"), value: "week" },
+            { label: t("dashboard.timeFilters.month"), value: "month" },
+            { label: t("dashboard.timeFilters.all"), value: "all" }
           ]}
           value={statisticsRange}
           onChange={(value: DayRange) => setStatisticsRange(value)}
@@ -120,46 +120,46 @@ export const Dashboard = ({ username, isFrontPage }: DashboardProps) => {
       {entries.length !== 0 ?
         <>
           <Group className={classes.dataCard}>
-            <Title mt={10} order={2}>{LL.dashboard.timePerDay()}</Title>
+            <Title mt={10} order={2}>{t("dashboard.timePerDay")}</Title>
             {entries.length > 0 ?
               <DailyCodingTimeChart data={transformDailyData(entries, dayCount)} /> :
-              <Text>{LL.dashboard.noData.title()}</Text>}
+              <Text>{t("dashboard.noData.title")}</Text>}
             <Text mt={15} mb={15}>
-              {LL.dashboard.totalTime({
+              {t("dashboard.totalTime", {
                 days: dayCount,
                 totalTime: prettyDuration(sumBy(entries, entry => entry.duration))
               })}
             </Text>
           </Group>
           <Group className={classes.dataCard}>
-            <Title mt={10} order={2}>{LL.dashboard.timePerProject()}</Title>
+            <Title mt={10} order={2}>{t("dashboard.timePerProject")}</Title>
             <PerProjectChart entries={entries} className={classes.projectCodingChart} />
           </Group>
           {isSmallScreen ? (
             <Stack align="center">
               <div>
-                <Title order={2}>{LL.dashboard.languages()}</Title>
+                <Title order={2}>{t("dashboard.languages")}</Title>
                 <TopLanguages entries={entries} />
               </div>
               <div>
-                <Title order={2}>{LL.dashboard.projects()}</Title>
+                <Title order={2}>{t("dashboard.projects")}</Title>
                 <TopProjects entries={entries} allowEditing={isOwnDashboard} />
               </div>
             </Stack>) : (
             <Group grow align="flex-start">
               <div>
-                <Title order={2}>{LL.dashboard.languages()}</Title>
+                <Title order={2}>{t("dashboard.languages")}</Title>
                 <TopLanguages entries={entries} />
               </div>
               <div>
-                <Title order={2}>{LL.dashboard.projects()}</Title>
+                <Title order={2}>{t("dashboard.projects")}</Title>
                 <TopProjects entries={entries} allowEditing={isOwnDashboard} />
               </div>
             </Group>
           )}
         </>
         :
-        <Text>{LL.dashboard.noData.title()}{" "}
+        <Text>{t("dashboard.noData.title")}{" "}
           {prefix}<a href="/extensions">{infix}</a>{suffix}</Text>
       }
     </div>

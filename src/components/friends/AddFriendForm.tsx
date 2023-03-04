@@ -7,7 +7,7 @@ import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
 import { AddFriendError, useFriends } from "../../hooks/useFriends";
 import { useLocation } from "react-router";
-import { useI18nContext } from "../../i18n/i18n-react";
+import { useTranslation } from "react-i18next";
 import { showNotification } from "@mantine/notifications";
 
 export const AddFriendForm = () => {
@@ -15,7 +15,7 @@ export const AddFriendForm = () => {
   const { addFriend } = useFriends();
   const location = useLocation();
   const urlFriendCode = new URLSearchParams(location.search).get("code");
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
 
   return <Group>
     <Formik
@@ -23,8 +23,8 @@ export const AddFriendForm = () => {
       validationSchema={Yup.object().shape({
         friendCode: Yup
           .string()
-          .required(LL.friends.friendCodeRequired())
-          .matches(/^ttfc_[a-zA-Z0-9]{24}$/, LL.friends.friendCodeInvalid())
+          .required(t("friends.friendCodeRequired"))
+          .matches(/^ttfc_[a-zA-Z0-9]{24}$/, t("friends.friendCodeInvalid"))
       })}
       onSubmit={async ({ friendCode }, { resetForm }) => {
         const result = await addFriend(friendCode);
@@ -33,11 +33,11 @@ export const AddFriendForm = () => {
         }
         else {
           showNotification({
-            title: LL.error(),
+            title: t("error"),
             message: {
-              [AddFriendError.AlreadyFriends]: LL.friends.error.alreadyFriends(),
-              [AddFriendError.NotFound]: LL.friends.error.notFound(),
-              [AddFriendError.UnknownError]: LL.friends.error.unknownError()
+              [AddFriendError.AlreadyFriends]: t("friends.error.alreadyFriends"),
+              [AddFriendError.NotFound]: t("friends.error.notFound"),
+              [AddFriendError.UnknownError]: t("friends.error.unknownError")
             }[result],
             color: "red"
           });
@@ -48,7 +48,7 @@ export const AddFriendForm = () => {
           <FormikTextInput
             icon={<PersonIcon />}
             name="friendCode"
-            label={LL.friends.friendCode()}
+            label={t("friends.friendCode")}
             placeholder={placeholderFriendCode}
             sx={{ flex: 1 }}
             styles={{
@@ -59,7 +59,7 @@ export const AddFriendForm = () => {
               }
             }}
           />
-          <Button type="submit" mt={27.5}>{LL.friends.add()}</Button>
+          <Button type="submit" mt={27.5}>{t("friends.add")}</Button>
         </Group>
       </Form>}
     </Formik>

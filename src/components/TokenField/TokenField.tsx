@@ -2,7 +2,7 @@ import { Button, Group, Text } from "@mantine/core";
 import { useToggle, useClipboard } from "@mantine/hooks";
 import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
-import { useI18nContext } from "../../i18n/i18n-react";
+import { useTranslation } from "react-i18next";
 import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
 import Censorable from "../Censorable";
 import { showNotification } from "@mantine/notifications";
@@ -27,7 +27,7 @@ export const TokenField = ({
   const { copy, copied, reset } = useClipboard({ timeout: 2000 });
   const [isTokenRevealed, toggleIsTokenRevealed] = useToggle([false, true]);
 
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
 
   useEffect(() => {
     return reset;
@@ -50,14 +50,14 @@ export const TokenField = ({
         onClick={() => copy(copyFormatter(value))}
         color={copied ? "green" : ""}
         leftIcon={<ClipboardIcon />}>
-        {copied ? LL.copyToken.copied() : LL.copyToken.copy()}
+        {copied ? t("copyToken.copied") : t("copyToken.copy")}
       </Button>
       {censorable &&
         <Button
           variant="outline"
           onClick={() => toggleIsTokenRevealed()}
           leftIcon={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}>
-          {isTokenRevealed ? LL.copyToken.hide() : LL.copyToken.reveal()}
+          {isTokenRevealed ? t("copyToken.hide") : t("copyToken.reveal")}
         </Button>}
       {regenerate && <ButtonWithConfirmation
         leftIcon={<UpdateIcon />}
@@ -65,14 +65,14 @@ export const TokenField = ({
         onClick={() => {
           regenerate().catch(() => {
             showNotification({
-              title: LL.error(),
+              title: t("error"),
               color: "red",
-              message: LL.unknownErrorOccurred()
+              message: t("unknownErrorOccurred")
             });
           });
         }}
       >
-        {LL.copyToken.regenerate()}
+        {t("copyToken.regenerate")}
       </ButtonWithConfirmation>}
     </Group>
   </div>;

@@ -3,7 +3,7 @@ import { addDays, startOfDay } from "date-fns";
 import { useActivityData } from "../../hooks/useActivityData";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { useFriends } from "../../hooks/useFriends";
-import { useI18nContext } from "../../i18n/i18n-react";
+import { useTranslation } from "react-i18next";
 import { sumBy } from "../../utils/arrayUtils";
 import { prettyDuration } from "../../utils/dateUtils";
 import { useModals } from "@mantine/modals";
@@ -17,13 +17,13 @@ export const FriendList = () => {
     const startOfStatisticsRange = startOfDay(addDays(new Date(), -30));
     return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
   });
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
   const { username } = useAuthentication();
   const theme = useMantineTheme();
   const modals = useModals();
 
   if (!username) {
-    return <Text>{LL.friends.notLoggedIn()}</Text>;
+    return <Text>{t("friends.notLoggedIn")}</Text>;
   }
 
   const friendsSorted = [...friends.map(f => ({ ...f, isMe: false })).concat({
@@ -38,7 +38,7 @@ export const FriendList = () => {
 
   const openFriendDashboard = (friendUsername: string) => {
     modals.openModal({
-      title: <Title>{LL.friends.friendDashboardTitle({ username: friendUsername })}</Title>,
+      title: <Title>{t("friends.friendDashboardTitle", { username: friendUsername })}</Title>,
       size: "calc(800px + 10%)",
       children: <Dashboard username={friendUsername} isFrontPage={false} />
     });
@@ -47,9 +47,9 @@ export const FriendList = () => {
   return <Table>
     <thead>
       <tr>
-        <th>{LL.friends.index()}</th>
-        <th>{LL.friends.friendName()}</th>
-        <th>{LL.friends.timeCoded({ days: 30 })}</th>
+        <th>{t("friends.index")}</th>
+        <th>{t("friends.friendName")}</th>
+        <th>{t("friends.timeCoded", { days: 30 })}</th>
         <th />
         <th />
       </tr>
@@ -68,7 +68,7 @@ export const FriendList = () => {
             compact
             onClick={() => openFriendDashboard(username)}
           >
-            {LL.friends.showDashboard()}
+            {t("friends.showDashboard")}
           </Button>}
         </td>
         <td style={{ textAlign: "right", padding: "7px 0px" }}>
@@ -79,14 +79,14 @@ export const FriendList = () => {
             onClick={() => {
               unFriend(username).catch(() => {
                 showNotification({
-                  title: LL.error(),
+                  title: t("error"),
                   color: "red",
-                  message: LL.friends.errorRemovingFriend()
+                  message: t("friends.errorRemovingFriend")
                 });
               });
             }}
           >
-            {LL.friends.unfriend()}
+            {t("friends.unfriend")}
           </Button>}
         </td>
       </tr>

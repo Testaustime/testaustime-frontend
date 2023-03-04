@@ -1,7 +1,7 @@
-import type { Translation } from "../i18n-types";
+import en from "../en";
 
 /* eslint sort-keys: ["error", "asc"] */
-const fi: Translation = {
+const fi: typeof en = {
   copyToken: {
     copied: "Kopioitu!",
     copy: "Kopioi",
@@ -10,7 +10,7 @@ const fi: Translation = {
     reveal: "Näytä"
   },
   dashboard: {
-    greeting: "Hei, {username}!",
+    greeting: "Hei, {{username}}!",
     languages: "Kielet",
     noData: {
       installPrompt: "<link>Asenna Testaustime-laajennus<link>, jotta voit nähdä tietoja.",
@@ -28,13 +28,13 @@ const fi: Translation = {
     },
     timePerDay: "Aika per päivä",
     timePerProject: "Aika per projekti",
-    totalTime: "Kokonaisaika viimeisten {days} päivän aikana: {totalTime}",
+    totalTime: "Kokonaisaika viimeisten {{days, number}} päivän aikana: {{totalTime}}",
     unknownProject: "Tuntematon"
   },
   editProject: {
     projectName: "Projektin nimi",
     save: "Tallenna",
-    title: "Muokataan {projectName}"
+    title: "Muokataan {{projectName}}"
   },
   error: "Virhe",
   extensions: {
@@ -51,7 +51,7 @@ const fi: Translation = {
       rest: " ja muut",
       suffix: "Tehnyt: "
     },
-    copyright: "© {year} Testausserveri ry & muut",
+    copyright: "© {{year}} Testausserveri ry & muut",
     license: "Lisensoitu MIT-lisenssillä.",
     source: "Lähdekoodi",
     supportedBy: "Testausserveri ry:n tukema"
@@ -68,12 +68,12 @@ const fi: Translation = {
     friendCode: "Kaverikoodi",
     friendCodeInvalid: "Kaverikoodin tulee alkaa \"ttfc_\", ja sen jälkeen täytyy olla 24 alphanumeerista kirjainta.",
     friendCodeRequired: "Kaverikoodi vaaditaan.",
-    friendDashboardTitle: "Käyttäjän {username} tilastot",
+    friendDashboardTitle: "Käyttäjän {{username}} tilastot",
     friendName: "Kaverin nimi",
     index: "Järjestys",
     notLoggedIn: "Et ole kirjautunut sisään.",
     showDashboard: "Näytä",
-    timeCoded: "Aika koodattu viimeisen {days} päivän aikana",
+    timeCoded: "Aika koodattu viimeisen {{days, number}} päivän aikana",
     unfriend: "Poista",
     yourFriends: "Kaverisi"
   },
@@ -106,11 +106,11 @@ const fi: Translation = {
     position: "Sija",
     promote: "Ylennä",
     seeMore: "Katso lisää",
-    timeCoded: "Aika koodattu viimeisen {days} päivän aikana",
+    timeCoded: "Aika koodattu viimeisen {{days, number}} päivän aikana",
     topMember: "Paras jäsen",
     validation: {
-      max: "Tulostaulun nimen tulee olla enintään {max} merkkiä pitkä.",
-      min: "Tulostaulun nimen tulee olla vähintään {min} merkkiä pitkä.",
+      max: "Tulostaulun nimen tulee olla enintään {{max, number}} merkkiä pitkä.",
+      min: "Tulostaulun nimen tulee olla vähintään {{min, number}} merkkiä pitkä.",
       regex: "Tulostaulun nimi voi sisältää vain alphanumeerisia kirjaimia.",
       required: "Tulostaulun nimi vaaditaan."
     },
@@ -173,16 +173,16 @@ const fi: Translation = {
       new: {
         invalid: "Uusi salasana ei ole kelvollinen",
         required: "Uusi salasana vaaditaan",
-        tooLong: "Salasanan tulee olla enintään {max} merkkiä pitkä",
-        tooShort: "Salasanan tulee olla vähintään {min} merkkiä pitkä"
+        tooLong: "Salasanan tulee olla enintään {{max, number}} merkkiä pitkä",
+        tooShort: "Salasanan tulee olla vähintään {{min, number}} merkkiä pitkä"
       },
       newPassword: "Uusi salasana",
       newPasswordConfirm: "Vahvista salasana",
       old: {
         incorrect: "Vanha salasana on väärä",
         required: "Vanha salasana vaaditaan",
-        tooLong: "Salasanan tulee olla enintään {max} merkkiä pitkä",
-        tooShort: "Salasanan tulee olla vähintään {min} merkkiä pitkä"
+        tooLong: "Salasanan tulee olla enintään {{max, number}} merkkiä pitkä",
+        tooShort: "Salasanan tulee olla vähintään {{min, number}} merkkiä pitkä"
       },
       oldPassword: "Vanha salasana",
       submit: "Vaihda salasana",
@@ -206,7 +206,7 @@ const fi: Translation = {
       tooltip: "Tätä koodia käytetään, kun haluat jakaa dataa kavereillesi."
     },
     notLoggedIn: "Et ole kirjautunut sisään.",
-    registrationTime: "Rekisteröitymisaika: {registrationTime}",
+    registrationTime: "Rekisteröitymisaika: {{registrationTime}}",
     settings: {
       defaultDayRange: "Oletuksena näytettävä aikaväli",
       language: "Kieli",
@@ -214,7 +214,7 @@ const fi: Translation = {
       title: "Asetukset"
     },
     title: "Profiili",
-    username: "Käyttäjänimi: {username}"
+    username: "Käyttäjänimi: {{username}}"
   },
   prompt: {
     cancel: "Peruuta",
@@ -229,8 +229,8 @@ const fi: Translation = {
     username: "Käyttäjänimi",
     validation: {
       password: {
-        max: "Salasana voi olla enintään {max} merkkiä pitkä",
-        min: "Salasanan tulee olla vähintään {min} merkkiä pitkä",
+        max: "Salasana voi olla enintään {{max, number}} merkkiä pitkä",
+        min: "Salasanan tulee olla vähintään {{min, number}} merkkiä pitkä",
         required: "Salasana vaaditaan"
       },
       passwordConfirm: {
@@ -238,8 +238,8 @@ const fi: Translation = {
         required: "Salasanavahvistus vaaditaan"
       },
       username: {
-        max: "Käyttäjänimi voi olla enintään {max} merkkiä pitkä",
-        min: "Käyttäjänimen tulee olla vähintään {min} merkkiä pitkä",
+        max: "Käyttäjänimi voi olla enintään {{max, number}} merkkiä pitkä",
+        min: "Käyttäjänimen tulee olla vähintään {{min, number}} merkkiä pitkä",
         regex: "Käyttäjänimi voi sisältää vain alphanumeerisia merkkejä",
         required: "Käyttäjänimi vaaditaan"
       }
