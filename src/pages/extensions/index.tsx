@@ -1,3 +1,5 @@
+import { GetStaticProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Anchor, Center, createStyles, Group, Stack, Text, Title } from "@mantine/core";
 import { GitHubLogoIcon, QuestionMarkIcon } from "@radix-ui/react-icons";
 import React, { ReactNode } from "react";
@@ -100,8 +102,7 @@ export const ExtensionBlock = ({ logo, downloadLink, sourceCodeLink, text }: Ext
   </Group>;
 };
 
-
-export const ExtensionsPage = () => {
+const ExtensionsPage = () => {
   const { t } = useTranslation();
 
   return <div style={{ height: "calc(100% - 36px - 50px - 80px)" }}>
@@ -135,3 +136,9 @@ export const ExtensionsPage = () => {
     </Stack>
   </div>;
 };
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: await serverSideTranslations(locale ?? "en")
+});
+
+export default ExtensionsPage;
