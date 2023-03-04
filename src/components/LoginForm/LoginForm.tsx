@@ -4,15 +4,14 @@ import { FormikTextInput } from "../forms/FormikTextInput";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
-import { useI18nContext } from "../../i18n/i18n-react";
-
+import { useTranslation } from "react-i18next";
 export type LoginFormProps = {
   onLogin: (username: string, password: string) => Promise<void>
 }
 
 export const LoginForm = (props: LoginFormProps) => {
   const [visible, setVisible] = useState(false);
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
 
   return <Formik
     initialValues={{
@@ -20,8 +19,8 @@ export const LoginForm = (props: LoginFormProps) => {
       password: ""
     }}
     validationSchema={Yup.object().shape({
-      username: Yup.string().required(LL.loginPage.validation.username.required()),
-      password: Yup.string().required(LL.loginPage.validation.password.required())
+      username: Yup.string().required(t("loginPage.validation.username.required")),
+      password: Yup.string().required(t("loginPage.validation.password.required"))
     })}
     onSubmit={async values => {
       setVisible(true);
@@ -29,11 +28,11 @@ export const LoginForm = (props: LoginFormProps) => {
       setVisible(false);
     }}>
     {() => <Form style={{ width: "100%" }}>
-      <FormikTextInput name="username" label={LL.loginPage.username()} style={{ width: "100%" }} />
-      <FormikPasswordInput name="password" label={LL.loginPage.password()} mt={15} style={{ width: "100%" }} />
+      <FormikTextInput name="username" label={t("loginPage.username")} style={{ width: "100%" }} />
+      <FormikPasswordInput name="password" label={t("loginPage.password")} mt={15} style={{ width: "100%" }} />
       <Button mt={20} type="submit">
         <LoadingOverlay visible={visible} />
-        {LL.loginPage.loginButton()}
+        {t("loginPage.loginButton")}
       </Button>
     </Form>}
   </Formik>;

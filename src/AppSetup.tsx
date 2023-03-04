@@ -7,22 +7,11 @@ import { Notifications } from "@mantine/notifications";
 import { useEffect } from "react";
 import { useAuthentication } from "./hooks/useAuthentication";
 import { ModalsProvider } from "@mantine/modals";
-import TypesafeI18n from "./i18n/i18n-react";
-import { loadAllLocales } from "./i18n/i18n-util.sync";
 import { useCreateSettings } from "./hooks/useSettings";
-import {
-  detectLocale, htmlLangAttributeDetector, navigatorDetector, queryStringDetector
-} from "typesafe-i18n/detectors";
 import { SettingsContext } from "./contexts/SettingsContext";
-import { Locales } from "./i18n/i18n-types";
 import { QueryClient, QueryClientProvider } from "react-query";
-
-loadAllLocales();
-const detectedLanguage = detectLocale<Locales>("en", ["en", "fi"],
-  queryStringDetector,
-  navigatorDetector,
-  htmlLangAttributeDetector
-);
+// eslint-disable-next-line
+import i18n from "./i18n/i18n";
 
 const queryClient = new QueryClient();
 
@@ -78,15 +67,10 @@ const AppSetupInner = ({ children }: { children?: React.ReactNode }) => {
         }}
       >
         <SettingsContext.Provider value={settings}>
-          <TypesafeI18n
-            locale={(settings.language || detectedLanguage) ?? "en"}
-            key={(settings.language || detectedLanguage) ?? "en"}
-          >
-            <Notifications />
-            <ModalsProvider>
-              {children}
-            </ModalsProvider>
-          </TypesafeI18n>
+          <Notifications />
+          <ModalsProvider>
+            {children}
+          </ModalsProvider>
         </SettingsContext.Provider>
       </MantineProvider>
     </ColorSchemeProvider>

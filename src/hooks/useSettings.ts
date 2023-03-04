@@ -2,8 +2,8 @@ import { ColorScheme } from "@mantine/core";
 import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
-import { Locales } from "../i18n/i18n-types";
 import { DayRange } from "../utils/dateUtils";
+import i18n, { Locales } from "../i18n/i18n";
 
 export const useCreateSettings = () => {
   const [smoothCharts, setSmoothCharts] = useLocalStorage({
@@ -13,7 +13,9 @@ export const useCreateSettings = () => {
 
   const [language, setLanguage] = useLocalStorage<Locales | undefined>({
     key: "testaustime-language",
-    defaultValue: undefined
+    defaultValue: undefined,
+    deserialize: value => value.replaceAll("\"", "") as Locales,
+    serialize: value => value ?? "en"
   });
 
   // FIXME: "none" is obsolete, but still requires support. Can be removed in the future.
@@ -39,7 +41,10 @@ export const useCreateSettings = () => {
     smoothCharts,
     setSmoothCharts,
     language,
-    setLanguage,
+    setLanguage: (value: Locales) => {
+      i18n.changeLanguage(value).catch(console.error);
+      setLanguage(value);
+    },
     colorScheme: finalColorScheme,
     setColorScheme,
     toggleColorScheme,

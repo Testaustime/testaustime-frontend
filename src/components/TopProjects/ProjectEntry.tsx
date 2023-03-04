@@ -3,8 +3,7 @@ import { prettyDuration } from "../../utils/dateUtils";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useModals } from "@mantine/modals";
 import EditProjectModal from "../EditProjectModal";
-import { useI18nContext } from "../../i18n/i18n-react";
-
+import { useTranslation } from "react-i18next";
 export type ProjectEntryProps = {
   name?: string | undefined | null,
   durationSeconds: number,
@@ -22,12 +21,12 @@ const useStyles = createStyles(theme => ({
 export const ProjectEntry = ({ name, durationSeconds, allowEditing }: ProjectEntryProps) => {
   const { classes } = useStyles();
   const modals = useModals();
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
 
   const openModal = () => {
     if (name !== undefined && name !== null) {
       const id = modals.openModal({
-        title: <Title>{LL.editProject.title({ projectName: name })}</Title>,
+        title: <Title>{t("editProject.title", { projectName: name })}</Title>,
         size: "lg",
         children: <EditProjectModal projectName={name} onClose={() => modals.closeModal(id)} />
       });
@@ -36,7 +35,7 @@ export const ProjectEntry = ({ name, durationSeconds, allowEditing }: ProjectEnt
 
   return <li>
     <div className={classes.container}>
-      <span>{name || <i>{LL.dashboard.unknownProject()}</i>}: {prettyDuration(durationSeconds)}</span>
+      <span>{name || <i>{t("dashboard.unknownProject")}</i>}: {prettyDuration(durationSeconds)}</span>
       {allowEditing && <ActionIcon size="sm" onClick={() => openModal()}>
         <Pencil1Icon />
       </ActionIcon>}

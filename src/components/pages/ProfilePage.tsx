@@ -4,7 +4,7 @@ import { useAuthentication } from "../../hooks/useAuthentication";
 import { WithTooltip } from "../WithTooltip/WithTooltip";
 import { TokenField } from "../TokenField/TokenField";
 import { Link } from "react-router-dom";
-import { useI18nContext } from "../../i18n/i18n-react";
+import { useTranslation } from "react-i18next";
 import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
 import { SmoothChartsSelector } from "../SmoothChartsSelector/SmoothChartsSelector";
 import { DefaultDayRangeSelector } from "../DefaultDayRangeSelector/DefaultDayRangeSelector";
@@ -27,16 +27,16 @@ export const ProfilePage = () => {
     isPublic
   } = useAuthentication();
 
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
   const { changeAccountVisibility, deleteAccount } = useAccount();
 
   const modals = useModals();
 
-  if (!registrationTime || !token || !friendCode || !username) return <Text>{LL.profile.notLoggedIn()}</Text>;
+  if (!registrationTime || !token || !friendCode || !username) return <Text>{t("profile.notLoggedIn")}</Text>;
 
   const openDeleteAccountModal = () => {
     const id = modals.openModal({
-      title: <Title>{LL.profile.deleteAccount.modal.title()}</Title>,
+      title: <Title>{t("profile.deleteAccount.modal.title")}</Title>,
       size: "xl",
       children: <ConfirmAccountDeletionModal
         onCancel={() => modals.closeModal(id)}
@@ -49,57 +49,57 @@ export const ProfilePage = () => {
   };
 
   return <div>
-    <Title order={2}>{LL.profile.title()}</Title>
-    <Text mt={15}>{LL.profile.username({ username })}</Text>
-    <Text mt={15}>{LL.profile.registrationTime({
+    <Title order={2}>{t("profile.title")}</Title>
+    <Text mt={15}>{t("profile.username", { username })}</Text>
+    <Text mt={15}>{t("profile.registrationTime", {
       registrationTime: format(registrationTime, "d.M.yyyy HH:mm")
     })}</Text>
     <Stack mt={40} spacing={15}>
-      <Title order={2}>{LL.profile.account.title()}</Title>
-      <Title order={3}>{LL.profile.changePassword.title()}</Title>
+      <Title order={2}>{t("profile.account.title")}</Title>
+      <Title order={3}>{t("profile.changePassword.title")}</Title>
       <ChangePasswordForm onChangePassword={changePassword} />
       <WithTooltip
-        tooltipLabel={<Text>{LL.profile.accountVisibility.description()}</Text>}
+        tooltipLabel={<Text>{t("profile.accountVisibility.description")}</Text>}
       >
-        <Title order={3}>{LL.profile.accountVisibility.title()}</Title>
+        <Title order={3}>{t("profile.accountVisibility.title")}</Title>
       </WithTooltip>
       <div>
         <ButtonWithConfirmation
           color={"red"}
           onClick={() => {
             changeAccountVisibility(!isPublic).catch(() => showNotification({
-              title: LL.error(),
+              title: t("error"),
               color: "red",
-              message: LL.unknownErrorOccurred()
+              message: t("unknownErrorOccurred")
             }));
           }}>
-          {isPublic ? LL.profile.accountVisibility.makePrivate() : LL.profile.accountVisibility.makePublic()}
+          {isPublic ? t("profile.accountVisibility.makePrivate") : t("profile.accountVisibility.makePublic")}
         </ButtonWithConfirmation>
       </div>
-      <Title order={3}>{LL.profile.deleteAccount.title()}</Title>
+      <Title order={3}>{t("profile.deleteAccount.title")}</Title>
       <div>
         <ButtonWithConfirmation
           color={"red"}
           onClick={() => {
             openDeleteAccountModal();
           }}>
-          {LL.profile.deleteAccount.button()}
+          {t("profile.deleteAccount.button")}
         </ButtonWithConfirmation>
       </div>
     </Stack>
     <Stack mt={40} spacing={15}>
       <WithTooltip
-        tooltipLabel={<Text>{LL.profile.authenticationToken.tooltip.label()}{" "}
-          <Anchor component={Link} to="/extensions">{LL.profile.authenticationToken.tooltip.install()}</Anchor>
+        tooltipLabel={<Text>{t("profile.authenticationToken.tooltip.label")}{" "}
+          <Anchor component={Link} to="/extensions">{t("profile.authenticationToken.tooltip.install")}</Anchor>
         </Text>}
       >
-        <Title order={3}>{LL.profile.authenticationToken.title()}</Title>
+        <Title order={3}>{t("profile.authenticationToken.title")}</Title>
       </WithTooltip>
       <TokenField value={token} regenerate={regenerateToken} censorable revealLength={4} />
     </Stack>
     <Stack mt={40} spacing={15}>
-      <WithTooltip tooltipLabel={<Text>{LL.profile.friendCode.tooltip()}</Text>}>
-        <Title order={3}>{LL.profile.friendCode.title()}</Title>
+      <WithTooltip tooltipLabel={<Text>{t("profile.friendCode.tooltip")}</Text>}>
+        <Title order={3}>{t("profile.friendCode.title")}</Title>
       </WithTooltip>
       <TokenField
         value={friendCode}
@@ -111,7 +111,7 @@ export const ProfilePage = () => {
       />
     </Stack>
     <Stack mt={40} spacing={15}>
-      <Title order={2}>{LL.profile.settings.title()}</Title>
+      <Title order={2}>{t("profile.settings.title")}</Title>
       <SmoothChartsSelector />
       <LanguageSelector />
       <DefaultDayRangeSelector />

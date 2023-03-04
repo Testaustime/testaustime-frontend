@@ -5,8 +5,8 @@ import {
 import { BarChart2 } from "react-feather";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
-import { useI18nContext } from "../i18n/i18n-react";
 import ThemeToggle from "./ThemeToggle/ThemeToggle";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles(theme => ({
   navigation: {
@@ -45,7 +45,7 @@ export const Navigation = ({
   opened,
   setOpened
 }: NavigationProps) => {
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
   const { isLoggedIn, username, logOut } = useAuthentication();
   const navigate = useNavigate();
 
@@ -62,9 +62,9 @@ export const Navigation = ({
     <Group spacing={15} align="center" className={classes.navigation}>
       <Group>
         {isLoggedIn ? <>
-          <Anchor component={Link} to="/">{LL.navbar.dashboard()}</Anchor>
-          <Anchor component={Link} to="/friends">{LL.navbar.friends()}</Anchor>
-          <Anchor component={Link} to="/leaderboards">{LL.navbar.leaderboards()}</Anchor>
+          <Anchor component={Link} to="/">{t("navbar.dashboard")}</Anchor>
+          <Anchor component={Link} to="/friends">{t("navbar.friends")}</Anchor>
+          <Anchor component={Link} to="/leaderboards">{t("navbar.leaderboards")}</Anchor>
           <Menu
             trigger="hover"
           >
@@ -78,26 +78,26 @@ export const Navigation = ({
               </Button>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Label>{LL.navbar.account()}</Menu.Label>
-              <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>{LL.navbar.settings()}</Menu.Item>
+              <Menu.Label>{t("navbar.account")}</Menu.Label>
+              <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>{t("navbar.settings")}</Menu.Item>
               <Divider />
               <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>
-                {LL.navbar.extensions()}
+                {t("navbar.extensions")}
               </Menu.Item>
               <Divider />
               <Menu.Item
                 color="blue"
                 icon={<ExitIcon />}
                 onClick={logOutAndRedirect}>
-                {LL.navbar.logOut()}
+                {t("navbar.logOut")}
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
         </> : <>
-          <Anchor component={Link} to="/extensions">{LL.navbar.extensions()}</Anchor>
+          <Anchor component={Link} to="/extensions">{t("navbar.extensions")}</Anchor>
           <Box className={classes.spacer} />
-          <Anchor component={Link} to="/login">{LL.navbar.login()}</Anchor>
-          <Button component={Link} to="/register">{LL.navbar.register()}</Button>
+          <Anchor component={Link} to="/login">{t("navbar.login")}</Anchor>
+          <Button component={Link} to="/register">{t("navbar.register")}</Button>
         </>}
       </Group>
       <ThemeToggle label={false} />
@@ -133,37 +133,37 @@ export const Navigation = ({
           {isLoggedIn ?
             <>
               <Divider />
-              <Menu.Item component={Link} to="/" icon={<HomeIcon />}>{LL.navbar.dashboard()}</Menu.Item>
-              <Menu.Item component={Link} to="/friends" icon={<FaceIcon />}>{LL.navbar.friends()}</Menu.Item>
+              <Menu.Item component={Link} to="/" icon={<HomeIcon />}>{t("navbar.dashboard")}</Menu.Item>
+              <Menu.Item component={Link} to="/friends" icon={<FaceIcon />}>{t("navbar.friends")}</Menu.Item>
               <Menu.Item
                 component={Link}
                 to="/leaderboards"
                 icon={<BarChart2 size={18} />}
               >
-                {LL.navbar.leaderboards()}
+                {t("navbar.leaderboards")}
               </Menu.Item>
               <Divider />
-              <Menu.Label>{LL.navbar.account()} - {username}</Menu.Label>
-              <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>{LL.navbar.settings()}</Menu.Item>
+              <Menu.Label>{t("navbar.account")} - {username}</Menu.Label>
+              <Menu.Item component={Link} to="/profile" icon={<GearIcon />}>{t("navbar.settings")}</Menu.Item>
               <Divider />
               <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>
-                {LL.navbar.extensions()}
+                {t("navbar.extensions")}
               </Menu.Item>
               <Divider />
               <Menu.Item color="blue" icon={<ExitIcon />} onClick={logOutAndRedirect}>
-                {LL.navbar.logOut()}
+                {t("navbar.logOut")}
               </Menu.Item>
             </>
             :
             <>
               <Divider />
-              <Menu.Item component={Link} to="/login" icon={<EnterIcon />}>{LL.navbar.login()}</Menu.Item>
+              <Menu.Item component={Link} to="/login" icon={<EnterIcon />}>{t("navbar.login")}</Menu.Item>
               <Menu.Item color="blue" component={Link} to="/register" icon={<PlusIcon />}>
-                {LL.navbar.register()}
+                {t("navbar.register")}
               </Menu.Item>
               <Divider />
               <Menu.Item component={Link} to="/extensions" icon={<MixIcon />}>
-                {LL.navbar.extensions()}
+                {t("navbar.extensions")}
               </Menu.Item>
             </>}
         </Menu.Dropdown>

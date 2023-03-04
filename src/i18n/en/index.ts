@@ -1,7 +1,5 @@
-import type { BaseTranslation } from "../i18n-types";
-
 /* eslint sort-keys: ["error", "asc"] */
-const en: BaseTranslation = {
+const en = {
   copyToken: {
     copied: "Copied!",
     copy: "Copy",
@@ -10,7 +8,7 @@ const en: BaseTranslation = {
     reveal: "Reveal"
   },
   dashboard: {
-    greeting: "Hello, {username:string}!",
+    greeting: "Hello, {{username}}!",
     languages: "Languages",
     noData: {
       installPrompt: "<link>Install one of the extensions<link> to begin tracking your programming.",
@@ -28,13 +26,13 @@ const en: BaseTranslation = {
     },
     timePerDay: "Time per day",
     timePerProject: "Time per project",
-    totalTime: "Total time coded in the last {days:number} days: {totalTime:string}",
+    totalTime: "Total time coded in the last {{days, number}} days: {{totalTime}}",
     unknownProject: "Unknown"
   },
   editProject: {
     projectName: "Project name",
     save: "Save",
-    title: "Editing {projectName:string}"
+    title: "Editing {{projectName}}"
   },
   error: "Error",
   extensions: {
@@ -51,7 +49,7 @@ const en: BaseTranslation = {
       rest: " and contributors",
       suffix: "By: "
     },
-    copyright: "© {year:number} Testausserveri ry & contributors",
+    copyright: "© {{year}} Testausserveri ry & contributors",
     license: "Licensed under the MIT license.",
     source: "Source code",
     supportedBy: "Supported by Testausserveri ry"
@@ -68,12 +66,12 @@ const en: BaseTranslation = {
     friendCode: "Friend code",
     friendCodeInvalid: "Friend code must start with \"ttfc_\", and be followed by 24 alphanumeric characters.",
     friendCodeRequired: "Friend code is required",
-    friendDashboardTitle: "Statistics for user {username:string}",
+    friendDashboardTitle: "Statistics for user {{username}}",
     friendName: "Friend name",
     index: "Index",
     notLoggedIn: "You are not logged in.",
     showDashboard: "View",
-    timeCoded: "Time coded during last {days:number} days",
+    timeCoded: "Time coded during last {{days, number}} days",
     unfriend: "Unfriend",
     yourFriends: "Your friends"
   },
@@ -106,11 +104,11 @@ const en: BaseTranslation = {
     position: "Position",
     promote: "Promote",
     seeMore: "See more",
-    timeCoded: "Time coded last {days:number} days",
+    timeCoded: "Time coded last {{days, number}} days",
     topMember: "Top member",
     validation: {
-      max: "Leaderboard name must be at most {max:number} characters long",
-      min: "Leaderboard name must be at least {min:number} characters long",
+      max: "Leaderboard name must be at most {{max, number}} characters long",
+      min: "Leaderboard name must be at least {{min, number}} characters long",
       regex: "Leaderboard name must only contain alphanumeric characters",
       required: "Leaderboard name is required"
     },
@@ -173,16 +171,16 @@ const en: BaseTranslation = {
       new: {
         invalid: "New password is invalid",
         required: "New password is required",
-        tooLong: "Password can not be more than {max:number} characters long",
-        tooShort: "Password must be at least {min:number} characters long"
+        tooLong: "Password can not be more than {{max, number}} characters long",
+        tooShort: "Password must be at least {{min, number}} characters long"
       },
       newPassword: "New password",
       newPasswordConfirm: "Confirm password",
       old: {
         incorrect: "Old password is incorrect",
         required: "Old password is required",
-        tooLong: "Password can not be more than {max:number} characters long",
-        tooShort: "Password must be at least {min:number} characters long"
+        tooLong: "Password can not be more than {{max, number}} characters long",
+        tooShort: "Password must be at least {{min, number}} characters long"
       },
       oldPassword: "Old password",
       submit: "Change password",
@@ -206,7 +204,7 @@ const en: BaseTranslation = {
       tooltip: "This code is used for sharing your data with your friends."
     },
     notLoggedIn: "You are not logged in.",
-    registrationTime: "Registration time: {registrationTime:string}",
+    registrationTime: "Registration time: {{registrationTime}}",
     settings: {
       defaultDayRange: "Default day range",
       language: "Language",
@@ -214,7 +212,7 @@ const en: BaseTranslation = {
       title: "Settings"
     },
     title: "My profile",
-    username: "Username: {username:string}"
+    username: "Username: {{username}}"
   },
   prompt: {
     cancel: "Cancel",
@@ -229,8 +227,8 @@ const en: BaseTranslation = {
     username: "Username",
     validation: {
       password: {
-        max: "Password can not be more than {max:number} characters long",
-        min: "Password must be at least {min:number} characters long",
+        max: "Password can not be more than {{max, number}} characters long",
+        min: "Password must be at least {{min, number}} characters long",
         required: "Password is required"
       },
       passwordConfirm: {
@@ -238,8 +236,8 @@ const en: BaseTranslation = {
         required: "Password confirmation is required"
       },
       username: {
-        max: "Username can not be more than {max:number} characters long",
-        min: "Username must be at least {min:number} characters long",
+        max: "Username can not be more than {{max, number}} characters long",
+        min: "Username must be at least {{min, number}} characters long",
         regex: "Username must only contain alphanumeric characters",
         required: "Username is required"
       }

@@ -8,7 +8,7 @@ import { CreateLeaderboardModal } from "../leaderboard/CreateLeaderboardModal";
 import { JoinLeaderboardModal } from "../leaderboard/JoinLeaderboardModal";
 import { EnterIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useLocation } from "react-router";
-import { useI18nContext } from "../../i18n/i18n-react";
+import { useTranslation } from "react-i18next";
 import { LeaderboardsList } from "../leaderboard/LeaderboardsList";
 
 export const LeaderboardsPage = () => {
@@ -29,11 +29,11 @@ export const LeaderboardsPage = () => {
   const location = useLocation();
   const urlLeaderboardCode = new URLSearchParams(location.search).get("code");
 
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
 
   const openCreateLeaderboard = () => {
     const id = modals.openModal({
-      title: <Title>{LL.leaderboards.createNewLeaderboard()}</Title>,
+      title: <Title>{t("leaderboards.createNewLeaderboard")}</Title>,
       size: "xl",
       children: <CreateLeaderboardModal
         onCreate={() => { modals.closeModal(id); }}
@@ -43,7 +43,7 @@ export const LeaderboardsPage = () => {
 
   const openJoinLeaderboard = () => {
     const id = modals.openModal({
-      title: <Title>{LL.leaderboards.joinLeaderboard()}</Title>,
+      title: <Title>{t("leaderboards.joinLeaderboard")}</Title>,
       size: "xl",
       children: <JoinLeaderboardModal initialCode={urlLeaderboardCode} onJoin={() => { modals.closeModal(id); }} />
     });
@@ -53,7 +53,7 @@ export const LeaderboardsPage = () => {
     if (urlLeaderboardCode) openJoinLeaderboard();
   }, [urlLeaderboardCode]);
 
-  if (!username) return <Text>{LL.leaderboards.notLoggedIn()}</Text>;
+  if (!username) return <Text>{t("leaderboards.notLoggedIn")}</Text>;
 
   const adminUsernames = openedLeaderboard?.members.filter(m => m.admin).map(m => m.username);
   const isAdmin = Boolean(adminUsernames?.includes(username));
@@ -91,20 +91,20 @@ export const LeaderboardsPage = () => {
       />}
     </Modal>
     <Group align="center" mb="md" mt="xl" position="apart">
-      <Title>{LL.leaderboards.leaderboards()}</Title>
+      <Title>{t("leaderboards.leaderboards")}</Title>
       <Group spacing="sm">
         <Button
           onClick={() => openCreateLeaderboard()}
           variant="outline"
           leftIcon={<PlusIcon />}
         >
-          {LL.leaderboards.createNewLeaderboard()}
+          {t("leaderboards.createNewLeaderboard")}
         </Button>
         <Button
           onClick={() => openJoinLeaderboard()}
           leftIcon={<EnterIcon />}
         >
-          {LL.leaderboards.joinLeaderboard()}
+          {t("leaderboards.joinLeaderboard")}
         </Button>
       </Group>
     </Group>

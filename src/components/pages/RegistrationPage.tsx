@@ -7,16 +7,16 @@ import { useState } from "react";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { showNotification } from "@mantine/notifications";
-import { useI18nContext } from "../../i18n/i18n-react";
+import { useTranslation } from "react-i18next";
 
 export const RegistrationPage = () => {
   const { register } = useAuthentication();
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
 
   return <div>
-    <Title order={1} mb={20}>{LL.navbar.register()}</Title>
+    <Title order={1} mb={20}>{t("navbar.register")}</Title>
     <Formik
       initialValues={{
         username: "",
@@ -25,17 +25,17 @@ export const RegistrationPage = () => {
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string()
-          .required(LL.registrationPage.validation.username.required())
-          .min(2, LL.registrationPage.validation.username.min({ min: 2 }))
-          .max(32, LL.registrationPage.validation.username.max({ max: 32 }))
-          .matches(/^[a-zA-Z0-9]*$/, LL.registrationPage.validation.username.regex()),
+          .required(t("registrationPage.validation.username.required"))
+          .min(2, t("registrationPage.validation.username.min", { min: 2 }))
+          .max(32, t("registrationPage.validation.username.max", { max: 32 }))
+          .matches(/^[a-zA-Z0-9]*$/, t("registrationPage.validation.username.regex")),
         password: Yup.string()
-          .required(LL.registrationPage.validation.password.required())
-          .min(8, LL.registrationPage.validation.password.min({ min: 8 }))
-          .max(128, LL.registrationPage.validation.password.max({ max: 128 })),
+          .required(t("registrationPage.validation.password.required"))
+          .min(8, t("registrationPage.validation.password.min", { min: 8 }))
+          .max(128, t("registrationPage.validation.password.max", { max: 128 })),
         passwordConfirmation: Yup.string()
-          .required(LL.registrationPage.validation.passwordConfirm.required())
-          .oneOf([Yup.ref("password")], LL.registrationPage.validation.passwordConfirm.noMatch())
+          .required(t("registrationPage.validation.passwordConfirm.required"))
+          .oneOf([Yup.ref("password")], t("registrationPage.validation.passwordConfirm.noMatch"))
       })}
       onSubmit={values => {
         setVisible(true);
@@ -43,19 +43,19 @@ export const RegistrationPage = () => {
           .then(() => navigate("/"))
           .catch(() => {
             showNotification({
-              title: LL.error(),
+              title: t("error"),
               color: "red",
-              message: LL.registrationPage.invalidCredentials()
+              message: t("registrationPage.invalidCredentials")
             });
             setVisible(false);
           });
       }}>
       {() => <Form>
-        <FormikTextInput name="username" label={LL.registrationPage.username()} />
-        <FormikPasswordInput name="password" label={LL.registrationPage.password()} mt={15} />
-        <FormikPasswordInput name="passwordConfirmation" label={LL.registrationPage.passwordConfirm()} mt={15} />
+        <FormikTextInput name="username" label={t("registrationPage.username")} />
+        <FormikPasswordInput name="password" label={t("registrationPage.password")} mt={15} />
+        <FormikPasswordInput name="passwordConfirmation" label={t("registrationPage.passwordConfirm")} mt={15} />
         <Button mt={20} type="submit">
-          <LoadingOverlay visible={visible} />{LL.registrationPage.registerButton()}
+          <LoadingOverlay visible={visible} />{t("registrationPage.registerButton")}
         </Button>
       </Form>}
     </Formik>

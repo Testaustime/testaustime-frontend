@@ -1,7 +1,6 @@
 import { ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { Sun, Moon } from "react-feather";
-import { useI18nContext } from "../../i18n/i18n-react";
-
+import { useTranslation } from "react-i18next";
 export interface ThemeToggleProps {
   label: boolean
 }
@@ -10,18 +9,18 @@ function ThemeToggle({ label }: ThemeToggleProps) {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === "dark";
 
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
 
   return <div style={{ display: "flex", alignItems: "center" }} onClick={() => toggleColorScheme()}>
     <ActionIcon
       variant="outline"
       color={dark ? "yellow" : "blue"}
-      title={LL.theme.toggle()}
+      title={t("theme.toggle")}
       style={label === true ? { marginRight: "10px" } : {}}
     >
       {dark ? <Sun size={18} /> : <Moon size={18} />}
     </ActionIcon>
-    {label === true ? LL.theme[dark ? "light" : "dark"]() : ""}
+    {label === true ? (dark ? t("theme.light") : t("theme.dark")) : ""}
   </div>;
 }
 

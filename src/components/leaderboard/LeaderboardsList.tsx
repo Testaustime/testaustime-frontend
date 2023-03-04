@@ -1,7 +1,7 @@
 import { Badge, Button, Table } from "@mantine/core";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { useLeaderboards } from "../../hooks/useLeaderboards";
-import { useI18nContext } from "../../i18n/i18n-react";
+import { useTranslation } from "react-i18next";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
 
@@ -15,14 +15,14 @@ export const LeaderboardsList = ({
   const { leaderboards } = useLeaderboards();
   const { username } = useAuthentication();
 
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
 
   return <Table>
     <thead>
       <tr>
-        <th>{LL.leaderboards.name()}</th>
-        <th>{LL.leaderboards.topMember()}</th>
-        <th>{LL.leaderboards.yourPosition()}</th>
+        <th>{t("leaderboards.name")}</th>
+        <th>{t("leaderboards.topMember")}</th>
+        <th>{t("leaderboards.yourPosition")}</th>
         <th />
       </tr>
     </thead>
@@ -35,7 +35,7 @@ export const LeaderboardsList = ({
         const userIsAdmin = Boolean(leaderboard.members.find(member => member.username === username)?.admin);
 
         return <tr key={leaderboard.invite}>
-          <td>{leaderboard.name}{userIsAdmin && <Badge ml="sm">{LL.leaderboards.admin()}</Badge>}</td>
+          <td>{leaderboard.name}{userIsAdmin && <Badge ml="sm">{t("leaderboards.admin")}</Badge>}</td>
           <td>{topMember.username} ({prettyDuration(topMember.time_coded)})</td>
           <td>{yourPosition}{getOrdinalSuffix(yourPosition)} {yourPosition === 1 ? "🏆" : ""}</td>
           <td style={{ display: "flex", justifyContent: "end" }}>
@@ -45,7 +45,7 @@ export const LeaderboardsList = ({
               variant="outline"
               onClick={() => setOpenedLeaderboardName(leaderboard.name)}
             >
-              {LL.leaderboards.seeMore()}
+              {t("leaderboards.seeMore")}
             </Button>
           </td>
         </tr>;

@@ -4,7 +4,7 @@ import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
 import { showNotification } from "@mantine/notifications";
-import { useI18nContext } from "../../i18n/i18n-react";
+import { useTranslation } from "react-i18next";
 import { PasswordChangeResult } from "../../hooks/useAuthentication";
 
 export interface ChangePasswordFormProps {
@@ -13,7 +13,7 @@ export interface ChangePasswordFormProps {
 
 export const ChangePasswordForm = ({ onChangePassword }: ChangePasswordFormProps) => {
   const [visible, setVisible] = useState(false);
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
 
   return <Formik
     initialValues={{
@@ -23,50 +23,50 @@ export const ChangePasswordForm = ({ onChangePassword }: ChangePasswordFormProps
     }}
     validationSchema={Yup.object().shape({
       oldPassword: Yup.string()
-        .required(LL.profile.changePassword.old.required())
-        .min(8, LL.profile.changePassword.old.tooShort({ min: 8 }))
-        .max(128, LL.profile.changePassword.old.tooLong({ max: 128 })),
+        .required(t("profile.changePassword.old.required"))
+        .min(8, t("profile.changePassword.old.tooShort", { min: 8 }))
+        .max(128, t("profile.changePassword.old.tooLong", { max: 128 })),
       newPassword: Yup.string()
-        .required(LL.profile.changePassword.new.required())
-        .min(8, LL.profile.changePassword.new.tooShort({ min: 8 }))
-        .max(128, LL.profile.changePassword.new.tooLong({ max: 128 })),
+        .required(t("profile.changePassword.new.required"))
+        .min(8, t("profile.changePassword.new.tooShort", { min: 8 }))
+        .max(128, t("profile.changePassword.new.tooLong", { max: 128 })),
       newPasswordConfirmation: Yup.string()
-        .required(LL.profile.changePassword.confirm.required())
-        .oneOf([Yup.ref("newPassword")], LL.profile.changePassword.confirm.noMatch())
+        .required(t("profile.changePassword.confirm.required"))
+        .oneOf([Yup.ref("newPassword")], t("profile.changePassword.confirm.noMatch"))
     })}
     onSubmit={async (values, helpers) => {
       const result = await onChangePassword(values.oldPassword, values.newPassword);
       if (result === PasswordChangeResult.Success) {
         showNotification({
-          title: LL.profile.changePassword.success.title(),
+          title: t("profile.changePassword.success.title"),
           color: "green",
-          message: LL.profile.changePassword.success.message()
+          message: t("profile.changePassword.success.message")
         });
         helpers.resetForm();
       }
       else {
         showNotification({
-          title: LL.error(),
+          title: t("error"),
           color: "red",
           message: {
-            [PasswordChangeResult.OldPasswordIncorrect]: LL.profile.changePassword.old.incorrect(),
-            [PasswordChangeResult.NewPasswordInvalid]: LL.profile.changePassword.new.invalid()
+            [PasswordChangeResult.OldPasswordIncorrect]: t("profile.changePassword.old.incorrect"),
+            [PasswordChangeResult.NewPasswordInvalid]: t("profile.changePassword.new.invalid")
           }[result]
         });
       }
       setVisible(false);
     }}>
     {() => <Form>
-      <FormikPasswordInput name="oldPassword" label={LL.profile.changePassword.oldPassword()} />
-      <FormikPasswordInput name="newPassword" label={LL.profile.changePassword.newPassword()} mt={15} />
+      <FormikPasswordInput name="oldPassword" label={t("profile.changePassword.oldPassword")} />
+      <FormikPasswordInput name="newPassword" label={t("profile.changePassword.newPassword")} mt={15} />
       <FormikPasswordInput
         name="newPasswordConfirmation"
-        label={LL.profile.changePassword.newPasswordConfirm()}
+        label={t("profile.changePassword.newPasswordConfirm")}
         mt={15}
       />
       <Button type="submit" mt={20}>
         <LoadingOverlay visible={visible} />
-        {LL.profile.changePassword.submit()}
+        {t("profile.changePassword.submit")}
       </Button>
     </Form>}
   </Formik>;

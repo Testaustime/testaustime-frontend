@@ -1,5 +1,5 @@
 import { createStyles, Text, Anchor } from "@mantine/core";
-import { useI18nContext } from "../../i18n/i18n-react";
+import { useTranslation } from "react-i18next";
 import { ReactComponent as TestausserveriLogo } from "../../images/testausserveri.svg";
 import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
 
@@ -52,7 +52,7 @@ const useStyles = createStyles(theme => ({
 export const Footer = () => {
   const { classes } = useStyles();
 
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
 
   return <div className={classes.container}>
     <hr className={classes.line} />
@@ -65,17 +65,17 @@ export const Footer = () => {
             width={155}
           />
         </a>
-        <Text>{LL.footer.supportedBy()}</Text>
+        <Text>{t("footer.supportedBy")}</Text>
       </div>
       <div className={classes.rightSection}>
         <Text>
-          ❤️ {LL.footer.authors.suffix()}
-          <Anchor href="https://github.com/orgs/Testaustime/people">{LL.footer.authors.core()}</Anchor>
-          {LL.footer.authors.rest()}
+          ❤️ {t("footer.authors.suffix")}
+          <Anchor href="https://github.com/orgs/Testaustime/people">{t("footer.authors.core")}</Anchor>
+          {t("footer.authors.rest")}
         </Text>
-        <Text>{LL.footer.copyright({ year: new Date().getFullYear() })}</Text>
+        <Text>{t("footer.copyright", { year: new Date().getFullYear() })}</Text>
         <Text>
-          <i>{LL.footer.license()}</i> <Anchor href="https://github.com/Testaustime">{LL.footer.source()}</Anchor>
+          <i>{t("footer.license")}</i> <Anchor href="https://github.com/Testaustime">{t("footer.source")}</Anchor>
         </Text>
         <LanguageSelector type="dropdown" showLabel={false} size="sm" />
       </div>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { Dashboard } from "../Dashboard";
-import { useI18nContext } from "../../i18n/i18n-react";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles(theme => ({
   downloadButton: {
@@ -59,14 +59,14 @@ const useStyles = createStyles(theme => ({
 export const MainPage = () => {
   const { isLoggedIn } = useAuthentication();
   const { classes } = useStyles();
-  const { LL } = useI18nContext();
+  const { t } = useTranslation();
 
   return <div className={!isLoggedIn ? classes.heroContainer : classes.dashboardContainer}>
     {isLoggedIn ? <Dashboard username="@me" isFrontPage={true} /> : <>
-      <Text mb={20} className={classes.heroText}>{LL.mainPage.hero()}</Text>
+      <Text mb={20} className={classes.heroText}>{t("mainPage.hero")}</Text>
       <Anchor className={classes.downloadButton} component={Link} to="/extensions">
         <DownloadIcon height={30} width={30} className={classes.downloadIcon} />
-        {LL.mainPage.download()}
+        {t("mainPage.download")}
       </Anchor>
     </>}
   </div>;
