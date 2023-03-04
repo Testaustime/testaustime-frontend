@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { showNotification } from "@mantine/notifications";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 export const RegistrationPage = () => {
   const { register } = useAuthentication();

@@ -3,9 +3,12 @@ import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
 import { DayRange } from "../utils/dateUtils";
-import i18n, { Locales } from "../i18n/i18n";
+import { Locales } from "../i18next";
+import { useRouter } from "next/router";
 
 export const useCreateSettings = () => {
+  const router = useRouter();
+
   const [smoothCharts, setSmoothCharts] = useLocalStorage({
     key: "testaustime-smooth-charts",
     defaultValue: true
@@ -42,7 +45,7 @@ export const useCreateSettings = () => {
     setSmoothCharts,
     language,
     setLanguage: (value: Locales) => {
-      i18n.changeLanguage(value).catch(console.error);
+      router.push(router.asPath, undefined, { locale: value }).catch(console.error);
       setLanguage(value);
     },
     colorScheme: finalColorScheme,

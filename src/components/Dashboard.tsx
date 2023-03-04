@@ -10,7 +10,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
 import { useAuthentication } from "../hooks/useAuthentication";
 import { useSettings } from "../hooks/useSettings";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 const useStyles = createStyles(theme => ({
   dataCard: {

@@ -3,7 +3,7 @@ import { DoubleArrowDownIcon, DoubleArrowUpIcon, ExitIcon } from "@radix-ui/reac
 import { Trash2 } from "react-feather";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { CombinedLeaderboard } from "../../hooks/useLeaderboards";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
 import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";

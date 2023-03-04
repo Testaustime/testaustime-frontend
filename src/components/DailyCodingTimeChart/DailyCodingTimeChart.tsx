@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { addDays, startOfDay } from "date-fns/esm";
+import { addDays, startOfDay } from "date-fns";
 import { sumBy } from "../../utils/arrayUtils";
 import { calculateTickValues } from "../../utils/chartUtils";
 import { useSettings } from "../../hooks/useSettings";

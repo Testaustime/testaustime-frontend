@@ -1,7 +1,7 @@
 import { Badge, Button, Table } from "@mantine/core";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { useLeaderboards } from "../../hooks/useLeaderboards";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
 

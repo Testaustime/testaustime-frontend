@@ -2,7 +2,7 @@ import { Button, Group, Text } from "@mantine/core";
 import { useToggle, useClipboard } from "@mantine/hooks";
 import { ClipboardIcon, EyeClosedIcon, EyeOpenIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
 import Censorable from "../Censorable";
 import { showNotification } from "@mantine/notifications";

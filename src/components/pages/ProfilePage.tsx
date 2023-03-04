@@ -1,10 +1,10 @@
 import { Anchor, Stack, Text, Title } from "@mantine/core";
-import { format } from "date-fns/esm";
+import { format } from "date-fns";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { WithTooltip } from "../WithTooltip/WithTooltip";
 import { TokenField } from "../TokenField/TokenField";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
 import { SmoothChartsSelector } from "../SmoothChartsSelector/SmoothChartsSelector";
 import { DefaultDayRangeSelector } from "../DefaultDayRangeSelector/DefaultDayRangeSelector";

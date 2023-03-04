@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { authTokenLocalStorageKey } from "../utils/constants";
 import { ApiFriendsResponseItem } from "../hooks/useFriends";
 
 export interface UsersSlice {
@@ -11,7 +10,7 @@ export interface UsersSlice {
 }
 
 const initialState: UsersSlice = {
-  authToken: localStorage.getItem(authTokenLocalStorageKey) || undefined,
+  authToken: undefined,
   username: undefined,
   registrationTime: undefined,
   friendCode: undefined,

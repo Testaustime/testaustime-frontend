@@ -3,7 +3,7 @@ import { addDays, startOfDay } from "date-fns";
 import { useActivityData } from "../../hooks/useActivityData";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { useFriends } from "../../hooks/useFriends";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { sumBy } from "../../utils/arrayUtils";
 import { prettyDuration } from "../../utils/dateUtils";
 import { useModals } from "@mantine/modals";

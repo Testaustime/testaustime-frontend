@@ -3,7 +3,7 @@ import { prettyDuration } from "../../utils/dateUtils";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useModals } from "@mantine/modals";
 import EditProjectModal from "../EditProjectModal";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 export type ProjectEntryProps = {
   name?: string | undefined | null,
   durationSeconds: number,

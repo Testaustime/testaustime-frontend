@@ -1,7 +1,7 @@
 import { Group, Button } from "@mantine/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { CreateLeaderboardError, useLeaderboards } from "../../hooks/useLeaderboards";
 import { showNotification } from "@mantine/notifications";

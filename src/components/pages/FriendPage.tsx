@@ -1,5 +1,5 @@
 import { Title } from "@mantine/core";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { FriendList } from "../friends/FriendList";
 import { AddFriendForm } from "../friends/AddFriendForm";
 

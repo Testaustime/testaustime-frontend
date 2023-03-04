@@ -7,7 +7,7 @@ import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
 import { AddFriendError, useFriends } from "../../hooks/useFriends";
 import { useLocation } from "react-router";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { showNotification } from "@mantine/notifications";
 
 export const AddFriendForm = () => {

@@ -8,7 +8,7 @@ import { CreateLeaderboardModal } from "../leaderboard/CreateLeaderboardModal";
 import { JoinLeaderboardModal } from "../leaderboard/JoinLeaderboardModal";
 import { EnterIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useLocation } from "react-router";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { LeaderboardsList } from "../leaderboard/LeaderboardsList";
 
 export const LeaderboardsPage = () => {

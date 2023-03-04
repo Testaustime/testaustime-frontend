@@ -5,7 +5,7 @@ import { ReactComponent as Neovim } from "../../images/neovim.svg";
 import { ReactComponent as Vscode } from "../../images/vscode.svg";
 import { ReactComponent as IntelliJ } from "../../images/intellij.svg";
 import { ReactComponent as Micro } from "../../images/micro.svg";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 interface ExtensionBlockProps {
   logo: React.ReactNode,
   downloadLink: string,

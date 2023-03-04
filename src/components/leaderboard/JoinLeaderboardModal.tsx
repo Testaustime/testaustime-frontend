@@ -5,7 +5,7 @@ import { Group, Button } from "@mantine/core";
 import { Formik, Form } from "formik";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { EnterIcon } from "@radix-ui/react-icons";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { JoinLeaderboardError, useLeaderboards } from "../../hooks/useLeaderboards";
 import { showNotification } from "@mantine/notifications";
 

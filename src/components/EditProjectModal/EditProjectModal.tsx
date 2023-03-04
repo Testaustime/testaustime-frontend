@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { Button, Group } from "@mantine/core";
 import { useActivity } from "../../hooks/useActivities";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 export type EditProjectModalProps = {
   projectName: string,
   onClose: () => void

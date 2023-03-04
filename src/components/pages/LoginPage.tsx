@@ -4,7 +4,7 @@ import { useAuthentication } from "../../hooks/useAuthentication";
 import { useSearchParams } from "react-router-dom";
 import { showNotification } from "@mantine/notifications";
 import LoginForm from "../LoginForm";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 const useStyles = createStyles(() => ({
   loginBox: {
     display: "flex",

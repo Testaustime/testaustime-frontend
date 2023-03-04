@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { Dashboard } from "../Dashboard";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 const useStyles = createStyles(theme => ({
   downloadButton: {
