@@ -6,15 +6,18 @@ import { generateFriendCode } from "../../utils/codeUtils";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
 import { AddFriendError, useFriends } from "../../hooks/useFriends";
-import { useLocation } from "react-router";
 import { useTranslation } from "next-i18next";
 import { showNotification } from "@mantine/notifications";
+import { useRouter } from "next/router";
 
-export const AddFriendForm = () => {
-  const [placeholderFriendCode] = useState(generateFriendCode());
+export type AddFriendFormProps = {
+  friendCodePlaceholder: string;
+}
+
+export const AddFriendForm = ({ friendCodePlaceholder }: AddFriendFormProps) => {
   const { addFriend } = useFriends();
-  const location = useLocation();
-  const urlFriendCode = new URLSearchParams(location.search).get("code");
+  const router = useRouter();
+  const urlFriendCode = typeof router.query.code === "string" ? router.query.code : undefined;
   const { t } = useTranslation();
 
   return <Group>
@@ -49,7 +52,7 @@ export const AddFriendForm = () => {
             icon={<PersonIcon />}
             name="friendCode"
             label={t("friends.friendCode")}
-            placeholder={placeholderFriendCode}
+            placeholder={friendCodePlaceholder}
             sx={{ flex: 1 }}
             styles={{
               input: {
