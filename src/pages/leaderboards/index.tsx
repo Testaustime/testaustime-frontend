@@ -3,15 +3,17 @@ import { useModals } from "@mantine/modals";
 import { useEffect, useState } from "react";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { useLeaderboards } from "../../hooks/useLeaderboards";
-import { LeaderboardModal } from "../leaderboard/LeaderboardModal";
-import { CreateLeaderboardModal } from "../leaderboard/CreateLeaderboardModal";
-import { JoinLeaderboardModal } from "../leaderboard/JoinLeaderboardModal";
+import { LeaderboardModal } from "../../components/leaderboard/LeaderboardModal";
+import { CreateLeaderboardModal } from "../../components/leaderboard/CreateLeaderboardModal";
+import { JoinLeaderboardModal } from "../../components/leaderboard/JoinLeaderboardModal";
 import { EnterIcon, PlusIcon } from "@radix-ui/react-icons";
-import { useLocation } from "react-router";
 import { useTranslation } from "next-i18next";
-import { LeaderboardsList } from "../leaderboard/LeaderboardsList";
+import { LeaderboardsList } from "../../components/leaderboard/LeaderboardsList";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useRouter } from "next/router";
 
-export const LeaderboardsPage = () => {
+const LeaderboardsPage = () => {
   const {
     leaderboards,
     leaveLeaderboard,
@@ -26,8 +28,8 @@ export const LeaderboardsPage = () => {
   const [openedLeaderboardName, setOpenedLeaderboardName] = useState<string | undefined>(undefined);
   const openedLeaderboard = leaderboards.find(l => l.name === openedLeaderboardName);
 
-  const location = useLocation();
-  const urlLeaderboardCode = new URLSearchParams(location.search).get("code");
+  const router = useRouter();
+  const urlLeaderboardCode = typeof router.query.code === "string" ? router.query.code : null;
 
   const { t } = useTranslation();
 
@@ -111,3 +113,10 @@ export const LeaderboardsPage = () => {
     <LeaderboardsList setOpenedLeaderboardName={setOpenedLeaderboardName} />
   </>;
 };
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: await serverSideTranslations(locale ?? "en")
+});
+
+export default LeaderboardsPage;
+
