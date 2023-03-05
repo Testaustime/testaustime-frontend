@@ -1,4 +1,5 @@
-import axios, { isAxiosError } from "axios";
+import axios from "../axios";
+import { isAxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { authTokenLocalStorageKey } from "../utils/constants";
 import { getErrorMessage } from "../lib/errorHandling/errorHandler";

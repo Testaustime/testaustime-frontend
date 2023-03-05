@@ -1,6 +1,7 @@
 import { useAuthentication } from "./useAuthentication";
-import axios from "axios";
+import axios from "../axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { isAxiosError } from "axios";
 
 export interface ApiFriendsResponseItem {
   username: string,
@@ -73,7 +74,7 @@ export const useFriends = () => {
       try {
         return await addFriend(friendCode);
       } catch (e) {
-        if (axios.isAxiosError(e)) {
+        if (isAxiosError(e)) {
           if (e.response?.status === 409
             // TODO: The 403 status is a bug with the backend.
             // It can be removed when https://github.com/Testaustime/testaustime-backend/pull/61 is merged

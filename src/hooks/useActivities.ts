@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuthentication } from "./useAuthentication";
 import { ActivityDataEntry } from "./useActivityData";

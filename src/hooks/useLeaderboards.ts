@@ -1,4 +1,5 @@
-import axios from "axios";
+import { isAxiosError } from "axios";
+import axios from "../axios";
 import { useAuthentication } from "./useAuthentication";
 import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
 
@@ -191,7 +192,7 @@ export const useLeaderboards = () => {
       try {
         return await joinLeaderboard(inviteCode);
       } catch (e) {
-        if (axios.isAxiosError(e)) {
+        if (isAxiosError(e)) {
           if (e.response?.status === 409
             // TODO: The 403 status is a bug with the backend.
             // It can be removed when https://github.com/Testaustime/testaustime-backend/pull/61 is merged
@@ -210,7 +211,7 @@ export const useLeaderboards = () => {
       try {
         return await createLeaderboard(leaderboardName);
       } catch (e) {
-        if (axios.isAxiosError(e)) {
+        if (isAxiosError(e)) {
           if (e.response?.status === 409
             // TODO: The 403 status is a bug with the backend.
             // It can be removed when https://github.com/Testaustime/testaustime-backend/pull/61 is merged

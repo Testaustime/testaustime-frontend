@@ -1,17 +1,19 @@
+import { GetStaticProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Button, Title, LoadingOverlay } from "@mantine/core";
 import { Form, Formik } from "formik";
-import { useNavigate } from "react-router";
-import { FormikTextInput } from "../forms/FormikTextInput";
+import { FormikTextInput } from "../../components/forms/FormikTextInput";
 import * as Yup from "yup";
 import { useState } from "react";
 import { useAuthentication } from "../../hooks/useAuthentication";
-import { FormikPasswordInput } from "../forms/FormikPasswordInput";
+import { FormikPasswordInput } from "../../components/forms/FormikPasswordInput";
 import { showNotification } from "@mantine/notifications";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
-export const RegistrationPage = () => {
+const RegistrationPage = () => {
   const { register } = useAuthentication();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
   const { t } = useTranslation();
 
@@ -40,7 +42,7 @@ export const RegistrationPage = () => {
       onSubmit={values => {
         setVisible(true);
         register(values.username, values.password)
-          .then(() => navigate("/"))
+          .then(() => router.push("/"))
           .catch(() => {
             showNotification({
               title: t("error"),
@@ -61,3 +63,9 @@ export const RegistrationPage = () => {
     </Formik>
   </div>;
 };
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: await serverSideTranslations(locale ?? "en")
+});
+
+export default RegistrationPage;
