@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import WithTooltip from "../../components/WithTooltip";
 import TokenField from "../../components/TokenField";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useTranslation } from "next-i18next";
 import LanguageSelector from "../../components/LanguageSelector";
 import SmoothChartsSelector from "../../components/SmoothChartsSelector";
@@ -92,7 +92,7 @@ const ProfilePage = () => {
     <Stack mt={40} spacing={15}>
       <WithTooltip
         tooltipLabel={<Text>{t("profile.authenticationToken.tooltip.label")}{" "}
-          <Anchor component={Link} to="/extensions">{t("profile.authenticationToken.tooltip.install")}</Anchor>
+          <Anchor component={Link} href="/extensions">{t("profile.authenticationToken.tooltip.install")}</Anchor>
         </Text>}
       >
         <Title order={3}>{t("profile.authenticationToken.title")}</Title>

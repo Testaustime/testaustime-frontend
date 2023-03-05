@@ -1,16 +1,26 @@
-import type { AppProps } from "next/app";
+import type { AppContext, AppInitialProps, AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
 import { ColorSchemeProvider, Group, MantineProvider, Overlay, createStyles } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Navigation } from "../components/Navigation";
 import { Footer } from "../components/Footer/Footer";
-import { useAuthentication } from "../hooks/useAuthentication";
 import { useCreateSettings } from "../hooks/useSettings";
 import { useHotkeys } from "@mantine/hooks";
 import { SettingsContext } from "../contexts/SettingsContext";
 import { AppSetup } from "../AppSetup";
 import "../index.css";
+import { UserContext } from "../contexts/UserContext";
+import axios from "../axios";
+import { ApiUsersUserResponse } from "../hooks/useAuthentication";
+
+type Props = {
+  token?: string,
+  username?: string,
+  friendCode?: string,
+  registrationTime?: Date,
+  isPublic?: boolean
+}
 
 const useStyles = createStyles(() => ({
   container: {
@@ -46,20 +56,13 @@ const useStyles = createStyles(() => ({
   }
 }));
 
-const InnerApp = ({ Component, pageProps }: AppProps) => {
+const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
   const { classes } = useStyles();
   const [opened, setOpenedOriginal] = useState(false);
-
-  const { refetchUser } = useAuthentication();
 
   const settings = useCreateSettings();
 
   useHotkeys([["mod+J", () => settings.toggleColorScheme()]]);
-
-  useEffect(() => {
-    refetchUser().catch(e => console.error(e));
-  }, []);
-
 
   const setOpened = (o: boolean | ((arg0: boolean) => boolean)) => { // Patches a bug with Mantine menu alignment
     const state = typeof o === "function" ? o(opened) : o;
@@ -75,7 +78,6 @@ const InnerApp = ({ Component, pageProps }: AppProps) => {
       if (dropdown) dropdown.style.left = "0px";
     });
   };
-
 
   return <MantineProvider
     withGlobalStyles
@@ -140,12 +142,52 @@ const InnerApp = ({ Component, pageProps }: AppProps) => {
   </MantineProvider>;
 };
 
-function App(props: AppProps) {
+function App(props: AppProps<Props>) {
   return <div id="root">
-    <AppSetup>
-      <InnerApp {...props} />
-    </AppSetup>
+    <UserContext.Provider value={{
+      authToken: props.pageProps.token,
+      friendCode: props.pageProps.friendCode,
+      isPublic: props.pageProps.isPublic,
+      registrationTime: props.pageProps.registrationTime ? new Date(props.pageProps.registrationTime) : undefined,
+      username: props.pageProps.username
+    }}>
+      <AppSetup>
+        <InnerApp {...props} />
+      </AppSetup>
+    </UserContext.Provider>
   </div>;
 }
+
+App.getInitialProps = async ({ ctx }: AppContext): Promise<AppInitialProps<Props>> => {
+  const token = ctx.req?.headers.cookie?.replace("token=", "");
+  if (token) {
+    let data: ApiUsersUserResponse;
+    try {
+      const response = await axios.get<ApiUsersUserResponse>(`${process.env.NEXT_PUBLIC_API_URL ?? ""}/users/@me`,
+        { headers: { Authorization: `Bearer ${token ?? ""}` } }
+      );
+      data = response.data;
+    }
+    catch (e) {
+      return {
+        pageProps: {}
+      };
+    }
+
+    return {
+      pageProps: {
+        token,
+        username: data.username,
+        friendCode: data.friend_code,
+        registrationTime: new Date(data.registration_time),
+        isPublic: data.is_public
+      }
+    };
+  }
+
+  return {
+    pageProps: {}
+  };
+};
 
 export default appWithTranslation(App);

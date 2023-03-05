@@ -1,11 +1,8 @@
 import axios from "../axios";
 import { isAxiosError } from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { authTokenLocalStorageKey } from "../utils/constants";
 import { getErrorMessage } from "../lib/errorHandling/errorHandler";
-import { setAuthToken } from "../slices/userSlice";
-import { RootState } from "../store";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
+import { useUser } from "./useUser";
 
 export interface ApiAuthRegisterResponse {
   auth_token: string,
@@ -53,64 +50,14 @@ export enum PasswordChangeResult {
   NewPasswordInvalid,
 }
 
-export interface UseAuthenticationResult {
-  token?: string,
-  setToken: (newToken: string) => void,
-  isLoggedIn: boolean,
-  regenerateToken: () => Promise<string>,
-  regenerateFriendCode: () => Promise<string>,
-  register: (username: string, password: string) => Promise<string>,
-  login: (username: string, password: string) => Promise<string>,
-  registrationTime?: Date,
-  isPublic?: boolean,
-  logOut: () => void,
-  username?: string,
-  friendCode?: string,
-  refetchUser: () => Promise<void>,
-  changePassword: (oldPassword: string, newPassword: string) => Promise<PasswordChangeResult>
-}
-
-export const useAuthentication = (): UseAuthenticationResult => {
-  const dispatch = useDispatch();
+export const useAuthentication = () => {
   const queryClient = useQueryClient();
-
-  const token = useSelector<RootState, string | undefined>(state => state.users.authToken) ?? undefined;
-
-  const setToken = (newToken: string) => {
-    dispatch(setAuthToken(newToken));
-    localStorage.setItem(authTokenLocalStorageKey, newToken);
-  };
-
-  const { data: userData, refetch: refetchUser } = useQuery("fetchUser", async () => {
-    try {
-      const { data } = await axios.get<ApiUsersUserResponse>("/users/@me",
-        { headers: { Authorization: `Bearer ${token ?? ""}` } }
-      );
-
-      return {
-        username: data.username,
-        friendCode: data.friend_code,
-        registrationTime: new Date(data.registration_time),
-        isPublic: data.is_public
-      };
-    }
-    catch (error) {
-      queryClient.setQueryData("fetchUser", undefined);
-
-      logOut();
-      return undefined;
-    }
-  }, {
-    staleTime: 2 * 60 * 1000 // 2 minutes
-  });
+  const user = useUser();
 
   const { mutateAsync: regenerateToken } = useMutation(async () => {
     try {
-      const { data } = await axios.post<ApiAuthRegenerateResponse>("/auth/regenerate", null,
-        { headers: { Authorization: `Bearer ${token ?? ""}` } }
-      );
+      const { data } = await axios.post<ApiAuthRegenerateResponse>("/auth/regenerate", null);
       const newToken = data.token;
-      setToken(newToken);
       return newToken;
     } catch (error) {
       throw getErrorMessage(error);
@@ -119,9 +66,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const { mutateAsync: regenerateFriendCode } = useMutation(async () => {
     try {
-      const { data } = await axios.post<ApiFriendsRegenerateResponse>("/friends/regenerate", null,
-        { headers: { Authorization: `Bearer ${token ?? ""}` } }
-      );
+      const { data } = await axios.post<ApiFriendsRegenerateResponse>("/friends/regenerate", null);
       const newFriendCode = data.friend_code;
       queryClient.setQueryData("fetchUser", (oldData: User | undefined) => {
         if (!oldData) throw new Error("User data not found");
@@ -142,7 +87,6 @@ export const useAuthentication = (): UseAuthenticationResult => {
     try {
       const { data } = await axios.post<ApiAuthRegisterResponse>("/auth/register", { username, password });
       const authToken = data.auth_token;
-      setToken(authToken);
       queryClient.setQueryData("fetchUser", {
         username: data.username,
         friendCode: data.friend_code,
@@ -161,7 +105,6 @@ export const useAuthentication = (): UseAuthenticationResult => {
     try {
       const { data } = await axios.post<ApiAuthLoginResponse>("/auth/login", { username, password });
       const { auth_token, friend_code, username: apiUsername, registration_time, is_public } = data;
-      setToken(auth_token);
       queryClient.setQueryData("fetchUser", {
         username: apiUsername,
         friendCode: friend_code,
@@ -175,8 +118,6 @@ export const useAuthentication = (): UseAuthenticationResult => {
   });
 
   const logOut = () => {
-    localStorage.removeItem(authTokenLocalStorageKey);
-    dispatch(setAuthToken(undefined));
     queryClient.setQueryData("fetchUser", undefined);
     queryClient.setQueryData("friends", undefined);
   };
@@ -187,8 +128,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
     try {
       await axios.post(
         "/auth/changepassword",
-        { old: oldPassword, new: newPassword },
-        { headers: { Authorization: `Bearer ${token ?? ""}` } }
+        { old: oldPassword, new: newPassword }
       );
       return PasswordChangeResult.Success;
     } catch (error) {
@@ -204,22 +144,18 @@ export const useAuthentication = (): UseAuthenticationResult => {
     }
   });
 
-  const username = userData?.username;
-
   return {
-    token,
-    setToken,
+    token: user.authToken,
     regenerateToken,
     regenerateFriendCode,
     register: (username: string, password: string) => register({ username, password }),
     login: (username: string, password: string) => login({ username, password }),
     logOut,
-    username,
-    registrationTime: userData?.registrationTime,
-    friendCode: userData?.friendCode,
-    isPublic: userData?.isPublic,
-    refetchUser: async () => { await refetchUser(); },
-    isLoggedIn: !!token,
+    username: user.username,
+    registrationTime: user.registrationTime,
+    friendCode: user.friendCode,
+    isPublic: user.isPublic,
+    isLoggedIn: !!user.authToken,
     changePassword: (oldPassword: string, newPassword: string) => changePassword({ oldPassword, newPassword })
   };
 };
