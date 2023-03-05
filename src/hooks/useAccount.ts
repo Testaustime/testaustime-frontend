@@ -2,12 +2,12 @@ import axios from "../axios";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuthentication } from "./useAuthentication";
 import { User } from "./useAuthentication";
-import { useNavigate } from "react-router";
+import { useRouter } from "next/router";
 
 export const useAccount = () => {
   const { token, logOut, username } = useAuthentication();
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const { mutateAsync: changeAccountVisibility } =
     useMutation("changeUserVisibility", (visibility: boolean) => axios.post("/account/settings", {
@@ -42,7 +42,7 @@ export const useAccount = () => {
       onSuccess: () => {
         queryClient.removeQueries("fetchUser");
         logOut();
-        navigate("/");
+        router.push("/").catch(console.error);
       }
     });
 

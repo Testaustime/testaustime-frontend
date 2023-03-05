@@ -1,21 +1,23 @@
 import { Anchor, Stack, Text, Title } from "@mantine/core";
 import { format } from "date-fns";
 import { useAuthentication } from "../../hooks/useAuthentication";
-import { WithTooltip } from "../WithTooltip/WithTooltip";
-import { TokenField } from "../TokenField/TokenField";
+import WithTooltip from "../../components/WithTooltip";
+import TokenField from "../../components/TokenField";
 import { Link } from "react-router-dom";
 import { useTranslation } from "next-i18next";
-import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
-import { SmoothChartsSelector } from "../SmoothChartsSelector/SmoothChartsSelector";
-import { DefaultDayRangeSelector } from "../DefaultDayRangeSelector/DefaultDayRangeSelector";
-import ChangePasswordForm from "../ChangePasswordForm";
+import LanguageSelector from "../../components/LanguageSelector";
+import SmoothChartsSelector from "../../components/SmoothChartsSelector";
+import DefaultDayRangeSelector from "../../components/DefaultDayRangeSelector";
+import ChangePasswordForm from "../../components/ChangePasswordForm";
 import { useAccount } from "../../hooks/useAccount";
 import { showNotification } from "@mantine/notifications";
-import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
+import ButtonWithConfirmation from "../../components/ButtonWithConfirmation";
 import { useModals } from "@mantine/modals";
-import ConfirmAccountDeletionModal from "../ConfirmAccountDeletionModal";
+import ConfirmAccountDeletionModal from "../../components/ConfirmAccountDeletionModal";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
   const {
     token,
     regenerateToken,
@@ -118,3 +120,9 @@ export const ProfilePage = () => {
     </Stack>
   </div>;
 };
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: await serverSideTranslations(locale ?? "en")
+});
+
+export default ProfilePage;
