@@ -18,7 +18,7 @@ const FriendPage = (props: InferGetServerSidePropsType<typeof getServerSideProps
 };
 
 export const getServerSideProps: GetServerSideProps<{
-  friendCodePlaceholder: string;
+  friendCodePlaceholder: string
 }> = async ({ locale }) => ({
   props: {
     ...(await serverSideTranslations(locale ?? "en")),

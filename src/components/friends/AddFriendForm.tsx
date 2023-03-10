@@ -1,8 +1,6 @@
 import { Button, Group } from "@mantine/core";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { Form, Formik } from "formik";
-import { useState } from "react";
-import { generateFriendCode } from "../../utils/codeUtils";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
 import { AddFriendError, useFriends } from "../../hooks/useFriends";
@@ -11,7 +9,7 @@ import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/router";
 
 export type AddFriendFormProps = {
-  friendCodePlaceholder: string;
+  friendCodePlaceholder: string
 }
 
 export const AddFriendForm = ({ friendCodePlaceholder }: AddFriendFormProps) => {

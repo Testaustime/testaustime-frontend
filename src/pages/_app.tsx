@@ -8,11 +8,13 @@ import { Footer } from "../components/Footer/Footer";
 import { useCreateSettings } from "../hooks/useSettings";
 import { useHotkeys } from "@mantine/hooks";
 import { SettingsContext } from "../contexts/SettingsContext";
-import { AppSetup } from "../AppSetup";
 import "../index.css";
 import { UserContext } from "../contexts/UserContext";
 import axios from "../axios";
 import { ApiUsersUserResponse } from "../hooks/useAuthentication";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
 
 type Props = {
   token?: string,
@@ -142,6 +144,8 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
   </MantineProvider>;
 };
 
+const queryClient = new QueryClient();
+
 function App(props: AppProps<Props>) {
   return <div id="root">
     <UserContext.Provider value={{
@@ -151,9 +155,12 @@ function App(props: AppProps<Props>) {
       registrationTime: props.pageProps.registrationTime ? new Date(props.pageProps.registrationTime) : undefined,
       username: props.pageProps.username
     }}>
-      <AppSetup>
-        <InnerApp {...props} />
-      </AppSetup>
+      <QueryClientProvider client={queryClient}>
+        <Notifications />
+        <ModalsProvider>
+          <InnerApp {...props} />
+        </ModalsProvider>
+      </QueryClientProvider>
     </UserContext.Provider>
   </div>;
 }
