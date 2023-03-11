@@ -1,4 +1,3 @@
-import { useAuthentication } from "./useAuthentication";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
@@ -27,13 +26,10 @@ export enum AddFriendError {
 }
 
 export const useFriends = () => {
-  const { token } = useAuthentication();
   const queryClient = useQueryClient();
 
   const { data: friends } = useQuery("friends", async () => {
-    const response = await axios.get<ApiFriendsResponseItem[]>("/friends/list", {
-      headers: { Authorization: `Bearer ${token ?? ""}` }
-    });
+    const response = await axios.get<ApiFriendsResponseItem[]>("/friends/list");
     return response.data;
   }, {
     staleTime: 2 * 60 * 1000 // 2 minutes
@@ -41,10 +37,7 @@ export const useFriends = () => {
 
   const { mutateAsync: addFriend } = useMutation(async (friendCode: string) => {
     const response = await axios.post<ApiFriendsAddResponse>("/friends/add", friendCode, {
-      headers: {
-        Authorization: `Bearer ${token ?? ""}`,
-        "Content-Type": "text/plain"
-      }
+      headers: { "Content-Type": "text/plain" }
     });
     return response.data;
   }, {
@@ -56,10 +49,7 @@ export const useFriends = () => {
   const { mutateAsync: unFriend } = useMutation(async (username: string) => {
     await axios.delete("/friends/remove", {
       data: username,
-      headers: {
-        Authorization: `Bearer ${token ?? ""}`,
-        "Content-Type": "text/plain"
-      }
+      headers: { "Content-Type": "text/plain" }
     });
     return username;
   }, {

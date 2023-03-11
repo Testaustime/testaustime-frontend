@@ -5,6 +5,7 @@ import { getErrorMessage } from "../lib/errorHandling/errorHandler";
 import { setAuthToken } from "../slices/userSlice";
 import { RootState } from "../store";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useEffect } from "react";
 
 export interface ApiAuthRegisterResponse {
   auth_token: string,
@@ -76,6 +77,15 @@ export const useAuthentication = (): UseAuthenticationResult => {
   const token = useSelector<RootState, string | undefined>(state => state.users.authToken)
     ?? localStorage.getItem(authTokenLocalStorageKey) ?? undefined;
 
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+    else {
+      delete axios.defaults.headers.common["Authorization"];
+    }
+  }, [token]);
+
   const setToken = (newToken: string) => {
     dispatch(setAuthToken(newToken));
     localStorage.setItem(authTokenLocalStorageKey, newToken);
@@ -83,9 +93,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const { data: userData, refetch: refetchUser } = useQuery("fetchUser", async () => {
     try {
-      const { data } = await axios.get<ApiUsersUserResponse>("/users/@me",
-        { headers: { Authorization: `Bearer ${token ?? ""}` } }
-      );
+      const { data } = await axios.get<ApiUsersUserResponse>("/users/@me");
 
       return {
         username: data.username,
@@ -106,9 +114,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const { mutateAsync: regenerateToken } = useMutation(async () => {
     try {
-      const { data } = await axios.post<ApiAuthRegenerateResponse>("/auth/regenerate", null,
-        { headers: { Authorization: `Bearer ${token ?? ""}` } }
-      );
+      const { data } = await axios.post<ApiAuthRegenerateResponse>("/auth/regenerate", null);
       const newToken = data.token;
       setToken(newToken);
       return newToken;
@@ -119,9 +125,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
 
   const { mutateAsync: regenerateFriendCode } = useMutation(async () => {
     try {
-      const { data } = await axios.post<ApiFriendsRegenerateResponse>("/friends/regenerate", null,
-        { headers: { Authorization: `Bearer ${token ?? ""}` } }
-      );
+      const { data } = await axios.post<ApiFriendsRegenerateResponse>("/friends/regenerate", null);
       const newFriendCode = data.friend_code;
       queryClient.setQueryData("fetchUser", (oldData: User | undefined) => {
         if (!oldData) throw new Error("User data not found");
@@ -185,11 +189,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
     { oldPassword, newPassword }: { oldPassword: string, newPassword: string }
   ) => {
     try {
-      await axios.post(
-        "/auth/changepassword",
-        { old: oldPassword, new: newPassword },
-        { headers: { Authorization: `Bearer ${token ?? ""}` } }
-      );
+      await axios.post("/auth/changepassword", { old: oldPassword, new: newPassword });
       return PasswordChangeResult.Success;
     } catch (error) {
       if (isAxiosError(error)) {
