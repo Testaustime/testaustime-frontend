@@ -26,12 +26,12 @@ ChartJS.register(
 
 export interface PerProjectChartProps {
   entries: {
-    language?: string,
+    language: string | null,
     duration: number,
     id: number,
-    project_name?: string,
-    editor_name?: string,
-    hostname?: string,
+    project_name: string | null,
+    editor_name: string | null,
+    hostname: string | null,
     start_time: Date,
     dayStart: Date
   }[],
@@ -140,7 +140,7 @@ export const PerProjectChart = ({ entries, projectCount = 5, className }: PerPro
           labels: data.map(d => d.projectName),
           datasets: languageNames.map(language => ({
             id: language,
-            label: prettifyProgrammingLanguageName(language),
+            label: prettifyProgrammingLanguageName(language) ?? undefined,
             data: data.map(d => d[language + "_duration"] ?? 0),
             backgroundColor: getLanguageColor(language),
             borderColor: getLanguageColor(language),

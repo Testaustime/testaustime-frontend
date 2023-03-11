@@ -1,4 +1,4 @@
-import { useActivityData } from "../hooks/useActivityData";
+import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
 import { Group, MultiSelect, SegmentedControl, Text, Title, createStyles, Stack } from "@mantine/core";
 import TopLanguages from "./TopLanguages";
 import { DayRange, getDayCount, prettyDuration } from "../utils/dateUtils";
@@ -50,10 +50,11 @@ const useStyles = createStyles(theme => ({
 
 export interface DashboardProps {
   username: string,
-  isFrontPage: boolean
+  isFrontPage: boolean,
+  initialEntries?: ActivityDataEntry[]
 }
 
-export const Dashboard = ({ username, isFrontPage }: DashboardProps) => {
+export const Dashboard = ({ username, isFrontPage, initialEntries }: DashboardProps) => {
   const { defaultDayRange } = useSettings();
   const [statisticsRange, setStatisticsRange] = useState<DayRange>(defaultDayRange || "week");
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
@@ -63,7 +64,7 @@ export const Dashboard = ({ username, isFrontPage }: DashboardProps) => {
   const entries = useActivityData(username, {
     projectFilter: selectedProjects.length === 0 ? undefined : selectedProjects,
     dayFilter: statisticsRange
-  });
+  }, initialEntries);
 
   const { t } = useTranslation();
 

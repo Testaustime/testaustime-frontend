@@ -1,11 +1,13 @@
-import type { GetStaticProps } from "next";
+import type { GetServerSideProps } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 import { Anchor, Text, createStyles } from "@mantine/core";
-import { useAuthentication } from "../hooks/useAuthentication";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { Dashboard } from "../components/Dashboard";
+import axios from "axios";
+import { ApiUsersUserActivityDataResponseItem } from "../hooks/useActivityData";
+import { startOfDay } from "date-fns";
 
 const useStyles = createStyles(theme => ({
   downloadButton: {
@@ -58,13 +60,20 @@ const useStyles = createStyles(theme => ({
   }
 }));
 
-export const MainPage = () => {
-  const { isLoggedIn } = useAuthentication();
+export type MainPageProps =
+  | { isLoggedIn: false }
+  | { isLoggedIn: true, entries: ApiUsersUserActivityDataResponseItem[] };
+
+export const MainPage = (props: MainPageProps) => {
   const { classes } = useStyles();
   const { t } = useTranslation();
 
-  return <div className={!isLoggedIn ? classes.heroContainer : classes.dashboardContainer}>
-    {isLoggedIn ? <Dashboard username="@me" isFrontPage={true} /> : <>
+  return <div className={!props.isLoggedIn ? classes.heroContainer : classes.dashboardContainer}>
+    {props.isLoggedIn ? <Dashboard username="@me" isFrontPage={true} initialEntries={props.entries.map(e => ({
+      ...e,
+      start_time: new Date(e.start_time),
+      dayStart: startOfDay(new Date(e.start_time))
+    }))} /> : <>
       <Text mb={20} className={classes.heroText}>{t("mainPage.hero")}</Text>
       <Anchor className={classes.downloadButton} component={Link} href="/extensions">
         <DownloadIcon height={30} width={30} className={classes.downloadIcon} />
@@ -74,8 +83,29 @@ export const MainPage = () => {
   </div>;
 };
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-  props: await serverSideTranslations(locale ?? "en")
-});
+export const getServerSideProps: GetServerSideProps<MainPageProps> = async ({ locale, req }) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return {
+      props: {
+        ...(await serverSideTranslations(locale ?? "en")),
+        isLoggedIn: false
+      }
+    };
+  }
+
+  const response = await axios.get<ApiUsersUserActivityDataResponseItem[]>(
+    `${process.env.NEXT_PUBLIC_API_URL || ""}/users/@me/activity/data`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en")),
+      isLoggedIn: true,
+      entries: response.data
+    }
+  };
+};
 
 export default MainPage;
