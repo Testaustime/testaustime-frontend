@@ -167,34 +167,31 @@ function App(props: AppProps<Props>) {
 
 App.getInitialProps = async ({ ctx }: AppContext): Promise<AppInitialProps<Props>> => {
   const token = ctx.req?.headers.cookie?.replace("token=", "");
-  if (token) {
-    let data: ApiUsersUserResponse;
-    try {
-      const response = await axios.get<ApiUsersUserResponse>(`${process.env.NEXT_PUBLIC_API_URL ?? ""}/users/@me`,
-        { headers: { Authorization: `Bearer ${token ?? ""}` } }
-      );
-      data = response.data;
-    }
-    catch (e) {
-      return {
-        pageProps: {}
-      };
-    }
-
+  if (!token) {
     return {
-      pageProps: {
-        token,
-        username: data.username,
-        friendCode: data.friend_code,
-        registrationTime: new Date(data.registration_time),
-        isPublic: data.is_public
-      }
+      pageProps: {}
     };
   }
 
-  return {
-    pageProps: {}
-  };
+  try {
+    const response = await axios.get<ApiUsersUserResponse>(`${process.env.NEXT_PUBLIC_API_URL ?? ""}/users/@me`,
+      { headers: { Authorization: `Bearer ${token ?? ""}` } }
+    );
+    return {
+      pageProps: {
+        token,
+        username: response.data.username,
+        friendCode: response.data.friend_code,
+        registrationTime: new Date(response.data.registration_time),
+        isPublic: response.data.is_public
+      }
+    };
+  }
+  catch (e) {
+    return {
+      pageProps: {}
+    };
+  }
 };
 
 export default appWithTranslation(App);

@@ -2,7 +2,6 @@ import axios from "../axios";
 import { startOfDay } from "date-fns";
 import { DayRange, getDayCount } from "../utils/dateUtils";
 import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
-import { useAuthentication } from "./useAuthentication";
 import { useQuery } from "react-query";
 
 export interface ApiUsersUserActivityDataResponseItem {
@@ -25,12 +24,8 @@ export const useActivityData = (username: string, filter: {
   projectFilter?: string[],
   dayFilter: DayRange
 }) => {
-  const { token } = useAuthentication();
-
   const { data: entries } = useQuery(["activityData", username], async () => {
-    const response = await axios.get<ApiUsersUserActivityDataResponseItem[]>(`/users/${username}/activity/data`,
-      { headers: { Authorization: `Bearer ${token ?? ""}` } }
-    );
+    const response = await axios.get<ApiUsersUserActivityDataResponseItem[]>(`/users/${username}/activity/data`);
     const mappedData: ActivityDataEntry[] = response.data.map(e => ({
       ...e,
       start_time: new Date(e.start_time),

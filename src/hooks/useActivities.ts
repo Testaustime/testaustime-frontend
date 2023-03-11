@@ -1,20 +1,14 @@
 import axios from "../axios";
 import { useMutation, useQueryClient } from "react-query";
-import { useAuthentication } from "./useAuthentication";
 import { ActivityDataEntry } from "./useActivityData";
 
 export const useActivity = (activityName: string) => {
-  const { token } = useAuthentication();
   const queryClient = useQueryClient();
 
   const { mutateAsync: renameProject } = useMutation("renameProject",
     (newName: string) => axios.post("/activity/rename", {
       from: activityName,
       to: newName
-    }, {
-      headers: {
-        Authorization: `Bearer ${token ?? ""}`
-      }
     }),
     {
       onSuccess: (_, newName) => {
