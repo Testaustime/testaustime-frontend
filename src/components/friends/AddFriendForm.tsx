@@ -13,7 +13,7 @@ export type AddFriendFormProps = {
 }
 
 export const AddFriendForm = ({ friendCodePlaceholder }: AddFriendFormProps) => {
-  const { addFriend } = useFriends();
+  const { addFriend } = useFriends({ shouldFetch: false });
   const router = useRouter();
   const urlFriendCode = typeof router.query.code === "string" ? router.query.code : undefined;
   const { t } = useTranslation();

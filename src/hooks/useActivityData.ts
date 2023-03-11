@@ -23,7 +23,10 @@ export type ActivityDataEntry = Omit<ApiUsersUserActivityDataResponseItem, "star
 export const useActivityData = (username: string, filter: {
   projectFilter?: string[],
   dayFilter: DayRange
-}, initialData?: ActivityDataEntry[]) => {
+}, options: {
+  initialData?: ActivityDataEntry[],
+  shouldFetch?: boolean
+} = { shouldFetch: true }) => {
   const { data: entries } = useQuery(["activityData", username], async () => {
     const response = await axios.get<ApiUsersUserActivityDataResponseItem[]>(`/users/${username}/activity/data`);
     const mappedData: ActivityDataEntry[] = response.data.map(e => ({
@@ -36,8 +39,8 @@ export const useActivityData = (username: string, filter: {
     return mappedData;
   }, {
     staleTime: 2 * 60 * 1000, // 2 minutes
-    initialData,
-    enabled: username !== "@me"
+    initialData: options.initialData,
+    enabled: options.shouldFetch
   });
 
   return (entries ?? [])

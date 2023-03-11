@@ -1,8 +1,8 @@
 import { Button, Table, Text, Title, useMantineTheme } from "@mantine/core";
 import { addDays, startOfDay } from "date-fns";
-import { useActivityData } from "../../hooks/useActivityData";
+import { ApiUsersUserActivityDataResponseItem, useActivityData } from "../../hooks/useActivityData";
 import { useAuthentication } from "../../hooks/useAuthentication";
-import { useFriends } from "../../hooks/useFriends";
+import { ApiFriendsResponseItem, useFriends } from "../../hooks/useFriends";
 import { useTranslation } from "next-i18next";
 import { sumBy } from "../../utils/arrayUtils";
 import { prettyDuration } from "../../utils/dateUtils";
@@ -10,9 +10,27 @@ import { useModals } from "@mantine/modals";
 import { Dashboard } from "../Dashboard";
 import { showNotification } from "@mantine/notifications";
 
-export const FriendList = () => {
-  const { unFriend, friends } = useFriends();
-  const entries = useActivityData("@me", { dayFilter: "month" });
+export type FriendListProps = {
+  initialFriends?: ApiFriendsResponseItem[],
+  ownInitialData?: ApiUsersUserActivityDataResponseItem[]
+}
+
+export const FriendList = ({ initialFriends, ownInitialData }: FriendListProps) => {
+  const { unFriend, friends } = useFriends({ initialFriends });
+
+  const entries = useActivityData(
+    "@me",
+    { dayFilter: "month" },
+    {
+      initialData: ownInitialData?.map(e => ({
+        ...e,
+        dayStart: startOfDay(new Date(e.start_time)),
+        start_time: new Date(e.start_time)
+      })),
+      shouldFetch: false
+    }
+  );
+
   const entriesInRange = entries.filter(entry => {
     const startOfStatisticsRange = startOfDay(addDays(new Date(), -30));
     return entry.start_time.getTime() >= startOfStatisticsRange.getTime();

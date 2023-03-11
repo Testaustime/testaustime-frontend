@@ -26,14 +26,18 @@ export enum AddFriendError {
   UnknownError
 }
 
-export const useFriends = () => {
+export const useFriends = (options: {
+  initialFriends?: ApiFriendsResponseItem[], shouldFetch?: boolean
+} = { shouldFetch: true }) => {
   const queryClient = useQueryClient();
 
   const { data: friends } = useQuery("friends", async () => {
     const response = await axios.get<ApiFriendsResponseItem[]>("/friends/list");
     return response.data;
   }, {
-    staleTime: 2 * 60 * 1000 // 2 minutes
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    placeholderData: options?.initialFriends,
+    enabled: options?.shouldFetch ?? true
   });
 
   const { mutateAsync: addFriend } = useMutation(async (friendCode: string) => {

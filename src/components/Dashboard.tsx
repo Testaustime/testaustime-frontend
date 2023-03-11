@@ -61,10 +61,11 @@ export const Dashboard = ({ username, isFrontPage, initialEntries }: DashboardPr
   const { username: authenticatedUsername } = useAuthentication();
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
   const { classes } = useStyles();
-  const entries = useActivityData(username, {
-    projectFilter: selectedProjects.length === 0 ? undefined : selectedProjects,
-    dayFilter: statisticsRange
-  }, initialEntries);
+  const entries = useActivityData(
+    username,
+    { projectFilter: selectedProjects.length === 0 ? undefined : selectedProjects, dayFilter: statisticsRange },
+    { initialData: initialEntries, shouldFetch: username !== "@me" }
+  );
 
   const { t } = useTranslation();
 
