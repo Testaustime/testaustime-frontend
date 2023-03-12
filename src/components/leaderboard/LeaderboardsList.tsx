@@ -1,18 +1,19 @@
 import { Badge, Button, Table } from "@mantine/core";
 import { useAuthentication } from "../../hooks/useAuthentication";
-import { useLeaderboards } from "../../hooks/useLeaderboards";
+import { LeaderboardData } from "../../hooks/useLeaderboards";
 import { useTranslation } from "next-i18next";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
 
 export interface LeaderboardsListProps {
-  setOpenedLeaderboardName: (name: string) => void
+  setOpenedLeaderboardName: (name: string) => void,
+  leaderboards: LeaderboardData[]
 }
 
 export const LeaderboardsList = ({
-  setOpenedLeaderboardName
+  setOpenedLeaderboardName,
+  leaderboards
 }: LeaderboardsListProps) => {
-  const { leaderboards } = useLeaderboards();
   const { username } = useAuthentication();
 
   const { t } = useTranslation();

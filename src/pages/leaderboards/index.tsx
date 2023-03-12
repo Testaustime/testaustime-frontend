@@ -2,7 +2,7 @@ import { Button, Group, Modal, Text, Title } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { useEffect, useState } from "react";
 import { useAuthentication } from "../../hooks/useAuthentication";
-import { useLeaderboards } from "../../hooks/useLeaderboards";
+import { Leaderboard, LeaderboardData, useLeaderboards } from "../../hooks/useLeaderboards";
 import { LeaderboardModal } from "../../components/leaderboard/LeaderboardModal";
 import { CreateLeaderboardModal } from "../../components/leaderboard/CreateLeaderboardModal";
 import { JoinLeaderboardModal } from "../../components/leaderboard/JoinLeaderboardModal";
@@ -12,8 +12,13 @@ import { LeaderboardsList } from "../../components/leaderboard/LeaderboardsList"
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
+import axios from "axios";
 
-const LeaderboardsPage = () => {
+export type LeaderboardsPageProps = {
+  initialLeaderboards: LeaderboardData[]
+}
+
+const LeaderboardsPage = (props: LeaderboardsPageProps) => {
   const {
     leaderboards,
     leaveLeaderboard,
@@ -22,11 +27,15 @@ const LeaderboardsPage = () => {
     demoteUser,
     kickUser,
     regenerateInviteCode
-  } = useLeaderboards();
+  } = useLeaderboards({
+    initialLeaderboards: props.initialLeaderboards,
+    shouldFetch: false
+  });
+
   const { username } = useAuthentication();
   const modals = useModals();
   const [openedLeaderboardName, setOpenedLeaderboardName] = useState<string | undefined>(undefined);
-  const openedLeaderboard = leaderboards.find(l => l.name === openedLeaderboardName);
+  const openedLeaderboard = leaderboards?.find(l => l.name === openedLeaderboardName);
 
   const router = useRouter();
   const urlLeaderboardCode = typeof router.query.code === "string" ? router.query.code : null;
@@ -110,13 +119,52 @@ const LeaderboardsPage = () => {
         </Button>
       </Group>
     </Group>
-    <LeaderboardsList setOpenedLeaderboardName={setOpenedLeaderboardName} />
+    <LeaderboardsList
+      setOpenedLeaderboardName={setOpenedLeaderboardName}
+      leaderboards={leaderboards}
+    />
   </>;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
-  props: await serverSideTranslations(locale ?? "en")
-});
+export const getServerSideProps: GetServerSideProps<LeaderboardsPageProps> = async ({ locale, req }) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false
+      }
+    };
+  }
+
+  const leaderboardListResponse = await axios.get<Leaderboard[]>(
+    `${process.env.NEXT_PUBLIC_API_URL || ""}/users/@me/leaderboards`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+  const leaderboardPromises = leaderboardListResponse.data.map(async leaderboard => {
+    const response = await axios.get<LeaderboardData>(
+      `${process.env.NEXT_PUBLIC_API_URL || ""}/leaderboards/${leaderboard.name}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    return response.data;
+  });
+
+  const leaderboards = await Promise.all(leaderboardPromises);
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en")),
+      initialLeaderboards: leaderboards
+    }
+  };
+};
 
 export default LeaderboardsPage;
 

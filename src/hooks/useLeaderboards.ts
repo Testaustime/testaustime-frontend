@@ -18,8 +18,6 @@ export interface LeaderboardData {
   }[]
 }
 
-export type CombinedLeaderboard = Leaderboard & LeaderboardData;
-
 export enum JoinLeaderboardError {
   AlreadyMember,
   NotFound,
@@ -31,14 +29,25 @@ export enum CreateLeaderboardError {
   UnknownError
 }
 
-export const useLeaderboards = () => {
+export const useLeaderboards = ({
+  initialLeaderboards,
+  shouldFetch
+}: {
+  initialLeaderboards?: LeaderboardData[],
+  shouldFetch?: boolean
+} = { shouldFetch: true }) => {
   const queryClient = useQueryClient();
 
   const { data: leaderboards } = useQuery("leaderboards", async () => {
     const response = await axios.get<Leaderboard[]>("/users/@me/leaderboards");
     return response.data;
   }, {
-    staleTime: 2 * 60 * 1000 // 2 minutes
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    placeholderData: initialLeaderboards?.map(leaderboard => ({
+      member_count: leaderboard.members.length,
+      name: leaderboard.name
+    })),
+    enabled: shouldFetch
   });
 
   const leaderboardData = useQueries((leaderboards ?? []).map(leaderboard => ({
@@ -50,7 +59,9 @@ export const useLeaderboards = () => {
     staleTime: 2 * 60 * 1000, // 2 minutes
     onSuccess: (leaderboard: LeaderboardData) => {
       queryClient.setQueriesData(["leaderboardData", leaderboard.name], leaderboard);
-    }
+    },
+    placeholderData: initialLeaderboards?.find(l => l.name === leaderboard.name),
+    enabled: shouldFetch
   })));
 
   const { mutateAsync: joinLeaderboard } = useMutation(async (leaderboardCode: string) => {
@@ -147,26 +158,10 @@ export const useLeaderboards = () => {
     }
   });
 
-  const existingLeaderboardNames = leaderboardData
-    .map(leaderboard => leaderboard.data?.name)
-    .filter(name => name !== undefined) as string[];
-
-  const combined: CombinedLeaderboard[] = existingLeaderboardNames
-    .map(name => {
-      const dt = leaderboardData.find(leaderboard => leaderboard.data?.name === name);
-      if (dt === undefined || dt.data === undefined) throw Error("This should never happen");
-      const d = dt.data;
-      return {
-        name,
-        creation_time: d.creation_time,
-        invite: d.invite,
-        member_count: d.members.length,
-        members: d.members
-      } satisfies CombinedLeaderboard;
-    });
-
   return {
-    leaderboards: combined,
+    leaderboards: leaderboardData
+      .map(leaderboard => leaderboard.data)
+      .filter((leaderboard): leaderboard is LeaderboardData => !!leaderboard),
     joinLeaderboard: async (inviteCode: string) => {
       try {
         return await joinLeaderboard(inviteCode);
