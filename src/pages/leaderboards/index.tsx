@@ -167,4 +167,3 @@ export const getServerSideProps: GetServerSideProps<LeaderboardsPageProps> = asy
 };
 
 export default LeaderboardsPage;
-

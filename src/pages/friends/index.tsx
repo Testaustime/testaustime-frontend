@@ -8,11 +8,13 @@ import { generateFriendCode } from "../../utils/codeUtils";
 import axios from "axios";
 import { ApiFriendsResponseItem } from "../../hooks/useFriends";
 import { ApiUsersUserActivityDataResponseItem } from "../../hooks/useActivityData";
+import { addDays, startOfDay } from "date-fns";
+import { sumBy } from "../../utils/arrayUtils";
 
 export type FriendPageProps = {
   friendCodePlaceholder: string,
   initialFriends: ApiFriendsResponseItem[],
-  ownInitialData: ApiUsersUserActivityDataResponseItem[]
+  ownTimeCoded: number
 }
 
 const FriendPage = (props: FriendPageProps) => {
@@ -22,7 +24,7 @@ const FriendPage = (props: FriendPageProps) => {
     <Title order={2} mb={15}>{t("friends.addNewFriend")}</Title>
     <AddFriendForm friendCodePlaceholder={props.friendCodePlaceholder} />
     <Title order={2} mt={40}>{t("friends.yourFriends")}</Title>
-    <FriendList initialFriends={props.initialFriends} ownInitialData={props.ownInitialData} />
+    <FriendList initialFriends={props.initialFriends} ownTimeCoded={props.ownTimeCoded} />
   </>;
 };
 
@@ -38,20 +40,33 @@ export const getServerSideProps: GetServerSideProps<FriendPageProps> = async ({ 
     };
   }
 
-  const friendsResponse = await axios.get<ApiFriendsResponseItem[]>(
+  const friendsPromise = axios.get<ApiFriendsResponseItem[]>(
     `${process.env.NEXT_PUBLIC_API_URL || ""}/friends/list`,
     { headers: { Authorization: `Bearer ${token}` } });
 
-  const ownResponse = await axios.get<ApiUsersUserActivityDataResponseItem[]>(
+  const ownPromise = axios.get<ApiUsersUserActivityDataResponseItem[]>(
     `${process.env.NEXT_PUBLIC_API_URL || ""}/users/@me/activity/data`,
     { headers: { Authorization: `Bearer ${token}` } });
+
+  const [friendsResponse, ownResponse] = await Promise.all([friendsPromise, ownPromise]);
+
+  const ownEntries = ownResponse.data?.map(e => ({
+    ...e,
+    dayStart: startOfDay(new Date(e.start_time)),
+    start_time: new Date(e.start_time)
+  })).filter(entry => {
+    const startOfStatisticsRange = startOfDay(addDays(new Date(), -30));
+    return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
+  });
+
+  const ownTimeCoded = sumBy(ownEntries, e => e.duration);
 
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "en")),
       friendCodePlaceholder: generateFriendCode(),
       initialFriends: friendsResponse.data,
-      ownInitialData: ownResponse.data
+      ownTimeCoded
     }
   };
 };

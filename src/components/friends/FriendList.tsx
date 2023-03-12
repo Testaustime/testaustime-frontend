@@ -1,10 +1,7 @@
 import { Button, Table, Text, Title, useMantineTheme } from "@mantine/core";
-import { addDays, startOfDay } from "date-fns";
-import { ApiUsersUserActivityDataResponseItem, useActivityData } from "../../hooks/useActivityData";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { ApiFriendsResponseItem, useFriends } from "../../hooks/useFriends";
 import { useTranslation } from "next-i18next";
-import { sumBy } from "../../utils/arrayUtils";
 import { prettyDuration } from "../../utils/dateUtils";
 import { useModals } from "@mantine/modals";
 import { Dashboard } from "../Dashboard";
@@ -12,29 +9,12 @@ import { showNotification } from "@mantine/notifications";
 
 export type FriendListProps = {
   initialFriends?: ApiFriendsResponseItem[],
-  ownInitialData?: ApiUsersUserActivityDataResponseItem[]
+  ownTimeCoded?: number
 }
 
-export const FriendList = ({ initialFriends, ownInitialData }: FriendListProps) => {
+export const FriendList = ({ initialFriends, ownTimeCoded }: FriendListProps) => {
   const { unFriend, friends } = useFriends({ initialFriends });
 
-  const entries = useActivityData(
-    "@me",
-    { dayFilter: "month" },
-    {
-      initialData: ownInitialData?.map(e => ({
-        ...e,
-        dayStart: startOfDay(new Date(e.start_time)),
-        start_time: new Date(e.start_time)
-      })),
-      shouldFetch: false
-    }
-  );
-
-  const entriesInRange = entries.filter(entry => {
-    const startOfStatisticsRange = startOfDay(addDays(new Date(), -30));
-    return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
-  });
   const { t } = useTranslation();
   const { username } = useAuthentication();
   const theme = useMantineTheme();
@@ -47,7 +27,7 @@ export const FriendList = ({ initialFriends, ownInitialData }: FriendListProps) 
   const friendsSorted = [...friends.map(f => ({ ...f, isMe: false })).concat({
     coding_time: {
       all_time: 0,
-      past_month: sumBy(entriesInRange, entry => entry.duration),
+      past_month: ownTimeCoded ?? 0,
       past_week: 0
     },
     isMe: true,
