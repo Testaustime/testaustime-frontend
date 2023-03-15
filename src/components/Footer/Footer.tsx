@@ -1,6 +1,6 @@
 import { createStyles, Text, Anchor } from "@mantine/core";
 import { useTranslation } from "next-i18next";
-import TestausserveriLogo from "../../../public/images/testausserveri.svg";
+import { TestausserveriLogo } from "../images/TestausserveriLogo";
 import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
 
 const useStyles = createStyles(theme => ({

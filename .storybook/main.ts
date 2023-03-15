@@ -1,8 +1,7 @@
-import type { StorybookConfig } from "@storybook/builder-vite";
+import type { StorybookConfig } from "@storybook/nextjs";
 
 const config: StorybookConfig = {
   "stories": [
-    "../src/**/*.stories.mdx",
     "../src/**/*.stories.@(js|jsx|ts|tsx)"
   ],
   "addons": [
@@ -11,11 +10,15 @@ const config: StorybookConfig = {
     "@storybook/addon-interactions"
   ],
   "framework": {
-    "name": "@storybook/react-vite",
+    "name": "@storybook/nextjs",
     "options": {}
   },
-  "docs": {
-    "docsPage": true
+  webpack: (config) => {
+    if (config.resolve) {
+      // @ts-ignore
+      config.resolve.fallback.fs = false;
+    }
+    return config;
   }
 };
 

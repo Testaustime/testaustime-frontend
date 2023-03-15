@@ -8,5 +8,8 @@ module.exports = {
     locales: ["en", "fi"]
   },
   reloadOnPrerender: process.env.NODE_ENV === "development",
-  strictMode: true
+  strictMode: true,
+  react: {
+    useSuspense: false
+  }
 };
