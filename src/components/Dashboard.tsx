@@ -11,6 +11,7 @@ import { PerProjectChart } from "./PerProjectChart";
 import { useAuthentication } from "../hooks/useAuthentication";
 import { useSettings } from "../hooks/useSettings";
 import { useTranslation } from "next-i18next";
+import Link from "next/link";
 
 const useStyles = createStyles(theme => ({
   dataCard: {
@@ -162,7 +163,7 @@ export const Dashboard = ({ username, isFrontPage, initialEntries }: DashboardPr
         </>
         :
         <Text>{t("dashboard.noData.title")}{" "}
-          {prefix}<a href="/extensions">{infix}</a>{suffix}</Text>
+          {prefix}<Link href="/extensions">{infix}</Link>{suffix}</Text>
       }
     </div>
   );
