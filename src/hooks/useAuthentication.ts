@@ -4,7 +4,7 @@ import { authTokenLocalStorageKey } from "../utils/constants";
 import { getErrorMessage } from "../lib/errorHandling/errorHandler";
 import { setAuthToken } from "../slices/userSlice";
 import { RootState } from "../store";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 export interface ApiAuthRegisterResponse {
@@ -91,7 +91,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
     localStorage.setItem(authTokenLocalStorageKey, newToken);
   };
 
-  const { data: userData, refetch: refetchUser } = useQuery("fetchUser", async () => {
+  const { data: userData, refetch: refetchUser } = useQuery(["fetchUser"], async () => {
     try {
       const { data } = await axios.get<ApiUsersUserResponse>("/users/@me");
 
@@ -103,7 +103,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
       };
     }
     catch (error) {
-      queryClient.setQueryData("fetchUser", undefined);
+      queryClient.setQueryData(["fetchUser"], undefined);
 
       logOut();
       return undefined;
@@ -127,7 +127,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
     try {
       const { data } = await axios.post<ApiFriendsRegenerateResponse>("/friends/regenerate", null);
       const newFriendCode = data.friend_code;
-      queryClient.setQueryData("fetchUser", (oldData: User | undefined) => {
+      queryClient.setQueryData(["fetchUser"], (oldData: User | undefined) => {
         if (!oldData) throw new Error("User data not found");
         return ({
           ...oldData,
@@ -147,7 +147,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
       const { data } = await axios.post<ApiAuthRegisterResponse>("/auth/register", { username, password });
       const authToken = data.auth_token;
       setToken(authToken);
-      queryClient.setQueryData("fetchUser", {
+      queryClient.setQueryData(["fetchUser"], {
         username: data.username,
         friendCode: data.friend_code,
         registrationTime: new Date(data.registration_time),
@@ -166,7 +166,7 @@ export const useAuthentication = (): UseAuthenticationResult => {
       const { data } = await axios.post<ApiAuthLoginResponse>("/auth/login", { username, password });
       const { auth_token, friend_code, username: apiUsername, registration_time, is_public } = data;
       setToken(auth_token);
-      queryClient.setQueryData("fetchUser", {
+      queryClient.setQueryData(["fetchUser"], {
         username: apiUsername,
         friendCode: friend_code,
         registrationTime: new Date(registration_time),
@@ -181,8 +181,8 @@ export const useAuthentication = (): UseAuthenticationResult => {
   const logOut = () => {
     localStorage.removeItem(authTokenLocalStorageKey);
     dispatch(setAuthToken(undefined));
-    queryClient.setQueryData("fetchUser", undefined);
-    queryClient.setQueryData("friends", undefined);
+    queryClient.setQueryData(["fetchUser"], undefined);
+    queryClient.setQueryData(["friends"], undefined);
   };
 
   const { mutateAsync: changePassword } = useMutation(async (

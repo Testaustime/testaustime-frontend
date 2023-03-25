@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface ApiFriendsResponseItem {
   username: string,
@@ -28,7 +28,7 @@ export enum AddFriendError {
 export const useFriends = () => {
   const queryClient = useQueryClient();
 
-  const { data: friends } = useQuery("friends", async () => {
+  const { data: friends } = useQuery(["friends"], async () => {
     const response = await axios.get<ApiFriendsResponseItem[]>("/friends/list");
     return response.data;
   }, {
@@ -42,7 +42,7 @@ export const useFriends = () => {
     return response.data;
   }, {
     onSuccess: data => {
-      queryClient.setQueryData("friends", (friends ?? []).concat(data));
+      queryClient.setQueryData(["friends"], (friends ?? []).concat(data));
     }
   });
 
@@ -54,7 +54,7 @@ export const useFriends = () => {
     return username;
   }, {
     onSuccess: username => {
-      queryClient.setQueryData("friends", (friends ?? []).filter(f => f.username !== username));
+      queryClient.setQueryData(["friends"], (friends ?? []).filter(f => f.username !== username));
     }
   });
 

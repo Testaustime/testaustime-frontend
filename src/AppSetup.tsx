@@ -9,7 +9,7 @@ import { useAuthentication } from "./hooks/useAuthentication";
 import { ModalsProvider } from "@mantine/modals";
 import { useCreateSettings } from "./hooks/useSettings";
 import { SettingsContext } from "./contexts/SettingsContext";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // eslint-disable-next-line
 import i18n from "./i18n/i18n";
 
