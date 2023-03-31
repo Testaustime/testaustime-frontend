@@ -54,8 +54,8 @@ export const Navigation = ({
 
   const { classes } = useStyles();
 
-  const logOutAndRedirect = () => {
-    logOut();
+  const logOutAndRedirect = async () => {
+    await logOut();
     router.push("/").catch(console.error);
   };
 

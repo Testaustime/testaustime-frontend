@@ -117,10 +117,14 @@ export const useAuthentication = () => {
     }
   });
 
-  const logOut = () => {
-    queryClient.setQueryData(["fetchUser"], undefined);
-    queryClient.setQueryData(["friends"], undefined);
-  };
+  const { mutateAsync: logOut } = useMutation(async () => {
+    try {
+      await axios.post("/auth/logout", null);
+      queryClient.clear();
+    } catch (error) {
+      throw getErrorMessage(error);
+    }
+  });
 
   const { mutateAsync: changePassword } = useMutation(async (
     { oldPassword, newPassword }: { oldPassword: string, newPassword: string }

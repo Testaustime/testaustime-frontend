@@ -12,7 +12,7 @@ const handler: NextApiHandler = async (req, res) => {
       const token = response.data.auth_token;
       res.setHeader(
         "Set-Cookie",
-        `token=${token}; path=/; expires=${new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toUTCString()}`
+        `token=${token}; path=/; expires=${new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toUTCString()}; SameSite=Strict; Secure; HttpOnly`
       );
       return res.status(response.status).json(response.data);
     } catch (e) {
