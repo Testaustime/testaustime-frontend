@@ -11,7 +11,8 @@ const handler: NextApiHandler = async (req, res) => {
       method: req.method?.toLowerCase(),
       url,
       headers: {
-        Authorization: `Bearer ${token || ""}`
+        Authorization: `Bearer ${token || ""}`,
+        "X-Forwarded-For": req.socket.remoteAddress
       },
       data: req.body as unknown
     });
