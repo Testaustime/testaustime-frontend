@@ -9,7 +9,6 @@ import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
 import { useAuthentication } from "../hooks/useAuthentication";
-import { useSettings } from "../hooks/useSettings";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 
@@ -52,11 +51,18 @@ const useStyles = createStyles(theme => ({
 export interface DashboardProps {
   username: string,
   isFrontPage: boolean,
-  initialEntries?: ActivityDataEntry[]
+  initialEntries?: ActivityDataEntry[],
+  defaultDayRange?: DayRange | undefined | null,
+  smoothCharts?: boolean | undefined | null
 }
 
-export const Dashboard = ({ username, isFrontPage, initialEntries }: DashboardProps) => {
-  const { defaultDayRange } = useSettings();
+export const Dashboard = ({
+  username,
+  isFrontPage,
+  initialEntries,
+  defaultDayRange,
+  smoothCharts
+}: DashboardProps) => {
   const [statisticsRange, setStatisticsRange] = useState<DayRange>(defaultDayRange || "week");
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const { username: authenticatedUsername } = useAuthentication();
@@ -125,7 +131,10 @@ export const Dashboard = ({ username, isFrontPage, initialEntries }: DashboardPr
           <Group className={classes.dataCard}>
             <Title mt={10} order={2}>{t("dashboard.timePerDay")}</Title>
             {entries.length > 0 ?
-              <DailyCodingTimeChart data={transformDailyData(entries, dayCount)} /> :
+              <DailyCodingTimeChart
+                data={transformDailyData(entries, dayCount)}
+                smoothCharts={smoothCharts ?? true}
+              /> :
               <Text>{t("dashboard.noData.title")}</Text>}
             <Text mt={15} mb={15}>
               {t("dashboard.totalTime", {

@@ -1,6 +1,6 @@
 import { Anchor, Stack, Text, Title } from "@mantine/core";
 import { format } from "date-fns";
-import { useAuthentication } from "../../hooks/useAuthentication";
+import { ApiUsersUserResponse, useAuthentication } from "../../hooks/useAuthentication";
 import WithTooltip from "../../components/WithTooltip";
 import TokenField from "../../components/TokenField";
 import Link from "next/link";
@@ -16,25 +16,27 @@ import { useModals } from "@mantine/modals";
 import ConfirmAccountDeletionModal from "../../components/ConfirmAccountDeletionModal";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import axios from "../../axios";
 
-const ProfilePage = () => {
+export type ProfilePageProps = {
+  username: string,
+  friendCode: string,
+  registrationTime: string,
+  isPublic: boolean,
+  token: string
+};
+
+const ProfilePage = ({ username, friendCode, registrationTime, isPublic, token }: ProfilePageProps) => {
   const {
-    token,
     regenerateToken,
     regenerateFriendCode,
-    username,
-    friendCode,
-    registrationTime,
-    changePassword,
-    isPublic
+    changePassword
   } = useAuthentication();
 
   const { t } = useTranslation();
   const { changeAccountVisibility, deleteAccount } = useAccount();
 
   const modals = useModals();
-
-  if (!registrationTime || !token || !friendCode || !username) return <Text>{t("profile.notLoggedIn")}</Text>;
 
   const openDeleteAccountModal = () => {
     const id = modals.openModal({
@@ -54,7 +56,7 @@ const ProfilePage = () => {
     <Title order={2}>{t("profile.title")}</Title>
     <Text mt={15}>{t("profile.username", { username })}</Text>
     <Text mt={15}>{t("profile.registrationTime", {
-      registrationTime: format(registrationTime, "d.M.yyyy HH:mm")
+      registrationTime: format(new Date(registrationTime), "d.M.yyyy HH:mm")
     })}</Text>
     <Stack mt={40} spacing={15}>
       <Title order={2}>{t("profile.account.title")}</Title>
@@ -121,8 +123,32 @@ const ProfilePage = () => {
   </div>;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
-  props: await serverSideTranslations(locale ?? "en")
-});
+export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({ locale, req }) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false
+      }
+    };
+  }
+
+  const response = await axios.get<ApiUsersUserResponse>(`${process.env.NEXT_PUBLIC_API_URL ?? ""}/users/@me`,
+    { headers: { Authorization: `Bearer ${token ?? ""}` } }
+  );
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en")),
+      username: response.data.username,
+      friendCode: response.data.friend_code,
+      registrationTime: response.data.registration_time,
+      isPublic: response.data.is_public,
+      token // This is very bad. https://github.com/Testaustime/testaustime-backend/issues/74
+    }
+  };
+};
 
 export default ProfilePage;

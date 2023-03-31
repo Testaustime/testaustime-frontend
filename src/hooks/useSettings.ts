@@ -1,54 +1,56 @@
 import { ColorScheme } from "@mantine/core";
-import { useColorScheme, useLocalStorage } from "@mantine/hooks";
+import { useColorScheme } from "@mantine/hooks";
 import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
 import { DayRange } from "../utils/dateUtils";
 import { Locales } from "../i18next";
 import { useRouter } from "next/router";
+import { useCookies } from "react-cookie";
+import {
+  colorSchemeCookieName,
+  defaultDayRangeCookieName,
+  languageCookieName,
+  smoothChartsCookieName
+} from "../utils/constants";
 
 export const useCreateSettings = () => {
   const router = useRouter();
+  const [cookies, setCookies] = useCookies();
 
-  const [smoothCharts, setSmoothCharts] = useLocalStorage({
-    key: "testaustime-smooth-charts",
-    defaultValue: true
-  });
+  const defaultCookieSettings: Parameters<typeof setCookies>[2] = {
+    path: "/",
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+    sameSite: "strict"
+  };
 
-  const [language, setLanguage] = useLocalStorage<Locales | undefined>({
-    key: "testaustime-language",
-    defaultValue: undefined,
-    deserialize: value => value.replaceAll("\"", "") as Locales,
-    serialize: value => value ?? "en"
-  });
+  const smoothCharts = cookies[smoothChartsCookieName] as "true" | "false" | undefined;
+  const setSmoothCharts = (value: boolean) => setCookies(smoothChartsCookieName, value, defaultCookieSettings);
 
-  // FIXME: "none" is obsolete, but still requires support. Can be removed in the future.
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme | undefined | "none">({
-    key: "testaustime-color-scheme",
-    defaultValue: undefined
-  });
+  const language = (cookies[languageCookieName] || "en") as Locales;
+  const setLanguage = (value: Locales) => setCookies(languageCookieName, value, defaultCookieSettings);
+
+  const colorScheme = cookies[colorSchemeCookieName] as ColorScheme | undefined;
+  const setColorScheme = (value?: ColorScheme) => setCookies(colorSchemeCookieName, value, defaultCookieSettings);
 
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (!colorScheme || colorScheme === "dark" ? "light" : "dark"));
 
   const preferredColorScheme = useColorScheme();
-  const finalColorScheme = (colorScheme === undefined || colorScheme === "none")
-    ? preferredColorScheme
-    : colorScheme;
 
-  const [defaultDayRange, setDefaultDayRange] = useLocalStorage<DayRange | undefined>({
-    key: "testaustime-default-day-count",
-    defaultValue: undefined
-  });
+  const defaultDayRange = cookies[defaultDayRangeCookieName] as DayRange | undefined;
+  const setDefaultDayRange = (value?: DayRange) => {
+    setCookies(defaultDayRangeCookieName, value, defaultCookieSettings);
+  };
 
   return {
-    smoothCharts,
+    smoothCharts: (smoothCharts || "true") === "true",
     setSmoothCharts,
     language,
     setLanguage: (value: Locales) => {
       router.push(router.asPath, undefined, { locale: value }).catch(console.error);
       setLanguage(value);
     },
-    colorScheme: finalColorScheme,
+    colorScheme: colorScheme ?? preferredColorScheme,
     setColorScheme,
     toggleColorScheme,
     defaultDayRange: defaultDayRange ?? "week",

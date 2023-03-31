@@ -37,9 +37,8 @@ export const useAccount = () => {
       }
     }),
     {
-      onSuccess: () => {
-        queryClient.removeQueries(["fetchUser"]);
-        logOut();
+      onSuccess: async () => {
+        await logOut();
         router.push("/").catch(console.error);
       }
     }

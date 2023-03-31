@@ -15,6 +15,7 @@ import { ApiUsersUserResponse } from "../hooks/useAuthentication";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
+import { CookiesProvider } from "react-cookie";
 
 type Props = {
   token?: string,
@@ -148,25 +149,28 @@ const queryClient = new QueryClient();
 
 function App(props: AppProps<Props>) {
   return <div id="root">
-    <UserContext.Provider value={{
-      authToken: props.pageProps.token,
-      friendCode: props.pageProps.friendCode,
-      isPublic: props.pageProps.isPublic,
-      registrationTime: props.pageProps.registrationTime ? new Date(props.pageProps.registrationTime) : undefined,
-      username: props.pageProps.username
-    }}>
-      <QueryClientProvider client={queryClient}>
-        <Notifications />
-        <ModalsProvider>
-          <InnerApp {...props} />
-        </ModalsProvider>
-      </QueryClientProvider>
-    </UserContext.Provider>
+    <CookiesProvider>
+      <UserContext.Provider value={{
+        authToken: props.pageProps.token,
+        friendCode: props.pageProps.friendCode,
+        isPublic: props.pageProps.isPublic,
+        registrationTime: props.pageProps.registrationTime ? new Date(props.pageProps.registrationTime) : undefined,
+        username: props.pageProps.username
+      }}>
+        <QueryClientProvider client={queryClient}>
+          <Notifications />
+          <ModalsProvider>
+            <InnerApp {...props} />
+          </ModalsProvider>
+        </QueryClientProvider>
+      </UserContext.Provider>
+    </CookiesProvider>
   </div>;
 }
 
 App.getInitialProps = async ({ ctx }: AppContext): Promise<AppInitialProps<Props>> => {
-  const token = ctx.req?.headers.cookie?.replace("token=", "");
+  const token = ctx.req?.headers.cookie?.split("; ").find(row => row.startsWith("token="))?.replace("token=", "");
+
   if (!token) {
     return {
       pageProps: {}
