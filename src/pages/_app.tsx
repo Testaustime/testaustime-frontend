@@ -12,7 +12,7 @@ import "../index.css";
 import { UserContext } from "../contexts/UserContext";
 import axios from "../axios";
 import { ApiUsersUserResponse } from "../hooks/useAuthentication";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 
