@@ -1,11 +1,12 @@
 import axios from "../axios";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ActivityDataEntry } from "./useActivityData";
 
 export const useActivity = (activityName: string) => {
   const queryClient = useQueryClient();
 
-  const { mutateAsync: renameProject } = useMutation("renameProject",
+  const { mutateAsync: renameProject } = useMutation(
+    ["renameProject"],
     (newName: string) => axios.post("/activity/rename", {
       from: activityName,
       to: newName

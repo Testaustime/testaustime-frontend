@@ -1,6 +1,6 @@
-import { isAxiosError } from "axios";
 import axios from "../axios";
-import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
+import { isAxiosError } from "axios";
+import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface Leaderboard {
   member_count: number,
@@ -38,7 +38,7 @@ export const useLeaderboards = ({
 } = { shouldFetch: true }) => {
   const queryClient = useQueryClient();
 
-  const { data: leaderboards } = useQuery("leaderboards", async () => {
+  const { data: leaderboards } = useQuery(["leaderboards"], async () => {
     const response = await axios.get<Leaderboard[]>("/users/@me/leaderboards");
     return response.data;
   }, {
@@ -50,19 +50,21 @@ export const useLeaderboards = ({
     enabled: shouldFetch
   });
 
-  const leaderboardData = useQueries((leaderboards ?? []).map(leaderboard => ({
-    queryKey: ["leaderboardData", leaderboard.name],
-    queryFn: async () => {
-      const response = await axios.get<LeaderboardData>(`/leaderboards/${leaderboard.name}`);
-      return response.data;
-    },
-    staleTime: 2 * 60 * 1000, // 2 minutes
-    onSuccess: (leaderboard: LeaderboardData) => {
-      queryClient.setQueriesData(["leaderboardData", leaderboard.name], leaderboard);
-    },
-    placeholderData: initialLeaderboards?.find(l => l.name === leaderboard.name),
-    enabled: shouldFetch
-  })));
+  const leaderboardData = useQueries({
+    queries: (leaderboards ?? []).map(leaderboard => ({
+      queryKey: ["leaderboardData", leaderboard.name],
+      queryFn: async () => {
+        const response = await axios.get<LeaderboardData>(`/leaderboards/${leaderboard.name}`);
+        return response.data;
+      },
+      staleTime: 2 * 60 * 1000, // 2 minutes
+      onSuccess: (leaderboard: LeaderboardData) => {
+        queryClient.setQueriesData(["leaderboardData", leaderboard.name], leaderboard);
+      },
+      placeholderData: initialLeaderboards?.find(l => l.name === leaderboard.name),
+      enabled: shouldFetch
+    }))
+  });
 
   const { mutateAsync: joinLeaderboard } = useMutation(async (leaderboardCode: string) => {
     const res = await axios.post<{ name: string, member_count: number }>("/leaderboards/join", {
@@ -71,7 +73,7 @@ export const useLeaderboards = ({
     return res.data;
   }, {
     onSuccess: async data => {
-      queryClient.setQueriesData("leaderboards", (leaderboards ?? []).concat(data));
+      queryClient.setQueriesData(["leaderboards"], (leaderboards ?? []).concat(data));
       await queryClient.invalidateQueries(["leaderboardData", data.name]);
     }
   });
@@ -81,7 +83,7 @@ export const useLeaderboards = ({
     return leaderboardName;
   }, {
     onSuccess: leaderboardName => {
-      queryClient.setQueriesData("leaderboards",
+      queryClient.setQueriesData(["leaderboards"],
         (leaderboards ?? []).filter(leaderboard => leaderboard.name !== leaderboardName));
     }
   });
@@ -93,7 +95,7 @@ export const useLeaderboards = ({
     return res.data;
   }, {
     onSuccess: (_data, leaderboardName) => {
-      queryClient.setQueriesData("leaderboards", (leaderboards ?? []).concat({
+      queryClient.setQueriesData(["leaderboards"], (leaderboards ?? []).concat({
         member_count: 0,
         name: leaderboardName
       }));
@@ -105,7 +107,7 @@ export const useLeaderboards = ({
     return leaderboardName;
   }, {
     onSuccess: leaderboardName => {
-      queryClient.setQueriesData("leaderboards",
+      queryClient.setQueriesData(["leaderboards"],
         (leaderboards ?? []).filter(leaderboard => leaderboard.name !== leaderboardName));
     }
   });

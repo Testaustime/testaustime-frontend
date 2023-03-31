@@ -2,7 +2,7 @@ import axios from "../axios";
 import { startOfDay } from "date-fns";
 import { DayRange, getDayCount } from "../utils/dateUtils";
 import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export interface ApiUsersUserActivityDataResponseItem {
   id: number,

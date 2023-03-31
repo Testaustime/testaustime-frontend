@@ -1,8 +1,8 @@
 import axios from "../axios";
 import { isAxiosError } from "axios";
 import { getErrorMessage } from "../lib/errorHandling/errorHandler";
-import { useMutation, useQueryClient } from "react-query";
 import { useUser } from "./useUser";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export interface ApiAuthRegisterResponse {
   auth_token: string,
@@ -68,7 +68,7 @@ export const useAuthentication = () => {
     try {
       const { data } = await axios.post<ApiFriendsRegenerateResponse>("/friends/regenerate", null);
       const newFriendCode = data.friend_code;
-      queryClient.setQueryData("fetchUser", (oldData: User | undefined) => {
+      queryClient.setQueryData(["fetchUser"], (oldData: User | undefined) => {
         if (!oldData) throw new Error("User data not found");
         return ({
           ...oldData,
@@ -87,7 +87,7 @@ export const useAuthentication = () => {
     try {
       const { data } = await axios.post<ApiAuthRegisterResponse>("/auth/register", { username, password });
       const authToken = data.auth_token;
-      queryClient.setQueryData("fetchUser", {
+      queryClient.setQueryData(["fetchUser"], {
         username: data.username,
         friendCode: data.friend_code,
         registrationTime: new Date(data.registration_time),
@@ -105,7 +105,7 @@ export const useAuthentication = () => {
     try {
       const { data } = await axios.post<ApiAuthLoginResponse>("/auth/login", { username, password });
       const { auth_token, friend_code, username: apiUsername, registration_time, is_public } = data;
-      queryClient.setQueryData("fetchUser", {
+      queryClient.setQueryData(["fetchUser"], {
         username: apiUsername,
         friendCode: friend_code,
         registrationTime: new Date(registration_time),
@@ -118,8 +118,8 @@ export const useAuthentication = () => {
   });
 
   const logOut = () => {
-    queryClient.setQueryData("fetchUser", undefined);
-    queryClient.setQueryData("friends", undefined);
+    queryClient.setQueryData(["fetchUser"], undefined);
+    queryClient.setQueryData(["friends"], undefined);
   };
 
   const { mutateAsync: changePassword } = useMutation(async (
