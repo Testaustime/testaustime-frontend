@@ -1,5 +1,4 @@
 import { ColorScheme } from "@mantine/core";
-import { useColorScheme } from "@mantine/hooks";
 import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
 import { DayRange } from "../utils/dateUtils";
@@ -35,8 +34,6 @@ export const useCreateSettings = () => {
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (!colorScheme || colorScheme === "dark" ? "light" : "dark"));
 
-  const preferredColorScheme = useColorScheme();
-
   const defaultDayRange = cookies[defaultDayRangeCookieName] as DayRange | undefined;
   const setDefaultDayRange = (value?: DayRange) => {
     setCookies(defaultDayRangeCookieName, value, defaultCookieSettings);
@@ -50,7 +47,7 @@ export const useCreateSettings = () => {
       router.push(router.asPath, undefined, { locale: value }).catch(console.error);
       setLanguage(value);
     },
-    colorScheme: colorScheme ?? preferredColorScheme,
+    colorScheme: colorScheme ?? "dark",
     setColorScheme,
     toggleColorScheme,
     defaultDayRange: defaultDayRange ?? "week",
