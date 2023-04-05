@@ -107,7 +107,12 @@ export const getServerSideProps: GetServerSideProps<MainPageProps> = async ({ lo
 
   const response = await axios.get<ApiUsersUserActivityDataResponseItem[]>(
     `${process.env.NEXT_PUBLIC_API_URL || ""}/users/@me/activity/data`,
-    { headers: { Authorization: `Bearer ${token}` } }
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "X-Forwarded-For": req.socket.remoteAddress
+      }
+    }
   );
 
   const defaultDayRange = isDayRange(req.cookies[defaultDayRangeCookieName])

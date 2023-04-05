@@ -141,7 +141,8 @@ export const getServerSideProps: GetServerSideProps<LeaderboardsPageProps> = asy
     `${process.env.NEXT_PUBLIC_API_URL || ""}/users/@me/leaderboards`,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        "X-Forwarded-For": req.socket.remoteAddress
       }
     });
 
@@ -150,7 +151,8 @@ export const getServerSideProps: GetServerSideProps<LeaderboardsPageProps> = asy
       `${process.env.NEXT_PUBLIC_API_URL || ""}/leaderboards/${leaderboard.name}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          "X-Forwarded-For": req.socket.remoteAddress
         }
       });
     return response.data;

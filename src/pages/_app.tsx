@@ -179,7 +179,12 @@ App.getInitialProps = async ({ ctx }: AppContext): Promise<AppInitialProps<Props
 
   try {
     const response = await axios.get<ApiUsersUserResponse>(`${process.env.NEXT_PUBLIC_API_URL ?? ""}/users/@me`,
-      { headers: { Authorization: `Bearer ${token ?? ""}` } }
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "X-Forwarded-For": ctx.req?.socket.remoteAddress
+        }
+      }
     );
     return {
       pageProps: {

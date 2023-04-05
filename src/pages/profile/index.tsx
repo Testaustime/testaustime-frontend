@@ -136,7 +136,12 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
   }
 
   const response = await axios.get<ApiUsersUserResponse>(`${process.env.NEXT_PUBLIC_API_URL ?? ""}/users/@me`,
-    { headers: { Authorization: `Bearer ${token ?? ""}` } }
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "X-Forwarded-For": req.socket.remoteAddress
+      }
+    }
   );
 
   return {

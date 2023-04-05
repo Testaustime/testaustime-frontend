@@ -42,11 +42,21 @@ export const getServerSideProps: GetServerSideProps<FriendPageProps> = async ({ 
 
   const friendsPromise = axios.get<ApiFriendsResponseItem[]>(
     `${process.env.NEXT_PUBLIC_API_URL || ""}/friends/list`,
-    { headers: { Authorization: `Bearer ${token}` } });
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "X-Forwarded-For": req.socket.remoteAddress
+      }
+    });
 
   const ownPromise = axios.get<ApiUsersUserActivityDataResponseItem[]>(
     `${process.env.NEXT_PUBLIC_API_URL || ""}/users/@me/activity/data`,
-    { headers: { Authorization: `Bearer ${token}` } });
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "X-Forwarded-For": req.socket.remoteAddress
+      }
+    });
 
   const [friendsResponse, ownResponse] = await Promise.all([friendsPromise, ownPromise]);
 

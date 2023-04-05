@@ -8,11 +8,21 @@ const handler: NextApiHandler = async (req, res) => {
 
     try {
       const response = await axios.post<ApiAuthLoginResponse>(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`, req.body);
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`, req.body,
+        {
+          headers: {
+            "X-Forwarded-For": req.socket.remoteAddress
+          }
+        });
       const token = response.data.auth_token;
       res.setHeader(
         "Set-Cookie",
-        `token=${token}; path=/; expires=${new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toUTCString()}; SameSite=Strict; Secure; HttpOnly`
+        `token=${token}; 
+        path=/; 
+        expires=${new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toUTCString()}; 
+        SameSite=Strict; 
+        Secure; 
+        HttpOnly`
       );
       return res.status(response.status).json(response.data);
     } catch (e) {
