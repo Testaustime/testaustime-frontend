@@ -89,7 +89,9 @@ export const Navigation = ({
               <Menu.Item
                 color="blue"
                 icon={<ExitIcon />}
-                onClick={logOutAndRedirect}>
+                onClick={() => {
+                  logOutAndRedirect().catch(console.error);
+                }}>
                 {t("navbar.logOut")}
               </Menu.Item>
             </Menu.Dropdown>
@@ -151,7 +153,9 @@ export const Navigation = ({
                 {t("navbar.extensions")}
               </Menu.Item>
               <Divider />
-              <Menu.Item color="blue" icon={<ExitIcon />} onClick={logOutAndRedirect}>
+              <Menu.Item color="blue" icon={<ExitIcon />} onClick={() => {
+                logOutAndRedirect().catch(console.error);
+              }}>
                 {t("navbar.logOut")}
               </Menu.Item>
             </>
