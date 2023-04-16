@@ -121,26 +121,29 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
       colorScheme={settings.colorScheme}
       toggleColorScheme={settings.toggleColorScheme}
     >
-      <SettingsContext.Provider value={settings}>
-        <Group className={classes.container}>
-          {opened && <Overlay opacity={0.6} color="#000" zIndex={5} onClick={() => setOpened(false)} />}
-          <div className={classes.innerContainer}>
-            <div>
-              <Group position="apart" mb={50}>
-                <Link href="/" className={classes.testaustimeTitle}>
-                  Testaustime
-                </Link>
-                <Navigation
-                  opened={opened}
-                  setOpened={setOpened}
-                />
-              </Group>
-              <Component {...pageProps} />
+      <Notifications />
+      <ModalsProvider>
+        <SettingsContext.Provider value={settings}>
+          <Group className={classes.container}>
+            {opened && <Overlay opacity={0.6} color="#000" zIndex={5} onClick={() => setOpened(false)} />}
+            <div className={classes.innerContainer}>
+              <div>
+                <Group position="apart" mb={50}>
+                  <Link href="/" className={classes.testaustimeTitle}>
+                    Testaustime
+                  </Link>
+                  <Navigation
+                    opened={opened}
+                    setOpened={setOpened}
+                  />
+                </Group>
+                <Component {...pageProps} />
+              </div>
+              <Footer />
             </div>
-            <Footer />
-          </div>
-        </Group>
-      </SettingsContext.Provider>
+          </Group>
+        </SettingsContext.Provider>
+      </ModalsProvider>
     </ColorSchemeProvider>
   </MantineProvider>;
 };
@@ -158,10 +161,7 @@ function App(props: AppProps<Props>) {
         username: props.pageProps.username
       }}>
         <QueryClientProvider client={queryClient}>
-          <Notifications />
-          <ModalsProvider>
-            <InnerApp {...props} />
-          </ModalsProvider>
+          <InnerApp {...props} />
         </QueryClientProvider>
       </UserContext.Provider>
     </CookiesProvider>
