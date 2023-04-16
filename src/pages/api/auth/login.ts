@@ -15,15 +15,8 @@ const handler: NextApiHandler = async (req, res) => {
           }
         });
       const token = response.data.auth_token;
-      res.setHeader(
-        "Set-Cookie",
-        `token=${token}; 
-        path=/; 
-        expires=${new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toUTCString()}; 
-        SameSite=Strict; 
-        Secure; 
-        HttpOnly`
-      );
+      const expiration = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toUTCString();
+      res.setHeader("Set-Cookie", `token=${token}; path=/; expires=${expiration}; SameSite=Strict; Secure; HttpOnly`);
       return res.status(response.status).json(response.data);
     } catch (e) {
       if (isAxiosError(e)) {
@@ -33,6 +26,7 @@ const handler: NextApiHandler = async (req, res) => {
     }
 
     // This should never happen
+    console.error("This should never happen");
     return res.status(500).json({ message: "Internal server error" });
   }
   else {
