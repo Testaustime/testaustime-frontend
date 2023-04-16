@@ -28,7 +28,6 @@ const handler: NextApiHandler = async (req, res) => {
     }
     return res.status(500).json({ message: "Unknown error" });
   }
-
 };
 
 export default handler;

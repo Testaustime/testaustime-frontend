@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Anchor, Center, createStyles, Group, Stack, Text, Title } from "@mantine/core";
 import { GitHubLogoIcon, QuestionMarkIcon } from "@radix-ui/react-icons";
@@ -137,7 +137,7 @@ const ExtensionsPage = () => {
   </div>;
 };
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
   props: await serverSideTranslations(locale ?? "en")
 });
 
