@@ -20,7 +20,10 @@
     "noEmit": true,
     "jsx": "preserve",
     "noImplicitAny": true,
-    "incremental": true
+    "incremental": true,
+    "types": [
+      "vitest/globals"
+    ]
   },
   "include": [
     "src",
