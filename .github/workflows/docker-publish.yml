@@ -45,7 +45,7 @@ jobs:
         with:
           context: .
           build-args: |
-            VITE_API_URL=https://api.testaustime.fi
+            NEXT_PUBLIC_API_URL=https://api.testaustime.fi
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
