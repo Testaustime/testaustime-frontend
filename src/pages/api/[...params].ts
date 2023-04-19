@@ -4,7 +4,13 @@ import { NextApiHandler } from "next";
 const handler: NextApiHandler = async (req, res) => {
   if (process.env.NEXT_PUBLIC_API_URL === undefined) return res.status(500).json({ message: "Missing API URL" });
   const token = req.cookies.token || req.headers.authorization?.replace("Bearer ", "");
-  const url = `${process.env.NEXT_PUBLIC_API_URL}${req.url?.substring(4) || ""}`;
+
+  // req.url is for example "/api/friends/list"
+  // We want to remove the "/api" part and keep the rest
+  const endpoint = req.url?.substring(4) || "";
+
+  // This will be something like "https://api.testaustime.fi/friends/list"
+  const url = process.env.NEXT_PUBLIC_API_URL + endpoint;
 
   try {
     const response = await axios({
