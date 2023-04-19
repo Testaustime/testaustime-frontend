@@ -12,7 +12,7 @@ import { LeaderboardsList } from "../../components/leaderboard/LeaderboardsList"
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
-import axios from "axios";
+import axios from "../../axios";
 
 export type LeaderboardsPageProps = {
   initialLeaderboards: LeaderboardData[]
@@ -138,7 +138,7 @@ export const getServerSideProps: GetServerSideProps<LeaderboardsPageProps> = asy
   }
 
   const leaderboardListResponse = await axios.get<Leaderboard[]>(
-    `${process.env.NEXT_PUBLIC_API_URL || ""}/users/@me/leaderboards`,
+    "/users/@me/leaderboards",
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -148,7 +148,7 @@ export const getServerSideProps: GetServerSideProps<LeaderboardsPageProps> = asy
 
   const leaderboardPromises = leaderboardListResponse.data.map(async leaderboard => {
     const response = await axios.get<LeaderboardData>(
-      `${process.env.NEXT_PUBLIC_API_URL || ""}/leaderboards/${leaderboard.name}`,
+      `/leaderboards/${leaderboard.name}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

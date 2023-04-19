@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Anchor, Text, createStyles } from "@mantine/core";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { Dashboard } from "../components/Dashboard";
-import axios from "axios";
+import axios from "../axios";
 import { ApiUsersUserActivityDataResponseItem } from "../hooks/useActivityData";
 import { startOfDay } from "date-fns";
 import { DayRange, isDayRange } from "../utils/dateUtils";
@@ -106,7 +106,7 @@ export const getServerSideProps: GetServerSideProps<MainPageProps> = async ({ lo
   }
 
   const response = await axios.get<ApiUsersUserActivityDataResponseItem[]>(
-    `${process.env.NEXT_PUBLIC_API_URL || ""}/users/@me/activity/data`,
+    "/users/@me/activity/data",
     {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -3,7 +3,7 @@ import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {
   if (process.env.NEXT_PUBLIC_API_URL === undefined) return res.status(500).json({ message: "Missing API URL" });
-  const token = req.cookies.token;
+  const token = req.cookies.token || req.headers.authorization?.replace("Bearer ", "");
   const url = `${process.env.NEXT_PUBLIC_API_URL}${req.url?.substring(4) || ""}`;
 
   try {

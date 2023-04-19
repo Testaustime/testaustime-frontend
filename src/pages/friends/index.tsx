@@ -5,7 +5,7 @@ import { AddFriendForm } from "../../components/friends/AddFriendForm";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { generateFriendCode } from "../../utils/codeUtils";
-import axios from "axios";
+import axios from "../../axios";
 import { ApiFriendsResponseItem } from "../../hooks/useFriends";
 import { ApiUsersUserActivityDataResponseItem } from "../../hooks/useActivityData";
 import { addDays, startOfDay } from "date-fns";
@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps<FriendPageProps> = async ({ 
   }
 
   const friendsPromise = axios.get<ApiFriendsResponseItem[]>(
-    `${process.env.NEXT_PUBLIC_API_URL || ""}/friends/list`,
+    "/friends/list",
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps<FriendPageProps> = async ({ 
     });
 
   const ownPromise = axios.get<ApiUsersUserActivityDataResponseItem[]>(
-    `${process.env.NEXT_PUBLIC_API_URL || ""}/users/@me/activity/data`,
+    "/users/@me/activity/data",
     {
       headers: {
         Authorization: `Bearer ${token}`,

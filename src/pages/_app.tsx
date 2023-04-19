@@ -178,7 +178,7 @@ App.getInitialProps = async ({ ctx }: AppContext): Promise<AppInitialProps<Props
   }
 
   try {
-    const response = await axios.get<ApiUsersUserResponse>(`${process.env.NEXT_PUBLIC_API_URL ?? ""}/users/@me`,
+    const response = await axios.get<ApiUsersUserResponse>("/users/@me",
       {
         headers: {
           Authorization: `Bearer ${token}`,
