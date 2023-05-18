@@ -1,13 +1,12 @@
-import axios from "axios";
+import axios from "../axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthentication } from "./useAuthentication";
-import { User } from "./useAuthentication";
-import { useNavigate } from "react-router";
+import { useRouter } from "next/router";
 
 export const useAccount = () => {
   const { logOut, username } = useAuthentication();
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const { mutateAsync: changeAccountVisibility } =
     useMutation(
@@ -17,13 +16,9 @@ export const useAccount = () => {
       }),
       {
         onSuccess: (_, newVisibility) => {
-          queryClient.setQueryData(["fetchUser"], (old: User | undefined) => {
-            if (!old) throw new Error("User not found");
-            return {
-              ...old,
-              isPublic: newVisibility
-            };
-          });
+          queryClient.setQueryData(["fetchUser"], ({
+            isPublic: newVisibility
+          }));
         }
       }
     );
@@ -37,10 +32,9 @@ export const useAccount = () => {
       }
     }),
     {
-      onSuccess: () => {
-        queryClient.removeQueries(["fetchUser"]);
-        logOut();
-        navigate("/");
+      onSuccess: async () => {
+        await logOut();
+        router.push("/").catch(console.error);
       }
     }
   );

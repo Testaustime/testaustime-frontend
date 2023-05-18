@@ -26,3 +26,5 @@ yarn-error.log*
 .vscode/settings.json
 stats.html
 storybook-static
+.next/
+tsconfig.tsbuildinfo

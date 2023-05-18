@@ -1,8 +1,7 @@
 import { format } from "date-fns";
-import { addDays, startOfDay } from "date-fns/esm";
+import { addDays, startOfDay } from "date-fns";
 import { sumBy } from "../../utils/arrayUtils";
 import { calculateTickValues } from "../../utils/chartUtils";
-import { useSettings } from "../../hooks/useSettings";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -32,7 +31,8 @@ export interface DailyCodingTimeChartProps {
   data: {
     date: Date,
     duration: number
-  }[]
+  }[],
+  smoothCharts: boolean
 }
 
 export const transformData = (entries: {
@@ -54,8 +54,7 @@ export const transformData = (entries: {
   return data;
 };
 
-export const DailyCodingTimeChart = ({ data: dataRaw }: DailyCodingTimeChartProps) => {
-  const { smoothCharts } = useSettings();
+export const DailyCodingTimeChart = ({ data: dataRaw, smoothCharts }: DailyCodingTimeChartProps) => {
 
   const data = [...dataRaw].sort((a, b) => a.date.getTime() - b.date.getTime());
   const maxDuration = Math.max(...data.map(d => d.duration));

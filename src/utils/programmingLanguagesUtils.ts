@@ -1,7 +1,7 @@
 import { capitalizeFirstLetter, isStringNull } from "./stringUtils";
 
-export const normalizeProgrammingLanguageName = (name?: string) => {
-  if (!name || isStringNull(name)) return undefined;
+export const normalizeProgrammingLanguageName = (name: string | undefined | null) => {
+  if (!name || isStringNull(name)) return null;
 
   // Create "synonyms" for the programming language names.
   // The values will be used to get the language's name in `prettifyProgrammingLanguageName`
@@ -20,8 +20,8 @@ export const normalizeProgrammingLanguageName = (name?: string) => {
   }[name] || name;
 };
 
-export const prettifyProgrammingLanguageName = (name?: string) => {
-  if (!name || isStringNull(name)) return undefined;
+export const prettifyProgrammingLanguageName = (name: string | undefined | null) => {
+  if (!name || isStringNull(name)) return null;
 
   return ({
     "typescript": "TypeScript",

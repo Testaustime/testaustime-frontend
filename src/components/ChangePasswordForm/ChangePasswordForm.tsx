@@ -4,7 +4,7 @@ import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
 import { showNotification } from "@mantine/notifications";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { PasswordChangeResult } from "../../hooks/useAuthentication";
 
 export interface ChangePasswordFormProps {

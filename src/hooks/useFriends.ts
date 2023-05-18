@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios from "../axios";
+import { isAxiosError } from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface ApiFriendsResponseItem {
@@ -25,14 +26,18 @@ export enum AddFriendError {
   UnknownError
 }
 
-export const useFriends = () => {
+export const useFriends = (options: {
+  initialFriends?: ApiFriendsResponseItem[], shouldFetch?: boolean
+} = { shouldFetch: true }) => {
   const queryClient = useQueryClient();
 
   const { data: friends } = useQuery(["friends"], async () => {
     const response = await axios.get<ApiFriendsResponseItem[]>("/friends/list");
     return response.data;
   }, {
-    staleTime: 2 * 60 * 1000 // 2 minutes
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    placeholderData: options?.initialFriends,
+    enabled: options?.shouldFetch ?? true
   });
 
   const { mutateAsync: addFriend } = useMutation(async (friendCode: string) => {
@@ -63,7 +68,7 @@ export const useFriends = () => {
       try {
         return await addFriend(friendCode);
       } catch (e) {
-        if (axios.isAxiosError(e)) {
+        if (isAxiosError(e)) {
           if (e.response?.status === 409
             // TODO: The 403 status is a bug with the backend.
             // It can be removed when https://github.com/Testaustime/testaustime-backend/pull/61 is merged

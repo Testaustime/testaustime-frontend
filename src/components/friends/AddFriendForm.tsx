@@ -1,20 +1,21 @@
 import { Button, Group } from "@mantine/core";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { Form, Formik } from "formik";
-import { useState } from "react";
-import { generateFriendCode } from "../../utils/codeUtils";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
 import { AddFriendError, useFriends } from "../../hooks/useFriends";
-import { useLocation } from "react-router";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { showNotification } from "@mantine/notifications";
+import { useRouter } from "next/router";
 
-export const AddFriendForm = () => {
-  const [placeholderFriendCode] = useState(generateFriendCode());
-  const { addFriend } = useFriends();
-  const location = useLocation();
-  const urlFriendCode = new URLSearchParams(location.search).get("code");
+export type AddFriendFormProps = {
+  friendCodePlaceholder: string
+}
+
+export const AddFriendForm = ({ friendCodePlaceholder }: AddFriendFormProps) => {
+  const { addFriend } = useFriends({ shouldFetch: false });
+  const router = useRouter();
+  const urlFriendCode = typeof router.query.code === "string" ? router.query.code : undefined;
   const { t } = useTranslation();
 
   return <Group>
@@ -49,7 +50,7 @@ export const AddFriendForm = () => {
             icon={<PersonIcon />}
             name="friendCode"
             label={t("friends.friendCode")}
-            placeholder={placeholderFriendCode}
+            placeholder={friendCodePlaceholder}
             sx={{ flex: 1 }}
             styles={{
               input: {

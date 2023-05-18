@@ -1,22 +1,20 @@
 import { Button, Table, Text, Title, useMantineTheme } from "@mantine/core";
-import { addDays, startOfDay } from "date-fns";
-import { useActivityData } from "../../hooks/useActivityData";
 import { useAuthentication } from "../../hooks/useAuthentication";
-import { useFriends } from "../../hooks/useFriends";
-import { useTranslation } from "react-i18next";
-import { sumBy } from "../../utils/arrayUtils";
+import { ApiFriendsResponseItem, useFriends } from "../../hooks/useFriends";
+import { useTranslation } from "next-i18next";
 import { prettyDuration } from "../../utils/dateUtils";
 import { useModals } from "@mantine/modals";
 import { Dashboard } from "../Dashboard";
 import { showNotification } from "@mantine/notifications";
 
-export const FriendList = () => {
-  const { unFriend, friends } = useFriends();
-  const entries = useActivityData("@me", { dayFilter: "month" });
-  const entriesInRange = entries.filter(entry => {
-    const startOfStatisticsRange = startOfDay(addDays(new Date(), -30));
-    return entry.start_time.getTime() >= startOfStatisticsRange.getTime();
-  });
+export type FriendListProps = {
+  initialFriends?: ApiFriendsResponseItem[],
+  ownTimeCoded?: number
+}
+
+export const FriendList = ({ initialFriends, ownTimeCoded }: FriendListProps) => {
+  const { unFriend, friends } = useFriends({ initialFriends });
+
   const { t } = useTranslation();
   const { username } = useAuthentication();
   const theme = useMantineTheme();
@@ -29,7 +27,7 @@ export const FriendList = () => {
   const friendsSorted = [...friends.map(f => ({ ...f, isMe: false })).concat({
     coding_time: {
       all_time: 0,
-      past_month: sumBy(entriesInRange, entry => entry.duration),
+      past_month: ownTimeCoded ?? 0,
       past_week: 0
     },
     isMe: true,

@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios from "../axios";
+import { isAxiosError } from "axios";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface Leaderboard {
@@ -17,8 +18,6 @@ export interface LeaderboardData {
   }[]
 }
 
-export type CombinedLeaderboard = Leaderboard & LeaderboardData;
-
 export enum JoinLeaderboardError {
   AlreadyMember,
   NotFound,
@@ -30,14 +29,25 @@ export enum CreateLeaderboardError {
   UnknownError
 }
 
-export const useLeaderboards = () => {
+export const useLeaderboards = ({
+  initialLeaderboards,
+  shouldFetch
+}: {
+  initialLeaderboards?: LeaderboardData[],
+  shouldFetch?: boolean
+} = { shouldFetch: true }) => {
   const queryClient = useQueryClient();
 
   const { data: leaderboards } = useQuery(["leaderboards"], async () => {
     const response = await axios.get<Leaderboard[]>("/users/@me/leaderboards");
     return response.data;
   }, {
-    staleTime: 2 * 60 * 1000 // 2 minutes
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    placeholderData: initialLeaderboards?.map(leaderboard => ({
+      member_count: leaderboard.members.length,
+      name: leaderboard.name
+    })),
+    enabled: shouldFetch
   });
 
   const leaderboardData = useQueries({
@@ -47,10 +57,12 @@ export const useLeaderboards = () => {
         const response = await axios.get<LeaderboardData>(`/leaderboards/${leaderboard.name}`);
         return response.data;
       },
-      staleTime: 2 * 60 * 1000,
+      staleTime: 2 * 60 * 1000, // 2 minutes
       onSuccess: (leaderboard: LeaderboardData) => {
         queryClient.setQueriesData(["leaderboardData", leaderboard.name], leaderboard);
-      }
+      },
+      placeholderData: initialLeaderboards?.find(l => l.name === leaderboard.name),
+      enabled: shouldFetch
     }))
   });
 
@@ -148,31 +160,15 @@ export const useLeaderboards = () => {
     }
   });
 
-  const existingLeaderboardNames = leaderboardData
-    .map(leaderboard => leaderboard.data?.name)
-    .filter(name => name !== undefined) as string[];
-
-  const combined: CombinedLeaderboard[] = existingLeaderboardNames
-    .map(name => {
-      const dt = leaderboardData.find(leaderboard => leaderboard.data?.name === name);
-      if (dt === undefined || dt.data === undefined) throw Error("This should never happen");
-      const d = dt.data;
-      return {
-        name,
-        creation_time: d.creation_time,
-        invite: d.invite,
-        member_count: d.members.length,
-        members: d.members
-      } satisfies CombinedLeaderboard;
-    });
-
   return {
-    leaderboards: combined,
+    leaderboards: leaderboardData
+      .map(leaderboard => leaderboard.data)
+      .filter((leaderboard): leaderboard is LeaderboardData => !!leaderboard),
     joinLeaderboard: async (inviteCode: string) => {
       try {
         return await joinLeaderboard(inviteCode);
       } catch (e) {
-        if (axios.isAxiosError(e)) {
+        if (isAxiosError(e)) {
           if (e.response?.status === 409
             // TODO: The 403 status is a bug with the backend.
             // It can be removed when https://github.com/Testaustime/testaustime-backend/pull/61 is merged
@@ -191,7 +187,7 @@ export const useLeaderboards = () => {
       try {
         return await createLeaderboard(leaderboardName);
       } catch (e) {
-        if (axios.isAxiosError(e)) {
+        if (isAxiosError(e)) {
           if (e.response?.status === 409
             // TODO: The 403 status is a bug with the backend.
             // It can be removed when https://github.com/Testaustime/testaustime-backend/pull/61 is merged

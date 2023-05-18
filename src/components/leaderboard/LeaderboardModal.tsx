@@ -2,8 +2,8 @@ import { Group, Button, Title, Table, Badge } from "@mantine/core";
 import { DoubleArrowDownIcon, DoubleArrowUpIcon, ExitIcon } from "@radix-ui/react-icons";
 import { Trash2 } from "react-feather";
 import { useAuthentication } from "../../hooks/useAuthentication";
-import { CombinedLeaderboard } from "../../hooks/useLeaderboards";
-import { useTranslation } from "react-i18next";
+import { LeaderboardData } from "../../hooks/useLeaderboards";
+import { useTranslation } from "next-i18next";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
 import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
@@ -11,7 +11,7 @@ import { TokenField } from "../TokenField/TokenField";
 
 interface LeaderboardModalProps {
   leaveLeaderboard: () => Promise<void>,
-  leaderboard: CombinedLeaderboard,
+  leaderboard: LeaderboardData,
   deleteLeaderboard: () => Promise<void>,
   isAdmin: boolean,
   isLastAdmin: boolean,

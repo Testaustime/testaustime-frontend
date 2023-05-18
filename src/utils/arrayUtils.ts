@@ -1,4 +1,4 @@
-export function groupBy<T>(array: T[], predicate: (elem: T) => string | number | symbol | undefined) {
+export function groupBy<T>(array: T[], predicate: (elem: T) => string | number | symbol | undefined | null) {
   return array.reduce<Record<string | number | symbol, T[]>>((b, e) => {
     const k = predicate(e);
     if (!b[k ?? "undefined"]) {

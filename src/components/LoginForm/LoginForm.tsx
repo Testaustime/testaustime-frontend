@@ -4,7 +4,7 @@ import { FormikTextInput } from "../forms/FormikTextInput";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 export type LoginFormProps = {
   onLogin: (username: string, password: string) => Promise<void>
 }

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import { startOfDay } from "date-fns";
 import { DayRange, getDayCount } from "../utils/dateUtils";
 import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
@@ -8,35 +8,39 @@ export interface ApiUsersUserActivityDataResponseItem {
   id: number,
   start_time: string,
   duration: number,
-  project_name?: string | null,
-  language?: string,
-  editor_name?: string,
-  hostname?: string
+  project_name: string | null,
+  language: string | null,
+  editor_name: string | null,
+  hostname: string | null
 }
 
 export type ActivityDataEntry = Omit<ApiUsersUserActivityDataResponseItem, "start_time" | "project_name"> & {
   start_time: Date,
   dayStart: Date,
-  project_name?: string
+  project_name: string | null
 }
 
 export const useActivityData = (username: string, filter: {
   projectFilter?: string[],
   dayFilter: DayRange
-}) => {
+}, options: {
+  initialData?: ActivityDataEntry[],
+  shouldFetch?: boolean
+} = { shouldFetch: true }) => {
   const { data: entries } = useQuery(["activityData", username], async () => {
     const response = await axios.get<ApiUsersUserActivityDataResponseItem[]>(`/users/${username}/activity/data`);
     const mappedData: ActivityDataEntry[] = response.data.map(e => ({
       ...e,
       start_time: new Date(e.start_time),
       dayStart: startOfDay(new Date(e.start_time)),
-      project_name: e.project_name || undefined,
       language: normalizeProgrammingLanguageName(e.language)
     }));
 
     return mappedData;
   }, {
-    staleTime: 2 * 60 * 1000 // 2 minutes
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    initialData: options.initialData,
+    enabled: options.shouldFetch
   });
 
   return (entries ?? [])

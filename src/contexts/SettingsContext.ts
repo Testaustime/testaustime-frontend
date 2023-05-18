@@ -1,7 +1,7 @@
 import { ColorScheme } from "@mantine/core";
 import { createContext } from "react";
 import { DayRange } from "../utils/dateUtils";
-import { Locales } from "../i18n/i18n";
+import { Locales } from "../i18next";
 
 export interface SettingsContextValue {
   smoothCharts: boolean,

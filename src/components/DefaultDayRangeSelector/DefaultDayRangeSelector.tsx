@@ -1,6 +1,6 @@
 import { Group, SegmentedControl, Text } from "@mantine/core";
 import { useSettings } from "../../hooks/useSettings";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { DayRange } from "../../utils/dateUtils";
 
 export const DefaultDayRangeSelector = () => {

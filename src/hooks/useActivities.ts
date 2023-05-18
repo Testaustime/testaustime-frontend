@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ActivityDataEntry } from "./useActivityData";
 

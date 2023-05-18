@@ -1,5 +1,5 @@
 import { Button, Group, LoadingOverlay, Text } from "@mantine/core";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import * as Yup from "yup";
 import { useState } from "react";
 import { Form, Formik } from "formik";

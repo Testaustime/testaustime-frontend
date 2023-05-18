@@ -1,7 +1,7 @@
-import axios from "axios";
+import { isAxiosError } from "axios";
 
 export const getErrorMessage = (err: unknown) => {
-  if (!axios.isAxiosError(err)) throw err;
+  if (!isAxiosError(err)) throw err;
   if (!err.response || !err.response.data) throw err;
 
   if (err.response.status === 429) {
