@@ -1,7 +1,6 @@
 import axios from "../axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthentication } from "./useAuthentication";
-import { User } from "./useAuthentication";
 import { useRouter } from "next/router";
 
 export const useAccount = () => {
@@ -17,13 +16,9 @@ export const useAccount = () => {
       }),
       {
         onSuccess: (_, newVisibility) => {
-          queryClient.setQueryData(["fetchUser"], (old: User | undefined) => {
-            if (!old) throw new Error("User not found");
-            return {
-              ...old,
-              isPublic: newVisibility
-            };
-          });
+          queryClient.setQueryData(["fetchUser"], ({
+            isPublic: newVisibility
+          }));
         }
       }
     );

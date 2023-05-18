@@ -17,6 +17,7 @@ import ConfirmAccountDeletionModal from "../../components/ConfirmAccountDeletion
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import axios from "../../axios";
+import { useState } from "react";
 
 export type ProfilePageProps = {
   username: string,
@@ -26,7 +27,13 @@ export type ProfilePageProps = {
   token: string
 };
 
-const ProfilePage = ({ username, friendCode, registrationTime, isPublic, token }: ProfilePageProps) => {
+const ProfilePage = ({
+  username,
+  friendCode,
+  registrationTime,
+  isPublic: isPublicInitial,
+  token
+}: ProfilePageProps) => {
   const {
     regenerateToken,
     regenerateFriendCode,
@@ -35,6 +42,9 @@ const ProfilePage = ({ username, friendCode, registrationTime, isPublic, token }
 
   const { t } = useTranslation();
   const { changeAccountVisibility, deleteAccount } = useAccount();
+
+  // TODO: This is too hacky, find a better way to do this
+  const [isPublic, setIsPublic] = useState(isPublicInitial);
 
   const modals = useModals();
 
@@ -71,7 +81,9 @@ const ProfilePage = ({ username, friendCode, registrationTime, isPublic, token }
         <ButtonWithConfirmation
           color={"red"}
           onClick={() => {
-            changeAccountVisibility(!isPublic).catch(() => showNotification({
+            changeAccountVisibility(!isPublic).then(() => {
+              setIsPublic(!isPublic);
+            }).catch(() => showNotification({
               title: t("error"),
               color: "red",
               message: t("unknownErrorOccurred")
