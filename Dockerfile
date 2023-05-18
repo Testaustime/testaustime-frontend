@@ -1,11 +1,11 @@
-FROM --platform=$BUILDPLATFORM node:18-alpine AS build
+FROM --platform=$BUILDPLATFORM node:20-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM --platform=$TARGETPLATFORM node:18-alpine AS runner
+FROM --platform=$TARGETPLATFORM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV production
 COPY --from=build /app/next-i18next.config.js ./next-i18next.config.js
