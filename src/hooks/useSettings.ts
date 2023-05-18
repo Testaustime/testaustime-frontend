@@ -12,7 +12,11 @@ import {
   smoothChartsCookieName
 } from "../utils/constants";
 
-export const useCreateSettings = () => {
+export const useCreateSettings = ({
+  initialColorScheme
+}: {
+  initialColorScheme: ColorScheme
+}) => {
   const router = useRouter();
   const [cookies, setCookies] = useCookies();
 
@@ -47,7 +51,7 @@ export const useCreateSettings = () => {
       router.push(router.asPath, undefined, { locale: value }).catch(console.error);
       setLanguage(value);
     },
-    colorScheme: colorScheme ?? "dark",
+    colorScheme: colorScheme || initialColorScheme,
     setColorScheme,
     toggleColorScheme,
     defaultDayRange: defaultDayRange ?? "week",

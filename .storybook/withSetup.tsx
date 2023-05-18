@@ -20,7 +20,9 @@ i18n.use(initReactI18next).init({
 });
 
 const InnerApp = ({ children }: PropsWithChildren) => {
-  const settings = useCreateSettings();
+  const settings = useCreateSettings({
+    initialColorScheme: "dark",
+  });
 
   return <MantineProvider
     withGlobalStyles

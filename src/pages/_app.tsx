@@ -1,6 +1,6 @@
 import type { AppContext, AppInitialProps, AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
-import { ColorSchemeProvider, Group, MantineProvider, Overlay, createStyles } from "@mantine/core";
+import { ColorScheme, ColorSchemeProvider, Group, MantineProvider, Overlay, createStyles } from "@mantine/core";
 import { useState } from "react";
 import Link from "next/link";
 import { Navigation } from "../components/Navigation";
@@ -16,13 +16,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import { CookiesProvider } from "react-cookie";
+import { isColorScheme } from "../utils/stringUtils";
+import { colorSchemeCookieName } from "../utils/constants";
 
 type Props = {
   token?: string,
   username?: string,
   friendCode?: string,
   registrationTime?: Date,
-  isPublic?: boolean
+  isPublic?: boolean,
+  colorScheme: ColorScheme
 }
 
 const useStyles = createStyles(() => ({
@@ -63,7 +66,9 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
   const { classes } = useStyles();
   const [opened, setOpenedOriginal] = useState(false);
 
-  const settings = useCreateSettings();
+  const settings = useCreateSettings({
+    initialColorScheme: pageProps.colorScheme
+  });
 
   useHotkeys([["mod+J", () => settings.toggleColorScheme()]]);
 
@@ -170,10 +175,16 @@ function App(props: AppProps<Props>) {
 
 App.getInitialProps = async ({ ctx }: AppContext): Promise<AppInitialProps<Props>> => {
   const token = ctx.req?.headers.cookie?.split("; ").find(row => row.startsWith("token="))?.replace("token=", "");
+  const colorSchemeUnchecked = ctx.req?.headers.cookie?.split("; ")
+    .find(row => row.startsWith(`${colorSchemeCookieName}=`))?.replace(`${colorSchemeCookieName}=`, "");
+
+  const colorScheme = isColorScheme(colorSchemeUnchecked) ? colorSchemeUnchecked : "dark";
 
   if (!token) {
     return {
-      pageProps: {}
+      pageProps: {
+        colorScheme
+      }
     };
   }
 
@@ -192,13 +203,16 @@ App.getInitialProps = async ({ ctx }: AppContext): Promise<AppInitialProps<Props
         username: response.data.username,
         friendCode: response.data.friend_code,
         registrationTime: new Date(response.data.registration_time),
-        isPublic: response.data.is_public
+        isPublic: response.data.is_public,
+        colorScheme
       }
     };
   }
   catch (e) {
     return {
-      pageProps: {}
+      pageProps: {
+        colorScheme
+      }
     };
   }
 };

@@ -1,3 +1,5 @@
+import { ColorScheme } from "@mantine/core";
+
 export const isStringNull = (text: string | null | undefined) =>
   !text || text.toLowerCase() === "null" || text.toLowerCase() === "undefined" || text.trim() === "";
 export const capitalizeFirstLetter = (text: string) => text[0].toUpperCase() + text.slice(1);
@@ -12,3 +14,5 @@ export const getOrdinalSuffix = (n: number) => ({
   "many": "th",
   "other": "th"
 }[ordinalRules.select(n)]);
+
+export const isColorScheme = (value: unknown): value is ColorScheme => value === "light" || value === "dark";
