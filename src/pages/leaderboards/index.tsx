@@ -143,7 +143,8 @@ export const getServerSideProps: GetServerSideProps<LeaderboardsPageProps> = asy
       headers: {
         Authorization: `Bearer ${token}`,
         "X-Forwarded-For": req.socket.remoteAddress
-      }
+      },
+      baseURL: process.env.NEXT_PUBLIC_API_URL
     });
 
   const leaderboardPromises = leaderboardListResponse.data.map(async leaderboard => {
@@ -153,7 +154,8 @@ export const getServerSideProps: GetServerSideProps<LeaderboardsPageProps> = asy
         headers: {
           Authorization: `Bearer ${token}`,
           "X-Forwarded-For": req.socket.remoteAddress
-        }
+        },
+        baseURL: process.env.NEXT_PUBLIC_API_URL
       });
     return response.data;
   });

@@ -8,11 +8,12 @@ const handler: NextApiHandler = async (req, res) => {
 
     try {
       const response = await axios.post<ApiAuthLoginResponse>(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`, req.body,
+        "/auth/login", req.body,
         {
           headers: {
             "X-Forwarded-For": req.socket.remoteAddress
-          }
+          },
+          baseURL: process.env.NEXT_PUBLIC_API_URL
         });
       const token = response.data.auth_token;
       const expiration = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toUTCString();

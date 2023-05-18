@@ -141,7 +141,8 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
       headers: {
         Authorization: `Bearer ${token}`,
         "X-Forwarded-For": req.socket.remoteAddress
-      }
+      },
+      baseURL: process.env.NEXT_PUBLIC_API_URL
     }
   );
 

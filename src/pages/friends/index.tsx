@@ -46,7 +46,8 @@ export const getServerSideProps: GetServerSideProps<FriendPageProps> = async ({ 
       headers: {
         Authorization: `Bearer ${token}`,
         "X-Forwarded-For": req.socket.remoteAddress
-      }
+      },
+      baseURL: process.env.NEXT_PUBLIC_API_URL
     });
 
   const ownPromise = axios.get<ApiUsersUserActivityDataResponseItem[]>(
@@ -55,7 +56,8 @@ export const getServerSideProps: GetServerSideProps<FriendPageProps> = async ({ 
       headers: {
         Authorization: `Bearer ${token}`,
         "X-Forwarded-For": req.socket.remoteAddress
-      }
+      },
+      baseURL: process.env.NEXT_PUBLIC_API_URL
     });
 
   const [friendsResponse, ownResponse] = await Promise.all([friendsPromise, ownPromise]);

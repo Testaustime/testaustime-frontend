@@ -194,7 +194,8 @@ App.getInitialProps = async ({ ctx }: AppContext): Promise<AppInitialProps<Props
         headers: {
           Authorization: `Bearer ${token}`,
           "X-Forwarded-For": ctx.req?.socket.remoteAddress
-        }
+        },
+        baseURL: process.env.NEXT_PUBLIC_API_URL
       }
     );
     return {
