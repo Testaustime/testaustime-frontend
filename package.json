@@ -16,7 +16,7 @@
     "formik": "^2.2.9",
     "i18next": "^22.4.15",
     "next": "^13.4.2",
-    "next-i18next": "^13.2.2",
+    "next-i18next": "^14.0.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-cookie": "^4.1.1",
