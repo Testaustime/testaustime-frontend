@@ -6,6 +6,10 @@
     {
       "groupName": "Storybook packages",
       "matchPackagePatterns": ["^storybook", "@storybook"]
+    },
+    {
+      "groupName": "I18next packages",
+      "matchPackagePatterns": ["i18next$"]
     }
   ]
 }
