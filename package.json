@@ -14,15 +14,15 @@
     "chart.js": "^4.3.0",
     "date-fns": "^2.30.0",
     "formik": "^2.4.2",
-    "i18next": "^22.5.1",
+    "i18next": "^23.2.3",
     "next": "^13.4.7",
-    "next-i18next": "^13.3.0",
+    "next-i18next": "^14.0.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
-    "react-i18next": "^12.3.1",
+    "react-i18next": "^13.0.1",
     "yup": "^1.2.0"
   },
   "scripts": {
