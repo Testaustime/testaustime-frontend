@@ -41,7 +41,7 @@
     "@storybook/react": "^7.0.23",
     "@svgr/webpack": "^8.0.1",
     "@types/node": "^18.16.18",
-    "@types/react": "^18.2.13",
+    "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@types/react-router": "^5.1.20",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
