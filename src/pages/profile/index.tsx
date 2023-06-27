@@ -50,7 +50,7 @@ const ProfilePage = ({
 
   const openDeleteAccountModal = () => {
     const id = modals.openModal({
-      title: <Title>{t("profile.deleteAccount.modal.title")}</Title>,
+      title: t("profile.deleteAccount.modal.title"),
       size: "xl",
       children: <ConfirmAccountDeletionModal
         onCancel={() => modals.closeModal(id)}
@@ -58,7 +58,14 @@ const ProfilePage = ({
           await deleteAccount(password);
           modals.closeModal(id);
         }}
-      />
+      />,
+      styles: {
+        title: {
+          fontSize: "2rem",
+          marginBlock: "0.5rem",
+          fontWeight: "bold"
+        }
+      }
     });
   };
 
