@@ -217,6 +217,7 @@
   },
   "registrationPage": {
     "invalidCredentials": "Virheelliset tunnukset",
+    "rateLimited": "Voit rekisteröidä vain yhden käyttäjän päivässä",
     "password": "Salasana",
     "passwordConfirm": "Vahvista salasana",
     "registerButton": "Rekisteröidy",

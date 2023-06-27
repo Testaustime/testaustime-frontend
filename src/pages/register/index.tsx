@@ -5,7 +5,7 @@ import { Form, Formik } from "formik";
 import { FormikTextInput } from "../../components/forms/FormikTextInput";
 import * as Yup from "yup";
 import { useState } from "react";
-import { useAuthentication } from "../../hooks/useAuthentication";
+import { RegistrationResult, useAuthentication } from "../../hooks/useAuthentication";
 import { FormikPasswordInput } from "../../components/forms/FormikPasswordInput";
 import { showNotification } from "@mantine/notifications";
 import { useTranslation } from "next-i18next";
@@ -42,12 +42,23 @@ const RegistrationPage = () => {
       onSubmit={values => {
         setVisible(true);
         register(values.username, values.password)
-          .then(() => router.push("/"))
-          .catch(() => {
+          .then(result => {
+            if (result === RegistrationResult.Success) {
+              return router.push("/");
+            }
+            else if (result === RegistrationResult.RateLimited) {
+              showNotification({
+                title: t("error"),
+                color: "red",
+                message: t("registrationPage.rateLimited")
+              });
+              setVisible(false);
+            }
+          }).catch(() => {
             showNotification({
               title: t("error"),
               color: "red",
-              message: t("registrationPage.invalidCredentials")
+              message: t("unknownErrorOccurred")
             });
             setVisible(false);
           });
