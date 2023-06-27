@@ -10,6 +10,14 @@
     {
       "groupName": "I18next packages",
       "matchPackagePatterns": ["i18next$"]
+    },
+    {
+      "groupName": "TypeScript ESLint packages",
+      "matchPackagePatterns": ["@typescript-eslint"]
+    },
+    {
+      "groupName": "Types",
+      "matchPackagePatterns": ["@types\/"]
     }
   ]
 }
