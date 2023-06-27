@@ -44,19 +44,33 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
 
   const openCreateLeaderboard = () => {
     const id = modals.openModal({
-      title: <Title>{t("leaderboards.createNewLeaderboard")}</Title>,
+      title: t("leaderboards.createNewLeaderboard"),
       size: "xl",
       children: <CreateLeaderboardModal
         onCreate={() => { modals.closeModal(id); }}
-      />
+      />,
+      styles: {
+        title: {
+          fontSize: "2rem",
+          marginBlock: "0.5rem",
+          fontWeight: "bold"
+        }
+      }
     });
   };
 
   const openJoinLeaderboard = () => {
     const id = modals.openModal({
-      title: <Title>{t("leaderboards.joinLeaderboard")}</Title>,
+      title: t("leaderboards.joinLeaderboard"),
       size: "xl",
-      children: <JoinLeaderboardModal initialCode={urlLeaderboardCode} onJoin={() => { modals.closeModal(id); }} />
+      children: <JoinLeaderboardModal initialCode={urlLeaderboardCode} onJoin={() => { modals.closeModal(id); }} />,
+      styles: {
+        title: {
+          fontSize: "2rem",
+          marginBlock: "0.5rem",
+          fontWeight: "bold"
+        }
+      }
     });
   };
 
@@ -73,9 +87,16 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
     <Modal
       opened={Boolean(openedLeaderboard)}
       onClose={() => setOpenedLeaderboardName(undefined)}
-      title={<Title>{openedLeaderboard?.name}</Title>}
+      title={openedLeaderboard?.name}
       withCloseButton
       size="xl"
+      styles={{
+        title: {
+          fontSize: "2rem",
+          marginBlock: "0.5rem",
+          fontWeight: "bold"
+        }
+      }}
     >
       {openedLeaderboard && <LeaderboardModal
         leaveLeaderboard={async () => {

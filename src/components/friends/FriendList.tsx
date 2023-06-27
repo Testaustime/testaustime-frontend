@@ -1,4 +1,4 @@
-import { Button, Table, Text, Title, useMantineTheme } from "@mantine/core";
+import { Button, Table, Text, useMantineTheme } from "@mantine/core";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { ApiFriendsResponseItem, useFriends } from "../../hooks/useFriends";
 import { useTranslation } from "next-i18next";
@@ -36,9 +36,16 @@ export const FriendList = ({ initialFriends, ownTimeCoded }: FriendListProps) =>
 
   const openFriendDashboard = (friendUsername: string) => {
     modals.openModal({
-      title: <Title>{t("friends.friendDashboardTitle", { username: friendUsername })}</Title>,
+      title: t("friends.friendDashboardTitle", { username: friendUsername }),
       size: "calc(800px + 10%)",
-      children: <Dashboard username={friendUsername} isFrontPage={false} />
+      children: <Dashboard username={friendUsername} isFrontPage={false} />,
+      styles: {
+        title: {
+          fontSize: "2rem",
+          marginBlock: "0.5rem",
+          fontWeight: "bold"
+        }
+      }
     });
   };
 

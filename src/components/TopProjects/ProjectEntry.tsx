@@ -1,4 +1,4 @@
-import { ActionIcon, Title, createStyles } from "@mantine/core";
+import { ActionIcon, createStyles } from "@mantine/core";
 import { prettyDuration } from "../../utils/dateUtils";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useModals } from "@mantine/modals";
@@ -26,9 +26,16 @@ export const ProjectEntry = ({ name, durationSeconds, allowEditing }: ProjectEnt
   const openModal = () => {
     if (name !== undefined && name !== null) {
       const id = modals.openModal({
-        title: <Title>{t("editProject.title", { projectName: name })}</Title>,
+        title: t("editProject.title", { projectName: name }),
         size: "lg",
-        children: <EditProjectModal projectName={name} onClose={() => modals.closeModal(id)} />
+        children: <EditProjectModal projectName={name} onClose={() => modals.closeModal(id)} />,
+        styles: {
+          title: {
+            fontSize: "2rem",
+            marginBlock: "0.5rem",
+            fontWeight: "bold"
+          }
+        }
       });
     }
   };
