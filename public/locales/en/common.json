@@ -217,6 +217,7 @@
   },
   "registrationPage": {
     "invalidCredentials": "Invalid credentials",
+    "rateLimited": "You can only register 1 account per day",
     "password": "Password",
     "passwordConfirm": "Confirm password",
     "registerButton": "Register",

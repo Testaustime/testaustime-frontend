@@ -50,6 +50,11 @@ export enum PasswordChangeResult {
   NewPasswordInvalid,
 }
 
+export enum RegistrationResult {
+  Success,
+  RateLimited
+}
+
 export const useAuthentication = () => {
   const queryClient = useQueryClient();
   const user = useUser();
@@ -86,15 +91,19 @@ export const useAuthentication = () => {
   ) => {
     try {
       const { data } = await axios.post<ApiAuthRegisterResponse>("/auth/register", { username, password });
-      const authToken = data.auth_token;
       queryClient.setQueryData(["fetchUser"], {
         username: data.username,
         friendCode: data.friend_code,
         registrationTime: new Date(data.registration_time),
         isPublic: false
       });
-      return authToken;
+      return RegistrationResult.Success;
     } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === 429) {
+          return RegistrationResult.RateLimited;
+        }
+      }
       throw getErrorMessage(error);
     }
   });
