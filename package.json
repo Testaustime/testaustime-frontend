@@ -40,7 +40,7 @@
     "@storybook/nextjs": "^7.0.24",
     "@storybook/react": "^7.0.24",
     "@svgr/webpack": "^8.0.1",
-    "@types/node": "^18.16.18",
+    "@types/node": "^18.16.19",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@types/react-router": "^5.1.20",
