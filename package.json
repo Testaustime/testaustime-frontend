@@ -14,7 +14,7 @@
     "chart.js": "^4.3.0",
     "date-fns": "^2.30.0",
     "formik": "^2.4.2",
-    "i18next": "^23.3.0",
+    "i18next": "^23.4.2",
     "next": "^13.4.7",
     "next-i18next": "^14.0.0",
     "react": "^18.2.0",
@@ -22,7 +22,7 @@
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
-    "react-i18next": "^13.0.2",
+    "react-i18next": "^13.0.3",
     "yup": "^1.2.0"
   },
   "scripts": {
