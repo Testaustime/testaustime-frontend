@@ -6,7 +6,7 @@ export default function Document(props: DocumentProps) {
 
   return <Html lang={currentLocale}>
     <Head>
-      <meta charSet="utf-8" />
+      <link rel="icon" href="/time.png" />
     </Head>
     <body>
       <Main />
