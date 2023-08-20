@@ -40,7 +40,8 @@
     "micro": "Download Testaustime for Micro",
     "neovim": "Download Testaustime for Neovim",
     "title": "Extensions",
-    "vscode": "Download Testaustime for Visual Studio Code"
+    "vscode": "Download Testaustime for Visual Studio Code",
+    "sublime": "Download Testaustime for Sublime Text"
   },
   "footer": {
     "authors": {
