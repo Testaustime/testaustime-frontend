@@ -7,6 +7,7 @@ import Neovim from "../../../public/images/neovim.svg";
 import Vscode from "../../../public/images/vscode.svg";
 import IntelliJ from "../../../public/images/intellij.svg";
 import Micro from "../../../public/images/micro.svg";
+import Sublime from "../../../public/images/sublime.svg";
 import { useTranslation } from "next-i18next";
 
 interface ExtensionBlockProps {
@@ -132,6 +133,12 @@ const ExtensionsPage = () => {
         downloadLink="https://github.com/Testaustime/testaustime-micro"
         sourceCodeLink="https://github.com/Testaustime/testaustime-micro"
         text={t("extensions.micro")}
+      />
+      <ExtensionBlock
+        logo={<Sublime width={40} height={40} />}
+        downloadLink="https://github.com/Testaustime/testaustime-sublime/releases/latest"
+        sourceCodeLink="https://github.com/Testaustime/testaustime-sublime"
+        text={t("extensions.sublime")}
       />
     </Stack>
   </div>;
