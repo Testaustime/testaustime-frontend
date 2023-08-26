@@ -133,7 +133,8 @@ const ExtensionsPage = () => {
         downloadLink="https://github.com/Testaustime/testaustime-micro"
         sourceCodeLink="https://github.com/Testaustime/testaustime-micro"
         text={t("extensions.micro")}
-      /><ExtensionBlock
+      />
+      <ExtensionBlock
         logo={<Sublime width={40} height={40} />}
         downloadLink="https://github.com/Testaustime/testaustime-sublime"
         sourceCodeLink="https://github.com/Testaustime/testaustime-sublime"
