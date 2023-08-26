@@ -136,7 +136,7 @@ const ExtensionsPage = () => {
       />
       <ExtensionBlock
         logo={<Sublime width={40} height={40} />}
-        downloadLink="https://github.com/Testaustime/testaustime-sublime"
+        downloadLink="https://github.com/Testaustime/testaustime-sublime/releases/latest"
         sourceCodeLink="https://github.com/Testaustime/testaustime-sublime"
         text={t("extensions.sublime")}
       />
