@@ -41,7 +41,7 @@
     "neovim": "Lataa Testaustime Neovim:lle",
     "title": "Laajennukset",
     "vscode": "Lataa Testaustime Visual Studio Code:lle",
-    "sublime": "Lataa Testaustime Sublime Text:ille"
+    "sublime": "Lataa Testaustime Sublime Text:lle"
   },
   "footer": {
     "authors": {
