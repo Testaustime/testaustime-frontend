@@ -1,6 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", "group:allNonMajor", "group:recommended", ":prHourlyLimitNone"],
+  "extends": [
+    "config:base",
+    "group:allNonMajor",
+    "group:recommended",
+    ":prHourlyLimitNone"
+  ],
   "rangeStrategy": "bump",
   "packageRules": [
     {
@@ -17,7 +22,7 @@
     },
     {
       "groupName": "Types",
-      "matchPackagePatterns": ["@types\/"]
+      "matchPackagePatterns": ["@types/"]
     }
   ]
 }

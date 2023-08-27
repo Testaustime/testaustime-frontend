@@ -1,62 +1,73 @@
 *:not(.noDefaultTransition) {
-    transition: ease-in-out background-color 0.2s, ease-in-out filter 0.2s, ease-in-out border 0.2s !important;
+  transition:
+    ease-in-out background-color 0.2s,
+    ease-in-out filter 0.2s,
+    ease-in-out border 0.2s !important;
 }
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-html, body {
-    margin: 0px;
-    padding: 0px;
-    min-height: 100vh;
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+  min-height: 100vh;
 }
 
 body {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 body::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 /* ubuntu-regular - latin */
 @font-face {
-    font-family: 'Ubuntu';
-    font-style: normal;
-    font-weight: 400;
-    src: local(''),
-        url('/ubuntu-v19-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-        url('/ubuntu-v19-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  font-family: "Ubuntu";
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local(""),
+    url("/ubuntu-v19-latin-regular.woff2") format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url("/ubuntu-v19-latin-regular.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 /* poppins-800 - latin */
 @font-face {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 800;
-    src: local(''),
-        url('/poppins-v19-latin-800.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-        url('/poppins-v19-latin-800.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 800;
+  src:
+    local(""),
+    url("/poppins-v19-latin-800.woff2") format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/poppins-v19-latin-800.woff")
+      format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
-p, a, li {
-    font-family: 'Ubuntu', sans-serif;
+p,
+a,
+li {
+  font-family: "Ubuntu", sans-serif;
 }
 
-p, a {
-    font-size: 1.2rem;
-    line-height: 2rem;
+p,
+a {
+  font-size: 1.2rem;
+  line-height: 2rem;
 }
 
 a {
-    color: #5084cc;
+  color: #5084cc;
 }
 
 #root {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    flex-wrap: wrap;
-    min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  min-height: 100vh;
 }

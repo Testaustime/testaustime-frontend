@@ -1,4 +1,7 @@
-import { DailyCodingTimeChart, transformData as td } from "./DailyCodingTimeChart";
+import {
+  DailyCodingTimeChart,
+  transformData as td,
+} from "./DailyCodingTimeChart";
 
 export default DailyCodingTimeChart;
 

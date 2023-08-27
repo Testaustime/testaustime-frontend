@@ -1,5 +1,5 @@
 /* eslint sort-keys: "error" */
-export const colors: Record<string, string> = {
+export const colors = {
   "1c enterprise": "#814CCC",
   "2-dimensional array": "#38761D",
   "4d": "#004289",
@@ -586,5 +586,9 @@ export const colors: Record<string, string> = {
   zephir: "#118f9e",
   zig: "#ec915c",
   zil: "#dc75e5",
-  zimpl: "#d67711"
+  zimpl: "#d67711",
+};
+
+export const isColor = (color: string): color is keyof typeof colors => {
+  return color in colors;
 };

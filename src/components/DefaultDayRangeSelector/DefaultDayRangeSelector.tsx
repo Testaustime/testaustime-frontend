@@ -7,16 +7,20 @@ export const DefaultDayRangeSelector = () => {
   const { defaultDayRange, setDefaultDayRange } = useSettings();
   const { t } = useTranslation();
 
-  return <Group>
-    <Text>{t("profile.settings.defaultDayRange")}</Text>
-    <SegmentedControl
-      data={[
-        { label: t("dashboard.timeFilters.week"), value: "week" },
-        { label: t("dashboard.timeFilters.month"), value: "month" },
-        { label: t("dashboard.timeFilters.all"), value: "all" }
-      ]}
-      value={defaultDayRange}
-      onChange={value => setDefaultDayRange(value as DayRange)}
-    />
-  </Group>;
+  return (
+    <Group>
+      <Text>{t("profile.settings.defaultDayRange")}</Text>
+      <SegmentedControl
+        data={[
+          { label: t("dashboard.timeFilters.week"), value: "week" },
+          { label: t("dashboard.timeFilters.month"), value: "month" },
+          { label: t("dashboard.timeFilters.all"), value: "all" },
+        ]}
+        value={defaultDayRange}
+        onChange={(value) => {
+          setDefaultDayRange(value as DayRange);
+        }}
+      />
+    </Group>
+  );
 };

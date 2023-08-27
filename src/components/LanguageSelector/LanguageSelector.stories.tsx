@@ -5,19 +5,21 @@ import { LanguageSelector, LanguageSelectorProps } from "./LanguageSelector";
 export default {
   title: "LanguageSelector",
   component: LanguageSelector,
-  decorators: [withSetup]
+  decorators: [withSetup],
 } as Meta;
 
-const Template: StoryFn<LanguageSelectorProps> = args => <LanguageSelector {...args} />;
+const Template: StoryFn<LanguageSelectorProps> = (args) => (
+  <LanguageSelector {...args} />
+);
 export const Default = Template.bind({});
 
 Default.args = {
   type: "segmented",
-  showLabel: true
+  showLabel: true,
 };
 
 export const Dropdown = Template.bind({});
 Dropdown.args = {
   type: "dropdown",
-  showLabel: true
+  showLabel: true,
 };

@@ -8,12 +8,12 @@ module.exports = {
   debug: process.env.NODE_ENV === "development",
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "fi"]
+    locales: ["en", "fi"],
   },
   reloadOnPrerender: process.env.NODE_ENV === "development",
   strictMode: true,
   localePath: path.resolve("./public/locales"),
   react: {
-    useSuspense: false
-  }
+    useSuspense: false,
+  },
 };

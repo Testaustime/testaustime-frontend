@@ -1,8 +1,12 @@
 import { Button, Group, Modal, Text, Title } from "@mantine/core";
 import { useModals } from "@mantine/modals";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuthentication } from "../../hooks/useAuthentication";
-import { Leaderboard, LeaderboardData, useLeaderboards } from "../../hooks/useLeaderboards";
+import {
+  Leaderboard,
+  LeaderboardData,
+  useLeaderboards,
+} from "../../hooks/useLeaderboards";
 import { LeaderboardModal } from "../../components/leaderboard/LeaderboardModal";
 import { CreateLeaderboardModal } from "../../components/leaderboard/CreateLeaderboardModal";
 import { JoinLeaderboardModal } from "../../components/leaderboard/JoinLeaderboardModal";
@@ -15,8 +19,8 @@ import { useRouter } from "next/router";
 import axios from "../../axios";
 
 export type LeaderboardsPageProps = {
-  initialLeaderboards: LeaderboardData[]
-}
+  initialLeaderboards: LeaderboardData[];
+};
 
 const LeaderboardsPage = (props: LeaderboardsPageProps) => {
   const {
@@ -26,19 +30,24 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
     promoteUser,
     demoteUser,
     kickUser,
-    regenerateInviteCode
+    regenerateInviteCode,
   } = useLeaderboards({
     initialLeaderboards: props.initialLeaderboards,
-    shouldFetch: false
+    shouldFetch: false,
   });
 
   const { username } = useAuthentication();
   const modals = useModals();
-  const [openedLeaderboardName, setOpenedLeaderboardName] = useState<string | undefined>(undefined);
-  const openedLeaderboard = leaderboards?.find(l => l.name === openedLeaderboardName);
+  const [openedLeaderboardName, setOpenedLeaderboardName] = useState<
+    string | undefined
+  >(undefined);
+  const openedLeaderboard = leaderboards.find(
+    (l) => l.name === openedLeaderboardName,
+  );
 
   const router = useRouter();
-  const urlLeaderboardCode = typeof router.query.code === "string" ? router.query.code : null;
+  const urlLeaderboardCode =
+    typeof router.query.code === "string" ? router.query.code : null;
 
   const { t } = useTranslation();
 
@@ -46,115 +55,142 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
     const id = modals.openModal({
       title: t("leaderboards.createNewLeaderboard"),
       size: "xl",
-      children: <CreateLeaderboardModal
-        onCreate={() => { modals.closeModal(id); }}
-      />,
+      children: (
+        <CreateLeaderboardModal
+          onCreate={() => {
+            modals.closeModal(id);
+          }}
+        />
+      ),
       styles: {
         title: {
           fontSize: "2rem",
           marginBlock: "0.5rem",
-          fontWeight: "bold"
-        }
-      }
+          fontWeight: "bold",
+        },
+      },
     });
   };
 
-  const openJoinLeaderboard = () => {
+  const openJoinLeaderboard = useCallback(() => {
     const id = modals.openModal({
       title: t("leaderboards.joinLeaderboard"),
       size: "xl",
-      children: <JoinLeaderboardModal initialCode={urlLeaderboardCode} onJoin={() => { modals.closeModal(id); }} />,
+      children: (
+        <JoinLeaderboardModal
+          initialCode={urlLeaderboardCode}
+          onJoin={() => {
+            modals.closeModal(id);
+          }}
+        />
+      ),
       styles: {
         title: {
           fontSize: "2rem",
           marginBlock: "0.5rem",
-          fontWeight: "bold"
-        }
-      }
+          fontWeight: "bold",
+        },
+      },
     });
-  };
+  }, [modals, t, urlLeaderboardCode]);
 
   useEffect(() => {
     if (urlLeaderboardCode) openJoinLeaderboard();
-  }, [urlLeaderboardCode]);
+  }, [openJoinLeaderboard, urlLeaderboardCode]);
 
   if (!username) return <Text>{t("leaderboards.notLoggedIn")}</Text>;
 
-  const adminUsernames = openedLeaderboard?.members.filter(m => m.admin).map(m => m.username);
+  const adminUsernames = openedLeaderboard?.members
+    .filter((m) => m.admin)
+    .map((m) => m.username);
   const isAdmin = Boolean(adminUsernames?.includes(username));
 
-  return <>
-    <Modal
-      opened={Boolean(openedLeaderboard)}
-      onClose={() => setOpenedLeaderboardName(undefined)}
-      title={openedLeaderboard?.name}
-      withCloseButton
-      size="xl"
-      styles={{
-        title: {
-          fontSize: "2rem",
-          marginBlock: "0.5rem",
-          fontWeight: "bold"
-        }
-      }}
-    >
-      {openedLeaderboard && <LeaderboardModal
-        leaveLeaderboard={async () => {
-          await leaveLeaderboard(openedLeaderboard.name);
+  return (
+    <>
+      <Modal
+        opened={Boolean(openedLeaderboard)}
+        onClose={() => {
           setOpenedLeaderboardName(undefined);
         }}
-        leaderboard={openedLeaderboard}
-        deleteLeaderboard={async () => {
-          await deleteLeaderboard(openedLeaderboard.name);
-          setOpenedLeaderboardName(undefined);
+        title={openedLeaderboard?.name}
+        withCloseButton
+        size="xl"
+        styles={{
+          title: {
+            fontSize: "2rem",
+            marginBlock: "0.5rem",
+            fontWeight: "bold",
+          },
         }}
-        isAdmin={Boolean(adminUsernames?.includes(username))}
-        isLastAdmin={isAdmin && adminUsernames?.length === 1}
-        promoteUser={async (username: string) => {
-          await promoteUser(openedLeaderboard.name, username);
-        }}
-        demoteUser={async (username: string) => {
-          await demoteUser(openedLeaderboard.name, username);
-        }}
-        kickUser={async (username: string) => {
-          await kickUser(openedLeaderboard.name, username);
-        }}
-        regenerateInviteCode={async () => await regenerateInviteCode(openedLeaderboard.name)}
-      />}
-    </Modal>
-    <Group align="center" mb="md" mt="xl" position="apart">
-      <Title>{t("leaderboards.leaderboards")}</Title>
-      <Group spacing="sm">
-        <Button
-          onClick={() => openCreateLeaderboard()}
-          variant="outline"
-          leftIcon={<PlusIcon />}
-        >
-          {t("leaderboards.createNewLeaderboard")}
-        </Button>
-        <Button
-          onClick={() => openJoinLeaderboard()}
-          leftIcon={<EnterIcon />}
-        >
-          {t("leaderboards.joinLeaderboard")}
-        </Button>
+      >
+        {openedLeaderboard && (
+          <LeaderboardModal
+            leaveLeaderboard={async () => {
+              await leaveLeaderboard(openedLeaderboard.name);
+              setOpenedLeaderboardName(undefined);
+            }}
+            leaderboard={openedLeaderboard}
+            deleteLeaderboard={async () => {
+              await deleteLeaderboard(openedLeaderboard.name);
+              setOpenedLeaderboardName(undefined);
+            }}
+            isAdmin={Boolean(adminUsernames?.includes(username))}
+            isLastAdmin={isAdmin && adminUsernames?.length === 1}
+            promoteUser={async (username: string) => {
+              await promoteUser(openedLeaderboard.name, username);
+            }}
+            demoteUser={async (username: string) => {
+              await demoteUser(openedLeaderboard.name, username);
+            }}
+            kickUser={async (username: string) => {
+              await kickUser(openedLeaderboard.name, username);
+            }}
+            regenerateInviteCode={async () =>
+              await regenerateInviteCode(openedLeaderboard.name)
+            }
+          />
+        )}
+      </Modal>
+      <Group align="center" mb="md" mt="xl" position="apart">
+        <Title>{t("leaderboards.leaderboards")}</Title>
+        <Group spacing="sm">
+          <Button
+            onClick={() => {
+              openCreateLeaderboard();
+            }}
+            variant="outline"
+            leftIcon={<PlusIcon />}
+          >
+            {t("leaderboards.createNewLeaderboard")}
+          </Button>
+          <Button
+            onClick={() => {
+              openJoinLeaderboard();
+            }}
+            leftIcon={<EnterIcon />}
+          >
+            {t("leaderboards.joinLeaderboard")}
+          </Button>
+        </Group>
       </Group>
-    </Group>
-    <LeaderboardsList
-      setOpenedLeaderboardName={setOpenedLeaderboardName}
-      leaderboards={leaderboards}
-    />
-  </>;
+      <LeaderboardsList
+        setOpenedLeaderboardName={setOpenedLeaderboardName}
+        leaderboards={leaderboards}
+      />
+    </>
+  );
 };
 
-export const getServerSideProps: GetServerSideProps<LeaderboardsPageProps> = async ({ locale, req }) => {
+export const getServerSideProps: GetServerSideProps<
+  LeaderboardsPageProps
+> = async ({ locale, req }) => {
   const token = req.cookies.token;
   if (!token) {
     return {
       redirect: {
         destination: "/login",
-        permanent: false
-      }
+        permanent: false,
+      },
     };
   }
 
@@ -163,31 +199,35 @@ export const getServerSideProps: GetServerSideProps<LeaderboardsPageProps> = asy
     {
       headers: {
         Authorization: `Bearer ${token}`,
-        "X-Forwarded-For": req.socket.remoteAddress
+        "X-Forwarded-For": req.socket.remoteAddress,
       },
-      baseURL: process.env.NEXT_PUBLIC_API_URL
-    });
+      baseURL: process.env.NEXT_PUBLIC_API_URL,
+    },
+  );
 
-  const leaderboardPromises = leaderboardListResponse.data.map(async leaderboard => {
-    const response = await axios.get<LeaderboardData>(
-      `/leaderboards/${leaderboard.name}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "X-Forwarded-For": req.socket.remoteAddress
+  const leaderboardPromises = leaderboardListResponse.data.map(
+    async (leaderboard) => {
+      const response = await axios.get<LeaderboardData>(
+        `/leaderboards/${leaderboard.name}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "X-Forwarded-For": req.socket.remoteAddress,
+          },
+          baseURL: process.env.NEXT_PUBLIC_API_URL,
         },
-        baseURL: process.env.NEXT_PUBLIC_API_URL
-      });
-    return response.data;
-  });
+      );
+      return response.data;
+    },
+  );
 
   const leaderboards = await Promise.all(leaderboardPromises);
 
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "en")),
-      initialLeaderboards: leaderboards
-    }
+      initialLeaderboards: leaderboards,
+    },
   };
 };
 

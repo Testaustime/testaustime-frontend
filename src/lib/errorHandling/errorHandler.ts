@@ -9,10 +9,12 @@ export const getErrorMessage = (err: unknown) => {
   }
 
   const data: unknown = err.response.data;
-  if (typeof data === "object"
-    && data !== null
-    && "error" in data
-    && typeof data.error === "string") {
+  if (
+    typeof data === "object" &&
+    data !== null &&
+    "error" in data &&
+    typeof data.error === "string"
+  ) {
     return data.error;
   }
 

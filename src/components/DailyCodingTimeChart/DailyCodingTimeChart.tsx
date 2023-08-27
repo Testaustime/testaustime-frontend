@@ -12,7 +12,7 @@ import {
   Tooltip,
   Legend,
   LineElement,
-  PointElement
+  PointElement,
 } from "chart.js";
 import { prettyDuration } from "../../utils/dateUtils";
 
@@ -24,28 +24,31 @@ ChartJS.register(
   Tooltip,
   Legend,
   PointElement,
-  LineElement
+  LineElement,
 );
 
 export interface DailyCodingTimeChartProps {
   data: {
-    date: Date,
-    duration: number
-  }[],
-  smoothCharts: boolean
+    date: Date;
+    duration: number;
+  }[];
+  smoothCharts: boolean;
 }
 
-export const transformData = (entries: {
-  duration: number,
-  dayStart: Date
-}[], dayCount: number) => {
+export const transformData = (
+  entries: {
+    duration: number;
+    dayStart: Date;
+  }[],
+  dayCount: number,
+) => {
   const data = Array(dayCount)
     .fill(0)
     .map((_, dayIndex) => {
       const date = startOfDay(addDays(new Date(), -dayIndex));
       const duration = sumBy(
-        entries.filter(entry => entry.dayStart.getTime() === date.getTime()),
-        entry => entry.duration
+        entries.filter((entry) => entry.dayStart.getTime() === date.getTime()),
+        (entry) => entry.duration,
       );
       return { date, duration };
     })
@@ -54,52 +57,58 @@ export const transformData = (entries: {
   return data;
 };
 
-export const DailyCodingTimeChart = ({ data: dataRaw, smoothCharts }: DailyCodingTimeChartProps) => {
-
+export const DailyCodingTimeChart = ({
+  data: dataRaw,
+  smoothCharts,
+}: DailyCodingTimeChartProps) => {
   const data = [...dataRaw].sort((a, b) => a.date.getTime() - b.date.getTime());
-  const maxDuration = Math.max(...data.map(d => d.duration));
+  const maxDuration = Math.max(...data.map((d) => d.duration));
   const yticks = calculateTickValues(maxDuration);
 
-  return <Line
-    options={{
-      plugins: {
-        legend: {
-          display: false
+  return (
+    <Line
+      options={{
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            mode: "index",
+            intersect: false,
+            callbacks: {
+              label: (item) => "  " + prettyDuration(Number(item.raw)),
+            },
+            padding: 8,
+          },
         },
-        tooltip: {
-          mode: "index",
-          intersect: false,
-          callbacks: {
-            label: item => "  " + prettyDuration(Number(item.raw))
+        scales: {
+          y: {
+            min: 0,
+            max: yticks[yticks.length - 1],
+            afterBuildTicks: (axis) => {
+              axis.ticks = yticks.map((tick) => ({ value: tick }));
+            },
+            ticks: {
+              count: yticks.length,
+              stepSize: yticks[1] - yticks[0],
+              callback: (_, index) => prettyDuration(yticks[index]),
+            },
           },
-          padding: 8
-        }
-      },
-      scales: {
-        y: {
-          min: 0,
-          max: yticks[yticks.length - 1],
-          afterBuildTicks: axis => {
-            axis.ticks = yticks.map(tick => ({ value: tick }));
+        },
+      }}
+      data={{
+        labels: data.map((entry) => format(entry.date, "MMM d")),
+        datasets: [
+          {
+            label: "Daily coding time",
+            data: data.map((entry) => entry.duration),
+            borderColor: "#1f78b4",
+            borderWidth: 4,
+            pointRadius: 2,
+            tension: smoothCharts ? 0.5 : 0,
           },
-          ticks: {
-            count: yticks.length,
-            stepSize: yticks[1] - yticks[0],
-            callback: (_, index) => prettyDuration(yticks[index])
-          }
-        }
-      }
-    }}
-    data={{
-      labels: data.map(entry => format(entry.date, "MMM d")),
-      datasets: [{
-        label: "Daily coding time",
-        data: data.map(entry => entry.duration),
-        borderColor: "#1f78b4",
-        borderWidth: 4,
-        pointRadius: 2,
-        tension: smoothCharts ? 0.5 : 0
-      }]
-    }}
-  />;
+        ],
+      }}
+    />
+  );
 };
