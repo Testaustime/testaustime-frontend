@@ -5,16 +5,16 @@ import ThemeToggle, { ThemeToggleProps } from "./ThemeToggle";
 export default {
   title: "ThemeToggle",
   component: ThemeToggle,
-  decorators: [withSetup]
+  decorators: [withSetup],
 } as Meta;
 
-const Template: StoryFn<ThemeToggleProps> = args => <ThemeToggle {...args} />;
+const Template: StoryFn<ThemeToggleProps> = (args) => <ThemeToggle {...args} />;
 export const Default = Template.bind({});
 Default.args = {
-  label: true
+  label: true,
 };
 
 export const WithoutLabel = Template.bind({});
 WithoutLabel.args = {
-  label: false
+  label: false,
 };

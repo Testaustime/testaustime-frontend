@@ -1,15 +1,11 @@
 import type { StorybookConfig } from "@storybook/nextjs";
 
 const config: StorybookConfig = {
-  "stories": [
-    "../src/**/*.stories.@(js|jsx|ts|tsx)"
-  ],
-  "addons": [
-    "@storybook/addon-essentials",
-  ],
-  "framework": {
-    "name": "@storybook/nextjs",
-    "options": {}
+  stories: ["../src/**/*.stories.@(js|jsx|ts|tsx)"],
+  addons: ["@storybook/addon-essentials"],
+  framework: {
+    name: "@storybook/nextjs",
+    options: {},
   },
   webpack: (config) => {
     if (config.resolve) {
@@ -17,7 +13,7 @@ const config: StorybookConfig = {
       config.resolve.fallback.fs = false;
     }
     return config;
-  }
+  },
 };
 
 module.exports = config;

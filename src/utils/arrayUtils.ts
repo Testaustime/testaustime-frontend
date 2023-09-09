@@ -1,10 +1,15 @@
-export function groupBy<T>(array: T[], predicate: (elem: T) => string | number | symbol | undefined | null) {
+export function groupBy<T>(
+  array: T[],
+  predicate: (elem: T) => string | number | symbol | undefined | null,
+) {
   return array.reduce<Record<string | number | symbol, T[]>>((b, e) => {
     const k = predicate(e);
-    if (!b[k ?? "undefined"]) {
-      b[k ?? "undefined"] = [];
+    const key = k ?? "undefined";
+    if (key in b) {
+      b[key].push(e);
+    } else {
+      b[key] = [e];
     }
-    b[k ?? "undefined"].push(e);
     return b;
   }, {});
 }

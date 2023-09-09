@@ -5,13 +5,20 @@ import { prettyDuration } from "../../utils/dateUtils";
 import { getAllTimeTopLanguages } from "../../lib/topLanguagesStatistics/topLanguagesStatistics";
 
 export interface TopLanguagesProps {
-  entries: ActivityDataEntry[]
+  entries: ActivityDataEntry[];
 }
 
 export const TopLanguages = ({ entries }: TopLanguagesProps) => {
-  return <List type="ordered" withPadding>
-    {getAllTimeTopLanguages(entries).map(l => <List.Item key={l.language || "null"}>
-      <span>{prettifyProgrammingLanguageName(l.language) || <i>Unknown</i>}: {prettyDuration(l.duration)}</span>
-    </List.Item>)}
-  </List>;
+  return (
+    <List type="ordered" withPadding>
+      {getAllTimeTopLanguages(entries).map((l) => (
+        <List.Item key={l.language || "null"}>
+          <span>
+            {prettifyProgrammingLanguageName(l.language) || <i>Unknown</i>}:{" "}
+            {prettyDuration(l.duration)}
+          </span>
+        </List.Item>
+      ))}
+    </List>
+  );
 };

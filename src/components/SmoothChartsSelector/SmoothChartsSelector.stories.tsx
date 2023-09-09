@@ -5,7 +5,7 @@ import { SmoothChartsSelector } from "./SmoothChartsSelector";
 export default {
   title: "SmoothChartsSelector",
   component: SmoothChartsSelector,
-  decorators: [withSetup]
+  decorators: [withSetup],
 } as Meta;
 
 const Template: StoryFn = () => <SmoothChartsSelector />;

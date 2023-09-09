@@ -7,24 +7,31 @@ export const useActivity = (activityName: string) => {
 
   const { mutateAsync: renameProject } = useMutation(
     ["renameProject"],
-    (newName: string) => axios.post("/activity/rename", {
-      from: activityName,
-      to: newName
-    }),
+    (newName: string) =>
+      axios.post("/activity/rename", {
+        from: activityName,
+        to: newName,
+      }),
     {
       onSuccess: (_, newName) => {
-        queryClient.setQueryData(["activityData", "@me"],
+        queryClient.setQueryData(
+          ["activityData", "@me"],
           (oldData: ActivityDataEntry[] | undefined) => {
-            const newData = oldData ? oldData.map(d => ({
-              ...d,
-              project_name: d.project_name === activityName ? newName : d.project_name
-            })) : [];
+            const newData = oldData
+              ? oldData.map((d) => ({
+                  ...d,
+                  project_name:
+                    d.project_name === activityName ? newName : d.project_name,
+                }))
+              : [];
             return newData;
-          });
-      }
-    });
+          },
+        );
+      },
+    },
+  );
 
   return {
-    renameProject
+    renameProject,
   };
 };

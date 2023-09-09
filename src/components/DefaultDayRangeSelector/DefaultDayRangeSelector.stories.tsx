@@ -5,7 +5,7 @@ import { DefaultDayRangeSelector } from "./DefaultDayRangeSelector";
 export default {
   title: "DefaultDayRangeSelector",
   component: DefaultDayRangeSelector,
-  decorators: [withSetup]
+  decorators: [withSetup],
 } as Meta;
 
 const Template = () => <DefaultDayRangeSelector />;

@@ -2,10 +2,18 @@ import { PasswordInput, PasswordInputProps } from "@mantine/core";
 import { useField } from "formik";
 
 interface FormikPasswordInputProps {
-  name: string
+  name: string;
 }
 
-export const FormikPasswordInput = (props: FormikPasswordInputProps & PasswordInputProps) => {
+export const FormikPasswordInput = (
+  props: FormikPasswordInputProps & PasswordInputProps,
+) => {
   const [field, meta] = useField(props.name);
-  return <PasswordInput error={meta.touched ? meta.error : null} {...field} {...props} />;
+  return (
+    <PasswordInput
+      error={meta.touched ? meta.error : null}
+      {...field}
+      {...props}
+    />
+  );
 };

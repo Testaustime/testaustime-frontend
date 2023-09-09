@@ -4,8 +4,8 @@ import fi from "../public/locales/fi/common.json";
 declare module "i18next" {
   interface CustomTypeOptions {
     resources: {
-      translation: typeof en | typeof fi
-    }
+      translation: typeof en | typeof fi;
+    };
   }
 }
 

@@ -9,13 +9,13 @@ import {
   colorSchemeCookieName,
   defaultDayRangeCookieName,
   languageCookieName,
-  smoothChartsCookieName
+  smoothChartsCookieName,
 } from "../utils/constants";
 
 export const useCreateSettings = ({
-  initialColorScheme
+  initialColorScheme,
 }: {
-  initialColorScheme: ColorScheme
+  initialColorScheme: ColorScheme;
 }) => {
   const router = useRouter();
   const [cookies, setCookies] = useCookies();
@@ -23,22 +23,36 @@ export const useCreateSettings = ({
   const defaultCookieSettings: Parameters<typeof setCookies>[2] = {
     path: "/",
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
-    sameSite: "strict"
+    sameSite: "strict",
   };
 
-  const smoothCharts = cookies[smoothChartsCookieName] as "true" | "false" | undefined;
-  const setSmoothCharts = (value: boolean) => setCookies(smoothChartsCookieName, value, defaultCookieSettings);
+  const smoothCharts = cookies[smoothChartsCookieName] as
+    | "true"
+    | "false"
+    | undefined;
+  const setSmoothCharts = (value: boolean) => {
+    setCookies(smoothChartsCookieName, value, defaultCookieSettings);
+  };
 
   const language = (cookies[languageCookieName] || "en") as Locales;
-  const setLanguage = (value: Locales) => setCookies(languageCookieName, value, defaultCookieSettings);
+  const setLanguage = (value: Locales) => {
+    setCookies(languageCookieName, value, defaultCookieSettings);
+  };
 
   const colorScheme = cookies[colorSchemeCookieName] as ColorScheme | undefined;
-  const setColorScheme = (value?: ColorScheme) => setCookies(colorSchemeCookieName, value, defaultCookieSettings);
+  const setColorScheme = (value?: ColorScheme) => {
+    setCookies(colorSchemeCookieName, value, defaultCookieSettings);
+  };
 
-  const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (!colorScheme || colorScheme === "dark" ? "light" : "dark"));
+  const toggleColorScheme = (value?: ColorScheme) => {
+    setColorScheme(
+      value || (!colorScheme || colorScheme === "dark" ? "light" : "dark"),
+    );
+  };
 
-  const defaultDayRange = cookies[defaultDayRangeCookieName] as DayRange | undefined;
+  const defaultDayRange = cookies[defaultDayRangeCookieName] as
+    | DayRange
+    | undefined;
   const setDefaultDayRange = (value?: DayRange) => {
     setCookies(defaultDayRangeCookieName, value, defaultCookieSettings);
   };
@@ -48,14 +62,16 @@ export const useCreateSettings = ({
     setSmoothCharts,
     language,
     setLanguage: (value: Locales) => {
-      router.push(router.asPath, undefined, { locale: value }).catch(console.error);
+      router
+        .push(router.asPath, undefined, { locale: value })
+        .catch(console.error);
       setLanguage(value);
     },
     colorScheme: colorScheme || initialColorScheme,
     setColorScheme,
     toggleColorScheme,
     defaultDayRange: defaultDayRange ?? "week",
-    setDefaultDayRange
+    setDefaultDayRange,
   };
 };
 

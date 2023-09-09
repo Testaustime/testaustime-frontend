@@ -2,10 +2,14 @@ import { TextInput, TextInputProps } from "@mantine/core";
 import { useField } from "formik";
 
 interface FormikTextInputProps {
-  name: string
+  name: string;
 }
 
-export const FormikTextInput = (props: FormikTextInputProps & TextInputProps) => {
+export const FormikTextInput = (
+  props: FormikTextInputProps & TextInputProps,
+) => {
   const [field, meta] = useField(props.name);
-  return <TextInput error={meta.touched ? meta.error : null} {...props} {...field} />;
+  return (
+    <TextInput error={meta.touched ? meta.error : null} {...props} {...field} />
+  );
 };

@@ -12,8 +12,8 @@ const useStyles = createStyles(() => ({
     display: "flex",
     height: "calc(100% - 36px - 50px - 80px)",
     flexDirection: "column",
-    width: "100%"
-  }
+    width: "100%",
+  },
 }));
 
 const allowedRedirects = ["/profile", "/friends", "/leaderboards"];
@@ -26,27 +26,33 @@ const LoginPage = () => {
   const { t } = useTranslation();
   const { classes } = useStyles();
 
-  return <Group className={classes.loginBox}>
-    <Title order={1} mb={20}>{t("loginPage.title")}</Title>
-    <LoginForm
-      onLogin={async (username, password) => {
-        try {
-          await login(username, password);
-          await router.push(allowedRedirects.includes(unsafeRedirect) ? unsafeRedirect : "/");
-        }
-        catch (e) {
-          showNotification({
-            title: t("error"),
-            color: "red",
-            message: t("loginPage.invalidCredentials")
-          });
-        }
-      }} />
-  </Group>;
+  return (
+    <Group className={classes.loginBox}>
+      <Title order={1} mb={20}>
+        {t("loginPage.title")}
+      </Title>
+      <LoginForm
+        onLogin={async (username, password) => {
+          try {
+            await login(username, password);
+            await router.push(
+              allowedRedirects.includes(unsafeRedirect) ? unsafeRedirect : "/",
+            );
+          } catch (e) {
+            showNotification({
+              title: t("error"),
+              color: "red",
+              message: t("loginPage.invalidCredentials"),
+            });
+          }
+        }}
+      />
+    </Group>
+  );
 };
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-  props: await serverSideTranslations(locale ?? "en")
+  props: await serverSideTranslations(locale ?? "en"),
 });
 
 export default LoginPage;
