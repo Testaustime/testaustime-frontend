@@ -26,10 +26,7 @@ export const useCreateSettings = ({
     sameSite: "strict",
   };
 
-  const smoothCharts = cookies[smoothChartsCookieName] as
-    | "true"
-    | "false"
-    | undefined;
+  const smoothCharts = cookies[smoothChartsCookieName] as boolean | undefined;
   const setSmoothCharts = (value: boolean) => {
     setCookies(smoothChartsCookieName, value, defaultCookieSettings);
   };
@@ -58,7 +55,7 @@ export const useCreateSettings = ({
   };
 
   return {
-    smoothCharts: (smoothCharts || "true") === "true",
+    smoothCharts: smoothCharts ?? true,
     setSmoothCharts,
     language,
     setLanguage: (value: Locales) => {
