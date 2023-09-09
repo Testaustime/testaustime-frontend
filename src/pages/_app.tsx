@@ -25,6 +25,7 @@ import { ModalsProvider } from "@mantine/modals";
 import { CookiesProvider } from "react-cookie";
 import { isColorScheme } from "../utils/stringUtils";
 import { colorSchemeCookieName } from "../utils/constants";
+import Head from "next/head";
 
 type Props = {
   token?: string;
@@ -182,6 +183,9 @@ const queryClient = new QueryClient();
 function App(props: AppProps<Props>) {
   return (
     <div id="root">
+      <Head>
+        <title>Testaustime</title>
+      </Head>
       <CookiesProvider>
         <UserContext.Provider
           value={{

@@ -14,7 +14,7 @@
     "chart.js": "^4.3.0",
     "date-fns": "^2.30.0",
     "formik": "^2.4.2",
-    "i18next": "^23.2.3",
+    "i18next": "^23.4.4",
     "next": "^13.4.7",
     "next-i18next": "^14.0.0",
     "react": "^18.2.0",
@@ -22,7 +22,7 @@
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
-    "react-i18next": "^13.0.1",
+    "react-i18next": "^13.0.3",
     "yup": "^1.2.0"
   },
   "scripts": {
@@ -32,17 +32,18 @@
     "test": "vitest",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prettier": "prettier --write ."
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^13.4.19",
-    "@storybook/addon-essentials": "^7.0.24",
-    "@storybook/nextjs": "^7.0.24",
-    "@storybook/react": "^7.0.24",
+    "@storybook/addon-essentials": "^7.4.0",
+    "@storybook/nextjs": "^7.4.0",
+    "@storybook/react": "^7.4.0",
     "@svgr/webpack": "^8.0.1",
-    "@types/node": "^18.16.18",
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
+    "@types/node": "^18.17.15",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
     "@types/react-router": "^5.1.20",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
@@ -53,8 +54,8 @@
     "eslint-plugin-storybook": "^0.6.13",
     "prettier": "^3.0.2",
     "prettier-eslint": "^15.0.1",
-    "storybook": "^7.0.24",
-    "typescript": "^5.1.5",
+    "storybook": "^7.4.0",
+    "typescript": "^5.1.6",
     "vitest": "^0.32.2"
   }
 }
