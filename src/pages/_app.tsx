@@ -73,7 +73,7 @@ const useStyles = createStyles(() => ({
 
 const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
   const { classes } = useStyles();
-  const [opened, setOpenedOriginal] = useState(false);
+  const [opened, setOpened] = useState(false);
 
   const settings = useCreateSettings({
     initialColorScheme: pageProps.colorScheme,
@@ -87,22 +87,6 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
       },
     ],
   ]);
-
-  const setOpened = (o: boolean | ((arg0: boolean) => boolean)) => {
-    // Patches a bug with Mantine menu alignment
-    const state = typeof o === "function" ? o(opened) : o;
-
-    // Disable scrolling
-    if (state) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
-
-    // Open or close the menu
-    setOpenedOriginal(state);
-    requestAnimationFrame(() => {
-      const dropdown = document.getElementById("dropdown-menu-dropdown");
-      if (dropdown) dropdown.style.left = "0px";
-    });
-  };
 
   return (
     <MantineProvider
