@@ -17,6 +17,7 @@ import IntelliJ from "../../../public/images/intellij.svg";
 import Micro from "../../../public/images/micro.svg";
 import Sublime from "../../../public/images/sublime.svg";
 import { useTranslation } from "next-i18next";
+import styles from "./index.module.css";
 
 interface ExtensionBlockProps {
   logo: React.ReactNode;
@@ -30,16 +31,6 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.colorScheme === "dark" ? "#282a36" : "#fff",
     borderRadius: "10px",
     border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`,
-  },
-  text: {
-    padding: "2rem",
-  },
-  sideContainer: {
-    "@media (max-width: 685px)": {
-      width: "100%",
-      justifyContent: "flex-end",
-      marginTop: "-15px",
-    },
   },
   iconContainer: {
     backgroundColor: theme.colorScheme === "dark" ? "#22242e" : "#eef1ff",
@@ -59,32 +50,6 @@ const useStyles = createStyles((theme) => ({
       borderRadius: "0px 0px 10px 10px",
     },
   },
-  icon: {
-    transition: "ease-in-out filter 0.2s",
-  },
-  logo: {
-    paddingLeft: "2rem",
-    paddingRight: "2rem",
-    "@media (max-width: 320px)": {
-      width: "100%",
-      marginTop: "2rem",
-      paddingLeft: "0px",
-      paddingRight: "0px",
-    },
-  },
-  spacer: {
-    height: "3rem",
-    marginLeft: "-15px",
-    borderRadius: "10px",
-    backgroundColor: "#C1C2C5",
-    width: "1px",
-    "@media (max-width: 320px)": {
-      height: "1px",
-      width: "50%",
-      marginTop: "2rem",
-      marginLeft: "25%",
-    },
-  },
 }));
 
 export const ExtensionBlock = ({
@@ -98,22 +63,22 @@ export const ExtensionBlock = ({
   // Icon map for source code icons
   const iconMap: Record<string, ReactNode> = {
     // Root domain in lower case to icon element
-    github: <GitHubLogoIcon height={20} width={20} className={classes.icon} />,
+    github: <GitHubLogoIcon height={20} width={20} className={styles.icon} />,
   };
 
   return (
     <Group sx={{ width: "100%" }} className={classes.wrapper}>
-      <Center className={classes.logo}>{logo}</Center>
-      <Anchor className={classes.spacer} />
+      <Center className={styles.logo}>{logo}</Center>
+      <Anchor className={styles.spacer} />
       <Anchor
         href={downloadLink}
         sx={{ flex: 1 }}
         size="lg"
-        className={classes.text}
+        className={styles.text}
       >
         {text}
       </Anchor>
-      <Group spacing={10} className={classes.sideContainer}>
+      <Group spacing={10} className={styles.sideContainer}>
         <Anchor
           href={sourceCodeLink}
           variant="text"
@@ -122,7 +87,7 @@ export const ExtensionBlock = ({
           {iconMap[
             new URL(sourceCodeLink).hostname.split(".").reverse()[1]
           ] ?? (
-            <QuestionMarkIcon height={20} width={20} className={classes.icon} />
+            <QuestionMarkIcon height={20} width={20} className={styles.icon} />
           )}
         </Anchor>
       </Group>

@@ -1,0 +1,42 @@
+.text {
+  padding: 2rem;
+}
+
+.icon {
+  transition: ease-in-out filter 0.2s;
+}
+
+.logo {
+  padding-inline: 2rem;
+}
+
+.spacer {
+  height: 3rem;
+  margin-left: -15px;
+  border-radius: 10px;
+  width: 1px;
+  background-color: #c1c2c5;
+}
+
+@media screen and (max-width: 320px) {
+  .spacer {
+    height: 1px;
+    width: 50%;
+    margin-top: 2rem;
+    margin-left: 25%;
+  }
+
+  .logo {
+    width: 100%;
+    margin-top: 2rem;
+    padding-inline: 0;
+  }
+}
+
+@media screen and (max-width: 685px) {
+  .sideContainer {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: -15px;
+  }
+}
