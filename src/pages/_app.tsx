@@ -6,7 +6,6 @@ import {
   Group,
   MantineProvider,
   Overlay,
-  createStyles,
 } from "@mantine/core";
 import { useState } from "react";
 import Link from "next/link";
@@ -26,6 +25,7 @@ import { CookiesProvider } from "react-cookie";
 import { isColorScheme } from "../utils/stringUtils";
 import { colorSchemeCookieName } from "../utils/constants";
 import Head from "next/head";
+import styles from "./_app.module.css";
 
 type Props = {
   token?: string;
@@ -36,43 +36,7 @@ type Props = {
   colorScheme: ColorScheme;
 };
 
-const useStyles = createStyles(() => ({
-  container: {
-    maxWidth: "calc(800px + 10%)",
-    width: "100%",
-    minHeight: "100%",
-    alignContent: "flex-start",
-    paddingTop: 40,
-    paddingBottom: 100,
-  },
-  innerContainer: {
-    minHeight: "100%",
-    width: "90%",
-    marginLeft: "5%",
-    marginRight: "5%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  testaustimeTitle: {
-    paddingTop: 4,
-    fontFamily: "Poppins, sans-serif",
-    background:
-      "linear-gradient(51deg, rgba(60,112,157,1) 0%, rgba(34,65,108,1) 100%)",
-    fontSize: "2.5rem",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    fontWeight: 800,
-    textDecoration: "none",
-    "@media (max-width: 450px)": {
-      width: "60%",
-      fontSize: "8vw",
-    },
-  },
-}));
-
 const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
-  const { classes } = useStyles();
   const [opened, setOpened] = useState(false);
 
   const settings = useCreateSettings({
@@ -131,7 +95,7 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
         <Notifications />
         <ModalsProvider>
           <SettingsContext.Provider value={settings}>
-            <Group className={classes.container}>
+            <Group className={styles.container}>
               {opened && (
                 <Overlay
                   opacity={0.6}
@@ -142,10 +106,10 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
                   }}
                 />
               )}
-              <div className={classes.innerContainer}>
+              <div className={styles.innerContainer}>
                 <div>
                   <Group position="apart" mb={50}>
-                    <Link href="/" className={classes.testaustimeTitle}>
+                    <Link href="/" className={styles.testaustimeTitle}>
                       Testaustime
                     </Link>
                     <Navigation opened={opened} setOpened={setOpened} />
