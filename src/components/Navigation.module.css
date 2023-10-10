@@ -11,23 +11,3 @@
   padding: 10px;
   z-index: 5;
 }
-
-.smallNavigation {
-  display: none;
-}
-
-@media screen and (max-width: 850px) {
-  .navigation {
-    display: none;
-  }
-
-  .smallNavigation {
-    display: flex;
-  }
-}
-
-@media screen and (max-width: 450px) {
-  .smallNavigation {
-    width: 39%;
-  }
-}

@@ -4,10 +4,8 @@ import {
   Group,
   MantineColorScheme,
   MantineProvider,
-  Overlay,
   isMantineColorScheme,
 } from "@mantine/core";
-import { useState } from "react";
 import Link from "next/link";
 import { Navigation } from "../components/Navigation";
 import { Footer } from "../components/Footer/Footer";
@@ -37,8 +35,6 @@ type Props = {
 };
 
 const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
-  const [opened, setOpened] = useState(false);
-
   const settings = useCreateSettings({
     initialColorScheme: pageProps.colorScheme,
   });
@@ -91,23 +87,13 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
       <ModalsProvider>
         <SettingsContext.Provider value={settings}>
           <Group className={styles.container}>
-            {opened && (
-              <Overlay
-                opacity={0.6}
-                color="#000"
-                zIndex={5}
-                onClick={() => {
-                  setOpened(false);
-                }}
-              />
-            )}
             <div className={styles.innerContainer}>
               <div>
                 <Group justify="space-between" mb={50}>
                   <Link href="/" className={styles.testaustimeTitle}>
                     Testaustime
                   </Link>
-                  <Navigation opened={opened} setOpened={setOpened} />
+                  <Navigation />
                 </Group>
                 <Component {...pageProps} />
               </div>
