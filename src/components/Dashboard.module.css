@@ -1,0 +1,25 @@
+.projectCodingChart {
+  width: 100%;
+  padding-bottom: 15px;
+  min-height: 400px;
+}
+
+.multiSelect {
+  min-width: 400px;
+}
+
+.segmentControl {
+  margin-top: 25px;
+  margin-bottom: -3px;
+}
+
+@media screen and (max-width: 480px) {
+  .multiSelect {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .segmentControl {
+    width: 100%;
+  }
+}

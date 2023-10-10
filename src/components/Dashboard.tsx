@@ -21,6 +21,7 @@ import { PerProjectChart } from "./PerProjectChart";
 import { useAuthentication } from "../hooks/useAuthentication";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
+import styles from "./Dashboard.module.css";
 
 const useStyles = createStyles((theme) => ({
   dataCard: {
@@ -32,29 +33,6 @@ const useStyles = createStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     marginBottom: "30px",
-  },
-  dailyCodingTimeChart: {
-    height: "400px",
-    width: "100%",
-  },
-  projectCodingChart: {
-    width: "100%",
-    paddingBottom: "15px",
-    minHeight: "400px",
-  },
-  multiSelect: {
-    minWidth: "400px",
-    "@media (max-width: 480px)": {
-      width: "100%",
-      minWidth: "unset",
-    },
-  },
-  segmentControl: {
-    marginTop: 25,
-    marginBottom: -3,
-    "@media (max-width: 480px)": {
-      width: "100%",
-    },
   },
 }));
 
@@ -135,7 +113,7 @@ export const Dashboard = ({
           label={t("dashboard.projects")}
           data={projectNames}
           value={selectedProjects}
-          className={classes.multiSelect}
+          className={styles.multiSelect}
           onChange={(selectedProjectNames) => {
             setSelectedProjects(selectedProjectNames);
           }}
@@ -157,7 +135,7 @@ export const Dashboard = ({
           onChange={(value: DayRange) => {
             setStatisticsRange(value);
           }}
-          className={classes.segmentControl}
+          className={styles.segmentControl}
         />
       </Group>
       {entries.length !== 0 ? (
@@ -189,7 +167,7 @@ export const Dashboard = ({
             </Title>
             <PerProjectChart
               entries={entries}
-              className={classes.projectCodingChart}
+              className={styles.projectCodingChart}
             />
           </Group>
           {isSmallScreen ? (
