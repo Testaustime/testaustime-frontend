@@ -13,6 +13,7 @@ import {
   defaultDayRangeCookieName,
   smoothChartsCookieName,
 } from "../utils/constants";
+import styles from "./index.module.css";
 
 const useStyles = createStyles((theme) => ({
   downloadButton: {
@@ -35,33 +36,11 @@ const useStyles = createStyles((theme) => ({
       textDecoration: "none",
     },
   },
-  heroContainer: {
-    height: "400px",
-    display: "flex",
-    flexWrap: "wrap",
-    flexDirection: "row",
-    alignContent: "center",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   heroText: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: "1.4rem",
     color: theme.colorScheme === "dark" ? "#bbb" : "#333",
-  },
-  dashboardContainer: {
-    height: "calc(100% - 36px - 50px - 80px)",
-    display: "flex",
-    flexWrap: "wrap",
-    flexDirection: "row",
-    alignContent: "flex-start",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-  },
-  downloadIcon: {
-    height: "50px",
-    display: "flex",
   },
 }));
 
@@ -81,7 +60,7 @@ export const MainPage = (props: MainPageProps) => {
   return (
     <div
       className={
-        !props.isLoggedIn ? classes.heroContainer : classes.dashboardContainer
+        !props.isLoggedIn ? styles.heroContainer : styles.dashboardContainer
       }
     >
       {props.isLoggedIn ? (
@@ -109,7 +88,7 @@ export const MainPage = (props: MainPageProps) => {
             <DownloadIcon
               height={30}
               width={30}
-              className={classes.downloadIcon}
+              className={styles.downloadIcon}
             />
             {t("mainPage.download")}
           </Anchor>

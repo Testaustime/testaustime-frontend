@@ -1,0 +1,24 @@
+.heroContainer {
+  height: 400px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.dashboardContainer {
+  height: calc(100% - 36px - 50px - 80px);
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: flex-start;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.downloadIcon {
+  height: 50px;
+  display: flex;
+}
