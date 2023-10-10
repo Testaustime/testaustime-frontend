@@ -1,4 +1,4 @@
-import { Title, Group, createStyles } from "@mantine/core";
+import { Title, Group } from "@mantine/core";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { showNotification } from "@mantine/notifications";
 import LoginForm from "../../components/LoginForm";
@@ -6,15 +6,6 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-
-const useStyles = createStyles(() => ({
-  loginBox: {
-    display: "flex",
-    height: "calc(100% - 36px - 50px - 80px)",
-    flexDirection: "column",
-    width: "100%",
-  },
-}));
 
 const allowedRedirects = ["/profile", "/friends", "/leaderboards"];
 
@@ -24,10 +15,9 @@ const LoginPage = () => {
   const queryParams = router.query;
   const unsafeRedirect = String(queryParams.redirect ?? "/");
   const { t } = useTranslation();
-  const { classes } = useStyles();
 
   return (
-    <Group className={classes.loginBox}>
+    <Group>
       <Title order={1} mb={20}>
         {t("loginPage.title")}
       </Title>
