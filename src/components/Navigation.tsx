@@ -3,7 +3,6 @@ import {
   Box,
   Burger,
   Button,
-  createStyles,
   Divider,
   Group,
   Menu,
@@ -25,34 +24,7 @@ import ThemeToggle from "./ThemeToggle/ThemeToggle";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import Link from "next/link";
-
-const useStyles = createStyles((theme) => ({
-  navigation: {
-    [`@media (max-width: ${theme.breakpoints.md}px)`]: {
-      display: "none",
-    },
-  },
-  smallNavigation: {
-    display: "none",
-    [`@media (max-width: ${theme.breakpoints.md}px)`]: {
-      display: "flex",
-    },
-    "@media (max-width: 450px)": {
-      width: "39%",
-    },
-  },
-  spacer: {
-    width: "10px",
-    height: "1px",
-    backgroundColor: theme.colorScheme === "dark" ? "#bbb" : "#333",
-  },
-  dropdown: {
-    width: "90%",
-    margin: "calc(40px + 36px + 20px) 5% 0 5%",
-    padding: "10px",
-    zIndex: 5,
-  },
-}));
+import styles from "./Navigation.module.css";
 
 export interface NavigationProps {
   opened: boolean;
@@ -66,8 +38,6 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
 
   const mantineColorScheme = useMantineColorScheme();
 
-  const { classes } = useStyles();
-
   const logOutAndRedirect = async () => {
     await logOut();
     router.push("/").catch(console.error);
@@ -75,7 +45,7 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
 
   return (
     <Group>
-      <Group spacing={15} align="center" className={classes.navigation}>
+      <Group spacing={15} align="center" className={styles.navigation}>
         <Group>
           {isLoggedIn ? (
             <>
@@ -133,7 +103,7 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
               <Anchor component={Link} href="/extensions">
                 {t("navbar.extensions")}
               </Anchor>
-              <Box className={classes.spacer} />
+              <Box className={styles.spacer} />
               <Anchor component={Link} href="/login">
                 {t("navbar.login")}
               </Anchor>
@@ -145,7 +115,7 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
         </Group>
         <ThemeToggle label={false} />
       </Group>
-      <Group className={classes.smallNavigation}>
+      <Group className={styles.smallNavigation}>
         <Menu
           opened={opened}
           id="dropdown-menu"
@@ -167,7 +137,7 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
             />
           </Menu.Target>
           <Menu.Dropdown
-            className={`${classes.dropdown} noDefaultTransition`}
+            className={`${styles.dropdown} noDefaultTransition`}
             onClick={() => {
               setOpened(false);
             }}
