@@ -1,0 +1,32 @@
+.container {
+  margin-top: 100px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.rightSection {
+  display: inline-flex;
+  gap: 8px;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+@media screen and (max-width: 550px) {
+  .rightSection {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .content {
+    flex-direction: column;
+  }
+}

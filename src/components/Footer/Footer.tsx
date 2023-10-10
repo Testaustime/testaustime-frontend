@@ -2,15 +2,9 @@ import { createStyles, Text, Anchor } from "@mantine/core";
 import { useTranslation } from "next-i18next";
 import { TestausserveriLogo } from "../images/TestausserveriLogo";
 import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
+import styles from "./Footer.module.css";
 
 const useStyles = createStyles((theme) => ({
-  container: {
-    marginTop: "100px",
-    width: "100%",
-    display: "flex",
-    justifyContent: "flex-start",
-    flexDirection: "column",
-  },
   footerText: {
     fontSize: "1.2rem",
     color: theme.colorScheme === "dark" ? "#bbb" : "#333",
@@ -20,31 +14,12 @@ const useStyles = createStyles((theme) => ({
     color: theme.colorScheme === "dark" ? "#333" : "#ddd",
     marginBlockEnd: "3rem",
   },
-  rightSection: {
-    display: "inline-flex",
-    gap: 8,
-    flexDirection: "column",
-    alignItems: "flex-end",
-    textAlign: "right",
-    "@media (max-width: 550px)": {
-      alignItems: "flex-start",
-      textAlign: "left",
-    },
-  },
   bwLogo: {
     fill: theme.colorScheme === "dark" ? "white" : "black",
     opacity: "0.8",
     transition: "opacity 0.2s !important",
     ":hover": {
       opacity: "1",
-    },
-  },
-  content: {
-    display: "flex",
-    justifyContent: "space-between",
-    gap: 32,
-    "@media (max-width: 550px)": {
-      flexDirection: "column",
     },
   },
 }));
@@ -55,9 +30,9 @@ export const Footer = () => {
   const { t } = useTranslation();
 
   return (
-    <div className={classes.container}>
+    <div className={styles.container}>
       <hr className={classes.line} />
-      <div className={classes.content}>
+      <div className={styles.content}>
         <div>
           <a href="https://testausserveri.fi">
             <TestausserveriLogo
@@ -68,7 +43,7 @@ export const Footer = () => {
           </a>
           <Text>{t("footer.supportedBy")}</Text>
         </div>
-        <div className={classes.rightSection}>
+        <div className={styles.rightSection}>
           <Text>
             ❤️ {t("footer.authors.suffix")}
             <Anchor href="https://github.com/orgs/Testaustime/people">
