@@ -58,23 +58,26 @@ export const FriendList = ({
 
   return (
     <Table>
-      <thead>
-        <tr>
-          <th>{t("friends.index")}</th>
-          <th>{t("friends.friendName")}</th>
-          <th>{t("friends.timeCoded", { days: 30 })}</th>
-          <th />
-          <th />
-        </tr>
-      </thead>
-      <tbody>
+      <Table.Thead>
+        <Table.Tr>
+          <Table.Th>{t("friends.index")}</Table.Th>
+          <Table.Th>{t("friends.friendName")}</Table.Th>
+          <Table.Th>{t("friends.timeCoded", { days: 30 })}</Table.Th>
+          <Table.Th />
+          <Table.Th />
+        </Table.Tr>
+      </Table.Thead>
+      <Table.Tbody>
         {friendsSorted.map(
           ({ username, coding_time: { past_month }, isMe }, idx) => (
-            <tr key={username} className={isMe ? styles.tableRow : undefined}>
-              <td>{idx + 1}</td>
-              <td>{username}</td>
-              <td>{prettyDuration(past_month)}</td>
-              <td style={{ textAlign: "right", padding: "7px 0px" }}>
+            <Table.Tr
+              key={username}
+              className={isMe ? styles.tableRow : undefined}
+            >
+              <Table.Td>{idx + 1}</Table.Td>
+              <Table.Td>{username}</Table.Td>
+              <Table.Td>{prettyDuration(past_month)}</Table.Td>
+              <Table.Td style={{ textAlign: "right", padding: "7px 0px" }}>
                 {!isMe && (
                   <Button
                     variant="filled"
@@ -87,8 +90,8 @@ export const FriendList = ({
                     {t("friends.showDashboard")}
                   </Button>
                 )}
-              </td>
-              <td style={{ textAlign: "right", padding: "7px 0px" }}>
+              </Table.Td>
+              <Table.Td style={{ textAlign: "right", padding: "7px 0px" }}>
                 {!isMe && (
                   <Button
                     variant="outline"
@@ -107,11 +110,11 @@ export const FriendList = ({
                     {t("friends.unfriend")}
                   </Button>
                 )}
-              </td>
-            </tr>
+              </Table.Td>
+            </Table.Tr>
           ),
         )}
-      </tbody>
+      </Table.Tbody>
     </Table>
   );
 };

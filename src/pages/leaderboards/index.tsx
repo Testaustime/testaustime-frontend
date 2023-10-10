@@ -151,7 +151,7 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
           />
         )}
       </Modal>
-      <Group align="center" mb="md" mt="xl" justify="apart">
+      <Group align="center" mb="md" mt="xl" justify="space-between">
         <Title>{t("leaderboards.leaderboards")}</Title>
         <Group gap="sm">
           <Button

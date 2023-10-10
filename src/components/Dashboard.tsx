@@ -93,7 +93,7 @@ export const Dashboard = ({
           <Title mb={5}>{t("dashboard.statistics")}</Title>
         </>
       )}
-      <Group align="end" justify="apart" mt={10} mb={30}>
+      <Group align="end" mt={10} mb={30}>
         <MultiSelect
           label={t("dashboard.projects")}
           data={projectNames}

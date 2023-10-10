@@ -20,15 +20,15 @@ export const LeaderboardsList = ({
 
   return (
     <Table>
-      <thead>
-        <tr>
-          <th>{t("leaderboards.name")}</th>
-          <th>{t("leaderboards.topMember")}</th>
-          <th>{t("leaderboards.yourPosition")}</th>
-          <th />
-        </tr>
-      </thead>
-      <tbody>
+      <Table.Thead>
+        <Table.Tr>
+          <Table.Th>{t("leaderboards.name")}</Table.Th>
+          <Table.Th>{t("leaderboards.topMember")}</Table.Th>
+          <Table.Th>{t("leaderboards.yourPosition")}</Table.Th>
+          <Table.Th />
+        </Table.Tr>
+      </Table.Thead>
+      <Table.Tbody>
         {leaderboards.map((leaderboard) => {
           const membersSorted = [...leaderboard.members].sort(
             (a, b) => b.time_coded - a.time_coded,
@@ -43,22 +43,22 @@ export const LeaderboardsList = ({
           );
 
           return (
-            <tr key={leaderboard.invite}>
-              <td>
+            <Table.Tr key={leaderboard.invite}>
+              <Table.Td>
                 {leaderboard.name}
                 {userIsAdmin && (
                   <Badge ml="sm">{t("leaderboards.admin")}</Badge>
                 )}
-              </td>
-              <td>
+              </Table.Td>
+              <Table.Td>
                 {topMember.username} ({prettyDuration(topMember.time_coded)})
-              </td>
-              <td>
+              </Table.Td>
+              <Table.Td>
                 {yourPosition}
                 {getOrdinalSuffix(yourPosition)}{" "}
                 {yourPosition === 1 ? "🏆" : ""}
-              </td>
-              <td style={{ display: "flex", justifyContent: "end" }}>
+              </Table.Td>
+              <Table.Td style={{ display: "flex", justifyContent: "end" }}>
                 <Button
                   size="compact-sm"
                   variant="outline"
@@ -68,11 +68,11 @@ export const LeaderboardsList = ({
                 >
                   {t("leaderboards.seeMore")}
                 </Button>
-              </td>
-            </tr>
+              </Table.Td>
+            </Table.Tr>
           );
         })}
-      </tbody>
+      </Table.Tbody>
     </Table>
   );
 };

@@ -103,7 +103,7 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
             )}
             <div className={styles.innerContainer}>
               <div>
-                <Group justify="apart" mb={50}>
+                <Group justify="space-between" mb={50}>
                   <Link href="/" className={styles.testaustimeTitle}>
                     Testaustime
                   </Link>
