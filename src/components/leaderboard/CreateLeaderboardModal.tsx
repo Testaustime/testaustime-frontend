@@ -55,7 +55,7 @@ export const CreateLeaderboardModal = ({
         {() => (
           <Form>
             <FormikTextInput name="leaderboardName" />
-            <Group position="right" mt="md">
+            <Group justify="right" mt="md">
               <Button type="submit">{t("leaderboards.create")}</Button>
             </Group>
           </Form>

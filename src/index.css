@@ -71,3 +71,7 @@ a {
   flex-wrap: wrap;
   min-height: 100vh;
 }
+
+input[data-error="true"]::placeholder {
+  opacity: 0.6;
+}

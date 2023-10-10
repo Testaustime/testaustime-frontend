@@ -1,12 +1,16 @@
 import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
 import {
   Group,
-  MultiSelect,
   SegmentedControl,
   Text,
   Title,
-  createStyles,
   Stack,
+  Combobox,
+  PillsInput,
+  useCombobox,
+  Pill,
+  Input,
+  CheckIcon,
 } from "@mantine/core";
 import TopLanguages from "./TopLanguages";
 import { DayRange, getDayCount, prettyDuration } from "../utils/dateUtils";
@@ -21,42 +25,7 @@ import { PerProjectChart } from "./PerProjectChart";
 import { useAuthentication } from "../hooks/useAuthentication";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
-
-const useStyles = createStyles((theme) => ({
-  dataCard: {
-    padding: "10px",
-    backgroundColor: theme.colorScheme === "dark" ? "#222326" : "#fff",
-    border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`,
-    borderRadius: "10px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginBottom: "30px",
-  },
-  dailyCodingTimeChart: {
-    height: "400px",
-    width: "100%",
-  },
-  projectCodingChart: {
-    width: "100%",
-    paddingBottom: "15px",
-    minHeight: "400px",
-  },
-  multiSelect: {
-    minWidth: "400px",
-    "@media (max-width: 480px)": {
-      width: "100%",
-      minWidth: "unset",
-    },
-  },
-  segmentControl: {
-    marginTop: 25,
-    marginBottom: -3,
-    "@media (max-width: 480px)": {
-      width: "100%",
-    },
-  },
-}));
+import styles from "./Dashboard.module.css";
 
 export interface DashboardProps {
   username: string;
@@ -79,8 +48,7 @@ export const Dashboard = ({
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const { username: authenticatedUsername } = useAuthentication();
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
-  const { classes } = useStyles();
-  const entries = useActivityData(
+  const { entries, unfilteredProjectNames } = useActivityData(
     username,
     {
       projectFilter:
@@ -101,14 +69,18 @@ export const Dashboard = ({
   const dayCount =
     statisticsRange === "all" ? diffDays : getDayCount(statisticsRange);
 
-  const projectNames = entries.reduce<string[]>((acc, entry) => {
-    const name = entry.project_name || "Unknown";
-    return acc.includes(name) ? acc : [...acc, name];
-  }, []);
-
   const [prefix, infix, suffix] = t("dashboard.noData.installPrompt").split(
     "<link>",
   );
+
+  const combobox = useCombobox({
+    onDropdownClose: () => {
+      combobox.resetSelectedOption();
+    },
+    onDropdownOpen: () => {
+      combobox.updateSelectedOptionIndex("active");
+    },
+  });
 
   if (!authenticatedUsername) {
     return <div>{t("dashboard.notLoggedIn")}</div>;
@@ -130,23 +102,90 @@ export const Dashboard = ({
           <Title mb={5}>{t("dashboard.statistics")}</Title>
         </>
       )}
-      <Group align="end" position="apart" mt={10} mb={30}>
-        <MultiSelect
-          label={t("dashboard.projects")}
-          data={projectNames}
-          value={selectedProjects}
-          className={classes.multiSelect}
-          onChange={(selectedProjectNames) => {
-            setSelectedProjects(selectedProjectNames);
+      <Group align="end" mt={10} mb={30} justify="space-between">
+        <Combobox
+          store={combobox}
+          onOptionSubmit={(option) => {
+            if (selectedProjects.includes(option)) {
+              setSelectedProjects((projects) =>
+                projects.filter((project) => project !== option),
+              );
+            } else {
+              setSelectedProjects((projects) => [...projects, option]);
+            }
           }}
-          clearable
-          placeholder={
-            projectNames.length === 0
-              ? t("dashboard.noProjects")
-              : t("dashboard.projectsFilter")
-          }
-          disabled={projectNames.length === 0}
-        />
+          withinPortal={false}
+        >
+          <Combobox.DropdownTarget>
+            <PillsInput
+              label={t("dashboard.projects")}
+              disabled={unfilteredProjectNames.length === 0}
+              pointer
+              onClick={() => {
+                combobox.toggleDropdown();
+              }}
+              style={{
+                width: 400,
+              }}
+            >
+              <Pill.Group>
+                {selectedProjects.length > 0 ? (
+                  selectedProjects.map((projectName) => (
+                    <Pill
+                      key={projectName}
+                      withRemoveButton
+                      onRemove={() => {
+                        setSelectedProjects((projects) =>
+                          projects.filter((project) => project !== projectName),
+                        );
+                      }}
+                    >
+                      {projectName}
+                    </Pill>
+                  ))
+                ) : (
+                  <Input.Placeholder>
+                    {unfilteredProjectNames.length === 0
+                      ? t("dashboard.noProjects")
+                      : t("dashboard.projectsFilter")}
+                  </Input.Placeholder>
+                )}
+                <Combobox.EventsTarget>
+                  <PillsInput.Field
+                    type="hidden"
+                    onBlur={() => {
+                      combobox.closeDropdown();
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Backspace") {
+                        event.preventDefault();
+                        setSelectedProjects((projects) =>
+                          projects.slice(0, projects.length - 1),
+                        );
+                      }
+                    }}
+                  />
+                </Combobox.EventsTarget>
+              </Pill.Group>
+            </PillsInput>
+          </Combobox.DropdownTarget>
+          <Combobox.Dropdown>
+            <Combobox.Options>
+              {unfilteredProjectNames.map((projectName) => (
+                <Combobox.Option
+                  value={projectName}
+                  key={projectName}
+                  active={selectedProjects.includes(projectName)}
+                >
+                  {selectedProjects.includes(projectName) && (
+                    <CheckIcon size={12} style={{ marginInlineEnd: 6 }} />
+                  )}
+                  <span>{projectName}</span>
+                </Combobox.Option>
+              ))}
+            </Combobox.Options>
+          </Combobox.Dropdown>
+        </Combobox>
         <SegmentedControl
           data={[
             { label: t("dashboard.timeFilters.week"), value: "week" },
@@ -157,12 +196,12 @@ export const Dashboard = ({
           onChange={(value: DayRange) => {
             setStatisticsRange(value);
           }}
-          className={classes.segmentControl}
+          className={styles.segmentControl}
         />
       </Group>
       {entries.length !== 0 ? (
         <>
-          <Group className={classes.dataCard}>
+          <Group className={styles.dataCard}>
             <Title mt={10} order={2}>
               {t("dashboard.timePerDay")}
             </Title>
@@ -183,13 +222,13 @@ export const Dashboard = ({
               })}
             </Text>
           </Group>
-          <Group className={classes.dataCard}>
+          <Group className={styles.dataCard}>
             <Title mt={10} order={2}>
               {t("dashboard.timePerProject")}
             </Title>
             <PerProjectChart
               entries={entries}
-              className={classes.projectCodingChart}
+              className={styles.projectCodingChart}
             />
           </Group>
           {isSmallScreen ? (

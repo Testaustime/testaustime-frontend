@@ -1,4 +1,4 @@
-import { Button, Table, Text, useMantineTheme } from "@mantine/core";
+import { Button, Table, Text } from "@mantine/core";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { ApiFriendsResponseItem, useFriends } from "../../hooks/useFriends";
 import { useTranslation } from "next-i18next";
@@ -6,6 +6,7 @@ import { prettyDuration } from "../../utils/dateUtils";
 import { useModals } from "@mantine/modals";
 import { Dashboard } from "../Dashboard";
 import { showNotification } from "@mantine/notifications";
+import styles from "./FriendList.module.css";
 
 export type FriendListProps = {
   initialFriends?: ApiFriendsResponseItem[];
@@ -20,7 +21,6 @@ export const FriendList = ({
 
   const { t } = useTranslation();
   const { username } = useAuthentication();
-  const theme = useMantineTheme();
   const modals = useModals();
 
   if (!username) {
@@ -58,37 +58,31 @@ export const FriendList = ({
 
   return (
     <Table>
-      <thead>
-        <tr>
-          <th>{t("friends.index")}</th>
-          <th>{t("friends.friendName")}</th>
-          <th>{t("friends.timeCoded", { days: 30 })}</th>
-          <th />
-          <th />
-        </tr>
-      </thead>
-      <tbody>
+      <Table.Thead>
+        <Table.Tr>
+          <Table.Th>{t("friends.index")}</Table.Th>
+          <Table.Th>{t("friends.friendName")}</Table.Th>
+          <Table.Th>{t("friends.timeCoded", { days: 30 })}</Table.Th>
+          <Table.Th />
+          <Table.Th />
+        </Table.Tr>
+      </Table.Thead>
+      <Table.Tbody>
         {friendsSorted.map(
           ({ username, coding_time: { past_month }, isMe }, idx) => (
-            <tr
+            <Table.Tr
               key={username}
-              style={{
-                backgroundColor: isMe
-                  ? theme.colorScheme === "dark"
-                    ? "#2b2b2b"
-                    : "#dedede"
-                  : undefined,
-              }}
+              className={isMe ? styles.tableRow : undefined}
             >
-              <td>{idx + 1}</td>
-              <td>{username}</td>
-              <td>{prettyDuration(past_month)}</td>
-              <td style={{ textAlign: "right", padding: "7px 0px" }}>
+              <Table.Td>{idx + 1}</Table.Td>
+              <Table.Td>{username}</Table.Td>
+              <Table.Td>{prettyDuration(past_month)}</Table.Td>
+              <Table.Td style={{ textAlign: "right", padding: "7px 0px" }}>
                 {!isMe && (
                   <Button
                     variant="filled"
                     color="blue"
-                    compact
+                    size="compact-md"
                     onClick={() => {
                       openFriendDashboard(username);
                     }}
@@ -96,13 +90,13 @@ export const FriendList = ({
                     {t("friends.showDashboard")}
                   </Button>
                 )}
-              </td>
-              <td style={{ textAlign: "right", padding: "7px 0px" }}>
+              </Table.Td>
+              <Table.Td style={{ textAlign: "right", padding: "7px 0px" }}>
                 {!isMe && (
                   <Button
                     variant="outline"
                     color="red"
-                    compact
+                    size="compact-md"
                     onClick={() => {
                       unFriend(username).catch(() => {
                         showNotification({
@@ -116,11 +110,11 @@ export const FriendList = ({
                     {t("friends.unfriend")}
                   </Button>
                 )}
-              </td>
-            </tr>
+              </Table.Td>
+            </Table.Tr>
           ),
         )}
-      </tbody>
+      </Table.Tbody>
     </Table>
   );
 };

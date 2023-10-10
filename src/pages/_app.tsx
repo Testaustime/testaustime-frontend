@@ -1,14 +1,11 @@
 import type { AppContext, AppInitialProps, AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
 import {
-  ColorScheme,
-  ColorSchemeProvider,
   Group,
+  MantineColorScheme,
   MantineProvider,
-  Overlay,
-  createStyles,
+  isMantineColorScheme,
 } from "@mantine/core";
-import { useState } from "react";
 import Link from "next/link";
 import { Navigation } from "../components/Navigation";
 import { Footer } from "../components/Footer/Footer";
@@ -23,9 +20,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import { CookiesProvider } from "react-cookie";
-import { isColorScheme } from "../utils/stringUtils";
 import { colorSchemeCookieName } from "../utils/constants";
 import Head from "next/head";
+import styles from "./_app.module.css";
+import "@mantine/core/styles.css";
 
 type Props = {
   token?: string;
@@ -33,48 +31,10 @@ type Props = {
   friendCode?: string;
   registrationTime?: Date;
   isPublic?: boolean;
-  colorScheme: ColorScheme;
+  colorScheme: MantineColorScheme;
 };
 
-const useStyles = createStyles(() => ({
-  container: {
-    maxWidth: "calc(800px + 10%)",
-    width: "100%",
-    minHeight: "100%",
-    alignContent: "flex-start",
-    paddingTop: 40,
-    paddingBottom: 100,
-  },
-  innerContainer: {
-    minHeight: "100%",
-    width: "90%",
-    marginLeft: "5%",
-    marginRight: "5%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  testaustimeTitle: {
-    paddingTop: 4,
-    fontFamily: "Poppins, sans-serif",
-    background:
-      "linear-gradient(51deg, rgba(60,112,157,1) 0%, rgba(34,65,108,1) 100%)",
-    fontSize: "2.5rem",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    fontWeight: 800,
-    textDecoration: "none",
-    "@media (max-width: 450px)": {
-      width: "60%",
-      fontSize: "8vw",
-    },
-  },
-}));
-
 const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
-  const { classes } = useStyles();
-  const [opened, setOpened] = useState(false);
-
   const settings = useCreateSettings({
     initialColorScheme: pageProps.colorScheme,
   });
@@ -90,9 +50,7 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
 
   return (
     <MantineProvider
-      withGlobalStyles
       theme={{
-        colorScheme: settings.colorScheme,
         fontFamily: "Ubuntu, sans-serif",
         white: "#eee",
         black: "#121212",
@@ -112,7 +70,7 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
         },
         headings: {
           fontFamily: "Poppins, sans-serif",
-          fontWeight: 800,
+          fontWeight: "800",
           sizes: {
             h1: { fontSize: "1.9rem" },
             h2: { fontSize: "1.65rem" },
@@ -123,41 +81,27 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
           md: "53.75em",
         },
       }}
+      defaultColorScheme={pageProps.colorScheme}
     >
-      <ColorSchemeProvider
-        colorScheme={settings.colorScheme}
-        toggleColorScheme={settings.toggleColorScheme}
-      >
-        <Notifications />
-        <ModalsProvider>
-          <SettingsContext.Provider value={settings}>
-            <Group className={classes.container}>
-              {opened && (
-                <Overlay
-                  opacity={0.6}
-                  color="#000"
-                  zIndex={5}
-                  onClick={() => {
-                    setOpened(false);
-                  }}
-                />
-              )}
-              <div className={classes.innerContainer}>
-                <div>
-                  <Group position="apart" mb={50}>
-                    <Link href="/" className={classes.testaustimeTitle}>
-                      Testaustime
-                    </Link>
-                    <Navigation opened={opened} setOpened={setOpened} />
-                  </Group>
-                  <Component {...pageProps} />
-                </div>
-                <Footer />
+      <Notifications />
+      <ModalsProvider>
+        <SettingsContext.Provider value={settings}>
+          <Group className={styles.container}>
+            <div className={styles.innerContainer}>
+              <div>
+                <Group justify="space-between" mb={50}>
+                  <Link href="/" className={styles.testaustimeTitle}>
+                    Testaustime
+                  </Link>
+                  <Navigation />
+                </Group>
+                <Component {...pageProps} />
               </div>
-            </Group>
-          </SettingsContext.Provider>
-        </ModalsProvider>
-      </ColorSchemeProvider>
+              <Footer />
+            </div>
+          </Group>
+        </SettingsContext.Provider>
+      </ModalsProvider>
     </MantineProvider>
   );
 };
@@ -203,7 +147,7 @@ App.getInitialProps = async ({
     .find((row) => row.startsWith(`${colorSchemeCookieName}=`))
     ?.replace(`${colorSchemeCookieName}=`, "");
 
-  const colorScheme = isColorScheme(colorSchemeUnchecked)
+  const colorScheme = isMantineColorScheme(colorSchemeUnchecked)
     ? colorSchemeUnchecked
     : "dark";
 

@@ -70,16 +70,9 @@ export const JoinLeaderboardModal = ({
               name="leaderboardCode"
               label={t("leaderboards.join.leaderboardCode")}
               placeholder={placeholderLeaderboardInviteCode}
-              styles={{
-                input: {
-                  "&[data-invalid]::placeholder": {
-                    opacity: 0.5,
-                  },
-                },
-              }}
             />
-            <Group position="right" mt="md">
-              <Button type="submit" leftIcon={<EnterIcon />}>
+            <Group justify="right" mt="md">
+              <Button type="submit" leftSection={<EnterIcon />}>
                 {t("leaderboards.join.join")}
               </Button>
             </Group>

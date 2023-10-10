@@ -1,0 +1,40 @@
+.container {
+  max-width: calc(800px + 10%);
+  width: 100%;
+  min-height: 100%;
+  align-content: flex-start;
+  padding-top: 40px;
+  padding-bottom: 100px;
+}
+
+.innerContainer {
+  min-height: 100%;
+  width: 90%;
+  margin-inline: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.testaustimeTitle {
+  padding-top: 4px;
+  font-family: Poppins, sans-serif;
+  background: linear-gradient(
+    51deg,
+    rgba(60, 112, 157, 1) 0%,
+    rgba(34, 65, 108, 1) 100%
+  );
+  font-size: 2.5rem;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 450px) {
+  .testaustimeTitle {
+    width: 60%;
+    font-size: 8vw;
+  }
+}

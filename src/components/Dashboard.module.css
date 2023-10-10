@@ -1,0 +1,41 @@
+.dataCard {
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+[data-mantine-color-scheme="dark"] .dataCard {
+  background-color: #222326;
+  border-color: #222;
+}
+
+.projectCodingChart {
+  width: 100%;
+  padding-bottom: 15px;
+  min-height: 400px;
+}
+
+.multiSelect {
+  min-width: 400px;
+}
+
+.segmentControl {
+  margin-top: 25px;
+  margin-bottom: -3px;
+}
+
+@media screen and (max-width: 480px) {
+  .multiSelect {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .segmentControl {
+    width: 100%;
+  }
+}

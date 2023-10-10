@@ -53,18 +53,11 @@ export const AddFriendForm = ({
           <Form style={{ width: "100%" }}>
             <Group align="start">
               <FormikTextInput
-                icon={<PersonIcon />}
+                leftSection={<PersonIcon />}
                 name="friendCode"
                 label={t("friends.friendCode")}
                 placeholder={friendCodePlaceholder}
-                sx={{ flex: 1 }}
-                styles={{
-                  input: {
-                    "&[data-invalid]::placeholder": {
-                      opacity: 0.5,
-                    },
-                  },
-                }}
+                style={{ flex: 1 }}
               />
               <Button type="submit" mt={27.5}>
                 {t("friends.add")}

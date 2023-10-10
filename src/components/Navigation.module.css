@@ -1,0 +1,13 @@
+.spacer {
+  width: 10px;
+  height: 1px;
+  background-color: #fff;
+  filter: invert(0.5);
+}
+
+.dropdown {
+  width: 90%;
+  margin: calc(40px +36px +20px) 5% 0 5%;
+  padding: 10px;
+  z-index: 5;
+}

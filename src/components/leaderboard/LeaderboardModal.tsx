@@ -46,7 +46,7 @@ export const LeaderboardModal = ({
         <ButtonWithConfirmation
           color="red"
           size="xs"
-          leftIcon={<ExitIcon />}
+          leftSection={<ExitIcon />}
           onClick={() => {
             leaveLeaderboard().catch((e) => {
               console.log(e);
@@ -60,7 +60,7 @@ export const LeaderboardModal = ({
           <ButtonWithConfirmation
             color="red"
             size="xs"
-            leftIcon={<Trash2 size={18} />}
+            leftSection={<Trash2 size={18} />}
             onClick={() => {
               deleteLeaderboard().catch((e) => {
                 console.log(e);
@@ -86,39 +86,39 @@ export const LeaderboardModal = ({
         {t("leaderboards.members")}
       </Title>
       <Table>
-        <thead>
-          <tr>
-            <th>{t("leaderboards.position")}</th>
-            <th>{t("leaderboards.name")}</th>
-            <th>{t("leaderboards.timeCoded", { days: 7 })}</th>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>{t("leaderboards.position")}</Table.Th>
+            <Table.Th>{t("leaderboards.name")}</Table.Th>
+            <Table.Th>{t("leaderboards.timeCoded", { days: 7 })}</Table.Th>
             {isAdmin && (
               <>
-                <th />
-                <th />
+                <Table.Th />
+                <Table.Th />
               </>
             )}
-          </tr>
-        </thead>
-        <tbody>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
           {[...leaderboard.members]
             .sort((a, b) => b.time_coded - a.time_coded)
             .map((member, i) => {
               return (
-                <tr key={member.username}>
-                  <td>
+                <Table.Tr key={member.username}>
+                  <Table.Td>
                     {i + 1}
                     {getOrdinalSuffix(i + 1)}
-                  </td>
-                  <td>
+                  </Table.Td>
+                  <Table.Td>
                     {member.username}
                     {member.admin && (
                       <Badge ml="sm">{t("leaderboards.admin")}</Badge>
                     )}
-                  </td>
-                  <td>{prettyDuration(member.time_coded)}</td>
+                  </Table.Td>
+                  <Table.Td>{prettyDuration(member.time_coded)}</Table.Td>
                   {isAdmin && (
                     <>
-                      <td
+                      <Table.Td
                         style={{
                           width: 0,
                           padding: 0,
@@ -142,8 +142,8 @@ export const LeaderboardModal = ({
                             </Button>
                           </>
                         )}
-                      </td>
-                      <td
+                      </Table.Td>
+                      <Table.Td
                         style={{
                           width: 0,
                           padding: 0,
@@ -154,7 +154,7 @@ export const LeaderboardModal = ({
                           <Button
                             size="xs"
                             variant="subtle"
-                            leftIcon={<DoubleArrowDownIcon />}
+                            leftSection={<DoubleArrowDownIcon />}
                             color="red"
                             onClick={() => {
                               demoteUser(member.username).catch((e) => {
@@ -168,7 +168,7 @@ export const LeaderboardModal = ({
                           <Button
                             size="xs"
                             variant="subtle"
-                            leftIcon={<DoubleArrowUpIcon />}
+                            leftSection={<DoubleArrowUpIcon />}
                             color="green"
                             onClick={() => {
                               promoteUser(member.username).catch((e) => {
@@ -179,13 +179,13 @@ export const LeaderboardModal = ({
                             {t("leaderboards.promote")}
                           </Button>
                         )}
-                      </td>
+                      </Table.Td>
                     </>
                   )}
-                </tr>
+                </Table.Tr>
               );
             })}
-        </tbody>
+        </Table.Tbody>
       </Table>
     </>
   );

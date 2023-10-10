@@ -50,7 +50,7 @@ export const ConfirmAccountDeletionModal = ({
               mt={15}
               style={{ width: "100%" }}
             />
-            <Group position="right">
+            <Group justify="right">
               <Button
                 variant="outline"
                 onClick={() => {

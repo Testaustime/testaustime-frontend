@@ -1,29 +1,22 @@
-import { ActionIcon, createStyles } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
 import { prettyDuration } from "../../utils/dateUtils";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useModals } from "@mantine/modals";
 import EditProjectModal from "../EditProjectModal";
 import { useTranslation } from "next-i18next";
+import styles from "./ProjectEntry.module.css";
+
 export type ProjectEntryProps = {
   name?: string | undefined | null;
   durationSeconds: number;
   allowEditing?: boolean;
 };
 
-const useStyles = createStyles((theme) => ({
-  container: {
-    display: "inline-flex",
-    gap: theme.spacing.xs,
-    alignItems: "center",
-  },
-}));
-
 export const ProjectEntry = ({
   name,
   durationSeconds,
   allowEditing,
 }: ProjectEntryProps) => {
-  const { classes } = useStyles();
   const modals = useModals();
   const { t } = useTranslation();
 
@@ -53,13 +46,16 @@ export const ProjectEntry = ({
 
   return (
     <li>
-      <div className={classes.container}>
+      <div className={styles.container}>
         <span>
           {name || <i>{t("dashboard.unknownProject")}</i>}:{" "}
           {prettyDuration(durationSeconds)}
         </span>
         {allowEditing && (
           <ActionIcon
+            style={{
+              marginInlineStart: 4,
+            }}
             size="sm"
             onClick={() => {
               openModal();

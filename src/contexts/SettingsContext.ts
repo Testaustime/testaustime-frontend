@@ -1,7 +1,7 @@
-import { ColorScheme } from "@mantine/core";
 import { createContext } from "react";
 import { DayRange } from "../utils/dateUtils";
 import { Locales } from "../i18next";
+import { MantineColorScheme } from "@mantine/core";
 
 export interface SettingsContextValue {
   smoothCharts: boolean;
@@ -9,8 +9,8 @@ export interface SettingsContextValue {
   language?: Locales;
   setLanguage: (language: Locales) => void;
   // FIXME: "none" is obsolete, but still requires support. Can be removed in the future.
-  colorScheme?: ColorScheme | "none";
-  setColorScheme: (colorScheme: ColorScheme) => void;
+  colorScheme?: MantineColorScheme | "none";
+  setColorScheme: (colorScheme: MantineColorScheme) => void;
   defaultDayRange?: DayRange;
   setDefaultDayRange: (defaultDayRange: DayRange) => void;
 }

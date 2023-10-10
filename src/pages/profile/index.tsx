@@ -85,7 +85,7 @@ const ProfilePage = ({
           ),
         })}
       </Text>
-      <Stack mt={40} spacing={15}>
+      <Stack mt={40} gap={15}>
         <Title order={2}>{t("profile.account.title")}</Title>
         <Title order={3}>{t("profile.changePassword.title")}</Title>
         <ChangePasswordForm onChangePassword={changePassword} />
@@ -130,7 +130,7 @@ const ProfilePage = ({
           </ButtonWithConfirmation>
         </div>
       </Stack>
-      <Stack mt={40} spacing={15}>
+      <Stack mt={40} gap={15}>
         <WithTooltip
           tooltipLabel={
             <Text>
@@ -150,7 +150,7 @@ const ProfilePage = ({
           revealLength={4}
         />
       </Stack>
-      <Stack mt={40} spacing={15}>
+      <Stack mt={40} gap={15}>
         <WithTooltip
           tooltipLabel={<Text>{t("profile.friendCode.tooltip")}</Text>}
         >
@@ -165,7 +165,7 @@ const ProfilePage = ({
           textFormatter={(value) => `ttfc_${value}`}
         />
       </Stack>
-      <Stack mt={40} spacing={15}>
+      <Stack mt={40} gap={15}>
         <Title order={2}>{t("profile.settings.title")}</Title>
         <SmoothChartsSelector />
         <LanguageSelector />
