@@ -34,7 +34,7 @@ export const EditProjectModal = ({
               name="projectName"
               label={t("editProject.projectName")}
             />
-            <Group position="right" mt="md">
+            <Group justify="right" mt="md">
               <Button type="submit">{t("editProject.save")}</Button>
             </Group>
           </Form>

@@ -2,7 +2,7 @@ import type { GetServerSideProps } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
-import { Anchor, Text, createStyles } from "@mantine/core";
+import { Anchor, Text } from "@mantine/core";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { Dashboard } from "../components/Dashboard";
 import axios from "../axios";
@@ -15,35 +15,6 @@ import {
 } from "../utils/constants";
 import styles from "./index.module.css";
 
-const useStyles = createStyles((theme) => ({
-  downloadButton: {
-    height: "90px",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    alignContent: "center",
-    flexWrap: "nowrap",
-    fontWeight: "bold",
-    padding: "0px 10%",
-    gap: 15,
-    backgroundColor: theme.colorScheme === "dark" ? "#6275bc" : "#7289DA",
-    color: "white",
-    borderRadius: "6px",
-    border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`,
-    "&:hover": {
-      backgroundColor: "#667bc4",
-      textDecoration: "none",
-    },
-  },
-  heroText: {
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: "1.4rem",
-    color: theme.colorScheme === "dark" ? "#bbb" : "#333",
-  },
-}));
-
 export type MainPageProps =
   | { isLoggedIn: false }
   | {
@@ -54,7 +25,6 @@ export type MainPageProps =
     };
 
 export const MainPage = (props: MainPageProps) => {
-  const { classes } = useStyles();
   const { t } = useTranslation();
 
   return (
@@ -77,11 +47,11 @@ export const MainPage = (props: MainPageProps) => {
         />
       ) : (
         <>
-          <Text mb={20} className={classes.heroText}>
+          <Text mb={20} className={styles.heroText}>
             {t("mainPage.hero")}
           </Text>
           <Anchor
-            className={classes.downloadButton}
+            className={styles.downloadButton}
             component={Link}
             href="/extensions"
           >

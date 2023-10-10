@@ -1,42 +1,20 @@
-import { createStyles, Text, Anchor } from "@mantine/core";
+import { Text, Anchor } from "@mantine/core";
 import { useTranslation } from "next-i18next";
 import { TestausserveriLogo } from "../images/TestausserveriLogo";
 import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
 import styles from "./Footer.module.css";
 
-const useStyles = createStyles((theme) => ({
-  footerText: {
-    fontSize: "1.2rem",
-    color: theme.colorScheme === "dark" ? "#bbb" : "#333",
-  },
-  line: {
-    width: "100%",
-    color: theme.colorScheme === "dark" ? "#333" : "#ddd",
-    marginBlockEnd: "3rem",
-  },
-  bwLogo: {
-    fill: theme.colorScheme === "dark" ? "white" : "black",
-    opacity: "0.8",
-    transition: "opacity 0.2s !important",
-    ":hover": {
-      opacity: "1",
-    },
-  },
-}));
-
 export const Footer = () => {
-  const { classes } = useStyles();
-
   const { t } = useTranslation();
 
   return (
     <div className={styles.container}>
-      <hr className={classes.line} />
+      <hr className={styles.line} />
       <div className={styles.content}>
         <div>
           <a href="https://testausserveri.fi">
             <TestausserveriLogo
-              className={classes.bwLogo}
+              className={styles.bwLogo}
               height={90}
               width={155}
             />

@@ -22,3 +22,36 @@
   height: 50px;
   display: flex;
 }
+
+.downloadButton {
+  height: 90px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  flex-wrap: nowrap;
+  font-weight: bold;
+  padding-inline: 10%;
+  gap: 15px;
+  background-color: #7289da;
+  color: white;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+[data-mantine-color-scheme="dark"] .downloadButton {
+  background-color: #6275bc;
+  border-color: #222;
+}
+
+.downloadButton:hover {
+  background-color: #667bc4;
+  text-decoration: none;
+}
+
+.heroText {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.4rem;
+}

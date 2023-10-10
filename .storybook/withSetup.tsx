@@ -2,7 +2,7 @@ import type { Decorator } from "@storybook/react";
 import { UserContext } from "../src/contexts/UserContext";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
-import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { useCreateSettings } from "../src/hooks/useSettings";
 import { SettingsContext } from "../src/contexts/SettingsContext";
 import { PropsWithChildren } from "react";
@@ -10,6 +10,7 @@ import { I18nextProvider, initReactI18next } from "react-i18next";
 import i18n from "i18next";
 import en from "../public/locales/en/common.json";
 import fi from "../public/locales/fi/common.json";
+import "@mantine/core/styles.css";
 
 i18n.use(initReactI18next).init({
   fallbackLng: "en",
@@ -26,9 +27,7 @@ const InnerApp = ({ children }: PropsWithChildren) => {
 
   return (
     <MantineProvider
-      withGlobalStyles
       theme={{
-        colorScheme: settings.colorScheme,
         fontFamily: "Ubuntu, sans-serif",
         white: "#eee",
         black: "#121212",
@@ -48,7 +47,7 @@ const InnerApp = ({ children }: PropsWithChildren) => {
         },
         headings: {
           fontFamily: "Poppins, sans-serif",
-          fontWeight: 800,
+          fontWeight: "800",
           sizes: {
             h1: { fontSize: "1.9rem" },
             h2: { fontSize: "1.65rem" },
@@ -60,14 +59,9 @@ const InnerApp = ({ children }: PropsWithChildren) => {
         },
       }}
     >
-      <ColorSchemeProvider
-        colorScheme={settings.colorScheme}
-        toggleColorScheme={settings.toggleColorScheme}
-      >
-        <SettingsContext.Provider value={settings}>
-          {children}
-        </SettingsContext.Provider>
-      </ColorSchemeProvider>
+      <SettingsContext.Provider value={settings}>
+        {children}
+      </SettingsContext.Provider>
     </MantineProvider>
   );
 };
@@ -85,12 +79,12 @@ export const withSetup: Decorator = (Story) => {
         }}
       >
         <I18nextProvider i18n={i18n}>
-          <Notifications />
-          <ModalsProvider>
-            <InnerApp>
+          <InnerApp>
+            <ModalsProvider>
+              <Notifications />
               <Story />
-            </InnerApp>
-          </ModalsProvider>
+            </ModalsProvider>
+          </InnerApp>
         </I18nextProvider>
       </UserContext.Provider>
     </div>

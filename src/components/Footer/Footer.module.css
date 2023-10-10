@@ -20,6 +20,26 @@
   gap: 32px;
 }
 
+.line {
+  width: 100%;
+  opacity: 0.5;
+  margin-block-end: 3rem;
+}
+
+.bwLogo {
+  fill: black;
+  opacity: 0.8;
+  transition: opacity 0.2s ease-in-out;
+}
+
+[data-mantine-color-scheme="dark"] .bwLogo {
+  fill: white;
+}
+
+.bwLogo:hover {
+  opacity: 1;
+}
+
 @media screen and (max-width: 550px) {
   .rightSection {
     align-items: flex-start;

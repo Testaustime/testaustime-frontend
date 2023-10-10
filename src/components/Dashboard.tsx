@@ -5,7 +5,6 @@ import {
   SegmentedControl,
   Text,
   Title,
-  createStyles,
   Stack,
 } from "@mantine/core";
 import TopLanguages from "./TopLanguages";
@@ -22,19 +21,6 @@ import { useAuthentication } from "../hooks/useAuthentication";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import styles from "./Dashboard.module.css";
-
-const useStyles = createStyles((theme) => ({
-  dataCard: {
-    padding: "10px",
-    backgroundColor: theme.colorScheme === "dark" ? "#222326" : "#fff",
-    border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`,
-    borderRadius: "10px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginBottom: "30px",
-  },
-}));
 
 export interface DashboardProps {
   username: string;
@@ -57,7 +43,6 @@ export const Dashboard = ({
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const { username: authenticatedUsername } = useAuthentication();
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
-  const { classes } = useStyles();
   const entries = useActivityData(
     username,
     {
@@ -108,7 +93,7 @@ export const Dashboard = ({
           <Title mb={5}>{t("dashboard.statistics")}</Title>
         </>
       )}
-      <Group align="end" position="apart" mt={10} mb={30}>
+      <Group align="end" justify="apart" mt={10} mb={30}>
         <MultiSelect
           label={t("dashboard.projects")}
           data={projectNames}
@@ -140,7 +125,7 @@ export const Dashboard = ({
       </Group>
       {entries.length !== 0 ? (
         <>
-          <Group className={classes.dataCard}>
+          <Group className={styles.dataCard}>
             <Title mt={10} order={2}>
               {t("dashboard.timePerDay")}
             </Title>
@@ -161,7 +146,7 @@ export const Dashboard = ({
               })}
             </Text>
           </Group>
-          <Group className={classes.dataCard}>
+          <Group className={styles.dataCard}>
             <Title mt={10} order={2}>
               {t("dashboard.timePerProject")}
             </Title>

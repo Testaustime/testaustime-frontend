@@ -1,3 +1,19 @@
+.dataCard {
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+[data-mantine-color-scheme="dark"] .dataCard {
+  background-color: #222326;
+  border-color: #222;
+}
+
 .projectCodingChart {
   width: 100%;
   padding-bottom: 15px;

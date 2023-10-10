@@ -1,14 +1,6 @@
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import {
-  Anchor,
-  Center,
-  createStyles,
-  Group,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Anchor, Center, Group, Stack, Text, Title } from "@mantine/core";
 import { GitHubLogoIcon, QuestionMarkIcon } from "@radix-ui/react-icons";
 import React, { ReactNode } from "react";
 import Neovim from "../../../public/images/neovim.svg";
@@ -26,40 +18,12 @@ interface ExtensionBlockProps {
   text: string;
 }
 
-const useStyles = createStyles((theme) => ({
-  wrapper: {
-    backgroundColor: theme.colorScheme === "dark" ? "#282a36" : "#fff",
-    borderRadius: "10px",
-    border: `1px solid ${theme.colorScheme === "dark" ? "#222" : "#ccc"}`,
-  },
-  iconContainer: {
-    backgroundColor: theme.colorScheme === "dark" ? "#22242e" : "#eef1ff",
-    padding: "calc(2rem + 2px)",
-    "&:hover": {
-      filter: "brightness(0.95)",
-    },
-    borderRadius: "0px 10px 10px 0px",
-    "@media (max-width: 685px)": {
-      width: "100%",
-      height: "50px",
-      padding: "unset",
-      display: "flex",
-      alignContent: "center",
-      justifyContent: "center",
-      alignItems: "center",
-      borderRadius: "0px 0px 10px 10px",
-    },
-  },
-}));
-
 export const ExtensionBlock = ({
   logo,
   downloadLink,
   sourceCodeLink,
   text,
 }: ExtensionBlockProps) => {
-  const { classes } = useStyles();
-
   // Icon map for source code icons
   const iconMap: Record<string, ReactNode> = {
     // Root domain in lower case to icon element
@@ -67,22 +31,22 @@ export const ExtensionBlock = ({
   };
 
   return (
-    <Group sx={{ width: "100%" }} className={classes.wrapper}>
+    <Group style={{ width: "100%" }} className={styles.wrapper}>
       <Center className={styles.logo}>{logo}</Center>
       <Anchor className={styles.spacer} />
       <Anchor
         href={downloadLink}
-        sx={{ flex: 1 }}
+        style={{ flex: 1 }}
         size="lg"
         className={styles.text}
       >
         {text}
       </Anchor>
-      <Group spacing={10} className={styles.sideContainer}>
+      <Group gap={10} className={styles.sideContainer}>
         <Anchor
           href={sourceCodeLink}
           variant="text"
-          className={classes.iconContainer}
+          className={styles.iconContainer}
         >
           {iconMap[
             new URL(sourceCodeLink).hostname.split(".").reverse()[1]
@@ -104,7 +68,7 @@ const ExtensionsPage = () => {
         {t("extensions.title")}
       </Title>
       <Text>{t("extensions.body")}</Text>
-      <Stack spacing={25} mt={30}>
+      <Stack gap={25} mt={30}>
         <ExtensionBlock
           logo={<Vscode width={40} height={40} />}
           downloadLink="https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime"

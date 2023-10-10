@@ -151,15 +151,15 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
           />
         )}
       </Modal>
-      <Group align="center" mb="md" mt="xl" position="apart">
+      <Group align="center" mb="md" mt="xl" justify="apart">
         <Title>{t("leaderboards.leaderboards")}</Title>
-        <Group spacing="sm">
+        <Group gap="sm">
           <Button
             onClick={() => {
               openCreateLeaderboard();
             }}
             variant="outline"
-            leftIcon={<PlusIcon />}
+            leftSection={<PlusIcon />}
           >
             {t("leaderboards.createNewLeaderboard")}
           </Button>
@@ -167,7 +167,7 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
             onClick={() => {
               openJoinLeaderboard();
             }}
-            leftIcon={<EnterIcon />}
+            leftSection={<EnterIcon />}
           >
             {t("leaderboards.joinLeaderboard")}
           </Button>

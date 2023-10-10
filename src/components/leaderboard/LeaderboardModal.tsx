@@ -46,7 +46,7 @@ export const LeaderboardModal = ({
         <ButtonWithConfirmation
           color="red"
           size="xs"
-          leftIcon={<ExitIcon />}
+          leftSection={<ExitIcon />}
           onClick={() => {
             leaveLeaderboard().catch((e) => {
               console.log(e);
@@ -60,7 +60,7 @@ export const LeaderboardModal = ({
           <ButtonWithConfirmation
             color="red"
             size="xs"
-            leftIcon={<Trash2 size={18} />}
+            leftSection={<Trash2 size={18} />}
             onClick={() => {
               deleteLeaderboard().catch((e) => {
                 console.log(e);
@@ -154,7 +154,7 @@ export const LeaderboardModal = ({
                           <Button
                             size="xs"
                             variant="subtle"
-                            leftIcon={<DoubleArrowDownIcon />}
+                            leftSection={<DoubleArrowDownIcon />}
                             color="red"
                             onClick={() => {
                               demoteUser(member.username).catch((e) => {
@@ -168,7 +168,7 @@ export const LeaderboardModal = ({
                           <Button
                             size="xs"
                             variant="subtle"
-                            leftIcon={<DoubleArrowUpIcon />}
+                            leftSection={<DoubleArrowUpIcon />}
                             color="green"
                             onClick={() => {
                               promoteUser(member.username).catch((e) => {

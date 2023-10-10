@@ -55,14 +55,14 @@ export const TokenField = ({
           <code>{textFormatter(value)}</code>
         </Text>
       )}
-      <Group spacing="md" mt="sm">
+      <Group gap="md" mt="sm">
         <Button
           variant="filled"
           onClick={() => {
             copy(copyFormatter(value));
           }}
           color={copied ? "green" : ""}
-          leftIcon={<ClipboardIcon />}
+          leftSection={<ClipboardIcon />}
         >
           {copied ? t("copyToken.copied") : t("copyToken.copy")}
         </Button>
@@ -72,14 +72,14 @@ export const TokenField = ({
             onClick={() => {
               toggleIsTokenRevealed();
             }}
-            leftIcon={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}
+            leftSection={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}
           >
             {isTokenRevealed ? t("copyToken.hide") : t("copyToken.reveal")}
           </Button>
         )}
         {regenerate && (
           <ButtonWithConfirmation
-            leftIcon={<UpdateIcon />}
+            leftSection={<UpdateIcon />}
             variant="outline"
             onClick={() => {
               regenerate().catch(() => {

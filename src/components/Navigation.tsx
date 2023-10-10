@@ -45,7 +45,7 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
 
   return (
     <Group>
-      <Group spacing={15} align="center" className={styles.navigation}>
+      <Group gap={15} align="center" className={styles.navigation}>
         <Group>
           {isLoggedIn ? (
             <>
@@ -63,7 +63,7 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
                   <Button
                     variant="outline"
                     size="xs"
-                    leftIcon={<PersonIcon style={{ marginRight: "5px" }} />}
+                    leftSection={<PersonIcon style={{ marginRight: "5px" }} />}
                   >
                     {username}
                   </Button>
@@ -73,7 +73,7 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
                   <Menu.Item
                     component={Link}
                     href="/profile"
-                    icon={<GearIcon />}
+                    leftSection={<GearIcon />}
                   >
                     {t("navbar.settings")}
                   </Menu.Item>
@@ -81,14 +81,14 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
                   <Menu.Item
                     component={Link}
                     href="/extensions"
-                    icon={<MixIcon />}
+                    leftSection={<MixIcon />}
                   >
                     {t("navbar.extensions")}
                   </Menu.Item>
                   <Divider />
                   <Menu.Item
                     color="blue"
-                    icon={<ExitIcon />}
+                    leftSection={<ExitIcon />}
                     onClick={() => {
                       logOutAndRedirect().catch(console.error);
                     }}
@@ -130,7 +130,7 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
               title="Open navigation"
               opened={opened}
               color={"#536ab7"}
-              sx={{ zIndex: 5 }}
+              style={{ zIndex: 5 }}
               onClick={() => {
                 setOpened((o: boolean) => !o);
               }}
@@ -153,16 +153,20 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
             {isLoggedIn ? (
               <>
                 <Divider />
-                <Menu.Item component={Link} href="/" icon={<HomeIcon />}>
+                <Menu.Item component={Link} href="/" leftSection={<HomeIcon />}>
                   {t("navbar.dashboard")}
                 </Menu.Item>
-                <Menu.Item component={Link} href="/friends" icon={<FaceIcon />}>
+                <Menu.Item
+                  component={Link}
+                  href="/friends"
+                  leftSection={<FaceIcon />}
+                >
                   {t("navbar.friends")}
                 </Menu.Item>
                 <Menu.Item
                   component={Link}
                   href="/leaderboards"
-                  icon={<BarChart2 size={18} />}
+                  leftSection={<BarChart2 size={18} />}
                 >
                   {t("navbar.leaderboards")}
                 </Menu.Item>
@@ -170,21 +174,25 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
                 <Menu.Label>
                   {t("navbar.account")} - {username}
                 </Menu.Label>
-                <Menu.Item component={Link} href="/profile" icon={<GearIcon />}>
+                <Menu.Item
+                  component={Link}
+                  href="/profile"
+                  leftSection={<GearIcon />}
+                >
                   {t("navbar.settings")}
                 </Menu.Item>
                 <Divider />
                 <Menu.Item
                   component={Link}
                   href="/extensions"
-                  icon={<MixIcon />}
+                  leftSection={<MixIcon />}
                 >
                   {t("navbar.extensions")}
                 </Menu.Item>
                 <Divider />
                 <Menu.Item
                   color="blue"
-                  icon={<ExitIcon />}
+                  leftSection={<ExitIcon />}
                   onClick={() => {
                     logOutAndRedirect().catch(console.error);
                   }}
@@ -195,14 +203,18 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
             ) : (
               <>
                 <Divider />
-                <Menu.Item component={Link} href="/login" icon={<EnterIcon />}>
+                <Menu.Item
+                  component={Link}
+                  href="/login"
+                  leftSection={<EnterIcon />}
+                >
                   {t("navbar.login")}
                 </Menu.Item>
                 <Menu.Item
                   color="blue"
                   component={Link}
                   href="/register"
-                  icon={<PlusIcon />}
+                  leftSection={<PlusIcon />}
                 >
                   {t("navbar.register")}
                 </Menu.Item>
@@ -210,7 +222,7 @@ export const Navigation = ({ opened, setOpened }: NavigationProps) => {
                 <Menu.Item
                   component={Link}
                   href="/extensions"
-                  icon={<MixIcon />}
+                  leftSection={<MixIcon />}
                 >
                   {t("navbar.extensions")}
                 </Menu.Item>

@@ -1,0 +1,7 @@
+.tableRow {
+  background-color: #dedede;
+}
+
+[data-mantine-color-scheme="dark"] .tableRow {
+  background-color: #2b2b2b;
+}

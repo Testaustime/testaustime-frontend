@@ -1,6 +1,7 @@
 import { ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { Sun, Moon } from "react-feather";
 import { useTranslation } from "next-i18next";
+import { useEffect, useState } from "react";
 export interface ThemeToggleProps {
   label: boolean;
 }
@@ -10,6 +11,13 @@ function ThemeToggle({ label }: ThemeToggleProps) {
   const dark = mantineColorScheme.colorScheme === "dark";
 
   const { t } = useTranslation();
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <div

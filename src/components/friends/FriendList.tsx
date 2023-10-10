@@ -1,4 +1,4 @@
-import { Button, Table, Text, useMantineTheme } from "@mantine/core";
+import { Button, Table, Text } from "@mantine/core";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { ApiFriendsResponseItem, useFriends } from "../../hooks/useFriends";
 import { useTranslation } from "next-i18next";
@@ -6,6 +6,7 @@ import { prettyDuration } from "../../utils/dateUtils";
 import { useModals } from "@mantine/modals";
 import { Dashboard } from "../Dashboard";
 import { showNotification } from "@mantine/notifications";
+import styles from "./FriendList.module.css";
 
 export type FriendListProps = {
   initialFriends?: ApiFriendsResponseItem[];
@@ -20,7 +21,6 @@ export const FriendList = ({
 
   const { t } = useTranslation();
   const { username } = useAuthentication();
-  const theme = useMantineTheme();
   const modals = useModals();
 
   if (!username) {
@@ -70,16 +70,7 @@ export const FriendList = ({
       <tbody>
         {friendsSorted.map(
           ({ username, coding_time: { past_month }, isMe }, idx) => (
-            <tr
-              key={username}
-              style={{
-                backgroundColor: isMe
-                  ? theme.colorScheme === "dark"
-                    ? "#2b2b2b"
-                    : "#dedede"
-                  : undefined,
-              }}
-            >
+            <tr key={username} className={isMe ? styles.tableRow : undefined}>
               <td>{idx + 1}</td>
               <td>{username}</td>
               <td>{prettyDuration(past_month)}</td>
@@ -88,7 +79,7 @@ export const FriendList = ({
                   <Button
                     variant="filled"
                     color="blue"
-                    compact
+                    size="compact-md"
                     onClick={() => {
                       openFriendDashboard(username);
                     }}
@@ -102,7 +93,7 @@ export const FriendList = ({
                   <Button
                     variant="outline"
                     color="red"
-                    compact
+                    size="compact-md"
                     onClick={() => {
                       unFriend(username).catch(() => {
                         showNotification({

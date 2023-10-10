@@ -1,11 +1,11 @@
 import type { AppContext, AppInitialProps, AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
 import {
-  ColorScheme,
-  ColorSchemeProvider,
   Group,
+  MantineColorScheme,
   MantineProvider,
   Overlay,
+  isMantineColorScheme,
 } from "@mantine/core";
 import { useState } from "react";
 import Link from "next/link";
@@ -22,10 +22,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import { CookiesProvider } from "react-cookie";
-import { isColorScheme } from "../utils/stringUtils";
 import { colorSchemeCookieName } from "../utils/constants";
 import Head from "next/head";
 import styles from "./_app.module.css";
+import "@mantine/core/styles.css";
 
 type Props = {
   token?: string;
@@ -33,7 +33,7 @@ type Props = {
   friendCode?: string;
   registrationTime?: Date;
   isPublic?: boolean;
-  colorScheme: ColorScheme;
+  colorScheme: MantineColorScheme;
 };
 
 const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
@@ -54,9 +54,7 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
 
   return (
     <MantineProvider
-      withGlobalStyles
       theme={{
-        colorScheme: settings.colorScheme,
         fontFamily: "Ubuntu, sans-serif",
         white: "#eee",
         black: "#121212",
@@ -76,7 +74,7 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
         },
         headings: {
           fontFamily: "Poppins, sans-serif",
-          fontWeight: 800,
+          fontWeight: "800",
           sizes: {
             h1: { fontSize: "1.9rem" },
             h2: { fontSize: "1.65rem" },
@@ -87,41 +85,37 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
           md: "53.75em",
         },
       }}
+      defaultColorScheme={pageProps.colorScheme}
     >
-      <ColorSchemeProvider
-        colorScheme={settings.colorScheme}
-        toggleColorScheme={settings.toggleColorScheme}
-      >
-        <Notifications />
-        <ModalsProvider>
-          <SettingsContext.Provider value={settings}>
-            <Group className={styles.container}>
-              {opened && (
-                <Overlay
-                  opacity={0.6}
-                  color="#000"
-                  zIndex={5}
-                  onClick={() => {
-                    setOpened(false);
-                  }}
-                />
-              )}
-              <div className={styles.innerContainer}>
-                <div>
-                  <Group position="apart" mb={50}>
-                    <Link href="/" className={styles.testaustimeTitle}>
-                      Testaustime
-                    </Link>
-                    <Navigation opened={opened} setOpened={setOpened} />
-                  </Group>
-                  <Component {...pageProps} />
-                </div>
-                <Footer />
+      <Notifications />
+      <ModalsProvider>
+        <SettingsContext.Provider value={settings}>
+          <Group className={styles.container}>
+            {opened && (
+              <Overlay
+                opacity={0.6}
+                color="#000"
+                zIndex={5}
+                onClick={() => {
+                  setOpened(false);
+                }}
+              />
+            )}
+            <div className={styles.innerContainer}>
+              <div>
+                <Group justify="apart" mb={50}>
+                  <Link href="/" className={styles.testaustimeTitle}>
+                    Testaustime
+                  </Link>
+                  <Navigation opened={opened} setOpened={setOpened} />
+                </Group>
+                <Component {...pageProps} />
               </div>
-            </Group>
-          </SettingsContext.Provider>
-        </ModalsProvider>
-      </ColorSchemeProvider>
+              <Footer />
+            </div>
+          </Group>
+        </SettingsContext.Provider>
+      </ModalsProvider>
     </MantineProvider>
   );
 };
@@ -167,7 +161,7 @@ App.getInitialProps = async ({
     .find((row) => row.startsWith(`${colorSchemeCookieName}=`))
     ?.replace(`${colorSchemeCookieName}=`, "");
 
-  const colorScheme = isColorScheme(colorSchemeUnchecked)
+  const colorScheme = isMantineColorScheme(colorSchemeUnchecked)
     ? colorSchemeUnchecked
     : "dark";
 

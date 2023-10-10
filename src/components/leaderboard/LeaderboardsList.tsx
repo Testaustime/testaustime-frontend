@@ -60,8 +60,7 @@ export const LeaderboardsList = ({
               </td>
               <td style={{ display: "flex", justifyContent: "end" }}>
                 <Button
-                  compact
-                  size="sm"
+                  size="compact-sm"
                   variant="outline"
                   onClick={() => {
                     setOpenedLeaderboardName(leaderboard.name);

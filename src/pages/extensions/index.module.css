@@ -18,6 +18,31 @@
   background-color: #c1c2c5;
 }
 
+.wrapper {
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+[data-mantine-color-scheme="dark"] .wrapper {
+  background-color: #282a36;
+  border-color: #222;
+}
+
+.iconContainer {
+  background-color: #eef1ff;
+  padding: calc(2rem + 2px);
+  border-radius: 0px 10px 10px 0px;
+}
+
+[data-mantine-color-scheme="dark"] .iconContainer {
+  background-color: #22242e;
+}
+
+.iconContainer:hover {
+  filter: brightness(0.95);
+}
+
 @media screen and (max-width: 320px) {
   .spacer {
     height: 1px;
@@ -38,5 +63,16 @@
     width: 100%;
     justify-content: flex-end;
     margin-top: -15px;
+  }
+
+  .iconContainer {
+    width: 100%;
+    height: 50px;
+    padding: unset;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0px 0px 10px 10px;
   }
 }

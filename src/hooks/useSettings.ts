@@ -1,4 +1,3 @@
-import { ColorScheme } from "@mantine/core";
 import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
 import { DayRange } from "../utils/dateUtils";
@@ -11,11 +10,12 @@ import {
   languageCookieName,
   smoothChartsCookieName,
 } from "../utils/constants";
+import { MantineColorScheme } from "@mantine/core";
 
 export const useCreateSettings = ({
   initialColorScheme,
 }: {
-  initialColorScheme: ColorScheme;
+  initialColorScheme: MantineColorScheme;
 }) => {
   const router = useRouter();
   const [cookies, setCookies] = useCookies();
@@ -36,12 +36,14 @@ export const useCreateSettings = ({
     setCookies(languageCookieName, value, defaultCookieSettings);
   };
 
-  const colorScheme = cookies[colorSchemeCookieName] as ColorScheme | undefined;
-  const setColorScheme = (value?: ColorScheme) => {
+  const colorScheme = cookies[colorSchemeCookieName] as
+    | MantineColorScheme
+    | undefined;
+  const setColorScheme = (value?: MantineColorScheme) => {
     setCookies(colorSchemeCookieName, value, defaultCookieSettings);
   };
 
-  const toggleColorScheme = (value?: ColorScheme) => {
+  const toggleColorScheme = (value?: MantineColorScheme) => {
     setColorScheme(
       value || (!colorScheme || colorScheme === "dark" ? "light" : "dark"),
     );
