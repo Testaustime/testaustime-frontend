@@ -56,21 +56,34 @@ export const useActivityData = (
     },
   );
 
-  return (entries ?? [])
-    .filter((e) =>
-      filter.projectFilter
-        ? e.project_name && filter.projectFilter.includes(e.project_name)
-        : true,
-    )
-    .filter((e) => {
-      if (filter.dayFilter === "all") {
-        return true;
-      }
-      const dayCount = getDayCount(filter.dayFilter);
-      const dayStart = startOfDay(e.start_time);
-      return (
-        new Date().getTime() - dayStart.getTime() <=
-        dayCount * 24 * 60 * 60 * 1000
-      );
-    });
+  const timeFilteredEntries = (entries ?? []).filter((e) => {
+    if (filter.dayFilter === "all") {
+      return true;
+    }
+    const dayCount = getDayCount(filter.dayFilter);
+    const dayStart = startOfDay(e.start_time);
+    return (
+      new Date().getTime() - dayStart.getTime() <=
+      dayCount * 24 * 60 * 60 * 1000
+    );
+  });
+
+  const filteredEntries = timeFilteredEntries.filter((e) =>
+    filter.projectFilter
+      ? e.project_name && filter.projectFilter.includes(e.project_name)
+      : true,
+  );
+
+  const unfilteredProjectNames = [
+    ...new Set(
+      timeFilteredEntries
+        .map((e) => e.project_name || "Unknown")
+        .filter((e) => e),
+    ),
+  ];
+
+  return {
+    entries: filteredEntries,
+    unfilteredProjectNames,
+  };
 };

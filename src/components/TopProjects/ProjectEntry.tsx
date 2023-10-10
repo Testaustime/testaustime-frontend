@@ -53,6 +53,9 @@ export const ProjectEntry = ({
         </span>
         {allowEditing && (
           <ActionIcon
+            style={{
+              marginInlineStart: 4,
+            }}
             size="sm"
             onClick={() => {
               openModal();
