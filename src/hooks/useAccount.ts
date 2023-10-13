@@ -3,8 +3,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthentication } from "./useAuthentication";
 import { useRouter } from "next/router";
 
-export const useAccount = () => {
-  const { logOut, username } = useAuthentication();
+export const useAccount = (username: string) => {
+  const { logOut } = useAuthentication();
   const queryClient = useQueryClient();
   const router = useRouter();
 

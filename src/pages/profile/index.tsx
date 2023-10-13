@@ -41,7 +41,7 @@ const ProfilePage = ({
     useAuthentication();
 
   const { t } = useTranslation();
-  const { changeAccountVisibility, deleteAccount } = useAccount();
+  const { changeAccountVisibility, deleteAccount } = useAccount(username);
 
   // TODO: This is too hacky, find a better way to do this
   const [isPublic, setIsPublic] = useState(isPublicInitial);
