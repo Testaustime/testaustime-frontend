@@ -7,9 +7,14 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "./Navigation.module.css";
 
-export const Navigation = () => {
+export type NavigationProps = {
+  isLoggedIn: boolean;
+  username?: string;
+};
+
+export const Navigation = ({ isLoggedIn, username }: NavigationProps) => {
   const { t } = useTranslation();
-  const { isLoggedIn, username, logOut } = useAuthentication();
+  const { logOut } = useAuthentication();
   const router = useRouter();
 
   const logOutAndRedirect = async () => {

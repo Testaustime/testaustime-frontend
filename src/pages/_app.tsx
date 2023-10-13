@@ -13,7 +13,6 @@ import { useCreateSettings } from "../hooks/useSettings";
 import { useHotkeys } from "@mantine/hooks";
 import { SettingsContext } from "../contexts/SettingsContext";
 import "../index.css";
-import { UserContext } from "../contexts/UserContext";
 import axios from "../axios";
 import { ApiUsersUserResponse } from "../hooks/useAuthentication";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -93,7 +92,10 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
                   <Link href="/" className={styles.testaustimeTitle}>
                     Testaustime
                   </Link>
-                  <Navigation />
+                  <Navigation
+                    isLoggedIn={!!pageProps.token}
+                    username={pageProps.username}
+                  />
                 </Group>
                 <Component {...pageProps} />
               </div>
@@ -115,21 +117,9 @@ function App(props: AppProps<Props>) {
         <title>Testaustime</title>
       </Head>
       <CookiesProvider>
-        <UserContext.Provider
-          value={{
-            authToken: props.pageProps.token,
-            friendCode: props.pageProps.friendCode,
-            isPublic: props.pageProps.isPublic,
-            registrationTime: props.pageProps.registrationTime
-              ? new Date(props.pageProps.registrationTime)
-              : undefined,
-            username: props.pageProps.username,
-          }}
-        >
-          <QueryClientProvider client={queryClient}>
-            <InnerApp {...props} />
-          </QueryClientProvider>
-        </UserContext.Provider>
+        <QueryClientProvider client={queryClient}>
+          <InnerApp {...props} />
+        </QueryClientProvider>
       </CookiesProvider>
     </div>
   );

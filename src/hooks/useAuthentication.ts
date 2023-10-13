@@ -4,7 +4,6 @@
 import axios from "../axios";
 import { isAxiosError } from "axios";
 import { getErrorMessage } from "../lib/errorHandling/errorHandler";
-import { useUser } from "./useUser";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export interface ApiAuthRegisterResponse {
@@ -60,7 +59,6 @@ export enum RegistrationResult {
 
 export const useAuthentication = () => {
   const queryClient = useQueryClient();
-  const user = useUser();
 
   const { mutateAsync: regenerateToken } = useMutation(async () => {
     try {
@@ -184,7 +182,6 @@ export const useAuthentication = () => {
   );
 
   return {
-    token: user.authToken,
     regenerateToken,
     regenerateFriendCode,
     register: (username: string, password: string) =>
@@ -192,11 +189,6 @@ export const useAuthentication = () => {
     login: (username: string, password: string) =>
       login({ username, password }),
     logOut,
-    username: user.username,
-    registrationTime: user.registrationTime,
-    friendCode: user.friendCode,
-    isPublic: user.isPublic,
-    isLoggedIn: !!user.authToken,
     changePassword: (oldPassword: string, newPassword: string) =>
       changePassword({ oldPassword, newPassword }),
   };
