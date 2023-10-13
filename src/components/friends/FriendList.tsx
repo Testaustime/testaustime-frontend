@@ -1,5 +1,4 @@
-import { Button, Table, Text } from "@mantine/core";
-import { useAuthentication } from "../../hooks/useAuthentication";
+import { Button, Table } from "@mantine/core";
 import { ApiFriendsResponseItem, useFriends } from "../../hooks/useFriends";
 import { useTranslation } from "next-i18next";
 import { prettyDuration } from "../../utils/dateUtils";
@@ -11,21 +10,18 @@ import styles from "./FriendList.module.css";
 export type FriendListProps = {
   initialFriends?: ApiFriendsResponseItem[];
   ownTimeCoded?: number;
+  username: string;
 };
 
 export const FriendList = ({
   initialFriends,
   ownTimeCoded,
+  username,
 }: FriendListProps) => {
   const { unFriend, friends } = useFriends({ initialFriends });
 
   const { t } = useTranslation();
-  const { username } = useAuthentication();
   const modals = useModals();
-
-  if (!username) {
-    return <Text>{t("friends.notLoggedIn")}</Text>;
-  }
 
   const friendsSorted = [
     ...friends

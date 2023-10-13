@@ -10,11 +10,13 @@ import { ApiFriendsResponseItem } from "../../hooks/useFriends";
 import { ApiUsersUserActivityDataResponseItem } from "../../hooks/useActivityData";
 import { addDays, startOfDay } from "date-fns";
 import { sumBy } from "../../utils/arrayUtils";
+import { ApiUsersUserResponse } from "../../hooks/useAuthentication";
 
 export type FriendPageProps = {
   friendCodePlaceholder: string;
   initialFriends: ApiFriendsResponseItem[];
   ownTimeCoded: number;
+  username: string;
 };
 
 const FriendPage = (props: FriendPageProps) => {
@@ -32,6 +34,7 @@ const FriendPage = (props: FriendPageProps) => {
       <FriendList
         initialFriends={props.initialFriends}
         ownTimeCoded={props.ownTimeCoded}
+        username={props.username}
       />
     </>
   );
@@ -71,9 +74,18 @@ export const getServerSideProps: GetServerSideProps<FriendPageProps> = async ({
     },
   );
 
-  const [friendsResponse, ownResponse] = await Promise.all([
+  const mePromise = axios.get<ApiUsersUserResponse>("/users/@me", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "X-Forwarded-For": req.socket.remoteAddress,
+    },
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
+  });
+
+  const [friendsResponse, ownResponse, meResponse] = await Promise.all([
     friendsPromise,
     ownPromise,
+    mePromise,
   ]);
 
   const ownEntries = ownResponse.data
@@ -95,6 +107,7 @@ export const getServerSideProps: GetServerSideProps<FriendPageProps> = async ({
       friendCodePlaceholder: generateFriendCode(),
       initialFriends: friendsResponse.data,
       ownTimeCoded,
+      username: meResponse.data.username,
     },
   };
 };
