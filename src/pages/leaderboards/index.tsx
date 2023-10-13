@@ -146,6 +146,7 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
             regenerateInviteCode={async () =>
               await regenerateInviteCode(openedLeaderboard.name)
             }
+            username={props.username}
           />
         )}
       </Modal>
@@ -174,6 +175,7 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
       <LeaderboardsList
         setOpenedLeaderboardName={setOpenedLeaderboardName}
         leaderboards={leaderboards}
+        username={props.username}
       />
     </>
   );

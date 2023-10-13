@@ -5,7 +5,6 @@ import {
   ExitIcon,
 } from "@radix-ui/react-icons";
 import { Trash2 } from "react-feather";
-import { useAuthentication } from "../../hooks/useAuthentication";
 import { LeaderboardData } from "../../hooks/useLeaderboards";
 import { useTranslation } from "next-i18next";
 import { prettyDuration } from "../../utils/dateUtils";
@@ -23,6 +22,7 @@ interface LeaderboardModalProps {
   demoteUser: (username: string) => Promise<void>;
   kickUser: (username: string) => Promise<void>;
   regenerateInviteCode: () => Promise<string>;
+  username: string;
 }
 
 export const LeaderboardModal = ({
@@ -35,9 +35,8 @@ export const LeaderboardModal = ({
   demoteUser,
   kickUser,
   regenerateInviteCode,
+  username,
 }: LeaderboardModalProps) => {
-  const { username } = useAuthentication();
-
   const { t } = useTranslation();
 
   return (
