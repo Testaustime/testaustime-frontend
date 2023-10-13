@@ -1,7 +1,6 @@
-import { Button, Group, Modal, Text, Title } from "@mantine/core";
+import { Button, Group, Modal, Title } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { useCallback, useEffect, useState } from "react";
-import { useAuthentication } from "../../hooks/useAuthentication";
 import {
   Leaderboard,
   LeaderboardData,
@@ -17,9 +16,11 @@ import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import axios from "../../axios";
+import { ApiUsersUserResponse } from "../../hooks/useAuthentication";
 
 export type LeaderboardsPageProps = {
   initialLeaderboards: LeaderboardData[];
+  username: string;
 };
 
 const LeaderboardsPage = (props: LeaderboardsPageProps) => {
@@ -36,7 +37,6 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
     shouldFetch: false,
   });
 
-  const { username } = useAuthentication();
   const modals = useModals();
   const [openedLeaderboardName, setOpenedLeaderboardName] = useState<
     string | undefined
@@ -98,12 +98,10 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
     if (urlLeaderboardCode) openJoinLeaderboard();
   }, [openJoinLeaderboard, urlLeaderboardCode]);
 
-  if (!username) return <Text>{t("leaderboards.notLoggedIn")}</Text>;
-
   const adminUsernames = openedLeaderboard?.members
     .filter((m) => m.admin)
     .map((m) => m.username);
-  const isAdmin = Boolean(adminUsernames?.includes(username));
+  const isAdmin = Boolean(adminUsernames?.includes(props.username));
 
   return (
     <>
@@ -134,7 +132,7 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
               await deleteLeaderboard(openedLeaderboard.name);
               setOpenedLeaderboardName(undefined);
             }}
-            isAdmin={Boolean(adminUsernames?.includes(username))}
+            isAdmin={Boolean(adminUsernames?.includes(props.username))}
             isLastAdmin={isAdmin && adminUsernames?.length === 1}
             promoteUser={async (username: string) => {
               await promoteUser(openedLeaderboard.name, username);
@@ -223,10 +221,19 @@ export const getServerSideProps: GetServerSideProps<
 
   const leaderboards = await Promise.all(leaderboardPromises);
 
+  const meResponse = await axios.get<ApiUsersUserResponse>("/users/@me", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "X-Forwarded-For": req.socket.remoteAddress,
+    },
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
+  });
+
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "en")),
       initialLeaderboards: leaderboards,
+      username: meResponse.data.username,
     },
   };
 };
