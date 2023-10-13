@@ -22,7 +22,6 @@ import DailyCodingTimeChart, {
 import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
-import { useAuthentication } from "../hooks/useAuthentication";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import styles from "./Dashboard.module.css";
@@ -46,7 +45,6 @@ export const Dashboard = ({
     defaultDayRange || "week",
   );
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
-  const { username: authenticatedUsername } = useAuthentication();
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
   const { entries, unfilteredProjectNames } = useActivityData(
     username,
@@ -82,22 +80,12 @@ export const Dashboard = ({
     },
   });
 
-  if (!authenticatedUsername) {
-    return <div>{t("dashboard.notLoggedIn")}</div>;
-  }
-
-  const isOwnDashboard = username === "@me";
-
   return (
     <div style={{ width: "100%" }}>
       {isFrontPage && (
         <>
           <Group style={{ marginBottom: "1rem" }}>
-            <Text>
-              {t("dashboard.greeting", {
-                username: isOwnDashboard ? authenticatedUsername : username,
-              })}
-            </Text>
+            <Text>{t("dashboard.greeting", { username })}</Text>
           </Group>
           <Title mb={5}>{t("dashboard.statistics")}</Title>
         </>
@@ -239,7 +227,7 @@ export const Dashboard = ({
               </div>
               <div>
                 <Title order={2}>{t("dashboard.projects")}</Title>
-                <TopProjects entries={entries} allowEditing={isOwnDashboard} />
+                <TopProjects entries={entries} allowEditing={isFrontPage} />
               </div>
             </Stack>
           ) : (
@@ -250,7 +238,7 @@ export const Dashboard = ({
               </div>
               <div>
                 <Title order={2}>{t("dashboard.projects")}</Title>
-                <TopProjects entries={entries} allowEditing={isOwnDashboard} />
+                <TopProjects entries={entries} allowEditing={isFrontPage} />
               </div>
             </Group>
           )}

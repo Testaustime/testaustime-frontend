@@ -14,11 +14,13 @@ import {
   smoothChartsCookieName,
 } from "../utils/constants";
 import styles from "./index.module.css";
+import { ApiUsersUserResponse } from "../hooks/useAuthentication";
 
 export type MainPageProps =
   | { isLoggedIn: false }
   | {
       isLoggedIn: true;
+      username: string;
       entries: ApiUsersUserActivityDataResponseItem[];
       defaultDayRange: DayRange | undefined | null;
       smoothCharts: boolean | undefined | null;
@@ -35,7 +37,7 @@ export const MainPage = (props: MainPageProps) => {
     >
       {props.isLoggedIn ? (
         <Dashboard
-          username="@me"
+          username={props.username}
           isFrontPage={true}
           initialEntries={props.entries.map((e) => ({
             ...e,
@@ -99,6 +101,14 @@ export const getServerSideProps: GetServerSideProps<MainPageProps> = async ({
   const smoothCharts =
     (req.cookies[smoothChartsCookieName] || "true") === "true";
 
+  const meResponse = await axios.get<ApiUsersUserResponse>("/users/@me", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "X-Forwarded-For": req.socket.remoteAddress,
+    },
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
+  });
+
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "en")),
@@ -106,6 +116,7 @@ export const getServerSideProps: GetServerSideProps<MainPageProps> = async ({
       entries: response.data,
       defaultDayRange: defaultDayRange ?? null,
       smoothCharts: smoothCharts,
+      username: meResponse.data.username,
     },
   };
 };
