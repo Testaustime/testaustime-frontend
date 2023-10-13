@@ -12,7 +12,6 @@ import LanguageSelector from "../../components/LanguageSelector";
 import SmoothChartsSelector from "../../components/SmoothChartsSelector";
 import DefaultDayRangeSelector from "../../components/DefaultDayRangeSelector";
 import ChangePasswordForm from "../../components/ChangePasswordForm";
-import { useAccount } from "../../hooks/useAccount";
 import { showNotification } from "@mantine/notifications";
 import ButtonWithConfirmation from "../../components/ButtonWithConfirmation";
 import { useModals } from "@mantine/modals";
@@ -21,6 +20,7 @@ import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import axios from "../../axios";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export type ProfilePageProps = {
   username: string;
@@ -37,14 +37,32 @@ const ProfilePage = ({
   isPublic: isPublicInitial,
   token,
 }: ProfilePageProps) => {
-  const { regenerateToken, regenerateFriendCode, changePassword } =
+  const { regenerateToken, regenerateFriendCode, changePassword, logOut } =
     useAuthentication();
-
+  const router = useRouter();
   const { t } = useTranslation();
-  const { changeAccountVisibility, deleteAccount } = useAccount(username);
 
-  // TODO: This is too hacky, find a better way to do this
   const [isPublic, setIsPublic] = useState(isPublicInitial);
+
+  const changeAccountVisibility = async (visibility: boolean) => {
+    await axios.post("/account/settings", {
+      public_profile: visibility,
+    });
+
+    setIsPublic(!isPublic);
+  };
+
+  const deleteAccount = async (password: string) => {
+    await axios.delete("/users/@me/delete", {
+      data: {
+        username,
+        password,
+      },
+    });
+    await logOut();
+
+    router.push("/").catch(console.error);
+  };
 
   const modals = useModals();
 
