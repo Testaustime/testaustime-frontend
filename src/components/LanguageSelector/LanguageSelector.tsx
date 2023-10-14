@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Group,
   MantineSize,
@@ -12,18 +14,19 @@ import { Locales } from "../../i18next";
 export type LanguageSelectorType = "segmented" | "dropdown";
 
 export type LanguageSelectorProps = {
+  locale: string;
   type?: LanguageSelectorType;
   showLabel?: boolean;
   size?: MantineSize;
 };
 
 export const LanguageSelector = ({
+  locale,
   type = "segmented",
   showLabel = true,
   size,
 }: LanguageSelectorProps) => {
-  const { t, i18n } = useTranslation();
-  const locale = i18n.resolvedLanguage;
+  const { t } = useTranslation();
   const { setLanguage } = useSettings();
 
   const data = [

@@ -1,29 +1,36 @@
 import { Title } from "@mantine/core";
 import { useTranslation } from "next-i18next";
-import { FriendList } from "../../components/friends/FriendList";
-import { AddFriendForm } from "../../components/friends/AddFriendForm";
+import { FriendList } from "../../../components/friends/FriendList";
+import { AddFriendForm } from "../../../components/friends/AddFriendForm";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { generateFriendCode } from "../../utils/codeUtils";
-import axios from "../../axios";
-import { ApiFriendsResponseItem } from "../../hooks/useFriends";
-import { ApiUsersUserActivityDataResponseItem } from "../../hooks/useActivityData";
+import { generateFriendCode } from "../../../utils/codeUtils";
+import axios from "../../../axios";
+import { ApiFriendsResponseItem } from "../../../hooks/useFriends";
+import { ApiUsersUserActivityDataResponseItem } from "../../../hooks/useActivityData";
 import { addDays, startOfDay } from "date-fns";
-import { sumBy } from "../../utils/arrayUtils";
-import { ApiUsersUserResponse } from "../../hooks/useAuthentication";
+import { sumBy } from "../../../utils/arrayUtils";
+import { ApiUsersUserResponse } from "../../../hooks/useAuthentication";
+import { PageLayout } from "../../../components/PageLayout";
 
 export type FriendPageProps = {
   friendCodePlaceholder: string;
   initialFriends: ApiFriendsResponseItem[];
   ownTimeCoded: number;
   username: string;
+  locale: string;
 };
 
 const FriendPage = (props: FriendPageProps) => {
   const { t } = useTranslation();
 
   return (
-    <>
+    <PageLayout
+      isLoggedIn={true}
+      username={props.username}
+      t={t}
+      locale={props.locale}
+    >
       <Title order={2} mb={15}>
         {t("friends.addNewFriend")}
       </Title>
@@ -35,13 +42,14 @@ const FriendPage = (props: FriendPageProps) => {
         initialFriends={props.initialFriends}
         ownTimeCoded={props.ownTimeCoded}
         username={props.username}
+        locale={props.locale}
       />
-    </>
+    </PageLayout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps<FriendPageProps> = async ({
-  locale,
+  params,
   req,
 }) => {
   const token = req.cookies.token;
@@ -103,11 +111,12 @@ export const getServerSideProps: GetServerSideProps<FriendPageProps> = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(locale ?? "en")),
+      ...(await serverSideTranslations(String(params?.locale ?? "en"))),
       friendCodePlaceholder: generateFriendCode(),
       initialFriends: friendsResponse.data,
       ownTimeCoded,
       username: meResponse.data.username,
+      locale: String(params?.locale ?? "en"),
     },
   };
 };

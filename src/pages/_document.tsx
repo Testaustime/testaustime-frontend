@@ -2,7 +2,7 @@ import { DocumentProps, Head, Html, Main, NextScript } from "next/document";
 import { createGetInitialProps } from "@mantine/next";
 
 export default function Document(props: DocumentProps) {
-  const currentLocale = props.__NEXT_DATA__.locale ?? "en";
+  const currentLocale = String(props.__NEXT_DATA__.query.locale ?? "en");
 
   return (
     <Html lang={currentLocale}>

@@ -11,12 +11,14 @@ export type FriendListProps = {
   initialFriends?: ApiFriendsResponseItem[];
   ownTimeCoded?: number;
   username: string;
+  locale: string;
 };
 
 export const FriendList = ({
   initialFriends,
   ownTimeCoded,
   username,
+  locale,
 }: FriendListProps) => {
   const { unFriend, friends } = useFriends({ initialFriends });
 
@@ -41,7 +43,13 @@ export const FriendList = ({
     modals.openModal({
       title: t("friends.friendDashboardTitle", { username: friendUsername }),
       size: "calc(800px + 10%)",
-      children: <Dashboard username={friendUsername} isFrontPage={false} />,
+      children: (
+        <Dashboard
+          username={friendUsername}
+          isFrontPage={false}
+          locale={locale}
+        />
+      ),
       styles: {
         title: {
           fontSize: "2rem",

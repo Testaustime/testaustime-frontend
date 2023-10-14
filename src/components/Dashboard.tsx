@@ -32,6 +32,7 @@ export interface DashboardProps {
   initialEntries?: ActivityDataEntry[];
   defaultDayRange?: DayRange | undefined | null;
   smoothCharts?: boolean | undefined | null;
+  locale: string;
 }
 
 export const Dashboard = ({
@@ -40,6 +41,7 @@ export const Dashboard = ({
   initialEntries,
   defaultDayRange,
   smoothCharts,
+  locale,
 }: DashboardProps) => {
   const [statisticsRange, setStatisticsRange] = useState<DayRange>(
     defaultDayRange || "week",
@@ -246,7 +248,7 @@ export const Dashboard = ({
       ) : (
         <Text>
           {t("dashboard.noData.title")} {prefix}
-          <Link href="/extensions">{infix}</Link>
+          <Link href={`/${locale}/extensions`}>{infix}</Link>
           {suffix}
         </Text>
       )}

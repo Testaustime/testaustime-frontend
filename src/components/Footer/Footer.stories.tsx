@@ -8,5 +8,13 @@ export default {
   decorators: [withSetup],
 } as Meta;
 
-const Template: StoryFn = () => <Footer />;
+const Template: StoryFn = () => (
+  <Footer
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    t={(key) => {
+      return key;
+    }}
+  />
+);
 export const Default = Template.bind({});

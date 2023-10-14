@@ -5,22 +5,24 @@ import {
   Leaderboard,
   LeaderboardData,
   useLeaderboards,
-} from "../../hooks/useLeaderboards";
-import { LeaderboardModal } from "../../components/leaderboard/LeaderboardModal";
-import { CreateLeaderboardModal } from "../../components/leaderboard/CreateLeaderboardModal";
-import { JoinLeaderboardModal } from "../../components/leaderboard/JoinLeaderboardModal";
+} from "../../../hooks/useLeaderboards";
+import { LeaderboardModal } from "../../../components/leaderboard/LeaderboardModal";
+import { CreateLeaderboardModal } from "../../../components/leaderboard/CreateLeaderboardModal";
+import { JoinLeaderboardModal } from "../../../components/leaderboard/JoinLeaderboardModal";
 import { EnterIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "next-i18next";
-import { LeaderboardsList } from "../../components/leaderboard/LeaderboardsList";
+import { LeaderboardsList } from "../../../components/leaderboard/LeaderboardsList";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
-import axios from "../../axios";
-import { ApiUsersUserResponse } from "../../hooks/useAuthentication";
+import axios from "../../../axios";
+import { ApiUsersUserResponse } from "../../../hooks/useAuthentication";
+import { PageLayout } from "../../../components/PageLayout";
 
 export type LeaderboardsPageProps = {
   initialLeaderboards: LeaderboardData[];
   username: string;
+  locale: string;
 };
 
 const LeaderboardsPage = (props: LeaderboardsPageProps) => {
@@ -104,7 +106,12 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
   const isAdmin = Boolean(adminUsernames?.includes(props.username));
 
   return (
-    <>
+    <PageLayout
+      isLoggedIn
+      username={props.username}
+      t={t}
+      locale={props.locale}
+    >
       <Modal
         opened={Boolean(openedLeaderboard)}
         onClose={() => {
@@ -150,40 +157,42 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
           />
         )}
       </Modal>
-      <Group align="center" mb="md" mt="xl" justify="space-between">
-        <Title>{t("leaderboards.leaderboards")}</Title>
-        <Group gap="sm">
-          <Button
-            onClick={() => {
-              openCreateLeaderboard();
-            }}
-            variant="outline"
-            leftSection={<PlusIcon />}
-          >
-            {t("leaderboards.createNewLeaderboard")}
-          </Button>
-          <Button
-            onClick={() => {
-              openJoinLeaderboard();
-            }}
-            leftSection={<EnterIcon />}
-          >
-            {t("leaderboards.joinLeaderboard")}
-          </Button>
+      <div>
+        <Group align="center" mb="md" mt="xl" justify="space-between">
+          <Title>{t("leaderboards.leaderboards")}</Title>
+          <Group gap="sm">
+            <Button
+              onClick={() => {
+                openCreateLeaderboard();
+              }}
+              variant="outline"
+              leftSection={<PlusIcon />}
+            >
+              {t("leaderboards.createNewLeaderboard")}
+            </Button>
+            <Button
+              onClick={() => {
+                openJoinLeaderboard();
+              }}
+              leftSection={<EnterIcon />}
+            >
+              {t("leaderboards.joinLeaderboard")}
+            </Button>
+          </Group>
         </Group>
-      </Group>
-      <LeaderboardsList
-        setOpenedLeaderboardName={setOpenedLeaderboardName}
-        leaderboards={leaderboards}
-        username={props.username}
-      />
-    </>
+        <LeaderboardsList
+          setOpenedLeaderboardName={setOpenedLeaderboardName}
+          leaderboards={leaderboards}
+          username={props.username}
+        />
+      </div>
+    </PageLayout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps<
   LeaderboardsPageProps
-> = async ({ locale, req }) => {
+> = async ({ params, req }) => {
   const token = req.cookies.token;
   if (!token) {
     return {
@@ -233,9 +242,10 @@ export const getServerSideProps: GetServerSideProps<
 
   return {
     props: {
-      ...(await serverSideTranslations(locale ?? "en")),
+      ...(await serverSideTranslations(String(params?.locale ?? "en"))),
       initialLeaderboards: leaderboards,
       username: meResponse.data.username,
+      locale: String(params?.locale ?? "en"),
     },
   };
 };

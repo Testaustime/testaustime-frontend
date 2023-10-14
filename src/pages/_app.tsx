@@ -6,9 +6,6 @@ import {
   MantineProvider,
   isMantineColorScheme,
 } from "@mantine/core";
-import Link from "next/link";
-import { Navigation } from "../components/Navigation";
-import { Footer } from "../components/Footer/Footer";
 import { useCreateSettings } from "../hooks/useSettings";
 import { useHotkeys } from "@mantine/hooks";
 import { SettingsContext } from "../contexts/SettingsContext";
@@ -87,19 +84,7 @@ const InnerApp = ({ Component, pageProps }: AppProps<Props>) => {
         <SettingsContext.Provider value={settings}>
           <Group className={styles.container}>
             <div className={styles.innerContainer}>
-              <div>
-                <Group justify="space-between" mb={50}>
-                  <Link href="/" className={styles.testaustimeTitle}>
-                    Testaustime
-                  </Link>
-                  <Navigation
-                    isLoggedIn={!!pageProps.token}
-                    username={pageProps.username}
-                  />
-                </Group>
-                <Component {...pageProps} />
-              </div>
-              <Footer />
+              <Component {...pageProps} />
             </div>
           </Group>
         </SettingsContext.Provider>
