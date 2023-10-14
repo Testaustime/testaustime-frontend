@@ -35,13 +35,15 @@ export const Content = ({
     <>
       <Notifications />
       <ModalsProvider>
-        <CookiesProvider>
-          <QueryClientProvider client={queryClient}>
-            <SettingsContext.Provider value={settings}>
-              {children}
-            </SettingsContext.Provider>
-          </QueryClientProvider>
-        </CookiesProvider>
+        <div id="root">
+          <CookiesProvider>
+            <QueryClientProvider client={queryClient}>
+              <SettingsContext.Provider value={settings}>
+                {children}
+              </SettingsContext.Provider>
+            </QueryClientProvider>
+          </CookiesProvider>
+        </div>
       </ModalsProvider>
     </>
   );

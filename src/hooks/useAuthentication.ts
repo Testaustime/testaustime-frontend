@@ -6,13 +6,6 @@ import { isAxiosError } from "axios";
 import { getErrorMessage } from "../lib/errorHandling/errorHandler";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export interface ApiAuthRegisterResponse {
-  auth_token: string;
-  username: string;
-  friend_code: string;
-  registration_time: string;
-}
-
 export interface ApiAuthRegenerateResponse {
   token: string;
 }
@@ -42,12 +35,6 @@ export enum PasswordChangeResult {
   OldPasswordIncorrect,
   NewPasswordInvalid,
 }
-
-export enum RegistrationResult {
-  Success,
-  RateLimited,
-}
-
 export const useAuthentication = () => {
   const queryClient = useQueryClient();
 
@@ -83,31 +70,6 @@ export const useAuthentication = () => {
       throw getErrorMessage(error);
     }
   });
-
-  const { mutateAsync: register } = useMutation(
-    async ({ username, password }: { username: string; password: string }) => {
-      try {
-        const { data } = await axios.post<ApiAuthRegisterResponse>(
-          "/auth/register",
-          { username, password },
-        );
-        queryClient.setQueryData(["fetchUser"], {
-          username: data.username,
-          friendCode: data.friend_code,
-          registrationTime: new Date(data.registration_time),
-          isPublic: false,
-        });
-        return RegistrationResult.Success;
-      } catch (error) {
-        if (isAxiosError(error)) {
-          if (error.response?.status === 429) {
-            return RegistrationResult.RateLimited;
-          }
-        }
-        throw getErrorMessage(error);
-      }
-    },
-  );
 
   const { mutateAsync: logOut } = useMutation(async () => {
     try {
@@ -148,8 +110,6 @@ export const useAuthentication = () => {
   return {
     regenerateToken,
     regenerateFriendCode,
-    register: (username: string, password: string) =>
-      register({ username, password }),
     logOut,
     changePassword: (oldPassword: string, newPassword: string) =>
       changePassword({ oldPassword, newPassword }),

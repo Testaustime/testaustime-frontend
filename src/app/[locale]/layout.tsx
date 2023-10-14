@@ -11,6 +11,7 @@ import "../../index.css";
 import initTranslations from "../i18n";
 import axios from "../../axios";
 import { ApiUsersUserResponse } from "../../hooks/useAuthentication";
+import "@mantine/notifications/styles.css";
 
 export const metadata = {
   title: "Testaustime",
@@ -53,7 +54,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body id="root">
+      <body>
         <MantineProvider
           theme={{
             fontFamily: "Ubuntu, sans-serif",

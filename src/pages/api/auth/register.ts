@@ -1,6 +1,6 @@
 import axios, { isAxiosError } from "axios";
 import { NextApiHandler } from "next";
-import { ApiAuthRegisterResponse } from "../../../hooks/useAuthentication";
+import { ApiAuthRegisterResponse } from "../../../app/[locale]/register/RegistrationForm";
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {
