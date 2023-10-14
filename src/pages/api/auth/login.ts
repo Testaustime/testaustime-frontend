@@ -1,6 +1,14 @@
 import axios, { isAxiosError } from "axios";
 import { NextApiHandler } from "next";
-import { ApiAuthLoginResponse } from "../../../hooks/useAuthentication";
+
+export interface ApiAuthLoginResponse {
+  id: number;
+  auth_token: string;
+  friend_code: string;
+  username: string;
+  registration_time: string;
+  is_public: boolean;
+}
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {

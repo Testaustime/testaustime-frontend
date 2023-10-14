@@ -13,15 +13,6 @@ export interface ApiAuthRegisterResponse {
   registration_time: string;
 }
 
-export interface ApiAuthLoginResponse {
-  id: number;
-  auth_token: string;
-  friend_code: string;
-  username: string;
-  registration_time: string;
-  is_public: boolean;
-}
-
 export interface ApiAuthRegenerateResponse {
   token: string;
 }
@@ -118,33 +109,6 @@ export const useAuthentication = () => {
     },
   );
 
-  const { mutateAsync: login } = useMutation(
-    async ({ username, password }: { username: string; password: string }) => {
-      try {
-        const { data } = await axios.post<ApiAuthLoginResponse>("/auth/login", {
-          username,
-          password,
-        });
-        const {
-          auth_token,
-          friend_code,
-          username: apiUsername,
-          registration_time,
-          is_public,
-        } = data;
-        queryClient.setQueryData(["fetchUser"], {
-          username: apiUsername,
-          friendCode: friend_code,
-          registrationTime: new Date(registration_time),
-          isPublic: is_public,
-        });
-        return auth_token;
-      } catch (error) {
-        throw getErrorMessage(error);
-      }
-    },
-  );
-
   const { mutateAsync: logOut } = useMutation(async () => {
     try {
       await axios.post("/auth/logout", null);
@@ -186,8 +150,6 @@ export const useAuthentication = () => {
     regenerateFriendCode,
     register: (username: string, password: string) =>
       register({ username, password }),
-    login: (username: string, password: string) =>
-      login({ username, password }),
     logOut,
     changePassword: (oldPassword: string, newPassword: string) =>
       changePassword({ oldPassword, newPassword }),
