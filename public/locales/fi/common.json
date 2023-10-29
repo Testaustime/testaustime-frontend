@@ -25,7 +25,7 @@
     },
     "timePerDay": "Aika per päivä",
     "timePerProject": "Aika per projekti",
-    "totalTime": "Kokonaisaika viimeisten {{days, number}} päivän aikana: {{totalTime}}",
+    "totalTime": "Kokonaisaika viimeisten {{days}} päivän aikana: {{totalTime}}",
     "unknownProject": "Tuntematon"
   },
   "editProject": {

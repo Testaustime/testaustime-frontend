@@ -1,14 +1,22 @@
 import { List } from "@mantine/core";
-import { ActivityDataEntry } from "../../hooks/useActivityData";
 import getAllTimeTopProjects from "../../lib/topProjectsStatistics";
 import { ProjectEntry } from "./ProjectEntry";
+import { ActivityDataEntry } from "../../types";
 
 export interface TopProjectsProps {
   entries: ActivityDataEntry[];
   allowEditing?: boolean;
+  texts: {
+    editProjectTitle: string;
+    unknownProject: string;
+  };
 }
 
-export const TopProjects = ({ entries, allowEditing }: TopProjectsProps) => {
+export const TopProjects = ({
+  entries,
+  allowEditing,
+  texts,
+}: TopProjectsProps) => {
   return (
     <List type="ordered" withPadding>
       {getAllTimeTopProjects(entries).map((p) => (
@@ -17,6 +25,7 @@ export const TopProjects = ({ entries, allowEditing }: TopProjectsProps) => {
           name={p.project_name}
           durationSeconds={p.duration}
           allowEditing={allowEditing}
+          texts={texts}
         />
       ))}
     </List>

@@ -6,7 +6,6 @@ import { Anchor, Text } from "@mantine/core";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { Dashboard } from "../../components/Dashboard";
 import axios from "../../axios";
-import { ApiUsersUserActivityDataResponseItem } from "../../hooks/useActivityData";
 import { startOfDay } from "date-fns";
 import { DayRange, isDayRange } from "../../utils/dateUtils";
 import {
@@ -15,7 +14,10 @@ import {
 } from "../../utils/constants";
 import styles from "./index.module.css";
 import { PageLayout } from "../../components/PageLayout";
-import { ApiUsersUserResponse } from "../../types";
+import {
+  ApiUsersUserActivityDataResponseItem,
+  ApiUsersUserResponse,
+} from "../../types";
 
 export type MainPageProps =
   | { isLoggedIn: false; locale: string }
@@ -55,6 +57,33 @@ const MainPage = (props: MainPageProps) => {
             defaultDayRange={props.defaultDayRange}
             smoothCharts={props.smoothCharts}
             locale={props.locale}
+            texts={{
+              installPrompt: t("dashboard.noData.installPrompt"),
+              greeting: t("dashboard.greeting", { username: "{{USERNAME}}" }),
+              statisticsTitle: t("dashboard.statistics"),
+              projectsLabel: t("dashboard.projects"),
+              noProjectsPlaceholder: t("dashboard.noProjects"),
+              projectsFilterPlaceholder: t("dashboard.projectsFilter"),
+              timeFilters: {
+                week: t("dashboard.timeFilters.week"),
+                month: t("dashboard.timeFilters.month"),
+                all: t("dashboard.timeFilters.all"),
+              },
+              timePerDay: t("dashboard.timePerDay"),
+              noDataTitle: t("dashboard.noData.title"),
+              timePerProject: t("dashboard.timePerProject"),
+              languagesTitle: t("dashboard.languages"),
+              projectsTitle: t("dashboard.projects"),
+              totalTime: t("dashboard.totalTime", {
+                // TODO: Get rid of these replacements
+                days: "{{DAYS}}",
+                totalTime: "{{TOTAL_TIME}}",
+              }),
+              editProjectTitle: t("editProject.title", {
+                projectName: "{{PROJECT_NAME}}",
+              }),
+              unknownProject: t("dashboard.unknownProject"),
+            }}
           />
         ) : (
           <>

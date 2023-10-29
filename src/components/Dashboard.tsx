@@ -1,4 +1,5 @@
-import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
+"use client";
+
 import {
   Group,
   SegmentedControl,
@@ -19,12 +20,19 @@ import { sumBy } from "../utils/arrayUtils";
 import DailyCodingTimeChart, {
   transformData as transformDailyData,
 } from "./DailyCodingTimeChart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
-import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import styles from "./Dashboard.module.css";
+import axios from "../axios";
+import { startOfDay } from "date-fns";
+import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
+import { filterEntries } from "../utils/activityUtils";
+import {
+  ActivityDataEntry,
+  ApiUsersUserActivityDataResponseItem,
+} from "../types";
 
 export interface DashboardProps {
   username: string;
@@ -33,6 +41,27 @@ export interface DashboardProps {
   defaultDayRange?: DayRange | undefined | null;
   smoothCharts?: boolean | undefined | null;
   locale: string;
+  texts: {
+    installPrompt: string;
+    greeting: string;
+    statisticsTitle: string;
+    projectsLabel: string;
+    noProjectsPlaceholder: string;
+    projectsFilterPlaceholder: string;
+    timeFilters: {
+      week: string;
+      month: string;
+      all: string;
+    };
+    timePerDay: string;
+    noDataTitle: string;
+    timePerProject: string;
+    languagesTitle: string;
+    projectsTitle: string;
+    totalTime: string;
+    editProjectTitle: string;
+    unknownProject: string;
+  };
 }
 
 export const Dashboard = ({
@@ -42,23 +71,44 @@ export const Dashboard = ({
   defaultDayRange,
   smoothCharts,
   locale,
+  texts,
 }: DashboardProps) => {
   const [statisticsRange, setStatisticsRange] = useState<DayRange>(
     defaultDayRange || "week",
   );
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
-  const { entries, unfilteredProjectNames } = useActivityData(
-    username,
-    {
-      projectFilter:
-        selectedProjects.length === 0 ? undefined : selectedProjects,
-      dayFilter: statisticsRange,
-    },
-    { initialData: initialEntries, shouldFetch: username !== "@me" },
+
+  const [allEntries, setAllEntries] = useState<ActivityDataEntry[]>(
+    initialEntries ?? [],
   );
 
-  const { t } = useTranslation();
+  useEffect(() => {
+    if (username === "@me") return;
+
+    axios
+      .get<ApiUsersUserActivityDataResponseItem[]>(
+        `/users/${username}/activity/data`,
+      )
+      .then((response) => {
+        const mappedData: ActivityDataEntry[] = response.data.map((e) => ({
+          ...e,
+          start_time: new Date(e.start_time),
+          dayStart: startOfDay(new Date(e.start_time)),
+          language: normalizeProgrammingLanguageName(e.language),
+        }));
+
+        setAllEntries(mappedData);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [username]);
+
+  const { entries, unfilteredProjectNames } = filterEntries(allEntries, {
+    projectFilter: selectedProjects.length === 0 ? undefined : selectedProjects,
+    dayFilter: statisticsRange,
+  });
 
   const firstCodingDay =
     [...entries].sort((a, b) => a.dayStart.getTime() - b.dayStart.getTime())[0]
@@ -69,9 +119,7 @@ export const Dashboard = ({
   const dayCount =
     statisticsRange === "all" ? diffDays : getDayCount(statisticsRange);
 
-  const [prefix, infix, suffix] = t("dashboard.noData.installPrompt").split(
-    "<link>",
-  );
+  const [prefix, infix, suffix] = texts.installPrompt.split("<link>");
 
   const combobox = useCombobox({
     onDropdownClose: () => {
@@ -87,9 +135,9 @@ export const Dashboard = ({
       {isFrontPage && (
         <>
           <Group style={{ marginBottom: "1rem" }}>
-            <Text>{t("dashboard.greeting", { username })}</Text>
+            <Text>{texts.greeting.replace("{{USERNAME}}", username)}</Text>
           </Group>
-          <Title mb={5}>{t("dashboard.statistics")}</Title>
+          <Title mb={5}>{texts.statisticsTitle}</Title>
         </>
       )}
       <Group align="end" mt={10} mb={30} justify="space-between">
@@ -108,7 +156,7 @@ export const Dashboard = ({
         >
           <Combobox.DropdownTarget>
             <PillsInput
-              label={t("dashboard.projects")}
+              label={texts.projectsLabel}
               disabled={unfilteredProjectNames.length === 0}
               pointer
               onClick={() => {
@@ -136,8 +184,8 @@ export const Dashboard = ({
                 ) : (
                   <Input.Placeholder>
                     {unfilteredProjectNames.length === 0
-                      ? t("dashboard.noProjects")
-                      : t("dashboard.projectsFilter")}
+                      ? texts.noProjectsPlaceholder
+                      : texts.projectsFilterPlaceholder}
                   </Input.Placeholder>
                 )}
                 <Combobox.EventsTarget>
@@ -178,9 +226,9 @@ export const Dashboard = ({
         </Combobox>
         <SegmentedControl
           data={[
-            { label: t("dashboard.timeFilters.week"), value: "week" },
-            { label: t("dashboard.timeFilters.month"), value: "month" },
-            { label: t("dashboard.timeFilters.all"), value: "all" },
+            { label: texts.timeFilters.week, value: "week" },
+            { label: texts.timeFilters.month, value: "month" },
+            { label: texts.timeFilters.all, value: "all" },
           ]}
           value={statisticsRange}
           onChange={(value: DayRange) => {
@@ -193,7 +241,7 @@ export const Dashboard = ({
         <>
           <Group className={styles.dataCard}>
             <Title mt={10} order={2}>
-              {t("dashboard.timePerDay")}
+              {texts.timePerDay}
             </Title>
             {entries.length > 0 ? (
               <DailyCodingTimeChart
@@ -201,20 +249,21 @@ export const Dashboard = ({
                 smoothCharts={smoothCharts ?? true}
               />
             ) : (
-              <Text>{t("dashboard.noData.title")}</Text>
+              <Text>{texts.noDataTitle}</Text>
             )}
             <Text mt={15} mb={15}>
-              {t("dashboard.totalTime", {
-                days: dayCount,
-                totalTime: prettyDuration(
-                  sumBy(entries, (entry) => entry.duration),
-                ),
-              })}
+              {texts.totalTime
+                // TODO: Get rid of these replacements
+                .replace("{{DAYS}}", String(dayCount))
+                .replace(
+                  "{{TOTAL_TIME}}",
+                  prettyDuration(sumBy(entries, (entry) => entry.duration)),
+                )}
             </Text>
           </Group>
           <Group className={styles.dataCard}>
             <Title mt={10} order={2}>
-              {t("dashboard.timePerProject")}
+              {texts.timePerProject}
             </Title>
             <PerProjectChart
               entries={entries}
@@ -224,30 +273,44 @@ export const Dashboard = ({
           {isSmallScreen ? (
             <Stack align="center">
               <div>
-                <Title order={2}>{t("dashboard.languages")}</Title>
+                <Title order={2}>{texts.languagesTitle}</Title>
                 <TopLanguages entries={entries} />
               </div>
               <div>
-                <Title order={2}>{t("dashboard.projects")}</Title>
-                <TopProjects entries={entries} allowEditing={isFrontPage} />
+                <Title order={2}>{texts.projectsTitle}</Title>
+                <TopProjects
+                  entries={entries}
+                  allowEditing={isFrontPage}
+                  texts={{
+                    editProjectTitle: texts.editProjectTitle,
+                    unknownProject: texts.unknownProject,
+                  }}
+                />
               </div>
             </Stack>
           ) : (
             <Group grow align="flex-start">
               <div>
-                <Title order={2}>{t("dashboard.languages")}</Title>
+                <Title order={2}>{texts.languagesTitle}</Title>
                 <TopLanguages entries={entries} />
               </div>
               <div>
-                <Title order={2}>{t("dashboard.projects")}</Title>
-                <TopProjects entries={entries} allowEditing={isFrontPage} />
+                <Title order={2}>{texts.projectsTitle}</Title>
+                <TopProjects
+                  entries={entries}
+                  allowEditing={isFrontPage}
+                  texts={{
+                    editProjectTitle: texts.editProjectTitle,
+                    unknownProject: texts.unknownProject,
+                  }}
+                />
               </div>
             </Group>
           )}
         </>
       ) : (
         <Text>
-          {t("dashboard.noData.title")} {prefix}
+          {texts.noDataTitle} {prefix}
           <Link href={`/${locale}/extensions`}>{infix}</Link>
           {suffix}
         </Text>

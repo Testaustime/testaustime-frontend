@@ -1,29 +1,78 @@
+"use client";
+
 import { Button, Table } from "@mantine/core";
-import { ApiFriendsResponseItem, useFriends } from "../../hooks/useFriends";
-import { useTranslation } from "next-i18next";
 import { prettyDuration } from "../../utils/dateUtils";
 import { useModals } from "@mantine/modals";
 import { Dashboard } from "../Dashboard";
 import { showNotification } from "@mantine/notifications";
 import styles from "./FriendList.module.css";
+import axios from "../../axios";
+import { useRouter } from "next/navigation";
+
+export interface ApiFriendsResponseItem {
+  username: string;
+  coding_time: {
+    all_time: number;
+    past_month: number;
+    past_week: number;
+  };
+}
 
 export type FriendListProps = {
-  initialFriends?: ApiFriendsResponseItem[];
+  friends: ApiFriendsResponseItem[];
   ownTimeCoded?: number;
   username: string;
   locale: string;
+  texts: {
+    index: string;
+    friendName: string;
+    timeCoded: string;
+    showDashboard: string;
+    unfriend: string;
+    friendDashboardTitle: string;
+    error: string;
+    errorRemovingFriend: string;
+    dashboard: {
+      installPrompt: string;
+      greeting: string;
+      statisticsTitle: string;
+      projectsLabel: string;
+      noProjectsPlaceholder: string;
+      projectsFilterPlaceholder: string;
+      timeFilters: {
+        week: string;
+        month: string;
+        all: string;
+      };
+      timePerDay: string;
+      noDataTitle: string;
+      timePerProject: string;
+      languagesTitle: string;
+      projectsTitle: string;
+      totalTime: string;
+      editProjectTitle: string;
+      unknownProject: string;
+    };
+  };
 };
 
 export const FriendList = ({
-  initialFriends,
+  friends,
   ownTimeCoded,
   username,
   locale,
+  texts,
 }: FriendListProps) => {
-  const { unFriend, friends } = useFriends({ initialFriends });
-
-  const { t } = useTranslation();
   const modals = useModals();
+  const router = useRouter();
+
+  const unFriend = async (username: string) => {
+    await axios.delete("/friends/remove", {
+      data: username,
+      headers: { "Content-Type": "text/plain" },
+    });
+    return username;
+  };
 
   const friendsSorted = [
     ...friends
@@ -41,13 +90,18 @@ export const FriendList = ({
 
   const openFriendDashboard = (friendUsername: string) => {
     modals.openModal({
-      title: t("friends.friendDashboardTitle", { username: friendUsername }),
+      title: texts.friendDashboardTitle.replace(
+        // TODO: Get rid of this replacement
+        "{{USERNAME_REPLACE_ME}}",
+        friendUsername,
+      ),
       size: "calc(800px + 10%)",
       children: (
         <Dashboard
           username={friendUsername}
           isFrontPage={false}
           locale={locale}
+          texts={texts.dashboard}
         />
       ),
       styles: {
@@ -64,9 +118,9 @@ export const FriendList = ({
     <Table>
       <Table.Thead>
         <Table.Tr>
-          <Table.Th>{t("friends.index")}</Table.Th>
-          <Table.Th>{t("friends.friendName")}</Table.Th>
-          <Table.Th>{t("friends.timeCoded", { days: 30 })}</Table.Th>
+          <Table.Th>{texts.index}</Table.Th>
+          <Table.Th>{texts.friendName}</Table.Th>
+          <Table.Th>{texts.timeCoded}</Table.Th>
           <Table.Th />
           <Table.Th />
         </Table.Tr>
@@ -91,7 +145,7 @@ export const FriendList = ({
                       openFriendDashboard(username);
                     }}
                   >
-                    {t("friends.showDashboard")}
+                    {texts.showDashboard}
                   </Button>
                 )}
               </Table.Td>
@@ -102,16 +156,20 @@ export const FriendList = ({
                     color="red"
                     size="compact-md"
                     onClick={() => {
-                      unFriend(username).catch(() => {
-                        showNotification({
-                          title: t("error"),
-                          color: "red",
-                          message: t("friends.errorRemovingFriend"),
+                      unFriend(username)
+                        .then(() => {
+                          router.refresh();
+                        })
+                        .catch(() => {
+                          showNotification({
+                            title: texts.error,
+                            color: "red",
+                            message: texts.errorRemovingFriend,
+                          });
                         });
-                      });
                     }}
                   >
-                    {t("friends.unfriend")}
+                    {texts.unfriend}
                   </Button>
                 )}
               </Table.Td>

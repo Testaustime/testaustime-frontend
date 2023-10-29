@@ -1,6 +1,6 @@
 import axios from "../axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ActivityDataEntry } from "./useActivityData";
+import { ActivityDataEntry } from "../types";
 
 export const useActivity = (activityName: string) => {
   const queryClient = useQueryClient();
