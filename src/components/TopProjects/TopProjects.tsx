@@ -9,6 +9,10 @@ export interface TopProjectsProps {
   texts: {
     editProjectTitle: string;
     unknownProject: string;
+    editModal: {
+      projectName: string;
+      save: string;
+    };
   };
 }
 

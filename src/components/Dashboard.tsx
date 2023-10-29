@@ -20,24 +20,18 @@ import { sumBy } from "../utils/arrayUtils";
 import DailyCodingTimeChart, {
   transformData as transformDailyData,
 } from "./DailyCodingTimeChart";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
 import Link from "next/link";
 import styles from "./Dashboard.module.css";
-import axios from "../axios";
-import { startOfDay } from "date-fns";
-import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
 import { filterEntries } from "../utils/activityUtils";
-import {
-  ActivityDataEntry,
-  ApiUsersUserActivityDataResponseItem,
-} from "../types";
+import { ActivityDataEntry } from "../types";
 
 export interface DashboardProps {
   username: string;
   isFrontPage: boolean;
-  initialEntries?: ActivityDataEntry[];
+  allEntries: ActivityDataEntry[];
   defaultDayRange?: DayRange | undefined | null;
   smoothCharts?: boolean | undefined | null;
   locale: string;
@@ -61,13 +55,17 @@ export interface DashboardProps {
     totalTime: string;
     editProjectTitle: string;
     unknownProject: string;
+    editModal: {
+      projectName: string;
+      save: string;
+    };
   };
 }
 
 export const Dashboard = ({
   username,
   isFrontPage,
-  initialEntries,
+  allEntries,
   defaultDayRange,
   smoothCharts,
   locale,
@@ -78,32 +76,6 @@ export const Dashboard = ({
   );
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
-
-  const [allEntries, setAllEntries] = useState<ActivityDataEntry[]>(
-    initialEntries ?? [],
-  );
-
-  useEffect(() => {
-    if (username === "@me") return;
-
-    axios
-      .get<ApiUsersUserActivityDataResponseItem[]>(
-        `/users/${username}/activity/data`,
-      )
-      .then((response) => {
-        const mappedData: ActivityDataEntry[] = response.data.map((e) => ({
-          ...e,
-          start_time: new Date(e.start_time),
-          dayStart: startOfDay(new Date(e.start_time)),
-          language: normalizeProgrammingLanguageName(e.language),
-        }));
-
-        setAllEntries(mappedData);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [username]);
 
   const { entries, unfilteredProjectNames } = filterEntries(allEntries, {
     projectFilter: selectedProjects.length === 0 ? undefined : selectedProjects,
@@ -284,6 +256,10 @@ export const Dashboard = ({
                   texts={{
                     editProjectTitle: texts.editProjectTitle,
                     unknownProject: texts.unknownProject,
+                    editModal: {
+                      projectName: texts.editModal.projectName,
+                      save: texts.editModal.save,
+                    },
                   }}
                 />
               </div>
@@ -302,6 +278,10 @@ export const Dashboard = ({
                   texts={{
                     editProjectTitle: texts.editProjectTitle,
                     unknownProject: texts.unknownProject,
+                    editModal: {
+                      projectName: texts.editModal.projectName,
+                      save: texts.editModal.save,
+                    },
                   }}
                 />
               </div>

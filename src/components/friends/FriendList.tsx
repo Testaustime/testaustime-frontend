@@ -8,6 +8,13 @@ import { showNotification } from "@mantine/notifications";
 import styles from "./FriendList.module.css";
 import axios from "../../axios";
 import { useRouter } from "next/navigation";
+import {
+  ActivityDataEntry,
+  ApiUsersUserActivityDataResponseItem,
+} from "../../types";
+import { useEffect, useState } from "react";
+import { startOfDay } from "date-fns";
+import { normalizeProgrammingLanguageName } from "../../utils/programmingLanguagesUtils";
 
 export interface ApiFriendsResponseItem {
   username: string;
@@ -52,8 +59,82 @@ export type FriendListProps = {
       totalTime: string;
       editProjectTitle: string;
       unknownProject: string;
+      editModal: {
+        projectName: string;
+        save: string;
+      };
     };
   };
+};
+
+const FriendDashboardModal = ({
+  username,
+  locale,
+  texts,
+}: {
+  username: string;
+  locale: string;
+  texts: {
+    installPrompt: string;
+    greeting: string;
+    statisticsTitle: string;
+    projectsLabel: string;
+    noProjectsPlaceholder: string;
+    projectsFilterPlaceholder: string;
+    timeFilters: {
+      week: string;
+      month: string;
+      all: string;
+    };
+    timePerDay: string;
+    noDataTitle: string;
+    timePerProject: string;
+    languagesTitle: string;
+    projectsTitle: string;
+    totalTime: string;
+    editProjectTitle: string;
+    unknownProject: string;
+    editModal: {
+      projectName: string;
+      save: string;
+    };
+  };
+}) => {
+  const [allEntries, setAllEntries] = useState<ActivityDataEntry[]>();
+
+  useEffect(() => {
+    axios
+      .get<ApiUsersUserActivityDataResponseItem[]>(
+        `/users/${username}/activity/data`,
+      )
+      .then((response) => {
+        const mappedData: ActivityDataEntry[] = response.data.map((e) => ({
+          ...e,
+          start_time: new Date(e.start_time),
+          dayStart: startOfDay(new Date(e.start_time)),
+          language: normalizeProgrammingLanguageName(e.language),
+        }));
+
+        setAllEntries(mappedData);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [username]);
+
+  if (!allEntries) {
+    return null;
+  }
+
+  return (
+    <Dashboard
+      allEntries={allEntries}
+      username={username}
+      isFrontPage={false}
+      locale={locale}
+      texts={texts}
+    />
+  );
 };
 
 export const FriendList = ({
@@ -97,9 +178,8 @@ export const FriendList = ({
       ),
       size: "calc(800px + 10%)",
       children: (
-        <Dashboard
+        <FriendDashboardModal
           username={friendUsername}
-          isFrontPage={false}
           locale={locale}
           texts={texts.dashboard}
         />

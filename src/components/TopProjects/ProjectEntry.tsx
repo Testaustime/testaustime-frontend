@@ -12,6 +12,10 @@ export type ProjectEntryProps = {
   texts: {
     editProjectTitle: string;
     unknownProject: string;
+    editModal: {
+      projectName: string;
+      save: string;
+    };
   };
 };
 
@@ -31,6 +35,7 @@ export const ProjectEntry = ({
         children: (
           <EditProjectModal
             projectName={name}
+            texts={texts.editModal}
             onClose={() => {
               modals.closeModal(id);
             }}

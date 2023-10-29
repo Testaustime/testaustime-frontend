@@ -145,6 +145,10 @@ export default async function FriendPage({
               projectName: "{{PROJECT_NAME}}",
             }),
             unknownProject: t("dashboard.unknownProject"),
+            editModal: {
+              projectName: t("editProject.projectName"),
+              save: t("editProject.save"),
+            },
           },
         }}
       />
