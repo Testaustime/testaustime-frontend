@@ -1,3 +1,5 @@
+"use client";
+
 import { Group, Button, Title, Table, Badge } from "@mantine/core";
 import {
   DoubleArrowDownIcon,
@@ -23,6 +25,15 @@ interface LeaderboardModalProps {
   kickUser: (username: string) => Promise<void>;
   regenerateInviteCode: () => Promise<string>;
   username: string;
+  tokenFieldTexts: {
+    copy: string;
+    copied: string;
+    hide: string;
+    reveal: string;
+    regenerate: string;
+    error: string;
+    unknownErrorOccurred: string;
+  };
 }
 
 export const LeaderboardModal = ({
@@ -36,6 +47,7 @@ export const LeaderboardModal = ({
   kickUser,
   regenerateInviteCode,
   username,
+  tokenFieldTexts,
 }: LeaderboardModalProps) => {
   const { t } = useTranslation();
 
@@ -80,6 +92,7 @@ export const LeaderboardModal = ({
         revealLength={4}
         textFormatter={(currentValue: string) => `ttlic_${currentValue}`}
         copyFormatter={(currentValue: string) => `ttlic_${currentValue}`}
+        texts={tokenFieldTexts}
       />
       <Title order={2} my="md">
         {t("leaderboards.members")}

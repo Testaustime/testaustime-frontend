@@ -24,13 +24,21 @@ export const Navigation = ({
         <Group>
           {isLoggedIn ? (
             <>
-              <Anchor component={Link} href={`/${locale}`}>
+              <Anchor component={Link} href={`/${locale}`} prefetch={false}>
                 {t("navbar.dashboard")}
               </Anchor>
-              <Anchor component={Link} href={`/${locale}/friends`}>
+              <Anchor
+                component={Link}
+                href={`/${locale}/friends`}
+                prefetch={false}
+              >
                 {t("navbar.friends")}
               </Anchor>
-              <Anchor component={Link} href={`/${locale}/leaderboards`}>
+              <Anchor
+                component={Link}
+                href={`/${locale}/leaderboards`}
+                prefetch={false}
+              >
                 {t("navbar.leaderboards")}
               </Anchor>
               <NavigationMenuDropdown
@@ -46,14 +54,26 @@ export const Navigation = ({
             </>
           ) : (
             <>
-              <Anchor component={Link} href={`/${locale}/extensions`}>
+              <Anchor
+                component={Link}
+                href={`/${locale}/extensions`}
+                prefetch={false}
+              >
                 {t("navbar.extensions")}
               </Anchor>
               <Box className={styles.spacer} />
-              <Anchor component={Link} href={`/${locale}/login`}>
+              <Anchor
+                component={Link}
+                href={`/${locale}/login`}
+                prefetch={false}
+              >
                 {t("navbar.login")}
               </Anchor>
-              <Button component={Link} href={`/${locale}/register`}>
+              <Button
+                component={Link}
+                href={`/${locale}/register`}
+                prefetch={false}
+              >
                 {t("navbar.register")}
               </Button>
             </>

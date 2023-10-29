@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, ButtonProps, Popover, Text } from "@mantine/core";
 import { useState } from "react";
 import { useTranslation } from "next-i18next";

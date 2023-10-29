@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Group, LoadingOverlay, Text } from "@mantine/core";
 import { useTranslation } from "next-i18next";
 import * as Yup from "yup";

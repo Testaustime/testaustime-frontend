@@ -1,9 +1,16 @@
+"use client";
+
 import { Checkbox, Group } from "@mantine/core";
 import { useSettings } from "../../hooks/useSettings";
-import { useTranslation } from "next-i18next";
-export const SmoothChartsSelector = () => {
+
+export const SmoothChartsSelector = ({
+  texts,
+}: {
+  texts: {
+    smoothCharts: string;
+  };
+}) => {
   const { smoothCharts, setSmoothCharts } = useSettings();
-  const { t } = useTranslation();
 
   return (
     <Group>
@@ -12,7 +19,7 @@ export const SmoothChartsSelector = () => {
         onChange={(e) => {
           setSmoothCharts(e.target.checked);
         }}
-        label={t("profile.settings.smoothCharts")}
+        label={texts.smoothCharts}
       />
     </Group>
   );

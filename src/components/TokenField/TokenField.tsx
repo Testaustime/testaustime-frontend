@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Group, Text } from "@mantine/core";
 import { useToggle, useClipboard } from "@mantine/hooks";
 import {
@@ -7,7 +9,6 @@ import {
   UpdateIcon,
 } from "@radix-ui/react-icons";
 import { useEffect } from "react";
-import { useTranslation } from "next-i18next";
 import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
 import Censorable from "../Censorable";
 import { showNotification } from "@mantine/notifications";
@@ -19,6 +20,15 @@ export interface TokenFieldProps {
   revealLength?: number;
   copyFormatter?: (currentValue: string) => string;
   textFormatter?: (currentValue: string) => string;
+  texts: {
+    copy: string;
+    copied: string;
+    hide: string;
+    reveal: string;
+    regenerate: string;
+    error: string;
+    unknownErrorOccurred: string;
+  };
 }
 
 export const TokenField = ({
@@ -28,11 +38,10 @@ export const TokenField = ({
   revealLength,
   copyFormatter = (currentValue: string) => currentValue,
   textFormatter = (currentValue: string) => currentValue,
+  texts,
 }: TokenFieldProps) => {
   const { copy, copied, reset } = useClipboard({ timeout: 2000 });
   const [isTokenRevealed, toggleIsTokenRevealed] = useToggle([false, true]);
-
-  const { t } = useTranslation();
 
   useEffect(() => {
     return reset;
@@ -64,7 +73,7 @@ export const TokenField = ({
           color={copied ? "green" : ""}
           leftSection={<ClipboardIcon />}
         >
-          {copied ? t("copyToken.copied") : t("copyToken.copy")}
+          {copied ? texts.copied : texts.copy}
         </Button>
         {censorable && (
           <Button
@@ -74,7 +83,7 @@ export const TokenField = ({
             }}
             leftSection={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}
           >
-            {isTokenRevealed ? t("copyToken.hide") : t("copyToken.reveal")}
+            {isTokenRevealed ? texts.hide : texts.reveal}
           </Button>
         )}
         {regenerate && (
@@ -84,14 +93,14 @@ export const TokenField = ({
             onClick={() => {
               regenerate().catch(() => {
                 showNotification({
-                  title: t("error"),
+                  title: texts.error,
                   color: "red",
-                  message: t("unknownErrorOccurred"),
+                  message: texts.unknownErrorOccurred,
                 });
               });
             }}
           >
-            {t("copyToken.regenerate")}
+            {texts.regenerate}
           </ButtonWithConfirmation>
         )}
       </Group>

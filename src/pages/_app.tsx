@@ -11,7 +11,6 @@ import { useHotkeys } from "@mantine/hooks";
 import { SettingsContext } from "../contexts/SettingsContext";
 import "../index.css";
 import axios from "../axios";
-import { ApiUsersUserResponse } from "../hooks/useAuthentication";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
@@ -20,6 +19,7 @@ import { colorSchemeCookieName } from "../utils/constants";
 import Head from "next/head";
 import styles from "./_app.module.css";
 import "@mantine/core/styles.css";
+import { ApiUsersUserResponse } from "../types";
 
 type Props = {
   token?: string;

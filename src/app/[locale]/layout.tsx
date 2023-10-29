@@ -10,8 +10,8 @@ import { Footer } from "../../components/Footer/Footer";
 import "../../index.css";
 import initTranslations from "../i18n";
 import axios from "../../axios";
-import { ApiUsersUserResponse } from "../../hooks/useAuthentication";
 import "@mantine/notifications/styles.css";
+import { ApiUsersUserResponse } from "../../types";
 
 export const metadata = {
   title: "Testaustime",

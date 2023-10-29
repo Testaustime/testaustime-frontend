@@ -16,8 +16,8 @@ import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import axios from "../../../axios";
-import { ApiUsersUserResponse } from "../../../hooks/useAuthentication";
 import { PageLayout } from "../../../components/PageLayout";
+import { ApiUsersUserResponse } from "../../../types";
 
 export type LeaderboardsPageProps = {
   initialLeaderboards: LeaderboardData[];
@@ -154,6 +154,15 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
               await regenerateInviteCode(openedLeaderboard.name)
             }
             username={props.username}
+            tokenFieldTexts={{
+              copy: t("copyToken.copy"),
+              copied: t("copyToken.copied"),
+              hide: t("copyToken.hide"),
+              reveal: t("copyToken.reveal"),
+              regenerate: t("copyToken.regenerate"),
+              error: t("error"),
+              unknownErrorOccurred: t("unknownErrorOccurred"),
+            }}
           />
         )}
       </Modal>

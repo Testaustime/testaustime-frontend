@@ -2,9 +2,9 @@
 
 import { Button, Divider, Menu } from "@mantine/core";
 import { ExitIcon, GearIcon, MixIcon, PersonIcon } from "@radix-ui/react-icons";
-import { useAuthentication } from "../hooks/useAuthentication";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { logOut } from "../utils/authUtils";
 
 export type NavigationMenuDropdownProps = {
   username: string | undefined;
@@ -22,7 +22,6 @@ export const NavigationMenuDropdown = ({
   texts,
   locale,
 }: NavigationMenuDropdownProps) => {
-  const { logOut } = useAuthentication();
   const router = useRouter();
 
   const logOutAndRedirect = async () => {
@@ -47,6 +46,7 @@ export const NavigationMenuDropdown = ({
           component={Link}
           href={`/${locale}/profile`}
           leftSection={<GearIcon />}
+          prefetch={false}
         >
           {texts.settings}
         </Menu.Item>
@@ -55,6 +55,7 @@ export const NavigationMenuDropdown = ({
           component={Link}
           href={`/${locale}/extensions`}
           leftSection={<MixIcon />}
+          prefetch={false}
         >
           {texts.extensions}
         </Menu.Item>

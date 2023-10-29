@@ -14,8 +14,8 @@ import {
   smoothChartsCookieName,
 } from "../../utils/constants";
 import styles from "./index.module.css";
-import { ApiUsersUserResponse } from "../../hooks/useAuthentication";
 import { PageLayout } from "../../components/PageLayout";
+import { ApiUsersUserResponse } from "../../types";
 
 export type MainPageProps =
   | { isLoggedIn: false; locale: string }

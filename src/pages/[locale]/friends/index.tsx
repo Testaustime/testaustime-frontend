@@ -10,8 +10,8 @@ import { ApiFriendsResponseItem } from "../../../hooks/useFriends";
 import { ApiUsersUserActivityDataResponseItem } from "../../../hooks/useActivityData";
 import { addDays, startOfDay } from "date-fns";
 import { sumBy } from "../../../utils/arrayUtils";
-import { ApiUsersUserResponse } from "../../../hooks/useAuthentication";
 import { PageLayout } from "../../../components/PageLayout";
+import { ApiUsersUserResponse } from "../../../types";
 
 export type FriendPageProps = {
   friendCodePlaceholder: string;
