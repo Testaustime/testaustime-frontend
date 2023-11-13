@@ -8,11 +8,5 @@ export default {
   decorators: [withSetup],
 } as Meta;
 
-const Template: StoryFn = () => (
-  <SmoothChartsSelector
-    texts={{
-      smoothCharts: "Smooth charts",
-    }}
-  />
-);
+const Template: StoryFn = () => <SmoothChartsSelector />;
 export const Default = Template.bind({});

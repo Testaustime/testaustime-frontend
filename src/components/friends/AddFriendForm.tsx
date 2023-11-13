@@ -9,19 +9,10 @@ import { showNotification } from "@mantine/notifications";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "../../axios";
 import { isAxiosError } from "axios";
+import { useTranslation } from "react-i18next";
 
 export type AddFriendFormProps = {
   friendCodePlaceholder: string;
-  texts: {
-    friendCodeRequired: string;
-    friendCodeInvalid: string;
-    error: string;
-    alreadyFriends: string;
-    notFound: string;
-    unknownError: string;
-    friendCode: string;
-    add: string;
-  };
 };
 
 export interface ApiFriendsAddResponse {
@@ -41,8 +32,8 @@ export enum AddFriendError {
 
 export const AddFriendForm = ({
   friendCodePlaceholder,
-  texts,
 }: AddFriendFormProps) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const params = useSearchParams();
   const urlFriendCode = params.get("code");
@@ -81,8 +72,8 @@ export const AddFriendForm = ({
         initialValues={{ friendCode: urlFriendCode ?? "" }}
         validationSchema={Yup.object().shape({
           friendCode: Yup.string()
-            .required(texts.friendCodeRequired)
-            .matches(/^ttfc_[a-zA-Z0-9]{24}$/, texts.friendCodeRequired),
+            .required(t("friends.friendCodeRequired"))
+            .matches(/^ttfc_[a-zA-Z0-9]{24}$/, t("friends.friendCodeInvalid")),
         })}
         onSubmit={async ({ friendCode }, { resetForm }) => {
           const result = await addFriend(friendCode);
@@ -91,11 +82,13 @@ export const AddFriendForm = ({
             router.refresh();
           } else {
             showNotification({
-              title: texts.error,
+              title: t("error"),
               message: {
-                [AddFriendError.AlreadyFriends]: texts.alreadyFriends,
-                [AddFriendError.NotFound]: texts.notFound,
-                [AddFriendError.UnknownError]: texts.unknownError,
+                [AddFriendError.AlreadyFriends]: t(
+                  "friends.error.alreadyFriends",
+                ),
+                [AddFriendError.NotFound]: t("friends.error.notFound"),
+                [AddFriendError.UnknownError]: t("unknownErrorOccurred"),
               }[result],
               color: "red",
             });
@@ -108,12 +101,12 @@ export const AddFriendForm = ({
               <FormikTextInput
                 leftSection={<PersonIcon />}
                 name="friendCode"
-                label={texts.friendCode}
+                label={t("friends.friendCode")}
                 placeholder={friendCodePlaceholder}
                 style={{ flex: 1 }}
               />
               <Button type="submit" mt={27.5}>
-                {texts.add}
+                {t("friends.add")}
               </Button>
             </Group>
           </Form>

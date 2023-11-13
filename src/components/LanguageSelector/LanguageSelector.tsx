@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import { useSettings } from "../../hooks/useSettings";
 import { Locales } from "../../i18next";
+import { useTranslation } from "react-i18next";
 
 export type LanguageSelectorType = "segmented" | "dropdown";
 
@@ -17,9 +18,6 @@ export type LanguageSelectorProps = {
   type?: LanguageSelectorType;
   showLabel?: boolean;
   size?: MantineSize;
-  texts: {
-    label: string;
-  };
 };
 
 export const LanguageSelector = ({
@@ -27,9 +25,9 @@ export const LanguageSelector = ({
   type = "segmented",
   showLabel = true,
   size,
-  texts,
 }: LanguageSelectorProps) => {
   const { setLanguage } = useSettings();
+  const { t } = useTranslation();
 
   const data = [
     { label: "🇺🇸 English", value: "en" },
@@ -60,7 +58,7 @@ export const LanguageSelector = ({
 
   return showLabel ? (
     <Group>
-      {<Text>{texts.label}</Text>}
+      {<Text>{t("profile.settings.language")}</Text>}
       {Component}
     </Group>
   ) : (

@@ -2,7 +2,7 @@
 
 import { ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { Sun, Moon } from "react-feather";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 
 export interface ThemeToggleProps {

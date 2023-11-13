@@ -6,21 +6,12 @@ import { useRouter } from "next/navigation";
 import axios from "../../../axios";
 import ConfirmAccountDeletionModal from "../../../components/ConfirmAccountDeletionModal";
 import { logOut } from "../../../utils/authUtils";
+import { useTranslation } from "react-i18next";
 
-export const DeleteAccountButton = ({
-  username,
-  texts,
-}: {
-  username: string;
-  texts: {
-    button: string;
-    modal: {
-      title: string;
-    };
-  };
-}) => {
+export const DeleteAccountButton = ({ username }: { username: string }) => {
   const modals = useModals();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const deleteAccount = async (password: string) => {
     await axios.delete("/users/@me/delete", {
@@ -36,7 +27,7 @@ export const DeleteAccountButton = ({
 
   const openDeleteAccountModal = () => {
     const id = modals.openModal({
-      title: texts.modal.title,
+      title: t("profile.deleteAccount.modal.title"),
       size: "xl",
       children: (
         <ConfirmAccountDeletionModal
@@ -66,7 +57,7 @@ export const DeleteAccountButton = ({
         openDeleteAccountModal();
       }}
     >
-      {texts.button}
+      {t("profile.deleteAccount.button")}
     </ButtonWithConfirmation>
   );
 };

@@ -11,27 +11,17 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
 import { showNotification } from "@mantine/notifications";
 import { ApiAuthLoginResponse } from "../../pages/api/auth/login";
+import { useTranslation } from "react-i18next";
 
 const allowedRedirects = ["/profile", "/friends", "/leaderboards"];
 
-export type LoginFormProps = {
-  texts: {
-    username: string;
-    password: string;
-    loginButton: string;
-    error: string;
-    invalidCredentials: string;
-    usernameRequired: string;
-    passwordRequired: string;
-  };
-};
-
-export const LoginForm = ({ texts }: LoginFormProps) => {
+export const LoginForm = () => {
   const [visible, setVisible] = useState(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const unsafeRedirect = String(searchParams.get("redirect") ?? "/");
+  const { t } = useTranslation();
 
   return (
     <Formik
@@ -40,8 +30,12 @@ export const LoginForm = ({ texts }: LoginFormProps) => {
         password: "",
       }}
       validationSchema={Yup.object().shape({
-        username: Yup.string().required(texts.usernameRequired),
-        password: Yup.string().required(texts.passwordRequired),
+        username: Yup.string().required(
+          t("loginPage.validation.username.required"),
+        ),
+        password: Yup.string().required(
+          t("loginPage.validation.password.required"),
+        ),
       })}
       onSubmit={async (values) => {
         setVisible(true);
@@ -61,9 +55,9 @@ export const LoginForm = ({ texts }: LoginFormProps) => {
           );
         } catch (e) {
           showNotification({
-            title: texts.error,
+            title: t("error"),
             color: "red",
-            message: texts.invalidCredentials,
+            message: t("loginPage.invalidCredentials"),
           });
         }
         setVisible(false);
@@ -73,18 +67,18 @@ export const LoginForm = ({ texts }: LoginFormProps) => {
         <Form style={{ width: "100%" }}>
           <FormikTextInput
             name="username"
-            label={texts.username}
+            label={t("loginPage.username")}
             style={{ width: "100%" }}
           />
           <FormikPasswordInput
             name="password"
-            label={texts.password}
+            label={t("loginPage.password")}
             mt={15}
             style={{ width: "100%" }}
           />
           <Button mt={20} type="submit">
             <LoadingOverlay visible={visible} />
-            {texts.loginButton}
+            {t("loginPage.loginButton")}
           </Button>
         </Form>
       )}

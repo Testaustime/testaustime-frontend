@@ -14,17 +14,7 @@ export default async function LoginPage({
       <Title order={1} mb={20}>
         {t("loginPage.title")}
       </Title>
-      <LoginForm
-        texts={{
-          username: t("loginPage.username"),
-          password: t("loginPage.password"),
-          error: t("error"),
-          invalidCredentials: t("loginPage.invalidCredentials"),
-          loginButton: t("loginPage.loginButton"),
-          passwordRequired: t("loginPage.validation.password.required"),
-          usernameRequired: t("loginPage.validation.username.required"),
-        }}
-      />
+      <LoginForm />
     </Group>
   );
 }

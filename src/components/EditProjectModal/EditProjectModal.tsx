@@ -3,22 +3,19 @@ import { FormikTextInput } from "../forms/FormikTextInput";
 import { Button, Group } from "@mantine/core";
 import axios from "../../axios";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export type EditProjectModalProps = {
   projectName: string;
   onClose: () => void;
-  texts: {
-    projectName: string;
-    save: string;
-  };
 };
 
 export const EditProjectModal = ({
   projectName,
   onClose,
-  texts,
 }: EditProjectModalProps) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -39,9 +36,12 @@ export const EditProjectModal = ({
       >
         {() => (
           <Form>
-            <FormikTextInput name="projectName" label={texts.projectName} />
+            <FormikTextInput
+              name="projectName"
+              label={t("editProject.projectName")}
+            />
             <Group justify="right" mt="md">
-              <Button type="submit">{texts.save}</Button>
+              <Button type="submit">{t("editProject.save")}</Button>
             </Group>
           </Form>
         )}

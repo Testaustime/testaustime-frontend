@@ -8,21 +8,7 @@ export interface ApiAuthRegenerateResponse {
   token: string;
 }
 
-export const AuthTokenField = ({
-  token,
-  texts,
-}: {
-  token: string;
-  texts: {
-    copy: string;
-    copied: string;
-    hide: string;
-    reveal: string;
-    regenerate: string;
-    error: string;
-    unknownErrorOccurred: string;
-  };
-}) => {
+export const AuthTokenField = ({ token }: { token: string }) => {
   const regenerateToken = async () => {
     try {
       const { data } = await axios.post<ApiAuthRegenerateResponse>(
@@ -43,7 +29,6 @@ export const AuthTokenField = ({
       regenerate={regenerateToken}
       censorable
       revealLength={4}
-      texts={texts}
     />
   );
 };

@@ -3,29 +3,20 @@
 import { Group, SegmentedControl, Text } from "@mantine/core";
 import { useSettings } from "../../hooks/useSettings";
 import { DayRange } from "../../utils/dateUtils";
+import { useTranslation } from "react-i18next";
 
-export const DefaultDayRangeSelector = ({
-  texts,
-}: {
-  texts: {
-    label: string;
-    options: {
-      week: string;
-      month: string;
-      all: string;
-    };
-  };
-}) => {
+export const DefaultDayRangeSelector = () => {
   const { defaultDayRange, setDefaultDayRange } = useSettings();
+  const { t } = useTranslation();
 
   return (
     <Group>
-      <Text>{texts.label}</Text>
+      <Text>{t("profile.settings.defaultDayRange")}</Text>
       <SegmentedControl
         data={[
-          { label: texts.options.week, value: "week" },
-          { label: texts.options.month, value: "month" },
-          { label: texts.options.all, value: "all" },
+          { label: t("dashboard.timeFilters.week"), value: "week" },
+          { label: t("dashboard.timeFilters.month"), value: "month" },
+          { label: t("dashboard.timeFilters.all"), value: "all" },
         ]}
         value={defaultDayRange}
         onChange={(value) => {

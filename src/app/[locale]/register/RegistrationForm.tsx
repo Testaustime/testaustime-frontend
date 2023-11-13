@@ -11,6 +11,7 @@ import { showNotification } from "@mantine/notifications";
 import { FormikTextInput } from "../../../components/forms/FormikTextInput";
 import { FormikPasswordInput } from "../../../components/forms/FormikPasswordInput";
 import { Button, LoadingOverlay } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 
 export enum RegistrationResult {
   Success,
@@ -24,38 +25,10 @@ export interface ApiAuthRegisterResponse {
   registration_time: string;
 }
 
-type RegistrationFormProps = {
-  texts: {
-    username: string;
-    password: string;
-    passwordConfirm: string;
-    registerButton: string;
-    errors: {
-      username: {
-        required: string;
-        min: string;
-        max: string;
-        regex: string;
-      };
-      password: {
-        required: string;
-        min: string;
-        max: string;
-      };
-      passwordConfirm: {
-        required: string;
-        noMatch: string;
-      };
-      error: string;
-      rateLimited: string;
-      unknown: string;
-    };
-  };
-};
-
-export const RegistrationForm = ({ texts }: RegistrationFormProps) => {
+export const RegistrationForm = () => {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
+  const { t } = useTranslation();
 
   const register = async (username: string, password: string) => {
     try {
@@ -84,17 +57,26 @@ export const RegistrationForm = ({ texts }: RegistrationFormProps) => {
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string()
-          .required(texts.errors.username.required)
-          .min(2, texts.errors.username.min)
-          .max(32, texts.errors.username.max)
-          .matches(/^[a-zA-Z0-9]*$/, texts.errors.username.regex),
+          .required(t("registrationPage.validation.username.required"))
+          .min(2, t("registrationPage.validation.username.min", { min: 2 }))
+          .max(32, t("registrationPage.validation.username.max", { max: 32 }))
+          .matches(
+            /^[a-zA-Z0-9]*$/,
+            t("registrationPage.validation.username.regex"),
+          ),
         password: Yup.string()
-          .required(texts.errors.password.required)
-          .min(8, texts.errors.password.min)
-          .max(128, texts.errors.password.max),
+          .required(t("registrationPage.validation.password.required"))
+          .min(8, t("registrationPage.validation.password.min", { min: 8 }))
+          .max(
+            128,
+            t("registrationPage.validation.password.max", { max: 128 }),
+          ),
         passwordConfirmation: Yup.string()
-          .required(texts.errors.passwordConfirm.required)
-          .oneOf([Yup.ref("password")], texts.errors.passwordConfirm.noMatch),
+          .required(t("registrationPage.validation.passwordConfirm.required"))
+          .oneOf(
+            [Yup.ref("password")],
+            t("registrationPage.validation.passwordConfirm.noMatch"),
+          ),
       })}
       onSubmit={(values) => {
         setVisible(true);
@@ -106,9 +88,9 @@ export const RegistrationForm = ({ texts }: RegistrationFormProps) => {
                 break;
               case RegistrationResult.RateLimited:
                 showNotification({
-                  title: texts.errors.error,
+                  title: t("error"),
                   color: "red",
-                  message: texts.errors.rateLimited,
+                  message: t("registrationPage.rateLimited"),
                 });
                 setVisible(false);
                 break;
@@ -116,9 +98,9 @@ export const RegistrationForm = ({ texts }: RegistrationFormProps) => {
           })
           .catch(() => {
             showNotification({
-              title: texts.errors.error,
+              title: t("error"),
               color: "red",
-              message: texts.errors.unknown,
+              message: t("unknownErrorOccurred"),
               autoClose: false,
             });
             setVisible(false);
@@ -127,16 +109,23 @@ export const RegistrationForm = ({ texts }: RegistrationFormProps) => {
     >
       {() => (
         <Form>
-          <FormikTextInput name="username" label={texts.username} />
-          <FormikPasswordInput name="password" label={texts.password} mt={15} />
+          <FormikTextInput
+            name="username"
+            label={t("registrationPage.username")}
+          />
+          <FormikPasswordInput
+            name="password"
+            label={t("registrationPage.password")}
+            mt={15}
+          />
           <FormikPasswordInput
             name="passwordConfirmation"
-            label={texts.passwordConfirm}
+            label={t("registrationPage.passwordConfirm")}
             mt={15}
           />
           <Button mt={20} type="submit">
             <LoadingOverlay visible={visible} />
-            {texts.registerButton}
+            {t("registrationPage.registerButton")}
           </Button>
         </Form>
       )}

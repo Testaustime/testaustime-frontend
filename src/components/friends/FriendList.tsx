@@ -15,6 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import { startOfDay } from "date-fns";
 import { normalizeProgrammingLanguageName } from "../../utils/programmingLanguagesUtils";
+import { useTranslation } from "react-i18next";
 
 export interface ApiFriendsResponseItem {
   username: string;
@@ -30,75 +31,14 @@ export type FriendListProps = {
   ownTimeCoded?: number;
   username: string;
   locale: string;
-  texts: {
-    index: string;
-    friendName: string;
-    timeCoded: string;
-    showDashboard: string;
-    unfriend: string;
-    friendDashboardTitle: string;
-    error: string;
-    errorRemovingFriend: string;
-    dashboard: {
-      installPrompt: string;
-      greeting: string;
-      statisticsTitle: string;
-      projectsLabel: string;
-      noProjectsPlaceholder: string;
-      projectsFilterPlaceholder: string;
-      timeFilters: {
-        week: string;
-        month: string;
-        all: string;
-      };
-      timePerDay: string;
-      noDataTitle: string;
-      timePerProject: string;
-      languagesTitle: string;
-      projectsTitle: string;
-      totalTime: string;
-      editProjectTitle: string;
-      unknownProject: string;
-      editModal: {
-        projectName: string;
-        save: string;
-      };
-    };
-  };
 };
 
 const FriendDashboardModal = ({
   username,
   locale,
-  texts,
 }: {
   username: string;
   locale: string;
-  texts: {
-    installPrompt: string;
-    greeting: string;
-    statisticsTitle: string;
-    projectsLabel: string;
-    noProjectsPlaceholder: string;
-    projectsFilterPlaceholder: string;
-    timeFilters: {
-      week: string;
-      month: string;
-      all: string;
-    };
-    timePerDay: string;
-    noDataTitle: string;
-    timePerProject: string;
-    languagesTitle: string;
-    projectsTitle: string;
-    totalTime: string;
-    editProjectTitle: string;
-    unknownProject: string;
-    editModal: {
-      projectName: string;
-      save: string;
-    };
-  };
 }) => {
   const [allEntries, setAllEntries] = useState<ActivityDataEntry[]>();
 
@@ -132,7 +72,6 @@ const FriendDashboardModal = ({
       username={username}
       isFrontPage={false}
       locale={locale}
-      texts={texts}
     />
   );
 };
@@ -142,8 +81,8 @@ export const FriendList = ({
   ownTimeCoded,
   username,
   locale,
-  texts,
 }: FriendListProps) => {
+  const { t } = useTranslation();
   const modals = useModals();
   const router = useRouter();
 
@@ -171,18 +110,12 @@ export const FriendList = ({
 
   const openFriendDashboard = (friendUsername: string) => {
     modals.openModal({
-      title: texts.friendDashboardTitle.replace(
-        // TODO: Get rid of this replacement
-        "{{USERNAME_REPLACE_ME}}",
-        friendUsername,
-      ),
+      title: t("friends.friendDashboardTitle", {
+        username: friendUsername,
+      }),
       size: "calc(800px + 10%)",
       children: (
-        <FriendDashboardModal
-          username={friendUsername}
-          locale={locale}
-          texts={texts.dashboard}
-        />
+        <FriendDashboardModal username={friendUsername} locale={locale} />
       ),
       styles: {
         title: {
@@ -198,9 +131,9 @@ export const FriendList = ({
     <Table>
       <Table.Thead>
         <Table.Tr>
-          <Table.Th>{texts.index}</Table.Th>
-          <Table.Th>{texts.friendName}</Table.Th>
-          <Table.Th>{texts.timeCoded}</Table.Th>
+          <Table.Th>{t("friends.index")}</Table.Th>
+          <Table.Th>{t("friends.friendName")}</Table.Th>
+          <Table.Th>{t("friends.timeCoded", { days: 30 })}</Table.Th>
           <Table.Th />
           <Table.Th />
         </Table.Tr>
@@ -225,7 +158,7 @@ export const FriendList = ({
                       openFriendDashboard(username);
                     }}
                   >
-                    {texts.showDashboard}
+                    {t("friends.showDashboard")}
                   </Button>
                 )}
               </Table.Td>
@@ -242,14 +175,14 @@ export const FriendList = ({
                         })
                         .catch(() => {
                           showNotification({
-                            title: texts.error,
+                            title: t("error"),
                             color: "red",
-                            message: texts.errorRemovingFriend,
+                            message: t("friends.errorRemovingFriend"),
                           });
                         });
                     }}
                   >
-                    {texts.unfriend}
+                    {t("friends.unfriend")}
                   </Button>
                 )}
               </Table.Td>

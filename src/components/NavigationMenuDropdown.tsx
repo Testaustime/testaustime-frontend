@@ -5,24 +5,19 @@ import { ExitIcon, GearIcon, MixIcon, PersonIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { logOut } from "../utils/authUtils";
+import { useTranslation } from "react-i18next";
 
 export type NavigationMenuDropdownProps = {
   username: string | undefined;
-  texts: {
-    account: string;
-    settings: string;
-    extensions: string;
-    logOut: string;
-  };
   locale: string;
 };
 
 export const NavigationMenuDropdown = ({
   username,
-  texts,
   locale,
 }: NavigationMenuDropdownProps) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const logOutAndRedirect = async () => {
     await logOut();
@@ -41,14 +36,14 @@ export const NavigationMenuDropdown = ({
         </Button>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Label>{texts.account}</Menu.Label>
+        <Menu.Label>{t("navbar.account")}</Menu.Label>
         <Menu.Item
           component={Link}
           href={`/${locale}/profile`}
           leftSection={<GearIcon />}
           prefetch={false}
         >
-          {texts.settings}
+          {t("navbar.settings")}
         </Menu.Item>
         <Divider />
         <Menu.Item
@@ -57,7 +52,7 @@ export const NavigationMenuDropdown = ({
           leftSection={<MixIcon />}
           prefetch={false}
         >
-          {texts.extensions}
+          {t("navbar.extensions")}
         </Menu.Item>
         <Divider />
         <Menu.Item
@@ -67,7 +62,7 @@ export const NavigationMenuDropdown = ({
             logOutAndRedirect().catch(console.error);
           }}
         >
-          {texts.logOut}
+          {t("navbar.logOut")}
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

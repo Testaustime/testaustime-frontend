@@ -4,20 +4,15 @@ import { useState } from "react";
 import ButtonWithConfirmation from "../../../components/ButtonWithConfirmation";
 import axios from "../../../axios";
 import { showNotification } from "@mantine/notifications";
+import { useTranslation } from "react-i18next";
 
 export const ProfileVisibilityToggle = ({
   isPublicInitial,
-  texts,
 }: {
   isPublicInitial: boolean;
-  texts: {
-    makePrivate: string;
-    makePublic: string;
-    error: string;
-    unknownErrorOccurred: string;
-  };
 }) => {
   const [isPublic, setIsPublic] = useState(isPublicInitial);
+  const { t } = useTranslation();
 
   const changeAccountVisibility = async (visibility: boolean) => {
     await axios.post("/account/settings", {
@@ -37,14 +32,16 @@ export const ProfileVisibilityToggle = ({
           })
           .catch(() => {
             showNotification({
-              title: texts.error,
+              title: t("error"),
               color: "red",
-              message: texts.unknownErrorOccurred,
+              message: t("unknownErrorOccurred"),
             });
           });
       }}
     >
-      {isPublic ? texts.makePrivate : texts.makePublic}
+      {isPublic
+        ? t("profile.accountVisibility.makePrivate")
+        : t("profile.accountVisibility.makePublic")}
     </ButtonWithConfirmation>
   );
 };

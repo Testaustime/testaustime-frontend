@@ -41,16 +41,7 @@ export const Navigation = ({
               >
                 {t("navbar.leaderboards")}
               </Anchor>
-              <NavigationMenuDropdown
-                username={username}
-                texts={{
-                  account: t("navbar.account"),
-                  settings: t("navbar.settings"),
-                  extensions: t("navbar.extensions"),
-                  logOut: t("navbar.logOut"),
-                }}
-                locale={locale}
-              />
+              <NavigationMenuDropdown username={username} locale={locale} />
             </>
           ) : (
             <>

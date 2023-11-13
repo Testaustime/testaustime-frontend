@@ -9,6 +9,7 @@ import { showNotification } from "@mantine/notifications";
 import axios from "../../axios";
 import { isAxiosError } from "axios";
 import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
+import { useTranslation } from "react-i18next";
 
 export enum PasswordChangeResult {
   Success,
@@ -16,37 +17,8 @@ export enum PasswordChangeResult {
   NewPasswordInvalid,
 }
 
-export type ChangePasswordFormProps = {
-  texts: {
-    submit: string;
-    oldPassword: {
-      title: string;
-      required: string;
-      tooShort: string;
-      tooLong: string;
-    };
-    newPassword: {
-      title: string;
-      required: string;
-      tooShort: string;
-      tooLong: string;
-    };
-    newPasswordConfirm: {
-      title: string;
-      required: string;
-      noMatch: string;
-    };
-    success: {
-      title: string;
-      message: string;
-    };
-    oldIncorrect: string;
-    newInvalid: string;
-    error: string;
-  };
-};
-
-export const ChangePasswordForm = ({ texts }: ChangePasswordFormProps) => {
+export const ChangePasswordForm = () => {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
 
   const changePassword = async (oldPassword: string, newPassword: string) => {
@@ -78,16 +50,19 @@ export const ChangePasswordForm = ({ texts }: ChangePasswordFormProps) => {
       }}
       validationSchema={Yup.object().shape({
         oldPassword: Yup.string()
-          .required(texts.oldPassword.required)
-          .min(8, texts.oldPassword.tooShort)
-          .max(128, texts.oldPassword.tooLong),
+          .required(t("profile.changePassword.old.required"))
+          .min(8, t("profile.changePassword.old.tooShort", { min: 8 }))
+          .max(128, t("profile.changePassword.old.tooLong", { max: 128 })),
         newPassword: Yup.string()
-          .required(texts.newPassword.required)
-          .min(8, texts.newPassword.tooShort)
-          .max(128, texts.newPassword.tooLong),
+          .required(t("profile.changePassword.new.required"))
+          .min(8, t("profile.changePassword.new.tooShort", { min: 8 }))
+          .max(128, t("profile.changePassword.new.tooLong", { max: 128 })),
         newPasswordConfirmation: Yup.string()
-          .required(texts.newPasswordConfirm.required)
-          .oneOf([Yup.ref("newPassword")], texts.newPasswordConfirm.noMatch),
+          .required(t("profile.changePassword.confirm.required"))
+          .oneOf(
+            [Yup.ref("newPassword")],
+            t("profile.changePassword.confirm.noMatch"),
+          ),
       })}
       onSubmit={async (values, helpers) => {
         const result = await changePassword(
@@ -96,18 +71,22 @@ export const ChangePasswordForm = ({ texts }: ChangePasswordFormProps) => {
         );
         if (result === PasswordChangeResult.Success) {
           showNotification({
-            title: texts.success.title,
+            title: t("profile.changePassword.success.title"),
             color: "green",
-            message: texts.success.message,
+            message: t("profile.changePassword.success.message"),
           });
           helpers.resetForm();
         } else {
           showNotification({
-            title: texts.error,
+            title: t("error"),
             color: "red",
             message: {
-              [PasswordChangeResult.OldPasswordIncorrect]: texts.oldIncorrect,
-              [PasswordChangeResult.NewPasswordInvalid]: texts.newInvalid,
+              [PasswordChangeResult.OldPasswordIncorrect]: t(
+                "profile.changePassword.old.incorrect",
+              ),
+              [PasswordChangeResult.NewPasswordInvalid]: t(
+                "profile.changePassword.new.invalid",
+              ),
             }[result],
           });
         }
@@ -118,21 +97,21 @@ export const ChangePasswordForm = ({ texts }: ChangePasswordFormProps) => {
         <Form>
           <FormikPasswordInput
             name="oldPassword"
-            label={texts.oldPassword.title}
+            label={t("profile.changePassword.oldPassword")}
           />
           <FormikPasswordInput
             name="newPassword"
-            label={texts.newPassword.title}
+            label={t("profile.changePassword.newPassword")}
             mt={15}
           />
           <FormikPasswordInput
             name="newPasswordConfirmation"
-            label={texts.newPasswordConfirm.title}
+            label={t("profile.changePassword.newPasswordConfirm")}
             mt={15}
           />
           <Button type="submit" mt={20}>
             <LoadingOverlay visible={visible} />
-            {texts.submit}
+            {t("profile.changePassword.submit")}
           </Button>
         </Form>
       )}

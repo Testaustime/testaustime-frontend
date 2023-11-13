@@ -64,16 +64,6 @@ export default async function ProfilePage({
     return redirect("/login");
   }
 
-  const tokenFieldTexts = {
-    copy: t("copyToken.copy"),
-    copied: t("copyToken.copied"),
-    hide: t("copyToken.hide"),
-    reveal: t("copyToken.reveal"),
-    regenerate: t("copyToken.regenerate"),
-    error: t("error"),
-    unknownErrorOccurred: t("unknownErrorOccurred"),
-  };
-
   return (
     <div>
       <Title order={2}>{t("profile.title")}</Title>
@@ -89,35 +79,7 @@ export default async function ProfilePage({
       <Stack mt={40} gap={15}>
         <Title order={2}>{t("profile.account.title")}</Title>
         <Title order={3}>{t("profile.changePassword.title")}</Title>
-        <ChangePasswordForm
-          texts={{
-            oldPassword: {
-              title: t("profile.changePassword.oldPassword"),
-              required: t("profile.changePassword.old.required"),
-              tooShort: t("profile.changePassword.old.tooShort", { min: 8 }),
-              tooLong: t("profile.changePassword.old.tooLong", { max: 128 }),
-            },
-            newPassword: {
-              title: t("profile.changePassword.newPassword"),
-              required: t("profile.changePassword.new.required"),
-              tooShort: t("profile.changePassword.new.tooShort", { min: 8 }),
-              tooLong: t("profile.changePassword.new.tooLong", { max: 128 }),
-            },
-            newPasswordConfirm: {
-              required: t("profile.changePassword.confirm.required"),
-              noMatch: t("profile.changePassword.confirm.noMatch"),
-              title: t("profile.changePassword.newPasswordConfirm"),
-            },
-            success: {
-              title: t("profile.changePassword.success.title"),
-              message: t("profile.changePassword.success.message"),
-            },
-            oldIncorrect: t("profile.changePassword.old.incorrect"),
-            newInvalid: t("profile.changePassword.new.invalid"),
-            error: t("error"),
-            submit: t("profile.changePassword.submit"),
-          }}
-        />
+        <ChangePasswordForm />
         <WithTooltip
           tooltipLabel={
             <Text>{t("profile.accountVisibility.description")}</Text>
@@ -126,27 +88,11 @@ export default async function ProfilePage({
           <Title order={3}>{t("profile.accountVisibility.title")}</Title>
         </WithTooltip>
         <div>
-          <ProfileVisibilityToggle
-            isPublicInitial={data.is_public}
-            texts={{
-              makePrivate: t("profile.accountVisibility.makePrivate"),
-              makePublic: t("profile.accountVisibility.makePublic"),
-              error: t("error"),
-              unknownErrorOccurred: t("unknownErrorOccurred"),
-            }}
-          />
+          <ProfileVisibilityToggle isPublicInitial={data.is_public} />
         </div>
         <Title order={3}>{t("profile.deleteAccount.title")}</Title>
         <div>
-          <DeleteAccountButton
-            username={data.username}
-            texts={{
-              button: t("profile.deleteAccount.button"),
-              modal: {
-                title: t("profile.deleteAccount.modal.title"),
-              },
-            }}
-          />
+          <DeleteAccountButton username={data.username} />
         </div>
       </Stack>
       <Stack mt={40} gap={15}>
@@ -162,7 +108,7 @@ export default async function ProfilePage({
         >
           <Title order={3}>{t("profile.authenticationToken.title")}</Title>
         </WithTooltip>
-        <AuthTokenField token={token} texts={tokenFieldTexts} />
+        <AuthTokenField token={token} />
       </Stack>
       <Stack mt={40} gap={15}>
         <WithTooltip
@@ -170,31 +116,13 @@ export default async function ProfilePage({
         >
           <Title order={3}>{t("profile.friendCode.title")}</Title>
         </WithTooltip>
-        <FriendCodeField friendCode={friendCode} texts={tokenFieldTexts} />
+        <FriendCodeField friendCode={friendCode} />
       </Stack>
       <Stack mt={40} gap={15}>
         <Title order={2}>{t("profile.settings.title")}</Title>
-        <SmoothChartsSelector
-          texts={{
-            smoothCharts: t("profile.settings.smoothCharts"),
-          }}
-        />
-        <LanguageSelector
-          locale={locale}
-          texts={{
-            label: t("profile.settings.language"),
-          }}
-        />
-        <DefaultDayRangeSelector
-          texts={{
-            label: t("profile.settings.defaultDayRange"),
-            options: {
-              week: t("dashboard.timeFilters.week"),
-              month: t("dashboard.timeFilters.month"),
-              all: t("dashboard.timeFilters.all"),
-            },
-          }}
-        />
+        <SmoothChartsSelector />
+        <LanguageSelector locale={locale} />
+        <DefaultDayRangeSelector />
       </Stack>
     </div>
   );

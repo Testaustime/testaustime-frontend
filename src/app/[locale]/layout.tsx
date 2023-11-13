@@ -12,6 +12,7 @@ import initTranslations from "../i18n";
 import axios from "../../axios";
 import "@mantine/notifications/styles.css";
 import { ApiUsersUserResponse } from "../../types";
+import TranslationsProvider from "../../components/TranslationsProvider";
 
 export const metadata = {
   title: "Testaustime",
@@ -29,7 +30,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  const { t } = await initTranslations(locale, ["common"]);
+  const { t, options } = await initTranslations(locale, ["common"]);
 
   const colorSchemeUnchecked = cookies().get(colorSchemeCookieName)?.value;
   const colorScheme = isMantineColorScheme(colorSchemeUnchecked)
@@ -55,65 +56,76 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <MantineProvider
-          theme={{
-            fontFamily: "Ubuntu, sans-serif",
-            white: "#eee",
-            black: "#121212",
-            colors: {
-              blue: [
-                "#1D357F",
-                "#28408A",
-                "#667bc4",
-                "#3D55A0",
-                "#5084cc",
-                "#536AB7",
-                "#5E74C2",
-                "#667bc4",
-                "#6275bc",
-                "#7E94E3",
-              ],
-            },
-            headings: {
-              fontFamily: "Poppins, sans-serif",
-              fontWeight: "800",
-              sizes: {
-                h1: { fontSize: "1.9rem" },
-                h2: { fontSize: "1.65rem" },
-                h3: { fontSize: "1.4rem" },
-              },
-            },
-            breakpoints: {
-              md: "53.75em",
-            },
-          }}
-          defaultColorScheme={"dark"}
+        <TranslationsProvider
+          locale={locale}
+          namespaces={
+            options.ns
+              ? typeof options.ns === "string"
+                ? [options.ns]
+                : [...options.ns]
+              : ["common"]
+          }
         >
-          <Content colorScheme={colorScheme}>
-            <Group className={styles.container}>
-              <div className={styles.innerContainer}>
-                <div>
-                  <Group justify="space-between" mb={50}>
-                    <Link
-                      href={"/" + locale}
-                      className={styles.testaustimeTitle}
-                    >
-                      Testaustime
-                    </Link>
-                    <Navigation
-                      isLoggedIn={!!token}
-                      username={username}
-                      t={t}
-                      locale={locale}
-                    />
-                  </Group>
-                  {children}
+          <MantineProvider
+            theme={{
+              fontFamily: "Ubuntu, sans-serif",
+              white: "#eee",
+              black: "#121212",
+              colors: {
+                blue: [
+                  "#1D357F",
+                  "#28408A",
+                  "#667bc4",
+                  "#3D55A0",
+                  "#5084cc",
+                  "#536AB7",
+                  "#5E74C2",
+                  "#667bc4",
+                  "#6275bc",
+                  "#7E94E3",
+                ],
+              },
+              headings: {
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: "800",
+                sizes: {
+                  h1: { fontSize: "1.9rem" },
+                  h2: { fontSize: "1.65rem" },
+                  h3: { fontSize: "1.4rem" },
+                },
+              },
+              breakpoints: {
+                md: "53.75em",
+              },
+            }}
+            defaultColorScheme={"dark"}
+          >
+            <Content colorScheme={colorScheme}>
+              <Group className={styles.container}>
+                <div className={styles.innerContainer}>
+                  <div>
+                    <Group justify="space-between" mb={50}>
+                      <Link
+                        href={"/" + locale}
+                        className={styles.testaustimeTitle}
+                      >
+                        Testaustime
+                      </Link>
+                      <Navigation
+                        isLoggedIn={!!token}
+                        username={username}
+                        t={t}
+                        locale={locale}
+                      />
+                    </Group>
+                    {children}
+                  </div>
+                  <Footer t={t} locale={locale} />
                 </div>
-                <Footer t={t} locale={locale} />
-              </div>
-            </Group>
-          </Content>
-        </MantineProvider>
+              </Group>
+            </Content>
+          </MantineProvider>
+        </TranslationsProvider>
       </body>
     </html>
   );

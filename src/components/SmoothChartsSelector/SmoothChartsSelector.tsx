@@ -2,15 +2,11 @@
 
 import { Checkbox, Group } from "@mantine/core";
 import { useSettings } from "../../hooks/useSettings";
+import { useTranslation } from "react-i18next";
 
-export const SmoothChartsSelector = ({
-  texts,
-}: {
-  texts: {
-    smoothCharts: string;
-  };
-}) => {
+export const SmoothChartsSelector = () => {
   const { smoothCharts, setSmoothCharts } = useSettings();
+  const { t } = useTranslation();
 
   return (
     <Group>
@@ -19,7 +15,7 @@ export const SmoothChartsSelector = ({
         onChange={(e) => {
           setSmoothCharts(e.target.checked);
         }}
-        label={texts.smoothCharts}
+        label={t("profile.settings.smoothCharts")}
       />
     </Group>
   );

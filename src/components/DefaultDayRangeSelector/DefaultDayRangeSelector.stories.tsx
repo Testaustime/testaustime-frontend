@@ -8,16 +8,5 @@ export default {
   decorators: [withSetup],
 } as Meta;
 
-const Template = () => (
-  <DefaultDayRangeSelector
-    texts={{
-      label: "Default day range",
-      options: {
-        week: "Week",
-        month: "Month",
-        all: "All",
-      },
-    }}
-  />
-);
+const Template = () => <DefaultDayRangeSelector />;
 export const Default = Template.bind({});

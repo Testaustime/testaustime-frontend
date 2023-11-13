@@ -41,9 +41,6 @@ export const Footer = ({ t, locale }: { t: TFunction; locale: string }) => {
             showLabel={false}
             size="sm"
             locale={locale}
-            texts={{
-              label: t("profile.settings.language"),
-            }}
           />
         </div>
       </div>

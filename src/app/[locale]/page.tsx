@@ -72,37 +72,6 @@ export default async function MainPage({
           defaultDayRange={props.defaultDayRange}
           smoothCharts={props.smoothCharts}
           locale={locale}
-          texts={{
-            installPrompt: t("dashboard.noData.installPrompt"),
-            greeting: t("dashboard.greeting", { username: "{{USERNAME}}" }),
-            statisticsTitle: t("dashboard.statistics"),
-            projectsLabel: t("dashboard.projects"),
-            noProjectsPlaceholder: t("dashboard.noProjects"),
-            projectsFilterPlaceholder: t("dashboard.projectsFilter"),
-            timeFilters: {
-              week: t("dashboard.timeFilters.week"),
-              month: t("dashboard.timeFilters.month"),
-              all: t("dashboard.timeFilters.all"),
-            },
-            timePerDay: t("dashboard.timePerDay"),
-            noDataTitle: t("dashboard.noData.title"),
-            timePerProject: t("dashboard.timePerProject"),
-            languagesTitle: t("dashboard.languages"),
-            projectsTitle: t("dashboard.projects"),
-            totalTime: t("dashboard.totalTime", {
-              // TODO: Get rid of these replacements
-              days: "{{DAYS}}",
-              totalTime: "{{TOTAL_TIME}}",
-            }),
-            editProjectTitle: t("editProject.title", {
-              projectName: "{{PROJECT_NAME}}",
-            }),
-            unknownProject: t("dashboard.unknownProject"),
-            editModal: {
-              projectName: t("editProject.projectName"),
-              save: t("editProject.save"),
-            },
-          }}
         />
       </div>
     );

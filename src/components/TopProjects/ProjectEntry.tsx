@@ -4,38 +4,31 @@ import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useModals } from "@mantine/modals";
 import EditProjectModal from "../EditProjectModal";
 import styles from "./ProjectEntry.module.css";
+import { useTranslation } from "react-i18next";
 
 export type ProjectEntryProps = {
   name?: string | undefined | null;
   durationSeconds: number;
   allowEditing?: boolean;
-  texts: {
-    editProjectTitle: string;
-    unknownProject: string;
-    editModal: {
-      projectName: string;
-      save: string;
-    };
-  };
 };
 
 export const ProjectEntry = ({
   name,
   durationSeconds,
   allowEditing,
-  texts,
 }: ProjectEntryProps) => {
   const modals = useModals();
+
+  const { t } = useTranslation();
 
   const openModal = () => {
     if (name !== undefined && name !== null) {
       const id = modals.openModal({
-        title: texts.editProjectTitle.replace("{{PROJECT_NAME}}", name),
+        title: t("editProject.title", { projectName: name }),
         size: "lg",
         children: (
           <EditProjectModal
             projectName={name}
-            texts={texts.editModal}
             onClose={() => {
               modals.closeModal(id);
             }}
@@ -56,7 +49,7 @@ export const ProjectEntry = ({
     <li>
       <div className={styles.container}>
         <span>
-          {name || <i>{texts.unknownProject}</i>}:{" "}
+          {name || <i>{t("dashboard.unknownProject")}</i>}:{" "}
           {prettyDuration(durationSeconds)}
         </span>
         {allowEditing && (

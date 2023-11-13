@@ -8,21 +8,7 @@ export interface ApiFriendsRegenerateResponse {
   friend_code: string;
 }
 
-export const FriendCodeField = ({
-  friendCode,
-  texts,
-}: {
-  friendCode: string;
-  texts: {
-    copy: string;
-    copied: string;
-    hide: string;
-    reveal: string;
-    regenerate: string;
-    error: string;
-    unknownErrorOccurred: string;
-  };
-}) => {
+export const FriendCodeField = ({ friendCode }: { friendCode: string }) => {
   const regenerateFriendCode = async () => {
     try {
       const { data } = await axios.post<ApiFriendsRegenerateResponse>(
@@ -45,7 +31,6 @@ export const FriendCodeField = ({
       regenerate={regenerateFriendCode}
       copyFormatter={(value) => `ttfc_${value}`}
       textFormatter={(value) => `ttfc_${value}`}
-      texts={texts}
     />
   );
 };

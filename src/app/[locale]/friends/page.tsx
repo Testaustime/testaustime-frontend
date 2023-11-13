@@ -86,19 +86,7 @@ export default async function FriendPage({
       <Title order={2} mb={15}>
         {t("friends.addNewFriend")}
       </Title>
-      <AddFriendForm
-        friendCodePlaceholder={generateFriendCode()}
-        texts={{
-          friendCodeRequired: t("friends.friendCodeRequired"),
-          friendCodeInvalid: t("friends.friendCodeInvalid"),
-          error: t("error"),
-          alreadyFriends: t("friends.error.alreadyFriends"),
-          notFound: t("friends.error.notFound"),
-          unknownError: t("friends.error.unknownError"),
-          friendCode: t("friends.friendCode"),
-          add: t("friends.add"),
-        }}
-      />
+      <AddFriendForm friendCodePlaceholder={generateFriendCode()} />
       <Title order={2} mt={40}>
         {t("friends.yourFriends")}
       </Title>
@@ -107,50 +95,6 @@ export default async function FriendPage({
         ownTimeCoded={ownTimeCoded}
         username={meResponse.data.username}
         locale={locale}
-        texts={{
-          index: t("friends.index"),
-          friendName: t("friends.friendName"),
-          timeCoded: t("friends.timeCoded", { days: 30 }),
-          showDashboard: t("friends.showDashboard"),
-          error: t("error"),
-          errorRemovingFriend: t("friends.errorRemovingFriend"),
-          unfriend: t("friends.unfriend"),
-          friendDashboardTitle: t("friends.friendDashboardTitle", {
-            // TODO: Get rid of this replacement
-            username: "{{USERNAME_REPLACE_ME}}",
-          }),
-          dashboard: {
-            installPrompt: t("dashboard.noData.installPrompt"),
-            greeting: t("dashboard.greeting", { username: "{{USERNAME}}" }),
-            statisticsTitle: t("dashboard.statistics"),
-            projectsLabel: t("dashboard.projects"),
-            noProjectsPlaceholder: t("dashboard.noProjects"),
-            projectsFilterPlaceholder: t("dashboard.projectsFilter"),
-            timeFilters: {
-              week: t("dashboard.timeFilters.week"),
-              month: t("dashboard.timeFilters.month"),
-              all: t("dashboard.timeFilters.all"),
-            },
-            timePerDay: t("dashboard.timePerDay"),
-            noDataTitle: t("dashboard.noData.title"),
-            timePerProject: t("dashboard.timePerProject"),
-            languagesTitle: t("dashboard.languages"),
-            projectsTitle: t("dashboard.projects"),
-            totalTime: t("dashboard.totalTime", {
-              // TODO: Get rid of these replacements
-              days: "{{DAYS}}",
-              totalTime: "{{TOTAL_TIME}}",
-            }),
-            editProjectTitle: t("editProject.title", {
-              projectName: "{{PROJECT_NAME}}",
-            }),
-            unknownProject: t("dashboard.unknownProject"),
-            editModal: {
-              projectName: t("editProject.projectName"),
-              save: t("editProject.save"),
-            },
-          },
-        }}
       />
     </>
   );

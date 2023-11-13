@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
 import Censorable from "../Censorable";
 import { showNotification } from "@mantine/notifications";
+import { useTranslation } from "react-i18next";
 
 export interface TokenFieldProps {
   value: string;
@@ -20,15 +21,6 @@ export interface TokenFieldProps {
   revealLength?: number;
   copyFormatter?: (currentValue: string) => string;
   textFormatter?: (currentValue: string) => string;
-  texts: {
-    copy: string;
-    copied: string;
-    hide: string;
-    reveal: string;
-    regenerate: string;
-    error: string;
-    unknownErrorOccurred: string;
-  };
 }
 
 export const TokenField = ({
@@ -38,10 +30,10 @@ export const TokenField = ({
   revealLength,
   copyFormatter = (currentValue: string) => currentValue,
   textFormatter = (currentValue: string) => currentValue,
-  texts,
 }: TokenFieldProps) => {
   const { copy, copied, reset } = useClipboard({ timeout: 2000 });
   const [isTokenRevealed, toggleIsTokenRevealed] = useToggle([false, true]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     return reset;
@@ -73,7 +65,7 @@ export const TokenField = ({
           color={copied ? "green" : ""}
           leftSection={<ClipboardIcon />}
         >
-          {copied ? texts.copied : texts.copy}
+          {copied ? t("copyToken.copied") : t("copyToken.copy")}
         </Button>
         {censorable && (
           <Button
@@ -83,7 +75,7 @@ export const TokenField = ({
             }}
             leftSection={isTokenRevealed ? <EyeClosedIcon /> : <EyeOpenIcon />}
           >
-            {isTokenRevealed ? texts.hide : texts.reveal}
+            {isTokenRevealed ? t("copyToken.hide") : t("copyToken.reveal")}
           </Button>
         )}
         {regenerate && (
@@ -93,14 +85,14 @@ export const TokenField = ({
             onClick={() => {
               regenerate().catch(() => {
                 showNotification({
-                  title: texts.error,
+                  title: t("error"),
                   color: "red",
-                  message: texts.unknownErrorOccurred,
+                  message: t("unknownErrorOccurred"),
                 });
               });
             }}
           >
-            {texts.regenerate}
+            {t("copyToken.regenerate")}
           </ButtonWithConfirmation>
         )}
       </Group>

@@ -154,15 +154,6 @@ const LeaderboardsPage = (props: LeaderboardsPageProps) => {
               await regenerateInviteCode(openedLeaderboard.name)
             }
             username={props.username}
-            tokenFieldTexts={{
-              copy: t("copyToken.copy"),
-              copied: t("copyToken.copied"),
-              hide: t("copyToken.hide"),
-              reveal: t("copyToken.reveal"),
-              regenerate: t("copyToken.regenerate"),
-              error: t("error"),
-              unknownErrorOccurred: t("unknownErrorOccurred"),
-            }}
           />
         )}
       </Modal>
