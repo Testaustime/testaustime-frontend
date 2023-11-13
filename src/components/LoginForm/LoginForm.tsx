@@ -10,7 +10,7 @@ import axios from "../../axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
 import { showNotification } from "@mantine/notifications";
-import { ApiAuthLoginResponse } from "../../pages/api/auth/login";
+import { ApiAuthLoginResponse } from "../../app/api/auth/login/route";
 import { useTranslation } from "react-i18next";
 
 const allowedRedirects = ["/profile", "/friends", "/leaderboards"];

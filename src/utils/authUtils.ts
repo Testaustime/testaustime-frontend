@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import { getErrorMessage } from "../lib/errorHandling/errorHandler";
 
 export const logOut = async () => {
