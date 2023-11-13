@@ -1,21 +1,93 @@
+"use client";
+
 import { Badge, Button, Table } from "@mantine/core";
-import { LeaderboardData } from "../../hooks/useLeaderboards";
-import { useTranslation } from "next-i18next";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
+import { useModals } from "@mantine/modals";
+import { LeaderboardModal } from "./LeaderboardModal";
+import axios from "../../axios";
+import { LeaderboardData } from "../../types";
+import { useTranslation } from "react-i18next";
 
 export interface LeaderboardsListProps {
-  setOpenedLeaderboardName: (name: string) => void;
   leaderboards: LeaderboardData[];
   username: string;
 }
 
 export const LeaderboardsList = ({
-  setOpenedLeaderboardName,
   leaderboards,
   username,
 }: LeaderboardsListProps) => {
+  const modals = useModals();
   const { t } = useTranslation();
+
+  const openLeaderboard = (leaderboardName: string) => {
+    const openedLeaderboard = leaderboards.find(
+      (l) => l.name === leaderboardName,
+    );
+    if (openedLeaderboard === undefined) return;
+
+    const adminUsernames = openedLeaderboard.members
+      .filter((m) => m.admin)
+      .map((m) => m.username);
+    const isAdmin = adminUsernames.includes(username);
+
+    const id = modals.openModal({
+      title: openedLeaderboard.name,
+      withCloseButton: true,
+      size: "xl",
+      styles: {
+        title: {
+          fontSize: "2rem",
+          marginBlock: "0.5rem",
+          fontWeight: "bold",
+        },
+      },
+      children: (
+        <LeaderboardModal
+          leaveLeaderboard={async () => {
+            await axios.post(
+              `/leaderboards/${openedLeaderboard.name}/leave`,
+              {},
+            );
+
+            modals.closeModal(id);
+          }}
+          leaderboard={openedLeaderboard}
+          deleteLeaderboard={async () => {
+            await axios.delete(`/leaderboards/${openedLeaderboard.name}`);
+            modals.closeModal(id);
+          }}
+          isAdmin={Boolean(adminUsernames.includes(username))}
+          isLastAdmin={isAdmin && adminUsernames.length === 1}
+          promoteUser={async (username: string) => {
+            await axios.post(
+              `/leaderboards/${openedLeaderboard.name}/promote`,
+              { user: username },
+            );
+          }}
+          demoteUser={async (username: string) => {
+            await axios.post(`/leaderboards/${openedLeaderboard.name}/demote`, {
+              user: username,
+            });
+          }}
+          kickUser={async (username: string) => {
+            await axios.post(`/leaderboards/${openedLeaderboard.name}/kick`, {
+              user: username,
+            });
+          }}
+          regenerateInviteCode={async () => {
+            const res = await axios.post<{ invite_code: string }>(
+              `/leaderboards/${openedLeaderboard.name}/regenerate`,
+              {},
+            );
+            return res.data.invite_code;
+          }}
+          username={username}
+        />
+      ),
+    });
+  };
 
   return (
     <Table>
@@ -62,7 +134,7 @@ export const LeaderboardsList = ({
                   size="compact-sm"
                   variant="outline"
                   onClick={() => {
-                    setOpenedLeaderboardName(leaderboard.name);
+                    openLeaderboard(leaderboard.name);
                   }}
                 >
                   {t("leaderboards.seeMore")}

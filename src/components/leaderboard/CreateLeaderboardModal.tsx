@@ -1,24 +1,62 @@
+"use client";
+
 import { Group, Button } from "@mantine/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { useTranslation } from "next-i18next";
 import { FormikTextInput } from "../forms/FormikTextInput";
-import {
-  CreateLeaderboardError,
-  useLeaderboards,
-} from "../../hooks/useLeaderboards";
 import { showNotification } from "@mantine/notifications";
+import { isAxiosError } from "axios";
+import axios from "../../axios";
 
 interface CreateLeaderboardModalProps {
   onCreate: (leaderboardName: string) => void;
+  texts: {
+    error: string;
+    leaderboardExists: string;
+    leaderboardCreateError: string;
+    validation: {
+      required: string;
+      min: string;
+      max: string;
+      regex: string;
+    };
+    create: string;
+  };
 }
+
+export enum CreateLeaderboardError {
+  AlreadyExists,
+  UnknownError,
+}
+
+const createLeaderboard = async (leaderboardName: string) => {
+  try {
+    const res = await axios.post<{ invite_code: string }>(
+      "/leaderboards/create",
+      {
+        name: leaderboardName,
+      },
+    );
+    return res.data;
+  } catch (e) {
+    if (isAxiosError(e)) {
+      if (
+        e.response?.status === 409 ||
+        // TODO: The 403 status is a bug with the backend.
+        // It can be removed when https://github.com/Testaustime/testaustime-backend/pull/61 is merged
+        e.response?.status === 403
+      ) {
+        return CreateLeaderboardError.AlreadyExists;
+      }
+    }
+    return CreateLeaderboardError.UnknownError;
+  }
+};
 
 export const CreateLeaderboardModal = ({
   onCreate,
+  texts,
 }: CreateLeaderboardModalProps) => {
-  const { t } = useTranslation();
-  const { createLeaderboard } = useLeaderboards();
-
   return (
     <>
       <Formik
@@ -31,32 +69,29 @@ export const CreateLeaderboardModal = ({
             onCreate(values.leaderboardName);
           } else {
             showNotification({
-              title: t("error"),
+              title: texts.error,
               color: "red",
               message: {
-                [CreateLeaderboardError.AlreadyExists]: t(
-                  "leaderboards.leaderboardExists",
-                ),
-                [CreateLeaderboardError.UnknownError]: t(
-                  "leaderboards.leaderboardCreateError",
-                ),
+                [CreateLeaderboardError.AlreadyExists]: texts.leaderboardExists,
+                [CreateLeaderboardError.UnknownError]:
+                  texts.leaderboardCreateError,
               }[result],
             });
           }
         }}
         validationSchema={Yup.object().shape({
           leaderboardName: Yup.string()
-            .required(t("leaderboards.validation.required"))
-            .min(2, t("leaderboards.validation.min", { min: 2 }))
-            .max(32, t("leaderboards.validation.max", { max: 32 }))
-            .matches(/^[a-zA-Z0-9]*$/, t("leaderboards.validation.regex")),
+            .required(texts.validation.required)
+            .min(2, texts.validation.min)
+            .max(32, texts.validation.max)
+            .matches(/^[a-zA-Z0-9]*$/, texts.validation.regex),
         })}
       >
         {() => (
           <Form>
             <FormikTextInput name="leaderboardName" />
             <Group justify="right" mt="md">
-              <Button type="submit">{t("leaderboards.create")}</Button>
+              <Button type="submit">{texts.create}</Button>
             </Group>
           </Form>
         )}

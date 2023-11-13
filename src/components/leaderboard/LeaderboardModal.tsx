@@ -7,12 +7,12 @@ import {
   ExitIcon,
 } from "@radix-ui/react-icons";
 import { Trash2 } from "react-feather";
-import { LeaderboardData } from "../../hooks/useLeaderboards";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "react-i18next";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
 import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
 import { TokenField } from "../TokenField/TokenField";
+import { LeaderboardData } from "../../types";
 
 interface LeaderboardModalProps {
   leaveLeaderboard: () => Promise<void>;

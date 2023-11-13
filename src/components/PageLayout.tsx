@@ -2,7 +2,7 @@ import { Group } from "@mantine/core";
 import { Footer } from "./Footer/Footer";
 import Link from "next/link";
 import { Navigation } from "./Navigation";
-import styles from "../pages/_app.module.css";
+import styles from "../app/[locale]/layout.module.css";
 import { TFunction } from "i18next";
 
 export type PageLayoutProps = {

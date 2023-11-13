@@ -1,5 +1,5 @@
 import { Group, MantineProvider } from "@mantine/core";
-import styles from "../../pages/_app.module.css";
+import styles from "./layout.module.css";
 import "@mantine/core/styles.css";
 import { Content } from "./extensions/Content";
 import { cookies } from "next/headers";
@@ -55,6 +55,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      {/* <head>
+        <link rel="icon" href="/time.png" sizes="any" />
+      </head> */}
       <body>
         <TranslationsProvider
           locale={locale}

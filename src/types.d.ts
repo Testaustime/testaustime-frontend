@@ -24,3 +24,30 @@ export type ActivityDataEntry = Omit<
   dayStart: Date;
   project_name: string | null;
 };
+
+export interface Leaderboard {
+  member_count: number;
+  name: string;
+}
+
+export interface LeaderboardData {
+  name: string;
+  invite: string;
+  creation_time: string;
+  members: {
+    username: string;
+    admin: boolean;
+    time_coded: number;
+  }[];
+}
+
+export enum JoinLeaderboardError {
+  AlreadyMember,
+  NotFound,
+  UnknownError,
+}
+
+export enum CreateLeaderboardError {
+  AlreadyExists,
+  UnknownError,
+}

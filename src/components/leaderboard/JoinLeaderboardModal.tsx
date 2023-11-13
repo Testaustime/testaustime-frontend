@@ -5,17 +5,47 @@ import { Group, Button } from "@mantine/core";
 import { Formik, Form } from "formik";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { EnterIcon } from "@radix-ui/react-icons";
-import { useTranslation } from "next-i18next";
-import {
-  JoinLeaderboardError,
-  useLeaderboards,
-} from "../../hooks/useLeaderboards";
+import { useTranslation } from "react-i18next";
 import { showNotification } from "@mantine/notifications";
+import axios from "../../axios";
+import { isAxiosError } from "axios";
 
 interface JoinLeaderboardModalProps {
   initialCode: string | null;
   onJoin: (leaderboardCode: string) => void;
 }
+
+export enum JoinLeaderboardError {
+  AlreadyMember,
+  NotFound,
+  UnknownError,
+}
+
+const joinLeaderboard = async (inviteCode: string) => {
+  try {
+    const res = await axios.post<{ name: string; member_count: number }>(
+      "/leaderboards/join",
+      {
+        invite: inviteCode,
+      },
+    );
+    return res.data;
+  } catch (e) {
+    if (isAxiosError(e)) {
+      if (
+        e.response?.status === 409 ||
+        // TODO: The 403 status is a bug with the backend.
+        // It can be removed when https://github.com/Testaustime/testaustime-backend/pull/61 is merged
+        e.response?.status === 403
+      ) {
+        return JoinLeaderboardError.AlreadyMember;
+      } else if (e.response?.status === 404) {
+        return JoinLeaderboardError.NotFound;
+      }
+    }
+    return JoinLeaderboardError.UnknownError;
+  }
+};
 
 export const JoinLeaderboardModal = ({
   initialCode,
@@ -25,7 +55,6 @@ export const JoinLeaderboardModal = ({
     generateLeaderboardInviteCode(),
   );
   const { t } = useTranslation();
-  const { joinLeaderboard } = useLeaderboards();
 
   return (
     <>

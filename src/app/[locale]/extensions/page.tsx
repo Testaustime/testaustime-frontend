@@ -1,7 +1,7 @@
 import { GitHubLogoIcon, QuestionMarkIcon } from "@radix-ui/react-icons";
 import initTranslations from "../../i18n";
 import { ReactNode } from "react";
-import styles from "./page.module.css";
+import styles from "./styles.module.css";
 import { Anchor, Center, Group, Stack, Title, Text } from "@mantine/core";
 import Neovim from "../../../../public/images/neovim.svg";
 import Vscode from "../../../../public/images/vscode.svg";
