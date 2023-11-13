@@ -107,18 +107,24 @@ export default async function MainPage({
       </div>
     );
   } else {
-    <div className={styles.heroContainer}>
-      <Text mb={20} className={styles.heroText}>
-        {t("mainPage.hero")}
-      </Text>
-      <Anchor
-        className={styles.downloadButton}
-        component={Link}
-        href={`/${locale}/extensions`}
-      >
-        <DownloadIcon height={30} width={30} className={styles.downloadIcon} />
-        {t("mainPage.download")}
-      </Anchor>
-    </div>;
+    return (
+      <div className={styles.heroContainer}>
+        <Text mb={20} className={styles.heroText}>
+          {t("mainPage.hero")}
+        </Text>
+        <Anchor
+          className={styles.downloadButton}
+          component={Link}
+          href={`/${locale}/extensions`}
+        >
+          <DownloadIcon
+            height={30}
+            width={30}
+            className={styles.downloadIcon}
+          />
+          {t("mainPage.download")}
+        </Anchor>
+      </div>
+    );
   }
 }
