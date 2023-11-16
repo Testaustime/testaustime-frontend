@@ -15,7 +15,7 @@ export const POST = async (req: NextRequest) => {
   try {
     const response = await axios.post<ApiAuthRegisterResponse>(
       "/auth/register",
-      req.body,
+      JSON.parse(await req.text()),
       {
         headers: {
           "X-Forwarded-For": req.ip,

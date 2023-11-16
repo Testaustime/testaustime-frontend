@@ -29,8 +29,10 @@ const handle = async (req: NextRequest) => {
       headers: {
         Authorization: `Bearer ${token || ""}`,
         "X-Forwarded-For": req.ip,
+        "Content-Type": "application/json",
       },
-      data: req.body as unknown,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      data: await req.text(),
     });
 
     const headers = new Headers();
@@ -44,13 +46,16 @@ const handle = async (req: NextRequest) => {
     });
   } catch (e) {
     if (isAxiosError(e)) {
-      return new Response(JSON.stringify(e.response?.data), {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      return new Response(JSON.stringify({ error: e.response?.data }), {
         status: e.response?.status || 500,
         headers: {
           "Content-Type": "application/json",
         },
       });
     }
+
+    console.error(e);
 
     return new Response(JSON.stringify({ message: "Unknown error" }), {
       status: 500,
