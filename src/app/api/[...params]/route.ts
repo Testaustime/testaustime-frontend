@@ -15,9 +15,9 @@ const handle = async (req: NextRequest) => {
     req.cookies.get("token")?.value ||
     req.headers.get("Authorization")?.replace("Bearer ", "");
 
-  // req.url is for example "/api/friends/list"
+  // req.nextUrl.pathname is for example "/api/friends/list"
   // We want to remove the "/api" part and keep the rest
-  const endpoint = req.url.substring(4) || "";
+  const endpoint = req.nextUrl.pathname.substring(4) || "";
 
   // This will be something like "https://api.testaustime.fi/friends/list"
   const url = process.env.NEXT_PUBLIC_API_URL + endpoint;
