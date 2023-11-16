@@ -22,6 +22,7 @@ export const NavigationMenuDropdown = ({
   const logOutAndRedirect = async () => {
     await logOut();
     router.push("/");
+    router.refresh();
   };
 
   return (

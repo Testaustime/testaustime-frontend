@@ -36,6 +36,7 @@ export const RegistrationForm = () => {
         username,
         password,
       });
+      router.refresh();
       return RegistrationResult.Success;
     } catch (error) {
       if (isAxiosError(error)) {

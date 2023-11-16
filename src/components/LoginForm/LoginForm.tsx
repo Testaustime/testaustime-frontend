@@ -53,6 +53,7 @@ export const LoginForm = () => {
           router.push(
             allowedRedirects.includes(unsafeRedirect) ? unsafeRedirect : "/",
           );
+          router.refresh();
         } catch (e) {
           showNotification({
             title: t("error"),
