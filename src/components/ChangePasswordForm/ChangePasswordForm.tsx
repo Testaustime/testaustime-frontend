@@ -11,7 +11,7 @@ import { isAxiosError } from "axios";
 import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
 import { useTranslation } from "react-i18next";
 
-export enum PasswordChangeResult {
+enum PasswordChangeResult {
   Success,
   OldPasswordIncorrect,
   NewPasswordInvalid,

@@ -3,7 +3,7 @@ import { DayRange } from "../utils/dateUtils";
 import { Locales } from "../i18next";
 import { MantineColorScheme } from "@mantine/core";
 
-export interface SettingsContextValue {
+interface SettingsContextValue {
   smoothCharts: boolean;
   setSmoothCharts: (smoothCharts: boolean) => void;
   language?: Locales;

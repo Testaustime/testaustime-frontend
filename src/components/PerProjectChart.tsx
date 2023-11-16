@@ -24,7 +24,7 @@ ChartJS.register(
   Legend,
 );
 
-export interface PerProjectChartProps {
+interface PerProjectChartProps {
   entries: {
     language: string | null;
     duration: number;

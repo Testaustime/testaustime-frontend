@@ -11,20 +11,20 @@ import axios from "../../axios";
 import { isAxiosError } from "axios";
 import { useTranslation } from "react-i18next";
 
-export type AddFriendFormProps = {
+type AddFriendFormProps = {
   friendCodePlaceholder: string;
 };
 
-export interface ApiFriendsAddResponse {
+type ApiFriendsAddResponse = {
   username: string;
   coding_time: {
     all_time: number;
     past_month: number;
     past_week: number;
   };
-}
+};
 
-export enum AddFriendError {
+enum AddFriendError {
   AlreadyFriends,
   NotFound,
   UnknownError,

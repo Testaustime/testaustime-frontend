@@ -11,7 +11,7 @@ import { useSettings } from "../../hooks/useSettings";
 import { Locales } from "../../i18next";
 import { useTranslation } from "react-i18next";
 
-export type LanguageSelectorType = "segmented" | "dropdown";
+type LanguageSelectorType = "segmented" | "dropdown";
 
 export type LanguageSelectorProps = {
   locale: string;

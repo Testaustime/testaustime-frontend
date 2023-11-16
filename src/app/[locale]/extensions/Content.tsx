@@ -6,10 +6,7 @@ import { SettingsContext } from "../../../contexts/SettingsContext";
 import { MantineColorScheme } from "@mantine/core";
 import { useCreateSettings } from "../../../hooks/useSettings";
 import { useHotkeys } from "@mantine/hooks";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CookiesProvider } from "react-cookie";
-
-const queryClient = new QueryClient();
 
 export const Content = ({
   children,
@@ -37,11 +34,9 @@ export const Content = ({
       <ModalsProvider>
         <div id="root">
           <CookiesProvider>
-            <QueryClientProvider client={queryClient}>
-              <SettingsContext.Provider value={settings}>
-                {children}
-              </SettingsContext.Provider>
-            </QueryClientProvider>
+            <SettingsContext.Provider value={settings}>
+              {children}
+            </SettingsContext.Provider>
           </CookiesProvider>
         </div>
       </ModalsProvider>

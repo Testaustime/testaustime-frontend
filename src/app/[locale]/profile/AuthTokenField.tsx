@@ -4,7 +4,7 @@ import axios from "../../../axios";
 import TokenField from "../../../components/TokenField";
 import { getErrorMessage } from "../../../lib/errorHandling/errorHandler";
 
-export interface ApiAuthRegenerateResponse {
+interface ApiAuthRegenerateResponse {
   token: string;
 }
 

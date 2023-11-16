@@ -6,7 +6,7 @@ import EditProjectModal from "../EditProjectModal";
 import styles from "./ProjectEntry.module.css";
 import { useTranslation } from "react-i18next";
 
-export type ProjectEntryProps = {
+type ProjectEntryProps = {
   name?: string | undefined | null;
   durationSeconds: number;
   allowEditing?: boolean;

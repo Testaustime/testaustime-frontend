@@ -13,7 +13,7 @@ import { FormikPasswordInput } from "../../../components/forms/FormikPasswordInp
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 
-export enum RegistrationResult {
+enum RegistrationResult {
   Success,
   RateLimited,
 }

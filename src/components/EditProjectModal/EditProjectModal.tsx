@@ -5,7 +5,7 @@ import axios from "../../axios";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 
-export type EditProjectModalProps = {
+type EditProjectModalProps = {
   projectName: string;
   onClose: () => void;
 };

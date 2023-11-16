@@ -5,7 +5,7 @@ import styles from "./Navigation.module.css";
 import { TFunction } from "i18next";
 import { NavigationMenuDropdown } from "./NavigationMenuDropdown";
 
-export type NavigationProps = {
+type NavigationProps = {
   isLoggedIn: boolean;
   username?: string;
   t: TFunction;

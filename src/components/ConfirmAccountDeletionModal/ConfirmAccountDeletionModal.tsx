@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Form, Formik } from "formik";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 
-export type ConfirmAccountDeletionModalProps = {
+type ConfirmAccountDeletionModalProps = {
   onCancel: () => void;
   onConfirm: (password: string) => Promise<void>;
 };

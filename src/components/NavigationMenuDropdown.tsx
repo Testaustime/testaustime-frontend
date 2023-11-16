@@ -7,7 +7,7 @@ import Link from "next/link";
 import { logOut } from "../utils/authUtils";
 import { useTranslation } from "react-i18next";
 
-export type NavigationMenuDropdownProps = {
+type NavigationMenuDropdownProps = {
   username: string | undefined;
   locale: string;
 };

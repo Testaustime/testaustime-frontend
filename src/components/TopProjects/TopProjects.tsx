@@ -3,7 +3,7 @@ import getAllTimeTopProjects from "../../lib/topProjectsStatistics";
 import { ProjectEntry } from "./ProjectEntry";
 import { ActivityDataEntry } from "../../types";
 
-export interface TopProjectsProps {
+interface TopProjectsProps {
   entries: ActivityDataEntry[];
   allowEditing?: boolean;
 }

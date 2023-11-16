@@ -4,7 +4,7 @@ import { prettyDuration } from "../../utils/dateUtils";
 import { getAllTimeTopLanguages } from "../../lib/topLanguagesStatistics/topLanguagesStatistics";
 import { ActivityDataEntry } from "../../types";
 
-export interface TopLanguagesProps {
+interface TopLanguagesProps {
   entries: ActivityDataEntry[];
 }
 

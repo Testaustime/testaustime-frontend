@@ -9,7 +9,7 @@ import axios from "../../axios";
 import { LeaderboardData } from "../../types";
 import { useTranslation } from "react-i18next";
 
-export interface LeaderboardsListProps {
+interface LeaderboardsListProps {
   leaderboards: LeaderboardData[];
   username: string;
 }

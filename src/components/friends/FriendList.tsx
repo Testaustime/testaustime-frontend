@@ -17,16 +17,16 @@ import { startOfDay } from "date-fns";
 import { normalizeProgrammingLanguageName } from "../../utils/programmingLanguagesUtils";
 import { useTranslation } from "react-i18next";
 
-export interface ApiFriendsResponseItem {
+type ApiFriendsResponseItem = {
   username: string;
   coding_time: {
     all_time: number;
     past_month: number;
     past_week: number;
   };
-}
+};
 
-export type FriendListProps = {
+type FriendListProps = {
   friends: ApiFriendsResponseItem[];
   ownTimeCoded?: number;
   username: string;

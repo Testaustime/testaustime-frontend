@@ -15,7 +15,7 @@ interface JoinLeaderboardModalProps {
   onJoin: (leaderboardCode: string) => void;
 }
 
-export enum JoinLeaderboardError {
+enum JoinLeaderboardError {
   AlreadyMember,
   NotFound,
   UnknownError,

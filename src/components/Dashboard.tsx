@@ -29,7 +29,7 @@ import { filterEntries } from "../utils/activityUtils";
 import { ActivityDataEntry } from "../types";
 import { useTranslation } from "react-i18next";
 
-export interface DashboardProps {
+interface DashboardProps {
   username: string;
   isFrontPage: boolean;
   allEntries: ActivityDataEntry[];

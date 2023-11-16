@@ -24,7 +24,7 @@ interface CreateLeaderboardModalProps {
   };
 }
 
-export enum CreateLeaderboardError {
+enum CreateLeaderboardError {
   AlreadyExists,
   UnknownError,
 }
