@@ -6,17 +6,14 @@ import { FormikTextInput } from "../forms/FormikTextInput";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
+import { useSearchParams } from "next/navigation";
 import { showNotification } from "@mantine/notifications";
 import { useTranslation } from "react-i18next";
-
-const allowedRedirects = ["/profile", "/friends", "/leaderboards"];
+import { logIn } from "./actions";
 
 export const LoginForm = () => {
   const [visible, setVisible] = useState(false);
 
-  const router = useRouter();
   const searchParams = useSearchParams();
   const unsafeRedirect = String(searchParams.get("redirect") ?? "/");
   const { t } = useTranslation();
@@ -37,34 +34,27 @@ export const LoginForm = () => {
       })}
       onSubmit={async (values) => {
         setVisible(true);
-        try {
-          try {
-            await fetch("/api/auth/login", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                username: values.username,
-                password: values.password,
-              }),
-            });
-          } catch (error) {
-            // eslint-disable-next-line @typescript-eslint/no-throw-literal
-            throw getErrorMessage(error);
-          }
 
-          router.push(
-            allowedRedirects.includes(unsafeRedirect) ? unsafeRedirect : "/",
-          );
-          router.refresh();
-        } catch (e) {
+        const result = await logIn(
+          values.username,
+          values.password,
+          unsafeRedirect,
+        );
+
+        if (result.error === "Invalid username or password") {
           showNotification({
             title: t("error"),
             color: "red",
             message: t("loginPage.invalidCredentials"),
           });
+        } else {
+          showNotification({
+            title: t("error"),
+            color: "red",
+            message: t("unknownErrorOccurred"),
+          });
         }
+
         setVisible(false);
       }}
     >

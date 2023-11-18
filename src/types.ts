@@ -62,3 +62,10 @@ export type ActivityDataSummary = {
   last_month: ActivityDataSummaryEntry;
   last_week: ActivityDataSummaryEntry;
 };
+
+export enum PasswordChangeResult {
+  Success,
+  OldPasswordIncorrect,
+  NewPasswordInvalid,
+  UnknownError,
+}

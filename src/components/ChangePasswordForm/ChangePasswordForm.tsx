@@ -6,40 +6,13 @@ import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
 import { showNotification } from "@mantine/notifications";
-import axios from "../../axios";
-import { isAxiosError } from "axios";
-import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
 import { useTranslation } from "react-i18next";
-
-enum PasswordChangeResult {
-  Success,
-  OldPasswordIncorrect,
-  NewPasswordInvalid,
-}
+import { changePassword } from "./actions";
+import { PasswordChangeResult } from "../../types";
 
 export const ChangePasswordForm = () => {
   const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
-
-  const changePassword = async (oldPassword: string, newPassword: string) => {
-    try {
-      await axios.post("/auth/changepassword", {
-        old: oldPassword,
-        new: newPassword,
-      });
-      return PasswordChangeResult.Success;
-    } catch (error) {
-      if (isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          return PasswordChangeResult.OldPasswordIncorrect;
-        } else if (error.response?.status === 400) {
-          return PasswordChangeResult.NewPasswordInvalid;
-        }
-      }
-      // eslint-disable-next-line @typescript-eslint/no-throw-literal
-      throw getErrorMessage(error);
-    }
-  };
 
   return (
     <Formik
@@ -87,6 +60,7 @@ export const ChangePasswordForm = () => {
               [PasswordChangeResult.NewPasswordInvalid]: t(
                 "profile.changePassword.new.invalid",
               ),
+              [PasswordChangeResult.UnknownError]: t("unknownErrorOccurred"),
             }[result],
           });
         }
