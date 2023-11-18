@@ -8,13 +8,7 @@ export const AuthTokenField = ({ token }: { token: string }) => {
     <TokenField
       value={token}
       regenerate={async () => {
-        const result = await regenerateToken();
-        if (typeof result === "object") {
-          // TODO: Show error
-          throw new Error(result.error);
-        }
-
-        return result;
+        await regenerateToken();
       }}
       censorable
       revealLength={4}

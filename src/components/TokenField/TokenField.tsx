@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 
 export interface TokenFieldProps {
   value: string;
-  regenerate?: () => Promise<string>;
+  regenerate?: () => Promise<void>;
   censorable?: boolean;
   revealLength?: number;
   copyFormatter?: (currentValue: string) => string;

@@ -23,7 +23,7 @@ interface LeaderboardModalProps {
   promoteUser: (username: string) => Promise<void>;
   demoteUser: (username: string) => Promise<void>;
   kickUser: (username: string) => Promise<void>;
-  regenerateInviteCode: () => Promise<string>;
+  regenerateInviteCode: () => Promise<void>;
   username: string;
 }
 

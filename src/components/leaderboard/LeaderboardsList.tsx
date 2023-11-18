@@ -74,11 +74,10 @@ export const LeaderboardsList = ({
             });
           }}
           regenerateInviteCode={async () => {
-            const res = await axios.post<{ invite_code: string }>(
+            await axios.post<{ invite_code: string }>(
               `/leaderboards/${openedLeaderboard.name}/regenerate`,
               {},
             );
-            return res.data.invite_code;
           }}
           username={username}
         />
