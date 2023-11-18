@@ -35,23 +35,28 @@ const FriendDashboardModal = ({
   const [allEntries, setAllEntries] = useState<ActivityDataEntry[]>();
 
   useEffect(() => {
-    axios
-      .get<ApiUsersUserActivityDataResponseItem[]>(
-        `/users/${username}/activity/data`,
-      )
-      .then((response) => {
-        const mappedData: ActivityDataEntry[] = response.data.map((e) => ({
-          ...e,
-          start_time: new Date(e.start_time),
-          dayStart: startOfDay(new Date(e.start_time)),
-          language: normalizeProgrammingLanguageName(e.language),
-        }));
+    void (async () => {
+      const response = await fetch(`/api/users/${username}/activity/data`);
 
-        setAllEntries(mappedData);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      if (!response.ok) {
+        showNotification({
+          title: "Error",
+          message: "There was an error fetching the data",
+          color: "red",
+        });
+        return;
+      }
+
+      const data =
+        (await response.json()) as ApiUsersUserActivityDataResponseItem[];
+      const mappedData: ActivityDataEntry[] = data.map((e) => ({
+        ...e,
+        start_time: new Date(e.start_time),
+        dayStart: startOfDay(new Date(e.start_time)),
+        language: normalizeProgrammingLanguageName(e.language),
+      }));
+      setAllEntries(mappedData);
+    })();
   }, [username]);
 
   if (!allEntries) {
