@@ -51,3 +51,14 @@ export enum CreateLeaderboardError {
   AlreadyExists,
   UnknownError,
 }
+
+export type ActivityDataSummaryEntry = {
+  languages: Record<string, number>;
+  total: number;
+};
+
+export type ActivityDataSummary = {
+  all_time: ActivityDataSummaryEntry;
+  last_month: ActivityDataSummaryEntry;
+  last_week: ActivityDataSummaryEntry;
+};

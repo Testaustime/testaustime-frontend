@@ -16,19 +16,11 @@ import { useEffect, useState } from "react";
 import { startOfDay } from "date-fns";
 import { normalizeProgrammingLanguageName } from "../../utils/programmingLanguagesUtils";
 import { useTranslation } from "react-i18next";
-
-type ApiFriendsResponseItem = {
-  username: string;
-  coding_time: {
-    all_time: number;
-    past_month: number;
-    past_week: number;
-  };
-};
+import { ApiFriendsResponseItem } from "../../api/friendsApi";
 
 type FriendListProps = {
   friends: ApiFriendsResponseItem[];
-  ownTimeCoded?: number;
+  ownTimeCoded: number;
   username: string;
   locale: string;
 };
@@ -96,17 +88,17 @@ export const FriendList = ({
 
   const friendsSorted = [
     ...friends
-      .map((f) => ({ ...f, isMe: false }))
+      .map((f) => ({
+        isMe: false,
+        codingTime: f.coding_time.past_month,
+        username: f.username,
+      }))
       .concat({
-        coding_time: {
-          all_time: 0,
-          past_month: ownTimeCoded ?? 0,
-          past_week: 0,
-        },
+        codingTime: ownTimeCoded,
         isMe: true,
         username,
       }),
-  ].sort((a, b) => b.coding_time.past_month - a.coding_time.past_month);
+  ].sort((a, b) => b.codingTime - a.codingTime);
 
   const openFriendDashboard = (friendUsername: string) => {
     modals.openModal({
@@ -139,56 +131,54 @@ export const FriendList = ({
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>
-        {friendsSorted.map(
-          ({ username, coding_time: { past_month }, isMe }, idx) => (
-            <Table.Tr
-              key={username}
-              className={isMe ? styles.tableRow : undefined}
-            >
-              <Table.Td>{idx + 1}</Table.Td>
-              <Table.Td>{username}</Table.Td>
-              <Table.Td>{prettyDuration(past_month)}</Table.Td>
-              <Table.Td style={{ textAlign: "right", padding: "7px 0px" }}>
-                {!isMe && (
-                  <Button
-                    variant="filled"
-                    color="blue"
-                    size="compact-md"
-                    onClick={() => {
-                      openFriendDashboard(username);
-                    }}
-                  >
-                    {t("friends.showDashboard")}
-                  </Button>
-                )}
-              </Table.Td>
-              <Table.Td style={{ textAlign: "right", padding: "7px 0px" }}>
-                {!isMe && (
-                  <Button
-                    variant="outline"
-                    color="red"
-                    size="compact-md"
-                    onClick={() => {
-                      unFriend(username)
-                        .then(() => {
-                          router.refresh();
-                        })
-                        .catch(() => {
-                          showNotification({
-                            title: t("error"),
-                            color: "red",
-                            message: t("friends.errorRemovingFriend"),
-                          });
+        {friendsSorted.map(({ username, codingTime, isMe }, idx) => (
+          <Table.Tr
+            key={username}
+            className={isMe ? styles.tableRow : undefined}
+          >
+            <Table.Td>{idx + 1}</Table.Td>
+            <Table.Td>{username}</Table.Td>
+            <Table.Td>{prettyDuration(codingTime)}</Table.Td>
+            <Table.Td style={{ textAlign: "right", padding: "7px 0px" }}>
+              {!isMe && (
+                <Button
+                  variant="filled"
+                  color="blue"
+                  size="compact-md"
+                  onClick={() => {
+                    openFriendDashboard(username);
+                  }}
+                >
+                  {t("friends.showDashboard")}
+                </Button>
+              )}
+            </Table.Td>
+            <Table.Td style={{ textAlign: "right", padding: "7px 0px" }}>
+              {!isMe && (
+                <Button
+                  variant="outline"
+                  color="red"
+                  size="compact-md"
+                  onClick={() => {
+                    unFriend(username)
+                      .then(() => {
+                        router.refresh();
+                      })
+                      .catch(() => {
+                        showNotification({
+                          title: t("error"),
+                          color: "red",
+                          message: t("friends.errorRemovingFriend"),
                         });
-                    }}
-                  >
-                    {t("friends.unfriend")}
-                  </Button>
-                )}
-              </Table.Td>
-            </Table.Tr>
-          ),
-        )}
+                      });
+                  }}
+                >
+                  {t("friends.unfriend")}
+                </Button>
+              )}
+            </Table.Td>
+          </Table.Tr>
+        ))}
       </Table.Tbody>
     </Table>
   );

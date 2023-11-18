@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Anchor, Text } from "@mantine/core";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { Dashboard } from "../../components/Dashboard";
-import axios from "../../axios";
 import { startOfDay } from "date-fns";
 import { isDayRange } from "../../utils/dateUtils";
 import {
@@ -10,13 +9,10 @@ import {
   smoothChartsCookieName,
 } from "../../utils/constants";
 import styles from "./page.module.css";
-import {
-  ApiUsersUserActivityDataResponseItem,
-  ApiUsersUserResponse,
-} from "../../types";
+import { ApiUsersUserResponse } from "../../types";
 import { cookies } from "next/headers";
 import initTranslations from "../i18n";
-import { getMe } from "../../api/usersApi";
+import { getMe, getOwnActivityData } from "../../api/usersApi";
 
 export default async function MainPage({
   params: { locale },
@@ -40,17 +36,16 @@ export default async function MainPage({
     }
   }
 
-  if (me) {
-    const response = await axios.get<ApiUsersUserActivityDataResponseItem[]>(
-      "/users/@me/activity/data",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // "X-Forwarded-For": req.socket.remoteAddress,
-        },
-        baseURL: process.env.NEXT_PUBLIC_API_URL,
-      },
-    );
+  // `&& token` is unnecessary but it makes the type checker happy
+  if (me && token) {
+    const activityData = await getOwnActivityData(token);
+
+    if ("error" in activityData) {
+      if (activityData.error === "Too many requests") {
+        throw new Error("Too many requests");
+      }
+      throw new Error(activityData.error);
+    }
 
     const uncheckedDefaultDayRange = cookies().get(defaultDayRangeCookieName)
       ?.value;
@@ -65,7 +60,7 @@ export default async function MainPage({
         <Dashboard
           username={me.username}
           isFrontPage={true}
-          allEntries={response.data.map((e) => ({
+          allEntries={activityData.map((e) => ({
             ...e,
             start_time: new Date(e.start_time),
             dayStart: startOfDay(new Date(e.start_time)),
