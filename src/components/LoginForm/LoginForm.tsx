@@ -6,11 +6,9 @@ import { FormikTextInput } from "../forms/FormikTextInput";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
-import axios from "../../axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getErrorMessage } from "../../lib/errorHandling/errorHandler";
 import { showNotification } from "@mantine/notifications";
-import { ApiAuthLoginResponse } from "../../app/api/auth/login/route";
 import { useTranslation } from "react-i18next";
 
 const allowedRedirects = ["/profile", "/friends", "/leaderboards"];
@@ -41,9 +39,15 @@ export const LoginForm = () => {
         setVisible(true);
         try {
           try {
-            await axios.post<ApiAuthLoginResponse>("/auth/login", {
-              username: values.username,
-              password: values.password,
+            await fetch("/api/auth/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                username: values.username,
+                password: values.password,
+              }),
             });
           } catch (error) {
             // eslint-disable-next-line @typescript-eslint/no-throw-literal

@@ -2,28 +2,13 @@
 
 import { useModals } from "@mantine/modals";
 import ButtonWithConfirmation from "../../../components/ButtonWithConfirmation";
-import { useRouter } from "next/navigation";
-import axios from "../../../axios";
 import ConfirmAccountDeletionModal from "../../../components/ConfirmAccountDeletionModal";
-import { logOut } from "../../../utils/authUtils";
 import { useTranslation } from "react-i18next";
+import { deleteAccount } from "./deleteAccount";
 
 export const DeleteAccountButton = ({ username }: { username: string }) => {
   const modals = useModals();
-  const router = useRouter();
   const { t } = useTranslation();
-
-  const deleteAccount = async (password: string) => {
-    await axios.delete("/users/@me/delete", {
-      data: {
-        username,
-        password,
-      },
-    });
-    await logOut();
-
-    router.push("/");
-  };
 
   const openDeleteAccountModal = () => {
     const id = modals.openModal({
@@ -35,7 +20,7 @@ export const DeleteAccountButton = ({ username }: { username: string }) => {
             modals.closeModal(id);
           }}
           onConfirm={async (password) => {
-            await deleteAccount(password);
+            await deleteAccount(username, password);
             modals.closeModal(id);
           }}
         />

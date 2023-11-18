@@ -1,11 +1,10 @@
-import axios from "../axios";
-import { getErrorMessage } from "../lib/errorHandling/errorHandler";
+"use server";
 
-export const logOut = async () => {
-  try {
-    await axios.post("/auth/logout", null);
-  } catch (error) {
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
-    throw getErrorMessage(error);
-  }
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+// eslint-disable-next-line @typescript-eslint/require-await
+export const logOutAndRedirect = async () => {
+  cookies().delete("token");
+  redirect("/");
 };

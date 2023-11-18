@@ -2,10 +2,9 @@
 
 import { Button, Divider, Menu } from "@mantine/core";
 import { ExitIcon, GearIcon, MixIcon, PersonIcon } from "@radix-ui/react-icons";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { logOut } from "../utils/authUtils";
 import { useTranslation } from "react-i18next";
+import { logOutAndRedirect } from "../utils/authUtils";
 
 type NavigationMenuDropdownProps = {
   username: string | undefined;
@@ -16,14 +15,7 @@ export const NavigationMenuDropdown = ({
   username,
   locale,
 }: NavigationMenuDropdownProps) => {
-  const router = useRouter();
   const { t } = useTranslation();
-
-  const logOutAndRedirect = async () => {
-    await logOut();
-    router.push("/");
-    router.refresh();
-  };
 
   return (
     <Menu trigger="hover">
