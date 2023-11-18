@@ -58,3 +58,26 @@ export const regenerateFriendCode = async () => {
 
   revalidateTag("users/@me");
 };
+
+export const changeAccountVisibility = async (isPublic: boolean) => {
+  const token = cookies().get("token")?.value;
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_API_URL + "/account/settings",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        public_profile: isPublic,
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    return { error: "Unknown error" as const };
+  }
+
+  revalidateTag("users/@me");
+};

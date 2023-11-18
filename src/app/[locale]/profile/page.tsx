@@ -83,7 +83,7 @@ export default async function ProfilePage({
           <Title order={3}>{t("profile.accountVisibility.title")}</Title>
         </WithTooltip>
         <div>
-          <ProfileVisibilityToggle isPublicInitial={me.is_public} />
+          <ProfileVisibilityToggle isPublic={me.is_public} />
         </div>
         <Title order={3}>{t("profile.deleteAccount.title")}</Title>
         <div>

@@ -1,42 +1,31 @@
 "use client";
 
-import { useState } from "react";
 import ButtonWithConfirmation from "../../../components/ButtonWithConfirmation";
-import axios from "../../../axios";
-import { showNotification } from "@mantine/notifications";
 import { useTranslation } from "react-i18next";
+import { changeAccountVisibility } from "./actions";
+import { showNotification } from "@mantine/notifications";
 
 export const ProfileVisibilityToggle = ({
-  isPublicInitial,
+  isPublic,
 }: {
-  isPublicInitial: boolean;
+  isPublic: boolean;
 }) => {
-  const [isPublic, setIsPublic] = useState(isPublicInitial);
   const { t } = useTranslation();
-
-  const changeAccountVisibility = async (visibility: boolean) => {
-    await axios.post("/account/settings", {
-      public_profile: visibility,
-    });
-
-    setIsPublic(!isPublic);
-  };
 
   return (
     <ButtonWithConfirmation
       color="red"
       onClick={() => {
-        changeAccountVisibility(!isPublic)
-          .then(() => {
-            setIsPublic(!isPublic);
-          })
-          .catch(() => {
+        void (async () => {
+          const result = await changeAccountVisibility(!isPublic);
+          if (result) {
             showNotification({
               title: t("error"),
               color: "red",
               message: t("unknownErrorOccurred"),
             });
-          });
+          }
+        })();
       }}
     >
       {isPublic
