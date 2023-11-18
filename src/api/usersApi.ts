@@ -42,6 +42,9 @@ export const getOwnActivityData = async (token: string) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      next: {
+        tags: ["users/@me/activity/data"],
+      },
     },
   );
 

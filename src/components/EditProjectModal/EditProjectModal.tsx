@@ -1,9 +1,8 @@
 import { Form, Formik } from "formik";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { Button, Group } from "@mantine/core";
-import axios from "../../axios";
-import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { renameProject } from "./actions";
 
 type EditProjectModalProps = {
   projectName: string;
@@ -14,7 +13,6 @@ export const EditProjectModal = ({
   projectName,
   onClose,
 }: EditProjectModalProps) => {
-  const router = useRouter();
   const { t } = useTranslation();
 
   return (
@@ -22,16 +20,8 @@ export const EditProjectModal = ({
       <Formik
         initialValues={{ projectName }}
         onSubmit={async (values) => {
-          try {
-            await axios.post("/activity/rename", {
-              from: projectName,
-              to: values.projectName,
-            });
-            router.refresh();
-            onClose();
-          } catch (e) {
-            console.error(e);
-          }
+          await renameProject(projectName, values.projectName);
+          onClose();
         }}
       >
         {() => (
