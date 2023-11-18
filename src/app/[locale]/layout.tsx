@@ -9,10 +9,10 @@ import { Navigation } from "../../components/Navigation";
 import { Footer } from "../../components/Footer/Footer";
 import "../../index.css";
 import initTranslations from "../i18n";
-import axios from "../../axios";
 import "@mantine/notifications/styles.css";
-import { ApiUsersUserResponse } from "../../types";
 import TranslationsProvider from "../../components/TranslationsProvider";
+import { getMe } from "../../api/usersApi";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Testaustime",
@@ -40,17 +40,18 @@ export default async function RootLayout({
   const token = cookies().get("token")?.value;
 
   let username = undefined;
-  try {
-    const response = await axios.get<ApiUsersUserResponse>("/users/@me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // "X-Forwarded-For": ctx.req?.socket.remoteAddress,
-      },
-      baseURL: process.env.NEXT_PUBLIC_API_URL,
-    });
-    username = response.data.username;
-  } catch {
-    username = undefined;
+  if (token) {
+    const me = await getMe(token);
+    if ("error" in me) {
+      if (me.error === "Unauthorized") {
+        cookies().delete("token");
+        redirect("/login");
+      } else {
+        throw new Error(me.error);
+      }
+    }
+
+    username = me.username;
   }
 
   return (

@@ -5,8 +5,8 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { showNotification } from "@mantine/notifications";
-import { isAxiosError } from "axios";
-import axios from "../../axios";
+import { createLeaderboard } from "../../api/leaderboardApi";
+import { CreateLeaderboardError } from "../../types";
 
 interface CreateLeaderboardModalProps {
   onCreate: (leaderboardName: string) => void;
@@ -23,35 +23,6 @@ interface CreateLeaderboardModalProps {
     create: string;
   };
 }
-
-enum CreateLeaderboardError {
-  AlreadyExists,
-  UnknownError,
-}
-
-const createLeaderboard = async (leaderboardName: string) => {
-  try {
-    const res = await axios.post<{ invite_code: string }>(
-      "/leaderboards/create",
-      {
-        name: leaderboardName,
-      },
-    );
-    return res.data;
-  } catch (e) {
-    if (isAxiosError(e)) {
-      if (
-        e.response?.status === 409 ||
-        // TODO: The 403 status is a bug with the backend.
-        // It can be removed when https://github.com/Testaustime/testaustime-backend/pull/61 is merged
-        e.response?.status === 403
-      ) {
-        return CreateLeaderboardError.AlreadyExists;
-      }
-    }
-    return CreateLeaderboardError.UnknownError;
-  }
-};
 
 export const CreateLeaderboardModal = ({
   onCreate,

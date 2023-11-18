@@ -5,13 +5,11 @@ import { generateFriendCode } from "../../../utils/codeUtils";
 import axios from "../../../axios";
 import { addDays, startOfDay } from "date-fns";
 import { sumBy } from "../../../utils/arrayUtils";
-import {
-  ApiUsersUserActivityDataResponseItem,
-  ApiUsersUserResponse,
-} from "../../../types";
+import { ApiUsersUserActivityDataResponseItem } from "../../../types";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import initTranslations from "../../i18n";
+import { getMe } from "../../../api/usersApi";
 
 export interface ApiFriendsResponseItem {
   username: string;
@@ -52,19 +50,21 @@ export default async function FriendPage({
     },
   );
 
-  const mePromise = axios.get<ApiUsersUserResponse>("/users/@me", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      // "X-Forwarded-For": req.socket.remoteAddress,
-    },
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
-  });
+  const mePromise = getMe(token);
 
   const [friendsResponse, ownResponse, meResponse] = await Promise.all([
     friendsPromise,
     ownPromise,
     mePromise,
   ]);
+
+  if ("error" in meResponse) {
+    if (meResponse.error === "Unauthorized") {
+      redirect("/login");
+    } else {
+      throw new Error(meResponse.error);
+    }
+  }
 
   const ownEntries = ownResponse.data
     .map((e) => ({
@@ -93,7 +93,7 @@ export default async function FriendPage({
       <FriendList
         friends={friendsResponse.data}
         ownTimeCoded={ownTimeCoded}
-        username={meResponse.data.username}
+        username={meResponse.username}
         locale={locale}
       />
     </>

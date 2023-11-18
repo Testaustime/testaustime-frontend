@@ -8,16 +8,14 @@ import LanguageSelector from "../../../components/LanguageSelector";
 import SmoothChartsSelector from "../../../components/SmoothChartsSelector";
 import DefaultDayRangeSelector from "../../../components/DefaultDayRangeSelector";
 import ChangePasswordForm from "../../../components/ChangePasswordForm";
-import axios from "../../../axios";
 import { cookies } from "next/headers";
 import { ProfileVisibilityToggle } from "./ProfileVisibilityToggle";
 import initTranslations from "../../i18n";
-import { isAxiosError } from "axios";
 import { DeleteAccountButton } from "./DeleteAccountButton";
 import { FriendCodeField } from "./FriendCodeField";
 import { AuthTokenField } from "./AuthTokenField";
-import { ApiUsersUserResponse } from "../../../types";
 import { redirect } from "next/navigation";
+import { getMe } from "../../../api/usersApi";
 
 export type ProfilePageProps = {
   username: string;
@@ -35,27 +33,24 @@ export default async function ProfilePage({
 }) {
   const token = cookies().get("token")?.value;
 
-  let data: ApiUsersUserResponse;
-  try {
-    const response = await axios.get<ApiUsersUserResponse>("/users/@me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // "X-Forwarded-For": req.socket.remoteAddress,
-      },
-      baseURL: process.env.NEXT_PUBLIC_API_URL,
-    });
-    data = response.data;
-  } catch (e) {
-    if (isAxiosError(e) && e.response?.status === 401) {
+  if (!token) {
+    redirect("/login");
+  }
+
+  const me = await getMe(token);
+  if ("error" in me) {
+    if (me.error === "Unauthorized") {
+      cookies().delete("token");
       redirect("/login");
+    } else {
+      throw new Error(me.error);
     }
-    throw e;
   }
 
   const { username, friendCode, registrationTime } = {
-    username: data.username,
-    friendCode: data.friend_code,
-    registrationTime: data.registration_time,
+    username: me.username,
+    friendCode: me.friend_code,
+    registrationTime: me.registration_time,
   };
 
   const { t } = await initTranslations(locale, ["common"]);
@@ -88,11 +83,11 @@ export default async function ProfilePage({
           <Title order={3}>{t("profile.accountVisibility.title")}</Title>
         </WithTooltip>
         <div>
-          <ProfileVisibilityToggle isPublicInitial={data.is_public} />
+          <ProfileVisibilityToggle isPublicInitial={me.is_public} />
         </div>
         <Title order={3}>{t("profile.deleteAccount.title")}</Title>
         <div>
-          <DeleteAccountButton username={data.username} />
+          <DeleteAccountButton username={me.username} />
         </div>
       </Stack>
       <Stack mt={40} gap={15}>

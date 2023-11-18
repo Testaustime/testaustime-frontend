@@ -14,7 +14,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -31,6 +31,7 @@
     ]
   },
   "include": [
+    "next-env.d.ts",
     "src",
     ".storybook/withSetup.tsx",
     "next-i18next.config.js",

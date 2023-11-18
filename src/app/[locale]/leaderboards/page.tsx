@@ -1,16 +1,13 @@
 import { Group, Title } from "@mantine/core";
 import { LeaderboardsList } from "../../../components/leaderboard/LeaderboardsList";
-import axios from "../../../axios";
-import {
-  ApiUsersUserResponse,
-  Leaderboard,
-  LeaderboardData,
-} from "../../../types";
+import { LeaderboardData } from "../../../types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import initTranslations from "../../i18n";
 import { CreateNewLeaderboardButton } from "./CreateNewLeaderboardButton";
 import { JoinLeaderboardButton } from "./JoinLeaderboardButton";
+import { getLeaderboard, getMyLeaderboards } from "../../../api/leaderboardApi";
+import { getMe } from "../../../api/usersApi";
 
 export type LeaderboardsPageProps = {
   initialLeaderboards: LeaderboardData[];
@@ -28,42 +25,24 @@ export default async function LeaderboardsPage({
     redirect("/login");
   }
 
-  const leaderboardListResponse = await axios.get<Leaderboard[]>(
-    "/users/@me/leaderboards",
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // "X-Forwarded-For": req.socket.remoteAddress,
-      },
-      baseURL: process.env.NEXT_PUBLIC_API_URL,
-    },
-  );
+  const leaderboardList = await getMyLeaderboards(token);
 
-  const leaderboardPromises = leaderboardListResponse.data.map(
-    async (leaderboard) => {
-      const response = await axios.get<LeaderboardData>(
-        `/leaderboards/${leaderboard.name}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            // "X-Forwarded-For": req.socket.remoteAddress,
-          },
-          baseURL: process.env.NEXT_PUBLIC_API_URL,
-        },
-      );
-      return response.data;
-    },
+  const leaderboardPromises = leaderboardList.map((leaderboard) =>
+    getLeaderboard(leaderboard.name, token),
   );
 
   const leaderboards = await Promise.all(leaderboardPromises);
 
-  const meResponse = await axios.get<ApiUsersUserResponse>("/users/@me", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      // "X-Forwarded-For": req.socket.remoteAddress,
-    },
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
-  });
+  const me = await getMe(token);
+
+  if ("error" in me) {
+    if (me.error === "Unauthorized") {
+      cookies().delete("token");
+      redirect("/login");
+    } else {
+      throw new Error(me.error);
+    }
+  }
 
   const { t } = await initTranslations(locale, ["common"]);
 
@@ -103,10 +82,7 @@ export default async function LeaderboardsPage({
             />
           </Group>
         </Group>
-        <LeaderboardsList
-          leaderboards={leaderboards}
-          username={meResponse.data.username}
-        />
+        <LeaderboardsList leaderboards={leaderboards} username={me.username} />
       </div>
     </>
   );

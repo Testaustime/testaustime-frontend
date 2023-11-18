@@ -1,4 +1,4 @@
-import { createInstance } from "i18next";
+import { createInstance, i18n } from "i18next";
 import { initReactI18next } from "react-i18next/initReactI18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { i18nConfig } from "../i18nConfig";
@@ -27,5 +27,5 @@ export default async function initTranslations(
       preload: typeof window === "undefined" ? i18nConfig.locales : [],
     });
 
-  return i18nInstance;
+  return i18nInstance as i18n;
 }

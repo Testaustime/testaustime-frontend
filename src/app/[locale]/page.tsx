@@ -16,6 +16,7 @@ import {
 } from "../../types";
 import { cookies } from "next/headers";
 import initTranslations from "../i18n";
+import { getMe } from "../../api/usersApi";
 
 export default async function MainPage({
   params: { locale },
@@ -25,7 +26,21 @@ export default async function MainPage({
   const token = cookies().get("token")?.value;
   const { t } = await initTranslations(locale, ["common"]);
 
+  let me: ApiUsersUserResponse | undefined = undefined;
   if (token) {
+    const meResponse = await getMe(token);
+    if ("error" in meResponse) {
+      if (meResponse.error === "Unauthorized") {
+        cookies().delete("token");
+      } else {
+        me = undefined;
+      }
+    } else {
+      me = meResponse;
+    }
+  }
+
+  if (me) {
     const response = await axios.get<ApiUsersUserActivityDataResponseItem[]>(
       "/users/@me/activity/data",
       {
@@ -45,32 +60,18 @@ export default async function MainPage({
     const smoothCharts =
       (cookies().get(smoothChartsCookieName)?.value || "true") === "true";
 
-    const meResponse = await axios.get<ApiUsersUserResponse>("/users/@me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // "X-Forwarded-For": req.socket.remoteAddress,
-      },
-      baseURL: process.env.NEXT_PUBLIC_API_URL,
-    });
-
-    const props = {
-      entries: response.data,
-      defaultDayRange: defaultDayRange ?? null,
-      smoothCharts: smoothCharts,
-      username: meResponse.data.username,
-    };
     return (
       <div className={styles.dashboardContainer}>
         <Dashboard
-          username={props.username}
+          username={me.username}
           isFrontPage={true}
-          allEntries={props.entries.map((e) => ({
+          allEntries={response.data.map((e) => ({
             ...e,
             start_time: new Date(e.start_time),
             dayStart: startOfDay(new Date(e.start_time)),
           }))}
-          defaultDayRange={props.defaultDayRange}
-          smoothCharts={props.smoothCharts}
+          defaultDayRange={defaultDayRange ?? null}
+          smoothCharts={smoothCharts}
           locale={locale}
         />
       </div>
