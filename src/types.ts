@@ -75,3 +75,8 @@ export enum AddFriendError {
   NotFound,
   UnknownError,
 }
+
+export enum RegistrationResult {
+  RateLimited,
+  UnknownError,
+}

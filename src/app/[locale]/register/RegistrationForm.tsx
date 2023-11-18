@@ -1,22 +1,15 @@
 "use client";
 
 import { Form, Formik } from "formik";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import * as Yup from "yup";
-import axios from "../../../axios";
-import { isAxiosError } from "axios";
-import { getErrorMessage } from "../../../lib/errorHandling/errorHandler";
 import { showNotification } from "@mantine/notifications";
 import { FormikTextInput } from "../../../components/forms/FormikTextInput";
 import { FormikPasswordInput } from "../../../components/forms/FormikPasswordInput";
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useTranslation } from "react-i18next";
-
-enum RegistrationResult {
-  Success,
-  RateLimited,
-}
+import { register } from "./actions";
+import { RegistrationResult } from "../../../types";
 
 export interface ApiAuthRegisterResponse {
   auth_token: string;
@@ -26,28 +19,8 @@ export interface ApiAuthRegisterResponse {
 }
 
 export const RegistrationForm = () => {
-  const router = useRouter();
   const [visible, setVisible] = useState(false);
   const { t } = useTranslation();
-
-  const register = async (username: string, password: string) => {
-    try {
-      await axios.post<ApiAuthRegisterResponse>("/auth/register", {
-        username,
-        password,
-      });
-      router.refresh();
-      return RegistrationResult.Success;
-    } catch (error) {
-      if (isAxiosError(error)) {
-        if (error.response?.status === 429) {
-          return RegistrationResult.RateLimited;
-        }
-      }
-      // eslint-disable-next-line @typescript-eslint/no-throw-literal
-      throw getErrorMessage(error);
-    }
-  };
 
   return (
     <Formik
@@ -79,33 +52,27 @@ export const RegistrationForm = () => {
             t("registrationPage.validation.passwordConfirm.noMatch"),
           ),
       })}
-      onSubmit={(values) => {
+      onSubmit={async (values) => {
         setVisible(true);
-        register(values.username, values.password)
-          .then((result) => {
-            switch (result) {
-              case RegistrationResult.Success:
-                router.push("/");
-                break;
-              case RegistrationResult.RateLimited:
-                showNotification({
-                  title: t("error"),
-                  color: "red",
-                  message: t("registrationPage.rateLimited"),
-                });
-                setVisible(false);
-                break;
-            }
-          })
-          .catch(() => {
+        const result = await register(values.username, values.password);
+        switch (result) {
+          case RegistrationResult.RateLimited:
+            showNotification({
+              title: t("error"),
+              color: "red",
+              message: t("registrationPage.rateLimited"),
+            });
+            setVisible(false);
+            break;
+          case RegistrationResult.UnknownError:
             showNotification({
               title: t("error"),
               color: "red",
               message: t("unknownErrorOccurred"),
-              autoClose: false,
             });
             setVisible(false);
-          });
+            break;
+        }
       }}
     >
       {() => (
