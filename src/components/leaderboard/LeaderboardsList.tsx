@@ -8,6 +8,7 @@ import { LeaderboardModal } from "./LeaderboardModal";
 import axios from "../../axios";
 import { LeaderboardData } from "../../types";
 import { useTranslation } from "react-i18next";
+import { leaveLeaderboard } from "./actions";
 
 interface LeaderboardsListProps {
   leaderboards: LeaderboardData[];
@@ -46,11 +47,7 @@ export const LeaderboardsList = ({
       children: (
         <LeaderboardModal
           leaveLeaderboard={async () => {
-            await axios.post(
-              `/leaderboards/${openedLeaderboard.name}/leave`,
-              {},
-            );
-
+            await leaveLeaderboard(openedLeaderboard.name);
             modals.closeModal(id);
           }}
           leaderboard={openedLeaderboard}

@@ -13,7 +13,7 @@ export const getMyLeaderboards = async (token: string) => {
       },
       next: {
         revalidate: 60,
-        tags: ["leaderboards/@me"],
+        tags: ["ownLeaderboards"],
       },
     },
   );
