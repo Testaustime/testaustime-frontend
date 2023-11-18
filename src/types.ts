@@ -69,3 +69,9 @@ export enum PasswordChangeResult {
   NewPasswordInvalid,
   UnknownError,
 }
+
+export enum AddFriendError {
+  AlreadyFriends,
+  NotFound,
+  UnknownError,
+}

@@ -6,8 +6,6 @@ import { useModals } from "@mantine/modals";
 import { Dashboard } from "../Dashboard";
 import { showNotification } from "@mantine/notifications";
 import styles from "./FriendList.module.css";
-import axios from "../../axios";
-import { useRouter } from "next/navigation";
 import {
   ActivityDataEntry,
   ApiUsersUserActivityDataResponseItem,
@@ -17,6 +15,7 @@ import { startOfDay } from "date-fns";
 import { normalizeProgrammingLanguageName } from "../../utils/programmingLanguagesUtils";
 import { useTranslation } from "react-i18next";
 import { ApiFriendsResponseItem } from "../../api/friendsApi";
+import { removeFriend } from "./actions";
 
 type FriendListProps = {
   friends: ApiFriendsResponseItem[];
@@ -81,15 +80,6 @@ export const FriendList = ({
 }: FriendListProps) => {
   const { t } = useTranslation();
   const modals = useModals();
-  const router = useRouter();
-
-  const unFriend = async (username: string) => {
-    await axios.delete("/friends/remove", {
-      data: username,
-      headers: { "Content-Type": "text/plain" },
-    });
-    return username;
-  };
 
   const friendsSorted = [
     ...friends
@@ -165,9 +155,15 @@ export const FriendList = ({
                   color="red"
                   size="compact-md"
                   onClick={() => {
-                    unFriend(username)
-                      .then(() => {
-                        router.refresh();
+                    removeFriend(username)
+                      .then((result) => {
+                        if (result) {
+                          showNotification({
+                            title: t("error"),
+                            color: "red",
+                            message: t("friends.errorRemovingFriend"),
+                          });
+                        }
                       })
                       .catch(() => {
                         showNotification({
