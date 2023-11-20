@@ -21,6 +21,12 @@ export const getMe = async (token: string) => {
     };
   }
 
+  if (meResponse.status === 429) {
+    return {
+      error: "Too many requests" as const,
+    };
+  }
+
   if (!meResponse.ok) {
     return {
       error: "Unknown error" as const,

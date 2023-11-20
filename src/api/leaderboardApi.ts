@@ -1,7 +1,12 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { CreateLeaderboardError, Leaderboard, LeaderboardData } from "../types";
+import {
+  CreateLeaderboardError,
+  GetLeaderboardError,
+  Leaderboard,
+  LeaderboardData,
+} from "../types";
 
 export const getMyLeaderboards = async (token: string) => {
   const response = await fetch(
@@ -32,6 +37,12 @@ export const getLeaderboard = async (
       cache: "no-cache",
     },
   );
+
+  if (response.status === 429) {
+    return {
+      error: GetLeaderboardError.TooManyRequests,
+    };
+  }
 
   const data = (await response.json()) as LeaderboardData;
 

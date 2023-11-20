@@ -80,3 +80,7 @@ export enum RegistrationResult {
   RateLimited,
   UnknownError,
 }
+
+export enum GetLeaderboardError {
+  TooManyRequests,
+}

@@ -1,6 +1,6 @@
 import { Group, Title } from "@mantine/core";
 import { LeaderboardsList } from "../../../components/leaderboard/LeaderboardsList";
-import { LeaderboardData } from "../../../types";
+import { GetLeaderboardError, LeaderboardData } from "../../../types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import initTranslations from "../../i18n";
@@ -32,6 +32,21 @@ export default async function LeaderboardsPage({
   );
 
   const leaderboards = await Promise.all(leaderboardPromises);
+
+  const safeLeaderboards = leaderboards.filter(
+    (x): x is LeaderboardData => !("error" in x),
+  );
+
+  const erroredLeaderboards = leaderboards.filter(
+    (x): x is { error: GetLeaderboardError } => "error" in x,
+  );
+
+  if (erroredLeaderboards.length > 0) {
+    console.error(
+      "Errors while loading leaderboards",
+      erroredLeaderboards.map((x) => x.error),
+    );
+  }
 
   const me = await getMe(token);
 
@@ -82,7 +97,10 @@ export default async function LeaderboardsPage({
             />
           </Group>
         </Group>
-        <LeaderboardsList leaderboards={leaderboards} username={me.username} />
+        <LeaderboardsList
+          leaderboards={safeLeaderboards}
+          username={me.username}
+        />
       </div>
     </>
   );
