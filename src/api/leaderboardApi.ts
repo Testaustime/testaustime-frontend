@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 import { CreateLeaderboardError, Leaderboard, LeaderboardData } from "../types";
-import { revalidateTag } from "next/cache";
 
 export const getMyLeaderboards = async (token: string) => {
   const response = await fetch(
@@ -11,10 +10,7 @@ export const getMyLeaderboards = async (token: string) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 60,
-        tags: ["ownLeaderboards"],
-      },
+      cache: "no-cache",
     },
   );
 
@@ -33,10 +29,7 @@ export const getLeaderboard = async (
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 60,
-        tags: [`leaderboards/${leaderboardName}`],
-      },
+      cache: "no-cache",
     },
   );
 
@@ -67,8 +60,6 @@ export const createLeaderboard = async (leaderboardName: string) => {
     console.log(await response.text());
     return CreateLeaderboardError.UnknownError;
   }
-
-  revalidateTag("leaderboards/@me");
 
   const data = (await response.json()) as { invite_code: string };
 

@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 interface ApiAuthRegenerateResponse {
@@ -35,8 +34,6 @@ export const regenerateToken = async () => {
     secure: true,
     httpOnly: true,
   });
-
-  revalidateTag("users/@me");
 };
 
 export const regenerateFriendCode = async () => {
@@ -55,8 +52,6 @@ export const regenerateFriendCode = async () => {
   if (!response.ok) {
     return { error: "Unknown error" as const };
   }
-
-  revalidateTag("users/@me");
 };
 
 export const changeAccountVisibility = async (isPublic: boolean) => {
@@ -78,6 +73,4 @@ export const changeAccountVisibility = async (isPublic: boolean) => {
   if (!response.ok) {
     return { error: "Unknown error" as const };
   }
-
-  revalidateTag("users/@me");
 };

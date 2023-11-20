@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 export const renameProject = async (
@@ -27,6 +26,4 @@ export const renameProject = async (
   if (!response.ok) {
     return { error: "Unknown error" as const };
   }
-
-  revalidateTag("users/@me/activity/data");
 };

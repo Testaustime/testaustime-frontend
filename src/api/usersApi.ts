@@ -11,10 +11,7 @@ export const getMe = async (token: string) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 3600, // 1 hour
-        tags: ["users/@me"],
-      },
+      cache: "no-cache",
     },
   );
 
@@ -42,9 +39,7 @@ export const getOwnActivityData = async (token: string) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        tags: ["users/@me/activity/data"],
-      },
+      cache: "no-cache",
     },
   );
 
@@ -73,9 +68,7 @@ export const getOwnActivityDataSummary = async (token: string) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 60,
-      },
+      cache: "no-cache",
     },
   );
 

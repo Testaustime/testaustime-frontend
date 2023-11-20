@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 import { JoinLeaderboardError } from "../../types";
-import { revalidateTag } from "next/cache";
 
 export const joinLeaderboard = async (inviteCode: string) => {
   const token = cookies().get("token")?.value;
@@ -35,9 +34,6 @@ export const joinLeaderboard = async (inviteCode: string) => {
     member_count: number;
   };
 
-  revalidateTag("ownLeaderboards");
-  revalidateTag(`/leaderboards/${data.name}`);
-
   return data;
 };
 
@@ -57,7 +53,4 @@ export const leaveLeaderboard = async (leaderboardName: string) => {
   if (!response.ok) {
     return { error: "Unknown error" };
   }
-
-  revalidateTag("ownLeaderboards");
-  revalidateTag(`/leaderboards/${leaderboardName}`);
 };

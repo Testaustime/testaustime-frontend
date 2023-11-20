@@ -14,10 +14,7 @@ export const getFriendsList = async (token: string) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 60,
-        tags: ["friendsList"],
-      },
+      cache: "no-cache",
     },
   );
 

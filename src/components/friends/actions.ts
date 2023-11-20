@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { AddFriendError } from "../../types";
 
@@ -22,8 +21,6 @@ export const removeFriend = async (username: string) => {
   if (!response.ok) {
     return { error: "Unknown error" as const };
   }
-
-  revalidateTag("friendsList");
 };
 
 type ApiFriendsAddResponse = {
@@ -61,8 +58,6 @@ export const addFriend = async (friendCode: string) => {
   }
 
   const data = (await response.json()) as ApiFriendsAddResponse;
-
-  revalidateTag("friendsList");
 
   return data;
 };
