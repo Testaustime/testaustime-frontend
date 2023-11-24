@@ -25,11 +25,12 @@ const isMantineColorScheme = (
 
 export default async function RootLayout({
   children,
-  params: { locale },
+  params,
 }: {
   children: React.ReactNode;
   params: { locale: string };
 }) {
+  const locale = params.locale;
   const { t, options } = await initTranslations(locale, ["common"]);
 
   const colorSchemeUnchecked = cookies().get(colorSchemeCookieName)?.value;
@@ -44,8 +45,8 @@ export default async function RootLayout({
     const me = await getMe();
     if ("error" in me) {
       if (me.error === "Unauthorized") {
-        cookies().delete("token");
-        redirect("/login");
+        // Can't redirect to /login because it would cause an infinite loop
+        console.log("User has token but it is invalid");
       } else if (me.error === "Too many requests") {
         redirect("/rate-limited");
       } else {
@@ -53,7 +54,9 @@ export default async function RootLayout({
       }
     }
 
-    username = me.username;
+    if (!("error" in me)) {
+      username = me.username;
+    }
   }
 
   return (
@@ -118,7 +121,7 @@ export default async function RootLayout({
                         Testaustime
                       </Link>
                       <Navigation
-                        isLoggedIn={!!token}
+                        isLoggedIn={!!username}
                         username={username}
                         t={t}
                         locale={locale}

@@ -26,11 +26,7 @@ export default async function MainPage({
   if (token) {
     const meResponse = await getMe();
     if ("error" in meResponse) {
-      if (meResponse.error === "Unauthorized") {
-        cookies().delete("token");
-      } else {
-        me = undefined;
-      }
+      me = undefined;
     } else {
       me = meResponse;
     }

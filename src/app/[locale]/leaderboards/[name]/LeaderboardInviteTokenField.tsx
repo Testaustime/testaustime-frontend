@@ -1,7 +1,7 @@
 "use client";
 
-import axios from "../../../../axios";
 import TokenField from "../../../../components/TokenField";
+import { regenerateInviteCode } from "./actions";
 
 type LeaderboardInviteTokenFieldProps = {
   leaderboardName: string;
@@ -20,10 +20,7 @@ export const LeaderboardInviteTokenField = ({
       regenerate={
         isAdmin
           ? async () => {
-              await axios.post<{ invite_code: string }>(
-                `/leaderboards/${leaderboardName}/regenerate`,
-                {},
-              );
+              await regenerateInviteCode(leaderboardName);
             }
           : undefined
       }

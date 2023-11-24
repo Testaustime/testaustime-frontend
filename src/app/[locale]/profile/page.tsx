@@ -40,7 +40,6 @@ export default async function ProfilePage({
   const me = await getMe();
   if ("error" in me) {
     if (me.error === "Unauthorized") {
-      cookies().delete("token");
       redirect("/login");
     } else {
       throw new Error(me.error);

@@ -42,6 +42,9 @@ export const getLeaderboard = async (leaderboardName: string) => {
         Authorization: `Bearer ${token}`,
       },
       cache: "no-cache",
+      next: {
+        tags: [`leaderboard-${leaderboardName}`],
+      },
     },
   );
 

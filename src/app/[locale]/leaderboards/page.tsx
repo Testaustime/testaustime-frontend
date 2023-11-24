@@ -29,7 +29,6 @@ export default async function LeaderboardsPage({
 
   if ("error" in me) {
     if (me.error === "Unauthorized") {
-      cookies().delete("token");
       redirect("/login");
     } else if (me.error === "Too many requests") {
       redirect("/rate-limited");
