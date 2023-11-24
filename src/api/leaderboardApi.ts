@@ -8,6 +8,7 @@ import {
   LeaderboardData,
 } from "../types";
 import { revalidateTag } from "next/cache";
+import { redirect } from "next/navigation";
 
 export const getMyLeaderboards = async (token: string, username: string) => {
   const response = await fetch(
@@ -28,10 +29,12 @@ export const getMyLeaderboards = async (token: string, username: string) => {
   return data;
 };
 
-export const getLeaderboard = async (
-  leaderboardName: string,
-  token: string,
-) => {
+export const getLeaderboard = async (leaderboardName: string) => {
+  const token = cookies().get("token")?.value;
+  if (!token) {
+    redirect("/login");
+  }
+
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + `/leaderboards/${leaderboardName}`,
     {

@@ -25,7 +25,7 @@ export default async function LeaderboardsPage({
     redirect("/login");
   }
 
-  const me = await getMe(token);
+  const me = await getMe();
 
   if ("error" in me) {
     if (me.error === "Unauthorized") {
@@ -41,7 +41,7 @@ export default async function LeaderboardsPage({
   const leaderboardList = await getMyLeaderboards(token, me.username);
 
   const leaderboardPromises = leaderboardList.map((leaderboard) =>
-    getLeaderboard(leaderboard.name, token),
+    getLeaderboard(leaderboard.name),
   );
 
   const leaderboards = await Promise.all(leaderboardPromises);

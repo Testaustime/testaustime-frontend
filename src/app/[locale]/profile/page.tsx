@@ -37,7 +37,7 @@ export default async function ProfilePage({
     redirect("/login");
   }
 
-  const me = await getMe(token);
+  const me = await getMe();
   if ("error" in me) {
     if (me.error === "Unauthorized") {
       cookies().delete("token");

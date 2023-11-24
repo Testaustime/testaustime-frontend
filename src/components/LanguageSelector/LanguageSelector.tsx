@@ -34,7 +34,8 @@ export const LanguageSelector = ({
     { label: "🇫🇮 Suomi", value: "fi" },
   ];
 
-  const onChange = (value: string) => {
+  const onChange = (value: string | null) => {
+    if (!value) return;
     setLanguage(value as Locales);
   };
 

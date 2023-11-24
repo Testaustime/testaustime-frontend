@@ -22,7 +22,7 @@ export default async function FriendPage({
   const [friendsList, ownDataSummary, me] = await Promise.all([
     getFriendsList(token),
     getOwnActivityDataSummary(token),
-    getMe(token),
+    getMe(),
   ]);
 
   if ("error" in me) {

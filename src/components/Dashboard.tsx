@@ -14,7 +14,12 @@ import {
   CheckIcon,
 } from "@mantine/core";
 import TopLanguages from "./TopLanguages";
-import { DayRange, getDayCount, prettyDuration } from "../utils/dateUtils";
+import {
+  DayRange,
+  getDayCount,
+  isDayRange,
+  prettyDuration,
+} from "../utils/dateUtils";
 import { TopProjects } from "./TopProjects/TopProjects";
 import { sumBy } from "../utils/arrayUtils";
 import DailyCodingTimeChart, {
@@ -182,8 +187,10 @@ export const Dashboard = ({
             { label: t("dashboard.timeFilters.all"), value: "all" },
           ]}
           value={statisticsRange}
-          onChange={(value: DayRange) => {
-            setStatisticsRange(value);
+          onChange={(value: string) => {
+            if (isDayRange(value)) {
+              setStatisticsRange(value);
+            }
           }}
           className={styles.segmentControl}
         />

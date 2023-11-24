@@ -24,7 +24,7 @@ export default async function MainPage({
 
   let me: ApiUsersUserResponse | undefined = undefined;
   if (token) {
-    const meResponse = await getMe(token);
+    const meResponse = await getMe();
     if ("error" in meResponse) {
       if (meResponse.error === "Unauthorized") {
         cookies().delete("token");

@@ -1,10 +1,17 @@
+import { redirect } from "next/navigation";
 import {
   ActivityDataSummary,
   ApiUsersUserActivityDataResponseItem,
   ApiUsersUserResponse,
 } from "../types";
+import { cookies } from "next/headers";
 
-export const getMe = async (token: string) => {
+export const getMe = async () => {
+  const token = cookies().get("token")?.value;
+  if (!token) {
+    redirect("/login");
+  }
+
   const meResponse = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/users/@me`,
     {

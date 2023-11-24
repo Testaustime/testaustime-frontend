@@ -41,7 +41,7 @@ export default async function RootLayout({
 
   let username = undefined;
   if (token) {
-    const me = await getMe(token);
+    const me = await getMe();
     if ("error" in me) {
       if (me.error === "Unauthorized") {
         cookies().delete("token");

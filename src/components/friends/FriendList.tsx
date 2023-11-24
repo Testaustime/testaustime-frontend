@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Table } from "@mantine/core";
+import { Button, Table, TableTh, TableThead, TableTr } from "@mantine/core";
 import { prettyDuration } from "../../utils/dateUtils";
 import { useModals } from "@mantine/modals";
 import { Dashboard } from "../Dashboard";
@@ -116,18 +116,18 @@ export const FriendList = ({
 
   return (
     <Table>
-      <Table.Thead>
-        <Table.Tr>
-          <Table.Th>{t("friends.index")}</Table.Th>
-          <Table.Th>{t("friends.friendName")}</Table.Th>
-          <Table.Th>{t("friends.timeCoded", { days: 30 })}</Table.Th>
-          <Table.Th />
-          <Table.Th />
-        </Table.Tr>
-      </Table.Thead>
+      <TableThead>
+        <TableTr>
+          <TableTh>{t("friends.index")}</TableTh>
+          <TableTh>{t("friends.friendName")}</TableTh>
+          <TableTh>{t("friends.timeCoded", { days: 30 })}</TableTh>
+          <TableTh />
+          <TableTh />
+        </TableTr>
+      </TableThead>
       <Table.Tbody>
         {friendsSorted.map(({ username, codingTime, isMe }, idx) => (
-          <Table.Tr
+          <TableTr
             key={username}
             className={isMe ? styles.tableRow : undefined}
           >
@@ -178,7 +178,7 @@ export const FriendList = ({
                 </Button>
               )}
             </Table.Td>
-          </Table.Tr>
+          </TableTr>
         ))}
       </Table.Tbody>
     </Table>
