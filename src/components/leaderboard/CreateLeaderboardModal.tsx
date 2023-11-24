@@ -22,11 +22,13 @@ interface CreateLeaderboardModalProps {
     };
     create: string;
   };
+  username: string;
 }
 
 export const CreateLeaderboardModal = ({
   onCreate,
   texts,
+  username,
 }: CreateLeaderboardModalProps) => {
   return (
     <>
@@ -35,7 +37,10 @@ export const CreateLeaderboardModal = ({
           leaderboardName: "",
         }}
         onSubmit={async (values) => {
-          const result = await createLeaderboard(values.leaderboardName);
+          const result = await createLeaderboard(
+            values.leaderboardName,
+            username,
+          );
           if (typeof result === "object") {
             onCreate(values.leaderboardName);
           } else {

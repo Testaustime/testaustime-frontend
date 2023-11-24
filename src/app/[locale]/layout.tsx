@@ -46,6 +46,8 @@ export default async function RootLayout({
       if (me.error === "Unauthorized") {
         cookies().delete("token");
         redirect("/login");
+      } else if (me.error === "Too many requests") {
+        redirect("/rate-limited");
       } else {
         throw new Error(me.error);
       }

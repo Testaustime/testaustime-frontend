@@ -82,5 +82,5 @@ export enum RegistrationResult {
 }
 
 export enum GetLeaderboardError {
-  TooManyRequests,
+  TooManyRequests = "Too many requests",
 }

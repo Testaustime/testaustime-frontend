@@ -13,11 +13,13 @@ import { joinLeaderboard } from "./actions";
 interface JoinLeaderboardModalProps {
   initialCode: string | null;
   onJoin: () => void;
+  username: string;
 }
 
 export const JoinLeaderboardModal = ({
   initialCode,
   onJoin,
+  username,
 }: JoinLeaderboardModalProps) => {
   const [placeholderLeaderboardInviteCode] = useState(
     generateLeaderboardInviteCode(),
@@ -39,7 +41,10 @@ export const JoinLeaderboardModal = ({
             ),
         })}
         onSubmit={async (values) => {
-          const result = await joinLeaderboard(values.leaderboardCode);
+          const result = await joinLeaderboard(
+            values.leaderboardCode,
+            username,
+          );
           if (typeof result === "object") {
             onJoin();
           } else {

@@ -7,6 +7,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 
 export const CreateNewLeaderboardButton = ({
   texts,
+  username,
 }: {
   texts: {
     createNewLeaderboardTitle: string;
@@ -24,6 +25,7 @@ export const CreateNewLeaderboardButton = ({
       create: string;
     };
   };
+  username: string;
 }) => {
   const modals = useModals();
 
@@ -37,6 +39,7 @@ export const CreateNewLeaderboardButton = ({
             modals.closeModal(id);
           }}
           texts={texts.modal}
+          username={username}
         />
       ),
       styles: {

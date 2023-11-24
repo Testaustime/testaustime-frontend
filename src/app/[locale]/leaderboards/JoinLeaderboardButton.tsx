@@ -9,11 +9,13 @@ import { JoinLeaderboardModal } from "../../../components/leaderboard/JoinLeader
 
 export const JoinLeaderboardButton = ({
   texts,
+  username,
 }: {
   texts: {
     title: string;
     button: string;
   };
+  username: string;
 }) => {
   const modals = useModals();
   const params = useSearchParams();
@@ -29,6 +31,7 @@ export const JoinLeaderboardButton = ({
           onJoin={() => {
             modals.closeModal(id);
           }}
+          username={username}
         />
       ),
       styles: {
@@ -39,7 +42,7 @@ export const JoinLeaderboardButton = ({
         },
       },
     });
-  }, [modals, texts.title, urlLeaderboardCode]);
+  }, [modals, texts.title, urlLeaderboardCode, username]);
 
   useEffect(() => {
     if (urlLeaderboardCode) openJoinLeaderboard();

@@ -8,7 +8,7 @@ import { LeaderboardModal } from "./LeaderboardModal";
 import axios from "../../axios";
 import { LeaderboardData } from "../../types";
 import { useTranslation } from "react-i18next";
-import { leaveLeaderboard } from "./actions";
+import { deleteLeaderboard, leaveLeaderboard } from "./actions";
 
 interface LeaderboardsListProps {
   leaderboards: LeaderboardData[];
@@ -47,12 +47,12 @@ export const LeaderboardsList = ({
       children: (
         <LeaderboardModal
           leaveLeaderboard={async () => {
-            await leaveLeaderboard(openedLeaderboard.name);
+            await leaveLeaderboard(openedLeaderboard.name, username);
             modals.closeModal(id);
           }}
           leaderboard={openedLeaderboard}
           deleteLeaderboard={async () => {
-            await axios.delete(`/leaderboards/${openedLeaderboard.name}`);
+            await deleteLeaderboard(openedLeaderboard.name, username);
             modals.closeModal(id);
           }}
           isAdmin={Boolean(adminUsernames.includes(username))}

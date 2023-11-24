@@ -25,7 +25,20 @@ export default async function LeaderboardsPage({
     redirect("/login");
   }
 
-  const leaderboardList = await getMyLeaderboards(token);
+  const me = await getMe(token);
+
+  if ("error" in me) {
+    if (me.error === "Unauthorized") {
+      cookies().delete("token");
+      redirect("/login");
+    } else if (me.error === "Too many requests") {
+      redirect("/rate-limited");
+    } else {
+      throw new Error(me.error);
+    }
+  }
+
+  const leaderboardList = await getMyLeaderboards(token, me.username);
 
   const leaderboardPromises = leaderboardList.map((leaderboard) =>
     getLeaderboard(leaderboard.name, token),
@@ -46,17 +59,7 @@ export default async function LeaderboardsPage({
       "Errors while loading leaderboards",
       erroredLeaderboards.map((x) => x.error),
     );
-  }
-
-  const me = await getMe(token);
-
-  if ("error" in me) {
-    if (me.error === "Unauthorized") {
-      cookies().delete("token");
-      redirect("/login");
-    } else {
-      throw new Error(me.error);
-    }
+    redirect("/rate-limited");
   }
 
   const { t } = await initTranslations(locale, ["common"]);
@@ -88,12 +91,14 @@ export default async function LeaderboardsPage({
                   create: t("leaderboards.create"),
                 },
               }}
+              username={me.username}
             />
             <JoinLeaderboardButton
               texts={{
                 title: t("leaderboards.joinLeaderboard"),
                 button: t("leaderboards.joinLeaderboard"),
               }}
+              username={me.username}
             />
           </Group>
         </Group>

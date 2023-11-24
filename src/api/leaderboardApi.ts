@@ -7,8 +7,9 @@ import {
   Leaderboard,
   LeaderboardData,
 } from "../types";
+import { revalidateTag } from "next/cache";
 
-export const getMyLeaderboards = async (token: string) => {
+export const getMyLeaderboards = async (token: string, username: string) => {
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + "/users/@me/leaderboards",
     {
@@ -16,6 +17,9 @@ export const getMyLeaderboards = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
       cache: "no-cache",
+      next: {
+        tags: [`leaderboards-${username}`],
+      },
     },
   );
 
@@ -49,7 +53,10 @@ export const getLeaderboard = async (
   return data;
 };
 
-export const createLeaderboard = async (leaderboardName: string) => {
+export const createLeaderboard = async (
+  leaderboardName: string,
+  username: string,
+) => {
   const token = cookies().get("token")?.value;
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + "/leaderboards/create",
@@ -73,6 +80,9 @@ export const createLeaderboard = async (leaderboardName: string) => {
   }
 
   const data = (await response.json()) as { invite_code: string };
+
+  // TODO: username is provided by user, we should not trust it
+  revalidateTag(`leaderboards-${username}`);
 
   return data;
 };
