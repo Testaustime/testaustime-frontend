@@ -9,7 +9,6 @@
     "@mantine/next": "^6.0.21",
     "@mantine/notifications": "^7.2.2",
     "@radix-ui/react-icons": "^1.3.0",
-    "@tanstack/react-query": "^4.35.3",
     "axios": "^1.5.0",
     "chart.js": "^4.4.0",
     "date-fns": "^2.30.0",
