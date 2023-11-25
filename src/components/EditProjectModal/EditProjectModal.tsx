@@ -7,11 +7,13 @@ import { renameProject } from "./actions";
 type EditProjectModalProps = {
   projectName: string;
   onClose: () => void;
+  username: string;
 };
 
 export const EditProjectModal = ({
   projectName,
   onClose,
+  username,
 }: EditProjectModalProps) => {
   const { t } = useTranslation();
 
@@ -20,7 +22,7 @@ export const EditProjectModal = ({
       <Formik
         initialValues={{ projectName }}
         onSubmit={async (values) => {
-          await renameProject(projectName, values.projectName);
+          await renameProject(projectName, values.projectName, username);
           onClose();
         }}
       >

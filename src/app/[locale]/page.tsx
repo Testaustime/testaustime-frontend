@@ -35,7 +35,7 @@ export default async function MainPage({
 
   // `&& token` is unnecessary but it makes the type checker happy
   if (me && token) {
-    const activityData = await getOwnActivityData(token);
+    const activityData = await getOwnActivityData(token, me.username);
 
     if ("error" in activityData) {
       if (activityData.error === "Too many requests") {

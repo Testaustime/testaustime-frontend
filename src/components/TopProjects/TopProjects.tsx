@@ -5,10 +5,15 @@ import { ActivityDataEntry } from "../../types";
 
 interface TopProjectsProps {
   entries: ActivityDataEntry[];
+  username: string;
   allowEditing?: boolean;
 }
 
-export const TopProjects = ({ entries, allowEditing }: TopProjectsProps) => {
+export const TopProjects = ({
+  entries,
+  allowEditing,
+  username,
+}: TopProjectsProps) => {
   return (
     <List type="ordered" withPadding>
       {getAllTimeTopProjects(entries).map((p) => (
@@ -17,6 +22,7 @@ export const TopProjects = ({ entries, allowEditing }: TopProjectsProps) => {
           name={p.project_name}
           durationSeconds={p.duration}
           allowEditing={allowEditing}
+          username={username}
         />
       ))}
     </List>

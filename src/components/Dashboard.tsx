@@ -237,7 +237,11 @@ export const Dashboard = ({
               </div>
               <div>
                 <Title order={2}>{t("dashboard.projects")}</Title>
-                <TopProjects entries={entries} allowEditing={isFrontPage} />
+                <TopProjects
+                  entries={entries}
+                  allowEditing={isFrontPage}
+                  username={username}
+                />
               </div>
             </Stack>
           ) : (
@@ -248,7 +252,11 @@ export const Dashboard = ({
               </div>
               <div>
                 <Title order={2}>{t("dashboard.projects")}</Title>
-                <TopProjects entries={entries} allowEditing={isFrontPage} />
+                <TopProjects
+                  entries={entries}
+                  allowEditing={isFrontPage}
+                  username={username}
+                />
               </div>
             </Group>
           )}

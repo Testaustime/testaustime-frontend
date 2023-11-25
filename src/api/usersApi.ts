@@ -45,7 +45,7 @@ export const getMe = async () => {
   return data;
 };
 
-export const getOwnActivityData = async (token: string) => {
+export const getOwnActivityData = async (token: string, username: string) => {
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + "/users/@me/activity/data",
     {
@@ -53,6 +53,9 @@ export const getOwnActivityData = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
       cache: "no-cache",
+      next: {
+        tags: [`activity-data-${username}`],
+      },
     },
   );
 

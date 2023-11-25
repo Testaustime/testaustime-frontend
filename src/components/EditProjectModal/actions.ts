@@ -1,10 +1,12 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 export const renameProject = async (
   oldProjectName: string,
   newProjectName: string,
+  username: string,
 ) => {
   const token = cookies().get("token")?.value;
 
@@ -27,4 +29,7 @@ export const renameProject = async (
   if (!response.ok) {
     return { error: "Unknown error" as const };
   }
+
+  // TODO: Username is provided by the user, we shouldn't trust it
+  revalidateTag(`activity-data-${username}`);
 };
