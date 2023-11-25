@@ -72,35 +72,8 @@ export default async function LeaderboardsPage({
         <Group align="center" mb="md" mt="xl" justify="space-between">
           <Title>{t("leaderboards.leaderboards")}</Title>
           <Group gap="sm">
-            <CreateNewLeaderboardButton
-              texts={{
-                button: t("leaderboards.createNewLeaderboard"),
-                createNewLeaderboardTitle: t(
-                  "leaderboards.createNewLeaderboard",
-                ),
-                modal: {
-                  error: t("error"),
-                  leaderboardExists: t("leaderboards.leaderboardExists"),
-                  leaderboardCreateError: t(
-                    "leaderboards.leaderboardCreateError",
-                  ),
-                  validation: {
-                    required: t("leaderboards.validation.required"),
-                    min: t("leaderboards.validation.min", { min: 2 }),
-                    max: t("leaderboards.validation.max", { max: 32 }),
-                    regex: t("leaderboards.validation.regex"),
-                  },
-                  create: t("leaderboards.create"),
-                },
-              }}
-              username={me.username}
-            />
-            <JoinLeaderboardButton
-              texts={{
-                title: t("leaderboards.joinLeaderboard"),
-                button: t("leaderboards.joinLeaderboard"),
-              }}
-            />
+            <CreateNewLeaderboardButton username={me.username} />
+            <JoinLeaderboardButton />
           </Group>
         </Group>
         <LeaderboardsList

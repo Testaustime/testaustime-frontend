@@ -6,22 +6,17 @@ import { EnterIcon } from "@radix-ui/react-icons";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { JoinLeaderboardModal } from "../../../components/leaderboard/JoinLeaderboardModal";
+import { useTranslation } from "react-i18next";
 
-export const JoinLeaderboardButton = ({
-  texts,
-}: {
-  texts: {
-    title: string;
-    button: string;
-  };
-}) => {
+export const JoinLeaderboardButton = () => {
   const modals = useModals();
   const params = useSearchParams();
   const urlLeaderboardCode = params.get("code");
+  const { t } = useTranslation();
 
   const openJoinLeaderboard = useCallback(() => {
     const id = modals.openModal({
-      title: texts.title,
+      title: t("leaderboards.joinLeaderboard"),
       size: "xl",
       children: (
         <JoinLeaderboardModal
@@ -39,7 +34,7 @@ export const JoinLeaderboardButton = ({
         },
       },
     });
-  }, [modals, texts.title, urlLeaderboardCode]);
+  }, [modals, t, urlLeaderboardCode]);
 
   useEffect(() => {
     if (urlLeaderboardCode) openJoinLeaderboard();
@@ -52,7 +47,7 @@ export const JoinLeaderboardButton = ({
       }}
       leftSection={<EnterIcon />}
     >
-      {texts.button}
+      {t("leaderboards.joinLeaderboard")}
     </Button>
   );
 };

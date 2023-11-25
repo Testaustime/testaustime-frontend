@@ -7,29 +7,19 @@ import { FormikTextInput } from "../forms/FormikTextInput";
 import { showNotification } from "@mantine/notifications";
 import { createLeaderboard } from "../../api/leaderboardApi";
 import { CreateLeaderboardError } from "../../types";
+import { useTranslation } from "react-i18next";
 
 interface CreateLeaderboardModalProps {
   onCreate: (leaderboardName: string) => void;
-  texts: {
-    error: string;
-    leaderboardExists: string;
-    leaderboardCreateError: string;
-    validation: {
-      required: string;
-      min: string;
-      max: string;
-      regex: string;
-    };
-    create: string;
-  };
   username: string;
 }
 
 export const CreateLeaderboardModal = ({
   onCreate,
-  texts,
   username,
 }: CreateLeaderboardModalProps) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <Formik
@@ -45,29 +35,32 @@ export const CreateLeaderboardModal = ({
             onCreate(values.leaderboardName);
           } else {
             showNotification({
-              title: texts.error,
+              title: t("error"),
               color: "red",
               message: {
-                [CreateLeaderboardError.AlreadyExists]: texts.leaderboardExists,
-                [CreateLeaderboardError.UnknownError]:
-                  texts.leaderboardCreateError,
+                [CreateLeaderboardError.AlreadyExists]: t(
+                  "leaderboards.leaderboardExists",
+                ),
+                [CreateLeaderboardError.UnknownError]: t(
+                  "leaderboards.leaderboardCreateError",
+                ),
               }[result],
             });
           }
         }}
         validationSchema={Yup.object().shape({
           leaderboardName: Yup.string()
-            .required(texts.validation.required)
-            .min(2, texts.validation.min)
-            .max(32, texts.validation.max)
-            .matches(/^[a-zA-Z0-9]*$/, texts.validation.regex),
+            .required(t("leaderboards.validation.required"))
+            .min(2, t("leaderboards.validation.min", { min: 2 }))
+            .max(32, t("leaderboards.validation.max", { max: 32 }))
+            .matches(/^[a-zA-Z0-9]*$/, t("leaderboards.validation.regex")),
         })}
       >
         {() => (
           <Form>
             <FormikTextInput name="leaderboardName" />
             <Group justify="right" mt="md">
-              <Button type="submit">{texts.create}</Button>
+              <Button type="submit">{t("leaderboards.create")}</Button>
             </Group>
           </Form>
         )}

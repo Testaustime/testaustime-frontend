@@ -4,41 +4,25 @@ import { useModals } from "@mantine/modals";
 import { CreateLeaderboardModal } from "../../../components/leaderboard/CreateLeaderboardModal";
 import { Button } from "@mantine/core";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { useTranslation } from "react-i18next";
 
 export const CreateNewLeaderboardButton = ({
-  texts,
   username,
 }: {
-  texts: {
-    createNewLeaderboardTitle: string;
-    button: string;
-    modal: {
-      error: string;
-      leaderboardExists: string;
-      leaderboardCreateError: string;
-      validation: {
-        required: string;
-        min: string;
-        max: string;
-        regex: string;
-      };
-      create: string;
-    };
-  };
   username: string;
 }) => {
+  const { t } = useTranslation();
   const modals = useModals();
 
   const openCreateLeaderboard = () => {
     const id = modals.openModal({
-      title: texts.createNewLeaderboardTitle,
+      title: t("leaderboards.createNewLeaderboard"),
       size: "xl",
       children: (
         <CreateLeaderboardModal
           onCreate={() => {
             modals.closeModal(id);
           }}
-          texts={texts.modal}
           username={username}
         />
       ),
@@ -60,7 +44,7 @@ export const CreateNewLeaderboardButton = ({
       variant="outline"
       leftSection={<PlusIcon />}
     >
-      {texts.button}
+      {t("leaderboards.createNewLeaderboard")}
     </Button>
   );
 };
