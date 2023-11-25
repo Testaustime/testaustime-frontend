@@ -47,7 +47,9 @@ export const transformData = (
     .map((_, dayIndex) => {
       const date = startOfDay(addDays(new Date(), -dayIndex));
       const duration = sumBy(
-        entries.filter((entry) => entry.dayStart.getTime() === date.getTime()),
+        entries.filter(
+          (entry) => startOfDay(entry.dayStart).getTime() === date.getTime(),
+        ),
         (entry) => entry.duration,
       );
       return { date, duration };
