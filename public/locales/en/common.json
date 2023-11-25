@@ -174,7 +174,7 @@
       "newPassword": "New password",
       "newPasswordConfirm": "Confirm password",
       "old": {
-        "incorrect": "Old password is incorrect",
+        "incorrect": "Old password is incorrect. If the error persists, please log out and log back in and try changing the password again.",
         "required": "Old password is required",
         "tooLong": "Password can not be more than {{max, number}} characters long",
         "tooShort": "Password must be at least {{min, number}} characters long"

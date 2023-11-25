@@ -174,7 +174,7 @@
       "newPassword": "Uusi salasana",
       "newPasswordConfirm": "Vahvista salasana",
       "old": {
-        "incorrect": "Vanha salasana on väärä",
+        "incorrect": "Vanha salasana on väärä. Jos ongelma jatkuu, kirjaudu ulos ja kirjaudu takaisin sisään, ja yritä salasanan vaihtamista uudelleen.",
         "required": "Vanha salasana vaaditaan",
         "tooLong": "Salasanan tulee olla enintään {{max, number}} merkkiä pitkä",
         "tooShort": "Salasanan tulee olla vähintään {{min, number}} merkkiä pitkä"

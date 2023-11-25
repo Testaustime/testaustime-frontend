@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { RegistrationResult } from "../../../types";
+import { SecureAccessTokenResponse } from "../../../components/LoginForm/actions";
 
 export interface ApiAuthLoginResponse {
   id: number;
@@ -40,13 +41,39 @@ export const register = async (username: string, password: string) => {
     return RegistrationResult.UnknownError;
   }
 
+  const secureAccessTokenResponse = await fetch(
+    process.env.NEXT_PUBLIC_API_URL + "/auth/securedaccess",
+    {
+      method: "POST",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    },
+  );
+
   const data = (await response.json()) as ApiAuthLoginResponse;
 
   const expiration = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7);
-
   cookies().set("token", data.auth_token, {
     value: data.auth_token,
     expires: expiration,
+    path: "/",
+    sameSite: "strict",
+    secure: true,
+    httpOnly: true,
+  });
+
+  const secureAccessTokenData =
+    (await secureAccessTokenResponse.json()) as SecureAccessTokenResponse;
+  const secureAccessTokenExpiration = new Date(Date.now() + 1000 * 60 * 60);
+  cookies().set("secure-access-token", secureAccessTokenData.token, {
+    value: secureAccessTokenData.token,
+    expires: secureAccessTokenExpiration,
     path: "/",
     sameSite: "strict",
     secure: true,
