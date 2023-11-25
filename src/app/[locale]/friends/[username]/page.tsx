@@ -19,10 +19,12 @@ export default async function FriendPage({
     }
   }
 
+  const decodedUsername = decodeURIComponent(username);
+
   return (
     <Dashboard
       allEntries={data}
-      username={username}
+      username={decodedUsername}
       isFrontPage={false}
       locale={locale}
     />
