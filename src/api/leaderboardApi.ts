@@ -11,7 +11,12 @@ import {
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
-export const getMyLeaderboards = async (token: string, username: string) => {
+export const getMyLeaderboards = async (username: string) => {
+  const token = cookies().get("token")?.value;
+  if (!token) {
+    return GetLeaderboardsError.Unauthorized;
+  }
+
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + "/users/@me/leaderboards",
     {

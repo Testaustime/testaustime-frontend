@@ -5,7 +5,6 @@ import {
   GetLeaderboardsError,
   LeaderboardData,
 } from "../../../types";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import initTranslations from "../../i18n";
 import { CreateNewLeaderboardButton } from "./CreateNewLeaderboardButton";
@@ -24,13 +23,7 @@ export default async function LeaderboardsPage({
 }: {
   params: { locale: string };
 }) {
-  const token = cookies().get("token")?.value;
-  if (!token) {
-    redirect("/login");
-  }
-
   const me = await getMe();
-
   if ("error" in me) {
     if (me.error === "Unauthorized") {
       redirect("/login");
@@ -41,14 +34,15 @@ export default async function LeaderboardsPage({
     }
   }
 
-  const leaderboardList = await getMyLeaderboards(token, me.username);
-
+  const leaderboardList = await getMyLeaderboards(me.username);
   if (!Array.isArray(leaderboardList)) {
     if (leaderboardList === GetLeaderboardsError.TooManyRequests) {
       redirect("/rate-limited");
+    } else if (leaderboardList === GetLeaderboardsError.Unauthorized) {
+      redirect("/login");
+    } else {
+      throw new Error(leaderboardList);
     }
-
-    throw new Error(leaderboardList);
   }
 
   const leaderboardPromises = leaderboardList.map((leaderboard) =>

@@ -20,22 +20,18 @@ export default async function MainPage({
 }: {
   params: { locale: string };
 }) {
-  const token = cookies().get("token")?.value;
   const { t } = await initTranslations(locale, ["common"]);
 
   let me: ApiUsersUserResponse | undefined = undefined;
-  if (token) {
-    const meResponse = await getMe();
-    if ("error" in meResponse) {
-      me = undefined;
-    } else {
-      me = meResponse;
-    }
+  const meResponse = await getMe();
+  if ("error" in meResponse) {
+    me = undefined;
+  } else {
+    me = meResponse;
   }
 
-  // `&& token` is unnecessary but it makes the type checker happy
-  if (me && token) {
-    const activityData = await getOwnActivityData(token, me.username);
+  if (me) {
+    const activityData = await getOwnActivityData(me.username);
 
     if ("error" in activityData) {
       if (activityData.error === "Too many requests") {

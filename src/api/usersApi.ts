@@ -45,7 +45,14 @@ export const getMe = async () => {
   return data;
 };
 
-export const getOwnActivityData = async (token: string, username: string) => {
+export const getOwnActivityData = async (username: string) => {
+  const token = cookies().get("token")?.value;
+  if (!token) {
+    return {
+      error: "Unauthorized" as const,
+    };
+  }
+
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + "/users/@me/activity/data",
     {
