@@ -12,7 +12,6 @@ import initTranslations from "../i18n";
 import "@mantine/notifications/styles.css";
 import TranslationsProvider from "../../components/TranslationsProvider";
 import { getMe } from "../../api/usersApi";
-import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Testaustime",
@@ -48,7 +47,8 @@ export default async function RootLayout({
         // Can't redirect to /login because it would cause an infinite loop
         console.log("User has token but it is invalid");
       } else if (me.error === "Too many requests") {
-        redirect("/rate-limited");
+        // Can't redirect to /rate-limited because it would cause an infinite loop
+        console.log("User has token but it is rate limited");
       } else {
         throw new Error(me.error);
       }

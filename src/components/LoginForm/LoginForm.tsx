@@ -10,6 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { showNotification } from "@mantine/notifications";
 import { useTranslation } from "react-i18next";
 import { logIn } from "./actions";
+import { LoginError } from "../../types";
 
 export const LoginForm = () => {
   const [visible, setVisible] = useState(false);
@@ -41,19 +42,17 @@ export const LoginForm = () => {
           unsafeRedirect,
         );
 
-        if (result.error === "Invalid username or password") {
-          showNotification({
-            title: t("error"),
-            color: "red",
-            message: t("loginPage.invalidCredentials"),
-          });
-        } else {
-          showNotification({
-            title: t("error"),
-            color: "red",
-            message: t("unknownErrorOccurred"),
-          });
-        }
+        const message = {
+          [LoginError.InvalidCredentials]: t("loginPage.invalidCredentials"),
+          [LoginError.RateLimited]: t("rateLimitedError"),
+          [LoginError.UnknownError]: t("unknownErrorOccurred"),
+        }[result.error];
+
+        showNotification({
+          title: t("error"),
+          color: "red",
+          message: message,
+        });
 
         setVisible(false);
       }}

@@ -247,5 +247,11 @@
     "light": "Light mode",
     "toggle": "Toggle color theme"
   },
-  "unknownErrorOccurred": "An unknown error occurred."
+  "unknownErrorOccurred": "An unknown error occurred.",
+  "rateLimited": {
+    "title": "Rate limited",
+    "text": "You are sending a lot of requests! Please try again in a minute.",
+    "link": "Go back home"
+  },
+  "rateLimitedError": "You are sending a lot of requests! Please try again in a minute."
 }

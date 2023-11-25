@@ -93,3 +93,9 @@ export enum GetLeaderboardsError {
   TooManyRequests = "Too many requests",
   UnknownError = "Unknown error",
 }
+
+export enum LoginError {
+  InvalidCredentials,
+  UnknownError,
+  RateLimited,
+}

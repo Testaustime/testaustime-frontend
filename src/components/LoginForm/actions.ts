@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { LoginError } from "../../types";
 
 export interface ApiAuthLoginResponse {
   id: number;
@@ -36,10 +37,12 @@ export const logIn = async (
 
   if (!response.ok) {
     if (response.status === 401) {
-      return { error: "Invalid username or password" as const };
+      return { error: LoginError.InvalidCredentials };
+    } else if (response.status === 429) {
+      return { error: LoginError.RateLimited };
+    } else {
+      return { error: LoginError.UnknownError };
     }
-
-    return { error: "Unknown error" as const };
   }
 
   const data = (await response.json()) as ApiAuthLoginResponse;

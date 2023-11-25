@@ -41,6 +41,8 @@ export default async function ProfilePage({
   if ("error" in me) {
     if (me.error === "Unauthorized") {
       redirect("/login");
+    } else if (me.error === "Too many requests") {
+      redirect("/rate-limited");
     } else {
       throw new Error(me.error);
     }

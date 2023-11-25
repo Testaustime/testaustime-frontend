@@ -247,5 +247,11 @@
     "light": "Vaalea teema",
     "toggle": "Vaihda väriteemaa"
   },
-  "unknownErrorOccurred": "Tapahtui tuntematon virhe."
+  "unknownErrorOccurred": "Tapahtui tuntematon virhe.",
+  "rateLimited": {
+    "title": "Rajoitettu",
+    "text": "Olet tehnyt liian monta pyyntöä. Yritä uudelleen minuutin kuluttua.",
+    "link": "Takaisin etusivulle"
+  },
+  "rateLimitedError": "Olet tehnyt liian monta pyyntöä. Yritä uudelleen minuutin kuluttua."
 }

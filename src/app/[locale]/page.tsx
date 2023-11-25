@@ -13,6 +13,7 @@ import { ApiUsersUserResponse } from "../../types";
 import { cookies } from "next/headers";
 import initTranslations from "../i18n";
 import { getMe, getOwnActivityData } from "../../api/usersApi";
+import { redirect } from "next/navigation";
 
 export default async function MainPage({
   params: { locale },
@@ -38,7 +39,7 @@ export default async function MainPage({
 
     if ("error" in activityData) {
       if (activityData.error === "Too many requests") {
-        throw new Error("Too many requests");
+        redirect("/rate-limited");
       }
       throw new Error(activityData.error);
     }
