@@ -8,7 +8,7 @@ import initTranslations from "../../i18n";
 import { getMe, getOwnActivityDataSummary } from "../../../api/usersApi";
 import { getFriendsList } from "../../../api/friendsApi";
 
-export default async function FriendPage({
+export default async function FriendsPage({
   params: { locale },
 }: {
   params: { locale: string };
@@ -20,8 +20,8 @@ export default async function FriendPage({
   }
 
   const [friendsList, ownDataSummary, me] = await Promise.all([
-    getFriendsList(token),
-    getOwnActivityDataSummary(token),
+    getFriendsList(),
+    getOwnActivityDataSummary(),
     getMe(),
   ]);
 
@@ -48,9 +48,11 @@ export default async function FriendPage({
   if ("error" in ownDataSummary) {
     if (ownDataSummary.error === "Too many requests") {
       redirect("/rate-limited");
+    } else if (ownDataSummary.error === "Unauthorized") {
+      redirect("/login");
+    } else {
+      throw new Error(ownDataSummary.error);
     }
-
-    throw new Error(ownDataSummary.error);
   }
 
   const { t } = await initTranslations(locale, ["common"]);

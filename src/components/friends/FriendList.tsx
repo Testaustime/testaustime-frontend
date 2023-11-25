@@ -2,74 +2,18 @@
 
 import { Button, Table, TableTh, TableThead, TableTr } from "@mantine/core";
 import { prettyDuration } from "../../utils/dateUtils";
-import { useModals } from "@mantine/modals";
-import { Dashboard } from "../Dashboard";
 import { showNotification } from "@mantine/notifications";
 import styles from "./FriendList.module.css";
-import {
-  ActivityDataEntry,
-  ApiUsersUserActivityDataResponseItem,
-} from "../../types";
-import { useEffect, useState } from "react";
-import { startOfDay } from "date-fns";
-import { normalizeProgrammingLanguageName } from "../../utils/programmingLanguagesUtils";
 import { useTranslation } from "react-i18next";
 import { ApiFriendsResponseItem } from "../../api/friendsApi";
 import { removeFriend } from "./actions";
+import Link from "next/link";
 
 type FriendListProps = {
   friends: ApiFriendsResponseItem[];
   ownTimeCoded: number;
   username: string;
   locale: string;
-};
-
-const FriendDashboardModal = ({
-  username,
-  locale,
-}: {
-  username: string;
-  locale: string;
-}) => {
-  const [allEntries, setAllEntries] = useState<ActivityDataEntry[]>();
-
-  useEffect(() => {
-    void (async () => {
-      const response = await fetch(`/api/users/${username}/activity/data`);
-
-      if (!response.ok) {
-        showNotification({
-          title: "Error",
-          message: "There was an error fetching the data",
-          color: "red",
-        });
-        return;
-      }
-
-      const data =
-        (await response.json()) as ApiUsersUserActivityDataResponseItem[];
-      const mappedData: ActivityDataEntry[] = data.map((e) => ({
-        ...e,
-        start_time: new Date(e.start_time),
-        dayStart: startOfDay(new Date(e.start_time)),
-        language: normalizeProgrammingLanguageName(e.language),
-      }));
-      setAllEntries(mappedData);
-    })();
-  }, [username]);
-
-  if (!allEntries) {
-    return null;
-  }
-
-  return (
-    <Dashboard
-      allEntries={allEntries}
-      username={username}
-      isFrontPage={false}
-      locale={locale}
-    />
-  );
 };
 
 export const FriendList = ({
@@ -79,7 +23,6 @@ export const FriendList = ({
   locale,
 }: FriendListProps) => {
   const { t } = useTranslation();
-  const modals = useModals();
 
   const friendsSorted = [
     ...friends
@@ -94,25 +37,6 @@ export const FriendList = ({
         username,
       }),
   ].sort((a, b) => b.codingTime - a.codingTime);
-
-  const openFriendDashboard = (friendUsername: string) => {
-    modals.openModal({
-      title: t("friends.friendDashboardTitle", {
-        username: friendUsername,
-      }),
-      size: "calc(800px + 10%)",
-      children: (
-        <FriendDashboardModal username={friendUsername} locale={locale} />
-      ),
-      styles: {
-        title: {
-          fontSize: "2rem",
-          marginBlock: "0.5rem",
-          fontWeight: "bold",
-        },
-      },
-    });
-  };
 
   return (
     <Table>
@@ -136,16 +60,9 @@ export const FriendList = ({
             <Table.Td>{prettyDuration(codingTime)}</Table.Td>
             <Table.Td style={{ textAlign: "right", padding: "7px 0px" }}>
               {!isMe && (
-                <Button
-                  variant="filled"
-                  color="blue"
-                  size="compact-md"
-                  onClick={() => {
-                    openFriendDashboard(username);
-                  }}
-                >
+                <Link href={`/${locale}/friends/${username}`}>
                   {t("friends.showDashboard")}
-                </Button>
+                </Link>
               )}
             </Table.Td>
             <Table.Td style={{ textAlign: "right", padding: "7px 0px" }}>

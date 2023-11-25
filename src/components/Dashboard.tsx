@@ -88,13 +88,15 @@ export const Dashboard = ({
 
   return (
     <div style={{ width: "100%" }}>
-      {isFrontPage && (
+      {isFrontPage ? (
         <>
           <Group style={{ marginBottom: "1rem" }}>
             <Text>{t("dashboard.greeting", { username })}</Text>
           </Group>
           <Title mb={5}>{t("dashboard.statistics")}</Title>
         </>
+      ) : (
+        <Title>{username}</Title>
       )}
       <Group align="end" mt={10} mb={30} justify="space-between">
         <Combobox
