@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@mantine/core";
-import axios from "../../../../axios";
 import { useTranslation } from "react-i18next";
+import { kickUser } from "./actions";
 
 type KickUserButtonProps = {
   name: string;
@@ -18,13 +18,7 @@ export const KickUserButton = ({ name, username }: KickUserButtonProps) => {
       variant="subtle"
       color="red"
       onClick={() => {
-        axios
-          .post(`/leaderboards/${name}/kick`, {
-            username,
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+        void kickUser(username, name);
       }}
     >
       {t("leaderboards.kick")}

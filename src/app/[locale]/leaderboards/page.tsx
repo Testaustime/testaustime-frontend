@@ -106,7 +106,6 @@ export default async function LeaderboardsPage({
                 title: t("leaderboards.joinLeaderboard"),
                 button: t("leaderboards.joinLeaderboard"),
               }}
-              username={me.username}
             />
           </Group>
         </Group>

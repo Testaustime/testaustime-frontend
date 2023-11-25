@@ -93,3 +93,34 @@ export const demoteUser = async (username: string, leaderboardName: string) => {
 
   revalidateTag(`leaderboard-${leaderboardName}`);
 };
+
+export const kickUser = async (username: string, leaderboardName: string) => {
+  const token = cookies().get("token")?.value;
+
+  if (!token) {
+    return { error: "Unauthorized" as const };
+  }
+
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_API_URL + `/leaderboards/${leaderboardName}/kick`,
+    {
+      body: JSON.stringify({ user: username }),
+      method: "POST",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    if (response.status === 429) {
+      return { error: "Too many requests" as const };
+    }
+
+    return { error: "Unknown error" as const };
+  }
+
+  revalidateTag(`leaderboard-${leaderboardName}`);
+};

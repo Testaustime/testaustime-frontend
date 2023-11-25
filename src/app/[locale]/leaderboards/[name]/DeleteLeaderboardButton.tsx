@@ -7,12 +7,10 @@ import { deleteLeaderboard } from "../../../../components/leaderboard/actions";
 
 type DeleteLeaderboardButtonProps = {
   name: string;
-  username: string;
 };
 
 export const DeleteLeaderboardButton = ({
   name,
-  username,
 }: DeleteLeaderboardButtonProps) => {
   const { t } = useTranslation();
 
@@ -22,7 +20,7 @@ export const DeleteLeaderboardButton = ({
       size="xs"
       leftSection={<Trash2 size={18} />}
       onClick={() => {
-        deleteLeaderboard(name, username).catch((e) => {
+        deleteLeaderboard(name).catch((e) => {
           console.log(e);
         });
       }}

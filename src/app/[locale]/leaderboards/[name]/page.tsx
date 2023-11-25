@@ -67,12 +67,7 @@ export default async function LeaderboardPage({
           username={me.username}
           isLastAdmin={isLastAdmin}
         />
-        {isAdmin && (
-          <DeleteLeaderboardButton
-            name={leaderboard.name}
-            username={me.username}
-          />
-        )}
+        {isAdmin && <DeleteLeaderboardButton name={leaderboard.name} />}
       </Group>
       <Title order={2} my="md">
         {t("leaderboards.inviteCode")}
