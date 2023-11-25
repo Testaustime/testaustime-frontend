@@ -1,87 +1,70 @@
-import { Anchor, Box, Button, Divider, Group, Menu } from "@mantine/core";
-import { ExitIcon, GearIcon, MixIcon, PersonIcon } from "@radix-ui/react-icons";
-import { useAuthentication } from "../hooks/useAuthentication";
+import { Anchor, Box, Button, Group } from "@mantine/core";
 import ThemeToggle from "./ThemeToggle/ThemeToggle";
-import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "./Navigation.module.css";
+import { TFunction } from "i18next";
+import { NavigationMenuDropdown } from "./NavigationMenuDropdown";
 
-export const Navigation = () => {
-  const { t } = useTranslation();
-  const { isLoggedIn, username, logOut } = useAuthentication();
-  const router = useRouter();
+type NavigationProps = {
+  isLoggedIn: boolean;
+  username?: string;
+  t: TFunction;
+  locale: string;
+};
 
-  const logOutAndRedirect = async () => {
-    await logOut();
-    router.push("/").catch(console.error);
-  };
-
+export const Navigation = ({
+  isLoggedIn,
+  username,
+  t,
+  locale,
+}: NavigationProps) => {
   return (
     <Group>
       <Group gap={15} align="center" className={styles.navigation}>
         <Group>
           {isLoggedIn ? (
             <>
-              <Anchor component={Link} href="/">
+              <Anchor component={Link} href={`/${locale}`} prefetch={false}>
                 {t("navbar.dashboard")}
               </Anchor>
-              <Anchor component={Link} href="/friends">
+              <Anchor
+                component={Link}
+                href={`/${locale}/friends`}
+                prefetch={false}
+              >
                 {t("navbar.friends")}
               </Anchor>
-              <Anchor component={Link} href="/leaderboards">
+              <Anchor
+                component={Link}
+                href={`/${locale}/leaderboards`}
+                prefetch={false}
+              >
                 {t("navbar.leaderboards")}
               </Anchor>
-              <Menu trigger="hover">
-                <Menu.Target>
-                  <Button
-                    variant="outline"
-                    size="xs"
-                    leftSection={<PersonIcon style={{ marginRight: "5px" }} />}
-                  >
-                    {username}
-                  </Button>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Label>{t("navbar.account")}</Menu.Label>
-                  <Menu.Item
-                    component={Link}
-                    href="/profile"
-                    leftSection={<GearIcon />}
-                  >
-                    {t("navbar.settings")}
-                  </Menu.Item>
-                  <Divider />
-                  <Menu.Item
-                    component={Link}
-                    href="/extensions"
-                    leftSection={<MixIcon />}
-                  >
-                    {t("navbar.extensions")}
-                  </Menu.Item>
-                  <Divider />
-                  <Menu.Item
-                    color="blue"
-                    leftSection={<ExitIcon />}
-                    onClick={() => {
-                      logOutAndRedirect().catch(console.error);
-                    }}
-                  >
-                    {t("navbar.logOut")}
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
+              <NavigationMenuDropdown username={username} locale={locale} />
             </>
           ) : (
             <>
-              <Anchor component={Link} href="/extensions">
+              <Anchor
+                component={Link}
+                href={`/${locale}/extensions`}
+                prefetch={false}
+              >
                 {t("navbar.extensions")}
               </Anchor>
               <Box className={styles.spacer} />
-              <Anchor component={Link} href="/login">
+              <Anchor
+                component={Link}
+                href={`/${locale}/login`}
+                prefetch={false}
+              >
                 {t("navbar.login")}
               </Anchor>
-              <Button component={Link} href="/register">
+              <Button
+                component={Link}
+                href={`/${locale}/register`}
+                prefetch={false}
+              >
                 {t("navbar.register")}
               </Button>
             </>

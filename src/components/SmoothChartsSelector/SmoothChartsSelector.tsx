@@ -1,6 +1,9 @@
+"use client";
+
 import { Checkbox, Group } from "@mantine/core";
 import { useSettings } from "../../hooks/useSettings";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "react-i18next";
+
 export const SmoothChartsSelector = () => {
   const { smoothCharts, setSmoothCharts } = useSettings();
   const { t } = useTranslation();

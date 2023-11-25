@@ -7,6 +7,7 @@ const config: StorybookConfig = {
     name: "@storybook/nextjs",
     options: {},
   },
+  
   webpack: (config) => {
     if (config.resolve) {
       // @ts-ignore

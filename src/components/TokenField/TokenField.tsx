@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Group, Text } from "@mantine/core";
 import { useToggle, useClipboard } from "@mantine/hooks";
 import {
@@ -7,14 +9,14 @@ import {
   UpdateIcon,
 } from "@radix-ui/react-icons";
 import { useEffect } from "react";
-import { useTranslation } from "next-i18next";
 import { ButtonWithConfirmation } from "../ButtonWithConfirmation/ButtonWithConfirmation";
 import Censorable from "../Censorable";
 import { showNotification } from "@mantine/notifications";
+import { useTranslation } from "react-i18next";
 
 export interface TokenFieldProps {
   value: string;
-  regenerate?: () => Promise<string>;
+  regenerate?: () => Promise<void>;
   censorable?: boolean;
   revealLength?: number;
   copyFormatter?: (currentValue: string) => string;
@@ -31,7 +33,6 @@ export const TokenField = ({
 }: TokenFieldProps) => {
   const { copy, copied, reset } = useClipboard({ timeout: 2000 });
   const [isTokenRevealed, toggleIsTokenRevealed] = useToggle([false, true]);
-
   const { t } = useTranslation();
 
   useEffect(() => {

@@ -1,33 +1,33 @@
-import { Badge, Button, Table } from "@mantine/core";
-import { useAuthentication } from "../../hooks/useAuthentication";
-import { LeaderboardData } from "../../hooks/useLeaderboards";
-import { useTranslation } from "next-i18next";
+"use client";
+
+import { Badge, Table, TableTh, TableThead, TableTr } from "@mantine/core";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
+import { LeaderboardData } from "../../types";
+import { useTranslation } from "react-i18next";
+import Link from "next/link";
 
-export interface LeaderboardsListProps {
-  setOpenedLeaderboardName: (name: string) => void;
+interface LeaderboardsListProps {
   leaderboards: LeaderboardData[];
+  username: string;
 }
 
 export const LeaderboardsList = ({
-  setOpenedLeaderboardName,
   leaderboards,
+  username,
 }: LeaderboardsListProps) => {
-  const { username } = useAuthentication();
-
   const { t } = useTranslation();
 
   return (
     <Table>
-      <Table.Thead>
-        <Table.Tr>
-          <Table.Th>{t("leaderboards.name")}</Table.Th>
-          <Table.Th>{t("leaderboards.topMember")}</Table.Th>
-          <Table.Th>{t("leaderboards.yourPosition")}</Table.Th>
-          <Table.Th />
-        </Table.Tr>
-      </Table.Thead>
+      <TableThead>
+        <TableTr>
+          <TableTh>{t("leaderboards.name")}</TableTh>
+          <TableTh>{t("leaderboards.topMember")}</TableTh>
+          <TableTh>{t("leaderboards.yourPosition")}</TableTh>
+          <TableTh />
+        </TableTr>
+      </TableThead>
       <Table.Tbody>
         {leaderboards.map((leaderboard) => {
           const membersSorted = [...leaderboard.members].sort(
@@ -43,7 +43,7 @@ export const LeaderboardsList = ({
           );
 
           return (
-            <Table.Tr key={leaderboard.invite}>
+            <TableTr key={leaderboard.invite}>
               <Table.Td>
                 {leaderboard.name}
                 {userIsAdmin && (
@@ -59,17 +59,11 @@ export const LeaderboardsList = ({
                 {yourPosition === 1 ? "🏆" : ""}
               </Table.Td>
               <Table.Td style={{ display: "flex", justifyContent: "end" }}>
-                <Button
-                  size="compact-sm"
-                  variant="outline"
-                  onClick={() => {
-                    setOpenedLeaderboardName(leaderboard.name);
-                  }}
-                >
+                <Link href={`/leaderboards/${leaderboard.name}`}>
                   {t("leaderboards.seeMore")}
-                </Button>
+                </Link>
               </Table.Td>
-            </Table.Tr>
+            </TableTr>
           );
         })}
       </Table.Tbody>

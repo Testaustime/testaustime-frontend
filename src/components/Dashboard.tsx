@@ -1,4 +1,5 @@
-import { ActivityDataEntry, useActivityData } from "../hooks/useActivityData";
+"use client";
+
 import {
   Group,
   SegmentedControl,
@@ -13,7 +14,12 @@ import {
   CheckIcon,
 } from "@mantine/core";
 import TopLanguages from "./TopLanguages";
-import { DayRange, getDayCount, prettyDuration } from "../utils/dateUtils";
+import {
+  DayRange,
+  getDayCount,
+  isDayRange,
+  prettyDuration,
+} from "../utils/dateUtils";
 import { TopProjects } from "./TopProjects/TopProjects";
 import { sumBy } from "../utils/arrayUtils";
 import DailyCodingTimeChart, {
@@ -22,43 +28,41 @@ import DailyCodingTimeChart, {
 import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
-import { useAuthentication } from "../hooks/useAuthentication";
-import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import styles from "./Dashboard.module.css";
+import { filterEntries } from "../utils/activityUtils";
+import { ActivityDataEntry } from "../types";
+import { useTranslation } from "react-i18next";
 
-export interface DashboardProps {
+interface DashboardProps {
   username: string;
   isFrontPage: boolean;
-  initialEntries?: ActivityDataEntry[];
+  allEntries: ActivityDataEntry[];
   defaultDayRange?: DayRange | undefined | null;
   smoothCharts?: boolean | undefined | null;
+  locale: string;
 }
 
 export const Dashboard = ({
   username,
   isFrontPage,
-  initialEntries,
+  allEntries,
   defaultDayRange,
   smoothCharts,
+  locale,
 }: DashboardProps) => {
+  const { t } = useTranslation();
+
   const [statisticsRange, setStatisticsRange] = useState<DayRange>(
     defaultDayRange || "week",
   );
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
-  const { username: authenticatedUsername } = useAuthentication();
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
-  const { entries, unfilteredProjectNames } = useActivityData(
-    username,
-    {
-      projectFilter:
-        selectedProjects.length === 0 ? undefined : selectedProjects,
-      dayFilter: statisticsRange,
-    },
-    { initialData: initialEntries, shouldFetch: username !== "@me" },
-  );
 
-  const { t } = useTranslation();
+  const { entries, unfilteredProjectNames } = filterEntries(allEntries, {
+    projectFilter: selectedProjects.length === 0 ? undefined : selectedProjects,
+    dayFilter: statisticsRange,
+  });
 
   const firstCodingDay =
     [...entries].sort((a, b) => a.dayStart.getTime() - b.dayStart.getTime())[0]
@@ -82,25 +86,17 @@ export const Dashboard = ({
     },
   });
 
-  if (!authenticatedUsername) {
-    return <div>{t("dashboard.notLoggedIn")}</div>;
-  }
-
-  const isOwnDashboard = username === "@me";
-
   return (
     <div style={{ width: "100%" }}>
-      {isFrontPage && (
+      {isFrontPage ? (
         <>
           <Group style={{ marginBottom: "1rem" }}>
-            <Text>
-              {t("dashboard.greeting", {
-                username: isOwnDashboard ? authenticatedUsername : username,
-              })}
-            </Text>
+            <Text>{t("dashboard.greeting", { username })}</Text>
           </Group>
           <Title mb={5}>{t("dashboard.statistics")}</Title>
         </>
+      ) : (
+        <Title>{username}</Title>
       )}
       <Group align="end" mt={10} mb={30} justify="space-between">
         <Combobox
@@ -193,8 +189,10 @@ export const Dashboard = ({
             { label: t("dashboard.timeFilters.all"), value: "all" },
           ]}
           value={statisticsRange}
-          onChange={(value: DayRange) => {
-            setStatisticsRange(value);
+          onChange={(value: string) => {
+            if (isDayRange(value)) {
+              setStatisticsRange(value);
+            }
           }}
           className={styles.segmentControl}
         />
@@ -239,7 +237,11 @@ export const Dashboard = ({
               </div>
               <div>
                 <Title order={2}>{t("dashboard.projects")}</Title>
-                <TopProjects entries={entries} allowEditing={isOwnDashboard} />
+                <TopProjects
+                  entries={entries}
+                  allowEditing={isFrontPage}
+                  username={username}
+                />
               </div>
             </Stack>
           ) : (
@@ -250,7 +252,11 @@ export const Dashboard = ({
               </div>
               <div>
                 <Title order={2}>{t("dashboard.projects")}</Title>
-                <TopProjects entries={entries} allowEditing={isOwnDashboard} />
+                <TopProjects
+                  entries={entries}
+                  allowEditing={isFrontPage}
+                  username={username}
+                />
               </div>
             </Group>
           )}
@@ -258,7 +264,7 @@ export const Dashboard = ({
       ) : (
         <Text>
           {t("dashboard.noData.title")} {prefix}
-          <Link href="/extensions">{infix}</Link>
+          <Link href={`/${locale}/extensions`}>{infix}</Link>
           {suffix}
         </Text>
       )}

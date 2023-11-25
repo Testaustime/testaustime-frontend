@@ -1,12 +1,10 @@
 import { Text, Anchor } from "@mantine/core";
-import { useTranslation } from "next-i18next";
 import { TestausserveriLogo } from "../images/TestausserveriLogo";
 import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
 import styles from "./Footer.module.css";
+import type { TFunction } from "i18next";
 
-export const Footer = () => {
-  const { t } = useTranslation();
-
+export const Footer = ({ t, locale }: { t: TFunction; locale: string }) => {
   return (
     <div className={styles.container}>
       <hr className={styles.line} />
@@ -38,7 +36,12 @@ export const Footer = () => {
               {t("footer.source")}
             </Anchor>
           </Text>
-          <LanguageSelector type="dropdown" showLabel={false} size="sm" />
+          <LanguageSelector
+            type="dropdown"
+            showLabel={false}
+            size="sm"
+            locale={locale}
+          />
         </div>
       </div>
     </div>

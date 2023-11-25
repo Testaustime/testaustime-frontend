@@ -3,21 +3,24 @@ import { prettyDuration } from "../../utils/dateUtils";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useModals } from "@mantine/modals";
 import EditProjectModal from "../EditProjectModal";
-import { useTranslation } from "next-i18next";
 import styles from "./ProjectEntry.module.css";
+import { useTranslation } from "react-i18next";
 
-export type ProjectEntryProps = {
+type ProjectEntryProps = {
   name?: string | undefined | null;
   durationSeconds: number;
   allowEditing?: boolean;
+  username: string;
 };
 
 export const ProjectEntry = ({
   name,
   durationSeconds,
   allowEditing,
+  username,
 }: ProjectEntryProps) => {
   const modals = useModals();
+
   const { t } = useTranslation();
 
   const openModal = () => {
@@ -31,6 +34,7 @@ export const ProjectEntry = ({
             onClose={() => {
               modals.closeModal(id);
             }}
+            username={username}
           />
         ),
         styles: {

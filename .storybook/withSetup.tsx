@@ -1,5 +1,4 @@
 import type { Decorator } from "@storybook/react";
-import { UserContext } from "../src/contexts/UserContext";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import { MantineProvider } from "@mantine/core";
@@ -69,24 +68,14 @@ const InnerApp = ({ children }: PropsWithChildren) => {
 export const withSetup: Decorator = (Story) => {
   return (
     <div id="root">
-      <UserContext.Provider
-        value={{
-          authToken: "myauthtoken",
-          friendCode: "myfriendcode",
-          isPublic: true,
-          registrationTime: new Date(),
-          username: "myusername",
-        }}
-      >
-        <I18nextProvider i18n={i18n}>
-          <InnerApp>
-            <ModalsProvider>
-              <Notifications />
-              <Story />
-            </ModalsProvider>
-          </InnerApp>
-        </I18nextProvider>
-      </UserContext.Provider>
+      <I18nextProvider i18n={i18n}>
+        <InnerApp>
+          <ModalsProvider>
+            <Notifications />
+            <Story />
+          </ModalsProvider>
+        </InnerApp>
+      </I18nextProvider>
     </div>
   );
 };

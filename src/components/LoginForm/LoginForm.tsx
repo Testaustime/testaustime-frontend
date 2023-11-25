@@ -1,16 +1,22 @@
+"use client";
+
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
-import { useTranslation } from "next-i18next";
-export type LoginFormProps = {
-  onLogin: (username: string, password: string) => Promise<void>;
-};
+import { useSearchParams } from "next/navigation";
+import { showNotification } from "@mantine/notifications";
+import { useTranslation } from "react-i18next";
+import { logIn } from "./actions";
+import { LoginError } from "../../types";
 
-export const LoginForm = (props: LoginFormProps) => {
+export const LoginForm = () => {
   const [visible, setVisible] = useState(false);
+
+  const searchParams = useSearchParams();
+  const unsafeRedirect = String(searchParams.get("redirect") ?? "/");
   const { t } = useTranslation();
 
   return (
@@ -29,7 +35,25 @@ export const LoginForm = (props: LoginFormProps) => {
       })}
       onSubmit={async (values) => {
         setVisible(true);
-        await props.onLogin(values.username, values.password);
+
+        const result = await logIn(
+          values.username,
+          values.password,
+          unsafeRedirect,
+        );
+
+        const message = {
+          [LoginError.InvalidCredentials]: t("loginPage.invalidCredentials"),
+          [LoginError.RateLimited]: t("rateLimitedError"),
+          [LoginError.UnknownError]: t("unknownErrorOccurred"),
+        }[result.error];
+
+        showNotification({
+          title: t("error"),
+          color: "red",
+          message: message,
+        });
+
         setVisible(false);
       }}
     >

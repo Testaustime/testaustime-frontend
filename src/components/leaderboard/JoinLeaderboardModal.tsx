@@ -5,16 +5,14 @@ import { Group, Button } from "@mantine/core";
 import { Formik, Form } from "formik";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { EnterIcon } from "@radix-ui/react-icons";
-import { useTranslation } from "next-i18next";
-import {
-  JoinLeaderboardError,
-  useLeaderboards,
-} from "../../hooks/useLeaderboards";
+import { useTranslation } from "react-i18next";
 import { showNotification } from "@mantine/notifications";
+import { JoinLeaderboardError } from "../../types";
+import { joinLeaderboard } from "./actions";
 
 interface JoinLeaderboardModalProps {
   initialCode: string | null;
-  onJoin: (leaderboardCode: string) => void;
+  onJoin: () => void;
 }
 
 export const JoinLeaderboardModal = ({
@@ -25,7 +23,6 @@ export const JoinLeaderboardModal = ({
     generateLeaderboardInviteCode(),
   );
   const { t } = useTranslation();
-  const { joinLeaderboard } = useLeaderboards();
 
   return (
     <>
@@ -44,7 +41,7 @@ export const JoinLeaderboardModal = ({
         onSubmit={async (values) => {
           const result = await joinLeaderboard(values.leaderboardCode);
           if (typeof result === "object") {
-            onJoin(values.leaderboardCode);
+            onJoin();
           } else {
             showNotification({
               title: t("error"),

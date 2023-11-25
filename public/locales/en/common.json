@@ -25,7 +25,7 @@
     },
     "timePerDay": "Time per day",
     "timePerProject": "Time per project",
-    "totalTime": "Total time coded in the last {{days, number}} days: {{totalTime}}",
+    "totalTime": "Total time coded in the last {{days}} days: {{totalTime}}",
     "unknownProject": "Unknown"
   },
   "editProject": {
@@ -239,12 +239,19 @@
         "regex": "Username must only contain alphanumeric characters",
         "required": "Username is required"
       }
-    }
+    },
+    "usernameTaken": "Username is taken"
   },
   "theme": {
     "dark": "Dark mode",
     "light": "Light mode",
     "toggle": "Toggle color theme"
   },
-  "unknownErrorOccurred": "An unknown error occurred."
+  "unknownErrorOccurred": "An unknown error occurred.",
+  "rateLimited": {
+    "title": "Rate limited",
+    "text": "You are sending a lot of requests! Please try again in a minute.",
+    "link": "Go back home"
+  },
+  "rateLimitedError": "You are sending a lot of requests! Please try again in a minute."
 }

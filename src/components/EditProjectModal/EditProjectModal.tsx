@@ -1,18 +1,20 @@
 import { Form, Formik } from "formik";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { Button, Group } from "@mantine/core";
-import { useActivity } from "../../hooks/useActivities";
-import { useTranslation } from "next-i18next";
-export type EditProjectModalProps = {
+import { useTranslation } from "react-i18next";
+import { renameProject } from "./actions";
+
+type EditProjectModalProps = {
   projectName: string;
   onClose: () => void;
+  username: string;
 };
 
 export const EditProjectModal = ({
   projectName,
   onClose,
+  username,
 }: EditProjectModalProps) => {
-  const activity = useActivity(projectName);
   const { t } = useTranslation();
 
   return (
@@ -20,12 +22,8 @@ export const EditProjectModal = ({
       <Formik
         initialValues={{ projectName }}
         onSubmit={async (values) => {
-          try {
-            await activity.renameProject(values.projectName);
-            onClose();
-          } catch (e) {
-            console.error(e);
-          }
+          await renameProject(projectName, values.projectName, username);
+          onClose();
         }}
       >
         {() => (

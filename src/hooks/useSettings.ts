@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
 import { DayRange } from "../utils/dateUtils";
 import { Locales } from "../i18next";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import {
   colorSchemeCookieName,
@@ -61,10 +61,8 @@ export const useCreateSettings = ({
     setSmoothCharts,
     language,
     setLanguage: (value: Locales) => {
-      router
-        .push(router.asPath, undefined, { locale: value })
-        .catch(console.error);
       setLanguage(value);
+      router.push("/" + value); // TODO: Keep on the same page
     },
     colorScheme: colorScheme || initialColorScheme,
     setColorScheme,

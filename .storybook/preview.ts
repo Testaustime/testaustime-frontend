@@ -1,3 +1,5 @@
+import { Parameters } from "@storybook/react";
+
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -6,4 +8,7 @@ export const parameters = {
       date: /Date$/,
     },
   },
-};
+  nextjs: {
+    appDirectory: true,
+  },
+} satisfies Parameters;

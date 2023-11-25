@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Group,
   MantineSize,
@@ -6,32 +8,34 @@ import {
   Text,
 } from "@mantine/core";
 import { useSettings } from "../../hooks/useSettings";
-import { useTranslation } from "next-i18next";
 import { Locales } from "../../i18next";
+import { useTranslation } from "react-i18next";
 
-export type LanguageSelectorType = "segmented" | "dropdown";
+type LanguageSelectorType = "segmented" | "dropdown";
 
 export type LanguageSelectorProps = {
+  locale: string;
   type?: LanguageSelectorType;
   showLabel?: boolean;
   size?: MantineSize;
 };
 
 export const LanguageSelector = ({
+  locale,
   type = "segmented",
   showLabel = true,
   size,
 }: LanguageSelectorProps) => {
-  const { t, i18n } = useTranslation();
-  const locale = i18n.resolvedLanguage;
   const { setLanguage } = useSettings();
+  const { t } = useTranslation();
 
   const data = [
     { label: "🇺🇸 English", value: "en" },
     { label: "🇫🇮 Suomi", value: "fi" },
   ];
 
-  const onChange = (value: string) => {
+  const onChange = (value: string | null) => {
+    if (!value) return;
     setLanguage(value as Locales);
   };
 

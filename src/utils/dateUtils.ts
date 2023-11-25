@@ -31,7 +31,7 @@ export const prettyDuration = (seconds: number) =>
     },
   ) || "None";
 
-export const DAY_RANGE_VALUES = ["month", "week", "all"] as const;
+const DAY_RANGE_VALUES = ["month", "week", "all"] as const;
 export type DayRange = (typeof DAY_RANGE_VALUES)[number];
 export const isDayRange = (value: unknown): value is DayRange =>
   DAY_RANGE_VALUES.includes(value as DayRange);

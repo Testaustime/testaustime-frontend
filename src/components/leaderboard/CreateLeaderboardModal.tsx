@@ -1,23 +1,24 @@
+"use client";
+
 import { Group, Button } from "@mantine/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { useTranslation } from "next-i18next";
 import { FormikTextInput } from "../forms/FormikTextInput";
-import {
-  CreateLeaderboardError,
-  useLeaderboards,
-} from "../../hooks/useLeaderboards";
 import { showNotification } from "@mantine/notifications";
+import { createLeaderboard } from "../../api/leaderboardApi";
+import { CreateLeaderboardError } from "../../types";
+import { useTranslation } from "react-i18next";
 
 interface CreateLeaderboardModalProps {
   onCreate: (leaderboardName: string) => void;
+  username: string;
 }
 
 export const CreateLeaderboardModal = ({
   onCreate,
+  username,
 }: CreateLeaderboardModalProps) => {
   const { t } = useTranslation();
-  const { createLeaderboard } = useLeaderboards();
 
   return (
     <>
@@ -26,7 +27,10 @@ export const CreateLeaderboardModal = ({
           leaderboardName: "",
         }}
         onSubmit={async (values) => {
-          const result = await createLeaderboard(values.leaderboardName);
+          const result = await createLeaderboard(
+            values.leaderboardName,
+            username,
+          );
           if (typeof result === "object") {
             onCreate(values.leaderboardName);
           } else {

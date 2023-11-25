@@ -1,6 +1,9 @@
+"use client";
+
 import { Button, ButtonProps, Popover, Text } from "@mantine/core";
 import { useState } from "react";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "react-i18next";
+
 export type ButtonWithConfirmationProps = ButtonProps & {
   onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };

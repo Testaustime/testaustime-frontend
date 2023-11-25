@@ -1,11 +1,13 @@
+"use client";
+
 import { Button, Group, LoadingOverlay, Text } from "@mantine/core";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 import { useState } from "react";
 import { Form, Formik } from "formik";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 
-export type ConfirmAccountDeletionModalProps = {
+type ConfirmAccountDeletionModalProps = {
   onCancel: () => void;
   onConfirm: (password: string) => Promise<void>;
 };

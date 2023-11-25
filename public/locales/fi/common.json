@@ -25,7 +25,7 @@
     },
     "timePerDay": "Aika per päivä",
     "timePerProject": "Aika per projekti",
-    "totalTime": "Kokonaisaika viimeisten {{days, number}} päivän aikana: {{totalTime}}",
+    "totalTime": "Kokonaisaika viimeisten {{days}} päivän aikana: {{totalTime}}",
     "unknownProject": "Tuntematon"
   },
   "editProject": {
@@ -239,12 +239,19 @@
         "regex": "Käyttäjänimi voi sisältää vain alphanumeerisia merkkejä",
         "required": "Käyttäjänimi vaaditaan"
       }
-    }
+    },
+    "usernameTaken": "Käyttäjänimi on varattu"
   },
   "theme": {
     "dark": "Tumma teema",
     "light": "Vaalea teema",
     "toggle": "Vaihda väriteemaa"
   },
-  "unknownErrorOccurred": "Tapahtui tuntematon virhe."
+  "unknownErrorOccurred": "Tapahtui tuntematon virhe.",
+  "rateLimited": {
+    "title": "Rajoitettu",
+    "text": "Olet tehnyt liian monta pyyntöä. Yritä uudelleen minuutin kuluttua.",
+    "link": "Takaisin etusivulle"
+  },
+  "rateLimitedError": "Olet tehnyt liian monta pyyntöä. Yritä uudelleen minuutin kuluttua."
 }

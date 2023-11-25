@@ -1,25 +1,26 @@
+"use client";
+
 import { Button, Group } from "@mantine/core";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { Form, Formik } from "formik";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
-import { AddFriendError, useFriends } from "../../hooks/useFriends";
-import { useTranslation } from "next-i18next";
 import { showNotification } from "@mantine/notifications";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import { useTranslation } from "react-i18next";
+import { AddFriendError } from "../../types";
+import { addFriend } from "./actions";
 
-export type AddFriendFormProps = {
+type AddFriendFormProps = {
   friendCodePlaceholder: string;
 };
 
 export const AddFriendForm = ({
   friendCodePlaceholder,
 }: AddFriendFormProps) => {
-  const { addFriend } = useFriends({ shouldFetch: false });
-  const router = useRouter();
-  const urlFriendCode =
-    typeof router.query.code === "string" ? router.query.code : undefined;
   const { t } = useTranslation();
+  const params = useSearchParams();
+  const urlFriendCode = params.get("code");
 
   return (
     <Group>
@@ -42,7 +43,7 @@ export const AddFriendForm = ({
                   "friends.error.alreadyFriends",
                 ),
                 [AddFriendError.NotFound]: t("friends.error.notFound"),
-                [AddFriendError.UnknownError]: t("friends.error.unknownError"),
+                [AddFriendError.UnknownError]: t("unknownErrorOccurred"),
               }[result],
               color: "red",
             });

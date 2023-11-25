@@ -1,24 +1,18 @@
+"use client";
+
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { FormikPasswordInput } from "../forms/FormikPasswordInput";
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useState } from "react";
 import { showNotification } from "@mantine/notifications";
-import { useTranslation } from "next-i18next";
-import { PasswordChangeResult } from "../../hooks/useAuthentication";
+import { useTranslation } from "react-i18next";
+import { changePassword } from "./actions";
+import { PasswordChangeResult } from "../../types";
 
-export interface ChangePasswordFormProps {
-  onChangePassword: (
-    oldPassword: string,
-    newPassword: string,
-  ) => Promise<PasswordChangeResult>;
-}
-
-export const ChangePasswordForm = ({
-  onChangePassword,
-}: ChangePasswordFormProps) => {
-  const [visible, setVisible] = useState(false);
+export const ChangePasswordForm = () => {
   const { t } = useTranslation();
+  const [visible, setVisible] = useState(false);
 
   return (
     <Formik
@@ -44,7 +38,7 @@ export const ChangePasswordForm = ({
           ),
       })}
       onSubmit={async (values, helpers) => {
-        const result = await onChangePassword(
+        const result = await changePassword(
           values.oldPassword,
           values.newPassword,
         );
@@ -66,6 +60,7 @@ export const ChangePasswordForm = ({
               [PasswordChangeResult.NewPasswordInvalid]: t(
                 "profile.changePassword.new.invalid",
               ),
+              [PasswordChangeResult.UnknownError]: t("unknownErrorOccurred"),
             }[result],
           });
         }
