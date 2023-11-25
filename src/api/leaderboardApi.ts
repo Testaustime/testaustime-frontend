@@ -77,8 +77,6 @@ export const getLeaderboard = async (leaderboardName: string) => {
 
   const data = (await response.json()) as LeaderboardData;
 
-  console.log(data);
-
   return data;
 };
 
