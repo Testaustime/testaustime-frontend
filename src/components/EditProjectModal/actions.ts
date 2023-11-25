@@ -12,6 +12,7 @@ export const renameProject = async (
     process.env.NEXT_PUBLIC_API_URL + "/activity/rename",
     {
       method: "POST",
+      cache: "no-cache",
       body: JSON.stringify({
         from: oldProjectName,
         to: newProjectName,

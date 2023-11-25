@@ -13,7 +13,6 @@ type LeaveLeaderboardButtonProps = {
 
 export const LeaveLeaderboardButton = ({
   name,
-  username,
   isLastAdmin,
 }: LeaveLeaderboardButtonProps) => {
   const { t } = useTranslation();
@@ -24,7 +23,7 @@ export const LeaveLeaderboardButton = ({
       size="xs"
       leftSection={<ExitIcon />}
       onClick={() => {
-        leaveLeaderboard(name, username).catch((e) => {
+        leaveLeaderboard(name).catch((e) => {
           console.log(e);
         });
       }}

@@ -72,6 +72,14 @@ export const RegistrationForm = () => {
             });
             setVisible(false);
             break;
+          case RegistrationResult.UsernameTaken:
+            showNotification({
+              title: t("error"),
+              color: "red",
+              message: t("registrationPage.usernameTaken"),
+            });
+            setVisible(false);
+            break;
         }
       }}
     >

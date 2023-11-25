@@ -13,6 +13,7 @@ export const regenerateToken = async () => {
     process.env.NEXT_PUBLIC_API_URL + "/auth/regenerate",
     {
       method: "POST",
+      cache: "no-cache",
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -43,6 +44,7 @@ export const regenerateFriendCode = async () => {
     process.env.NEXT_PUBLIC_API_URL + "/friends/regenerate",
     {
       method: "POST",
+      cache: "no-cache",
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -60,6 +62,7 @@ export const changeAccountVisibility = async (isPublic: boolean) => {
     process.env.NEXT_PUBLIC_API_URL + "/account/settings",
     {
       method: "POST",
+      cache: "no-cache",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

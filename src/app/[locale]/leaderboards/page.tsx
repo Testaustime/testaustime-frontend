@@ -1,6 +1,10 @@
 import { Group, Title } from "@mantine/core";
 import { LeaderboardsList } from "../../../components/leaderboard/LeaderboardsList";
-import { GetLeaderboardError, LeaderboardData } from "../../../types";
+import {
+  GetLeaderboardError,
+  GetLeaderboardsError,
+  LeaderboardData,
+} from "../../../types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import initTranslations from "../../i18n";
@@ -39,6 +43,14 @@ export default async function LeaderboardsPage({
 
   const leaderboardList = await getMyLeaderboards(token, me.username);
 
+  if (!Array.isArray(leaderboardList)) {
+    if (leaderboardList === GetLeaderboardsError.TooManyRequests) {
+      redirect("/rate-limited");
+    }
+
+    throw new Error(leaderboardList);
+  }
+
   const leaderboardPromises = leaderboardList.map((leaderboard) =>
     getLeaderboard(leaderboard.name),
   );
@@ -46,18 +58,15 @@ export default async function LeaderboardsPage({
   const leaderboards = await Promise.all(leaderboardPromises);
 
   const safeLeaderboards = leaderboards.filter(
-    (x): x is LeaderboardData => !("error" in x),
+    (x): x is LeaderboardData => typeof x === "object",
   );
 
   const erroredLeaderboards = leaderboards.filter(
-    (x): x is { error: GetLeaderboardError } => "error" in x,
+    (x): x is GetLeaderboardError => typeof x !== "object",
   );
 
   if (erroredLeaderboards.length > 0) {
-    console.error(
-      "Errors while loading leaderboards",
-      erroredLeaderboards.map((x) => x.error),
-    );
+    console.error("Errors while loading leaderboards", erroredLeaderboards);
     redirect("/rate-limited");
   }
 

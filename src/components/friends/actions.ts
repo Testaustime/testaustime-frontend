@@ -11,6 +11,7 @@ export const removeFriend = async (username: string) => {
     {
       method: "DELETE",
       body: username,
+      cache: "no-cache",
       headers: {
         "Content-Type": "text/plain",
         Authorization: `Bearer ${token}`,
@@ -40,6 +41,7 @@ export const addFriend = async (friendCode: string) => {
     {
       method: "POST",
       body: friendCode,
+      cache: "no-cache",
       headers: {
         "Content-Type": "text/plain",
         Authorization: `Bearer ${token}`,

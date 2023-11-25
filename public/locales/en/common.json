@@ -239,7 +239,8 @@
         "regex": "Username must only contain alphanumeric characters",
         "required": "Username is required"
       }
-    }
+    },
+    "usernameTaken": "Username is taken"
   },
   "theme": {
     "dark": "Dark mode",

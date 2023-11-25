@@ -21,6 +21,7 @@ import { LeaderboardInviteTokenField } from "./LeaderboardInviteTokenField";
 import { DemoteUserButton } from "./DemoteUserButton";
 import { PromoteUserButton } from "./PromoteUserButton";
 import { KickUserButton } from "./KickUserButton";
+import { GetLeaderboardError } from "../../../../types";
 
 export default async function LeaderboardPage({
   params: { locale, name },
@@ -29,8 +30,12 @@ export default async function LeaderboardPage({
 }) {
   const leaderboard = await getLeaderboard(name);
   const me = await getMe();
-  if ("error" in leaderboard) {
-    redirect("/rate-limited");
+  if (typeof leaderboard !== "object") {
+    if (leaderboard === GetLeaderboardError.TooManyRequests) {
+      redirect("/rate-limited");
+    } else {
+      throw new Error(leaderboard);
+    }
   }
 
   if ("error" in me) {

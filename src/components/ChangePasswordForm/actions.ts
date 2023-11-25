@@ -12,6 +12,7 @@ export const changePassword = async (
     process.env.NEXT_PUBLIC_API_URL + "/auth/changepassword",
     {
       method: "POST",
+      cache: "no-cache",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import {
   CreateLeaderboardError,
   GetLeaderboardError,
+  GetLeaderboardsError,
   Leaderboard,
   LeaderboardData,
 } from "../types";
@@ -23,6 +24,19 @@ export const getMyLeaderboards = async (token: string, username: string) => {
       },
     },
   );
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      return GetLeaderboardsError.Unauthorized;
+    } else if (response.status === 429) {
+      return GetLeaderboardsError.TooManyRequests;
+    }
+
+    const errorText = await response.text();
+    console.log(errorText);
+
+    return GetLeaderboardsError.UnknownError;
+  }
 
   const data = (await response.json()) as Leaderboard[];
 
@@ -48,13 +62,22 @@ export const getLeaderboard = async (leaderboardName: string) => {
     },
   );
 
-  if (response.status === 429) {
-    return {
-      error: GetLeaderboardError.TooManyRequests,
-    };
+  if (!response.ok) {
+    if (response.status === 401) {
+      return GetLeaderboardError.Unauthorized;
+    } else if (response.status === 429) {
+      return GetLeaderboardError.TooManyRequests;
+    }
+
+    const errorText = await response.text();
+    console.log(errorText);
+
+    return GetLeaderboardError.UnknownError;
   }
 
   const data = (await response.json()) as LeaderboardData;
+
+  console.log(data);
 
   return data;
 };
@@ -72,6 +95,7 @@ export const createLeaderboard = async (
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      cache: "no-cache",
       body: JSON.stringify({ name: leaderboardName }),
     },
   );

@@ -23,6 +23,7 @@ export const logIn = async (
     process.env.NEXT_PUBLIC_API_URL + "/auth/login",
     {
       method: "POST",
+      cache: "no-cache",
       headers: {
         "Content-Type": "application/json",
       },

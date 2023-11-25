@@ -79,8 +79,17 @@ export enum AddFriendError {
 export enum RegistrationResult {
   RateLimited,
   UnknownError,
+  UsernameTaken,
 }
 
 export enum GetLeaderboardError {
+  Unauthorized = "Unauthorized",
   TooManyRequests = "Too many requests",
+  UnknownError = "Unknown error",
+}
+
+export enum GetLeaderboardsError {
+  Unauthorized = "Unauthorized",
+  TooManyRequests = "Too many requests",
+  UnknownError = "Unknown error",
 }

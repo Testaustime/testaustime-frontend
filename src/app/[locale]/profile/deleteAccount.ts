@@ -8,6 +8,7 @@ export const deleteAccount = async (username: string, password: string) => {
 
   await fetch(process.env.NEXT_PUBLIC_API_URL + "/users/@me/delete", {
     method: "DELETE",
+    cache: "no-cache",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,

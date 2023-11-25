@@ -18,6 +18,7 @@ export const register = async (username: string, password: string) => {
     process.env.NEXT_PUBLIC_API_URL + "/auth/register",
     {
       method: "POST",
+      cache: "no-cache",
       headers: {
         "Content-Type": "application/json",
       },
@@ -29,6 +30,9 @@ export const register = async (username: string, password: string) => {
   );
 
   if (!response.ok) {
+    if (response.status === 409) {
+      return RegistrationResult.UsernameTaken;
+    }
     if (response.status === 429) {
       return RegistrationResult.RateLimited;
     }

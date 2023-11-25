@@ -2,8 +2,8 @@
 
 import { Button } from "@mantine/core";
 import { DoubleArrowDownIcon } from "@radix-ui/react-icons";
-import axios from "../../../../axios";
 import { useTranslation } from "react-i18next";
+import { demoteUser } from "./actions";
 
 type DemoteUserButtonProps = {
   name: string;
@@ -13,12 +13,6 @@ type DemoteUserButtonProps = {
 export const DemoteUserButton = ({ name, username }: DemoteUserButtonProps) => {
   const { t } = useTranslation();
 
-  const demoteUser = async (username: string) => {
-    await axios.post(`/leaderboards/${name}/demote`, {
-      username,
-    });
-  };
-
   return (
     <Button
       size="xs"
@@ -26,7 +20,7 @@ export const DemoteUserButton = ({ name, username }: DemoteUserButtonProps) => {
       leftSection={<DoubleArrowDownIcon />}
       color="red"
       onClick={() => {
-        demoteUser(username).catch((e) => {
+        demoteUser(username, name).catch((e) => {
           console.log(e);
         });
       }}

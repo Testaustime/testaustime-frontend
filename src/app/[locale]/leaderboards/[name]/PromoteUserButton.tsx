@@ -2,8 +2,8 @@
 
 import { Button } from "@mantine/core";
 import { DoubleArrowUpIcon } from "@radix-ui/react-icons";
-import axios from "../../../../axios";
 import { useTranslation } from "react-i18next";
+import { promoteUser } from "./actions";
 
 type PromoteUserButtonProps = {
   name: string;
@@ -23,13 +23,7 @@ export const PromoteUserButton = ({
       leftSection={<DoubleArrowUpIcon />}
       color="green"
       onClick={() => {
-        axios
-          .post(`/leaderboards/${name}/promote`, {
-            username,
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+        void promoteUser(username, name);
       }}
     >
       {t("leaderboards.promote")}

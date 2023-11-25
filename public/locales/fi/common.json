@@ -239,7 +239,8 @@
         "regex": "Käyttäjänimi voi sisältää vain alphanumeerisia merkkejä",
         "required": "Käyttäjänimi vaaditaan"
       }
-    }
+    },
+    "usernameTaken": "Käyttäjänimi on varattu"
   },
   "theme": {
     "dark": "Tumma teema",
