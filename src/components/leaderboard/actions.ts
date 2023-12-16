@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { JoinLeaderboardError } from "../../types";
+import { DeleteLeaderboardError, JoinLeaderboardError } from "../../types";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -43,7 +43,7 @@ export const joinLeaderboard = async (inviteCode: string) => {
 };
 
 export const leaveLeaderboard = async (leaderboardName: string) => {
-  const token = cookies().get("token")?.value;
+  const token = cookies().get("secure-access-token")?.value;
 
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + `/leaderboards/${leaderboardName}/leave`,
@@ -66,7 +66,7 @@ export const leaveLeaderboard = async (leaderboardName: string) => {
 };
 
 export const deleteLeaderboard = async (leaderboardName: string) => {
-  const token = cookies().get("token")?.value;
+  const token = cookies().get("secure-access-token")?.value;
 
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + `/leaderboards/${leaderboardName}`,
@@ -80,7 +80,14 @@ export const deleteLeaderboard = async (leaderboardName: string) => {
   );
 
   if (!response.ok) {
-    return { error: "Unknown error" };
+    if (response.status === 401) {
+      return { error: DeleteLeaderboardError.Unauthorized };
+    } else if (response.status === 429) {
+      return { error: DeleteLeaderboardError.RateLimited };
+    } else {
+      console.log(response.status);
+      return { error: DeleteLeaderboardError.UnknownError };
+    }
   }
 
   redirect("/leaderboards");

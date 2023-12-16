@@ -1,13 +1,14 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { RegenerateAuthTokenError } from "../../../types";
 
 interface ApiAuthRegenerateResponse {
   token: string;
 }
 
 export const regenerateToken = async () => {
-  const token = cookies().get("token")?.value;
+  const token = cookies().get("secure-access-token")?.value;
 
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + "/auth/regenerate",
@@ -19,8 +20,16 @@ export const regenerateToken = async () => {
       },
     },
   );
+
   if (!response.ok) {
-    return { error: "Unknown error" as const };
+    if (response.status === 401) {
+      return { error: RegenerateAuthTokenError.Unauthorized };
+    } else if (response.status === 429) {
+      return { error: RegenerateAuthTokenError.RateLimited };
+    } else {
+      console.log(response.status, await response.text());
+      return { error: RegenerateAuthTokenError.UnknownError };
+    }
   }
 
   const data = (await response.json()) as ApiAuthRegenerateResponse;
@@ -38,7 +47,7 @@ export const regenerateToken = async () => {
 };
 
 export const regenerateFriendCode = async () => {
-  const token = cookies().get("token")?.value;
+  const token = cookies().get("secure-access-token")?.value;
 
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + "/friends/regenerate",
@@ -57,7 +66,8 @@ export const regenerateFriendCode = async () => {
 };
 
 export const changeAccountVisibility = async (isPublic: boolean) => {
-  const token = cookies().get("token")?.value;
+  const token = cookies().get("secure-access-token")?.value;
+
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + "/account/settings",
     {

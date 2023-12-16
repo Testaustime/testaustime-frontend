@@ -4,7 +4,7 @@ import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 export const regenerateInviteCode = async (leaderboardName: string) => {
-  const token = cookies().get("token")?.value;
+  const token = cookies().get("secure-access-token")?.value;
 
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL +
@@ -31,7 +31,7 @@ export const promoteUser = async (
   username: string,
   leaderboardName: string,
 ) => {
-  const token = cookies().get("token")?.value;
+  const token = cookies().get("secure-access-token")?.value;
 
   if (!token) {
     return { error: "Unauthorized" as const };
@@ -64,7 +64,7 @@ export const promoteUser = async (
 };
 
 export const demoteUser = async (username: string, leaderboardName: string) => {
-  const token = cookies().get("token")?.value;
+  const token = cookies().get("secure-access-token")?.value;
 
   if (!token) {
     return { error: "Unauthorized" as const };
@@ -95,7 +95,7 @@ export const demoteUser = async (username: string, leaderboardName: string) => {
 };
 
 export const kickUser = async (username: string, leaderboardName: string) => {
-  const token = cookies().get("token")?.value;
+  const token = cookies().get("secure-access-token")?.value;
 
   if (!token) {
     return { error: "Unauthorized" as const };

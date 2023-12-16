@@ -99,3 +99,15 @@ export enum LoginError {
   UnknownError,
   RateLimited,
 }
+
+export enum DeleteLeaderboardError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "Rate limited",
+  UnknownError = "Unknown error",
+}
+
+export enum RegenerateAuthTokenError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "Rate limited",
+  UnknownError = "Unknown error",
+}
