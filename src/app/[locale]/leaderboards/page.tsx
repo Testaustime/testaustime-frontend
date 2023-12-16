@@ -1,15 +1,11 @@
 import { Group, Title } from "@mantine/core";
 import { LeaderboardsList } from "../../../components/leaderboard/LeaderboardsList";
-import {
-  GetLeaderboardError,
-  GetLeaderboardsError,
-  LeaderboardData,
-} from "../../../types";
+import { GetLeaderboardsError, LeaderboardData } from "../../../types";
 import { redirect } from "next/navigation";
 import initTranslations from "../../i18n";
 import { CreateNewLeaderboardButton } from "./CreateNewLeaderboardButton";
 import { JoinLeaderboardButton } from "./JoinLeaderboardButton";
-import { getLeaderboard, getMyLeaderboards } from "../../../api/leaderboardApi";
+import { getMyLeaderboards } from "../../../api/leaderboardApi";
 import { getMe } from "../../../api/usersApi";
 
 export type LeaderboardsPageProps = {
@@ -58,26 +54,6 @@ export default async function LeaderboardsPage({
     }
   }
 
-  const leaderboardPromises = leaderboardList.map((leaderboard) =>
-    getLeaderboard(leaderboard.name),
-  );
-
-  const leaderboards = await Promise.all(leaderboardPromises);
-
-  const safeLeaderboards = leaderboards.filter(
-    (x): x is LeaderboardData => typeof x === "object",
-  );
-
-  const erroredLeaderboards = leaderboards.filter(
-    (x): x is GetLeaderboardError => typeof x !== "object",
-  );
-
-  if (erroredLeaderboards.length > 0) {
-    console.error("Errors while loading leaderboards", erroredLeaderboards);
-    // TODO: Not all errors are necessarily rate limits
-    redirect("/rate-limited");
-  }
-
   return (
     <>
       <div>
@@ -88,10 +64,7 @@ export default async function LeaderboardsPage({
             <JoinLeaderboardButton />
           </Group>
         </Group>
-        <LeaderboardsList
-          leaderboards={safeLeaderboards}
-          username={me.username}
-        />
+        <LeaderboardsList leaderboards={leaderboardList} />
       </div>
     </>
   );

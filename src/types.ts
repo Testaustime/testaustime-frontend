@@ -26,8 +26,21 @@ export type ActivityDataEntry = Omit<
 };
 
 export interface Leaderboard {
-  member_count: number;
   name: string;
+  member_count: number;
+  my_position: number;
+  top_member: {
+    id: number;
+    username: string;
+    admin: boolean;
+    time_coded: 0;
+  };
+  me: {
+    id: number;
+    username: string;
+    admin: boolean;
+    time_coded: 0;
+  };
 }
 
 export interface LeaderboardData {
