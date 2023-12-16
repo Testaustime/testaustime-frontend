@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { RegistrationResult } from "../../../types";
 import { SecureAccessTokenResponse } from "../../../components/LoginForm/actions";
@@ -22,6 +22,8 @@ export const register = async (username: string, password: string) => {
       cache: "no-cache",
       headers: {
         "Content-Type": "application/json",
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
       body: JSON.stringify({
         username: username,
@@ -48,6 +50,8 @@ export const register = async (username: string, password: string) => {
       cache: "no-cache",
       headers: {
         "Content-Type": "application/json",
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
       body: JSON.stringify({
         username: username,

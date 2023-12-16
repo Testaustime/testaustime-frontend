@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { RegenerateAuthTokenError } from "../../../types";
 
 interface ApiAuthRegenerateResponse {
@@ -17,6 +17,8 @@ export const regenerateToken = async () => {
       cache: "no-cache",
       headers: {
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
     },
   );
@@ -56,6 +58,8 @@ export const regenerateFriendCode = async () => {
       cache: "no-cache",
       headers: {
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
     },
   );
@@ -76,6 +80,8 @@ export const changeAccountVisibility = async (isPublic: boolean) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
       body: JSON.stringify({
         public_profile: isPublic,

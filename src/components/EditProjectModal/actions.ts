@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export const renameProject = async (
   oldProjectName: string,
@@ -22,6 +22,8 @@ export const renameProject = async (
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
     },
   );

@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import {
   CreateLeaderboardError,
   GetLeaderboardError,
@@ -23,6 +23,8 @@ export const getMyLeaderboards = async (username: string) => {
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          "client-ip": headers().get("client-ip") ?? "Unknown IP",
+          "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
         },
         cache: "no-cache",
         next: {
@@ -64,6 +66,8 @@ export const getLeaderboard = async (leaderboardName: string) => {
     {
       headers: {
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
       cache: "no-cache",
       next: {
@@ -102,6 +106,8 @@ export const createLeaderboard = async (
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
       cache: "no-cache",
       body: JSON.stringify({ name: leaderboardName }),

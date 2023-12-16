@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { PasswordChangeResult } from "../../types";
 
 export const changePassword = async (
@@ -16,6 +16,8 @@ export const changePassword = async (
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
       body: JSON.stringify({
         old: oldPassword,

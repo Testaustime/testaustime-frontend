@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export const regenerateInviteCode = async (leaderboardName: string) => {
   const token = cookies().get("secure-access-token")?.value;
@@ -16,6 +16,8 @@ export const regenerateInviteCode = async (leaderboardName: string) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
     },
   );
@@ -47,6 +49,8 @@ export const promoteUser = async (
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
     },
   );
@@ -79,6 +83,8 @@ export const demoteUser = async (username: string, leaderboardName: string) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
     },
   );
@@ -110,6 +116,8 @@ export const kickUser = async (username: string, leaderboardName: string) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
     },
   );

@@ -4,7 +4,7 @@ import {
   ApiUsersUserActivityDataResponseItem,
 } from "../types";
 import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export interface ApiFriendsResponseItem {
   username: string;
@@ -28,6 +28,8 @@ export const getFriendsList = async () => {
     {
       headers: {
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
       cache: "no-cache",
     },
@@ -70,6 +72,8 @@ export const getFriendActivityData = async (username: string) => {
       cache: "no-cache",
       headers: {
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
     },
   );

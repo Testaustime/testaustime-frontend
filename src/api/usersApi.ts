@@ -4,7 +4,7 @@ import {
   ApiUsersUserActivityDataResponseItem,
   ApiUsersUserResponse,
 } from "../types";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export const getMe = async () => {
   const token = cookies().get("token")?.value;
@@ -17,6 +17,8 @@ export const getMe = async () => {
     {
       headers: {
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
       cache: "no-cache",
     },
@@ -58,6 +60,8 @@ export const getOwnActivityData = async (username: string) => {
     {
       headers: {
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
       cache: "no-cache",
       next: {
@@ -97,6 +101,8 @@ export const getOwnActivityDataSummary = async () => {
     {
       headers: {
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
       cache: "no-cache",
     },
