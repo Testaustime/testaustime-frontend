@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { LoginError } from "../../types";
 
@@ -29,6 +29,8 @@ export const logIn = async (
     cache: "no-cache",
     headers: {
       "Content-Type": "application/json",
+      "client-ip": headers().get("client-ip") ?? "Unknown IP",
+      "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
     },
     body: JSON.stringify({
       username: username,
@@ -43,6 +45,8 @@ export const logIn = async (
       cache: "no-cache",
       headers: {
         "Content-Type": "application/json",
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
       body: JSON.stringify({
         username: username,

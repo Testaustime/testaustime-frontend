@@ -1,10 +1,17 @@
 import { i18nRouter } from "next-i18n-router";
 import { i18nConfig } from "./i18nConfig";
-import { NextRequest } from "next/server";
+import { NextMiddleware } from "next/server";
 
-export function middleware(request: NextRequest) {
-  return i18nRouter(request, i18nConfig);
-}
+export const middleware: NextMiddleware = (request) => {
+  const response = i18nRouter(request, i18nConfig);
+
+  response.headers.set(
+    "client-ip",
+    request.headers.get("x-forwarded-for") ?? request.ip ?? "Unknown IP",
+  );
+
+  return response;
+};
 
 export const config = {
   matcher:

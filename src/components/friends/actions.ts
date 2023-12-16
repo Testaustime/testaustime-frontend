@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { AddFriendError } from "../../types";
 
 export const removeFriend = async (username: string) => {
@@ -15,6 +15,8 @@ export const removeFriend = async (username: string) => {
       headers: {
         "Content-Type": "text/plain",
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
     },
   );
@@ -45,6 +47,8 @@ export const addFriend = async (friendCode: string) => {
       headers: {
         "Content-Type": "text/plain",
         Authorization: `Bearer ${token}`,
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
     },
   );

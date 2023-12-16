@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { logOutAndRedirect } from "../../../utils/authUtils";
 
 export const deleteAccount = async (username: string, password: string) => {
@@ -12,6 +12,8 @@ export const deleteAccount = async (username: string, password: string) => {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      "client-ip": headers().get("client-ip") ?? "Unknown IP",
+      "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
     },
     body: JSON.stringify({
       username,
