@@ -11,13 +11,6 @@ import { useTranslation } from "react-i18next";
 import { register } from "./actions";
 import { RegistrationResult } from "../../../types";
 
-export interface ApiAuthRegisterResponse {
-  auth_token: string;
-  username: string;
-  friend_code: string;
-  registration_time: string;
-}
-
 export const RegistrationForm = () => {
   const [visible, setVisible] = useState(false);
   const { t } = useTranslation();

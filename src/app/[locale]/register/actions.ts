@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { RegistrationResult } from "../../../types";
 import { SecureAccessTokenResponse } from "../../../components/LoginForm/actions";
 
-export interface ApiAuthLoginResponse {
+interface ApiAuthLoginResponse {
   id: number;
   auth_token: string;
   friend_code: string;

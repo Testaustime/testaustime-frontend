@@ -65,7 +65,7 @@ export enum CreateLeaderboardError {
   UnknownError,
 }
 
-export type ActivityDataSummaryEntry = {
+type ActivityDataSummaryEntry = {
   languages: Record<string, number>;
   total: number;
 };
