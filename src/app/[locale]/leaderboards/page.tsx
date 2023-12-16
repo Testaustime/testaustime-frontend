@@ -34,6 +34,8 @@ export default async function LeaderboardsPage({
     }
   }
 
+  const { t } = await initTranslations(locale, ["common"]);
+
   const leaderboardList = await getMyLeaderboards(me.username);
   if (!Array.isArray(leaderboardList)) {
     if (leaderboardList === GetLeaderboardsError.TooManyRequests) {
@@ -41,7 +43,18 @@ export default async function LeaderboardsPage({
     } else if (leaderboardList === GetLeaderboardsError.Unauthorized) {
       redirect("/login");
     } else {
-      throw new Error(leaderboardList);
+      return (
+        <>
+          <Group align="center" mb="md" mt="xl" justify="space-between">
+            <Title>{t("leaderboards.leaderboards")}</Title>
+            <Group gap="sm">
+              <CreateNewLeaderboardButton username={me.username} />
+              <JoinLeaderboardButton />
+            </Group>
+          </Group>
+          <div>{t("leaderboards.error.loadingAllLeaderboards")}</div>
+        </>
+      );
     }
   }
 
@@ -61,10 +74,9 @@ export default async function LeaderboardsPage({
 
   if (erroredLeaderboards.length > 0) {
     console.error("Errors while loading leaderboards", erroredLeaderboards);
+    // TODO: Not all errors are necessarily rate limits
     redirect("/rate-limited");
   }
-
-  const { t } = await initTranslations(locale, ["common"]);
 
   return (
     <>

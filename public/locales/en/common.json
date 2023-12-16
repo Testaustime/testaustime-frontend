@@ -111,7 +111,10 @@
       "regex": "Leaderboard name must only contain alphanumeric characters",
       "required": "Leaderboard name is required"
     },
-    "yourPosition": "Your position"
+    "yourPosition": "Your position",
+    "error": {
+      "loadingAllLeaderboards": "An error occurred while loading your leaderboard list, try again later. If the error persists, please contact us."
+    }
   },
   "loginPage": {
     "invalidCredentials": "Invalid credentials",
