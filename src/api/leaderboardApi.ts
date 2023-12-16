@@ -17,35 +17,40 @@ export const getMyLeaderboards = async (username: string) => {
     return GetLeaderboardsError.Unauthorized;
   }
 
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + "/users/@me/leaderboards",
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
+  try {
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_API_URL + "/users/@me/leaderboards",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        cache: "no-cache",
+        next: {
+          tags: [`leaderboards-${username}`],
+        },
       },
-      cache: "no-cache",
-      next: {
-        tags: [`leaderboards-${username}`],
-      },
-    },
-  );
+    );
 
-  if (!response.ok) {
-    if (response.status === 401) {
-      return GetLeaderboardsError.Unauthorized;
-    } else if (response.status === 429) {
-      return GetLeaderboardsError.TooManyRequests;
+    if (!response.ok) {
+      if (response.status === 401) {
+        return GetLeaderboardsError.Unauthorized;
+      } else if (response.status === 429) {
+        return GetLeaderboardsError.TooManyRequests;
+      }
+
+      const errorText = await response.text();
+      console.log(errorText);
+
+      return GetLeaderboardsError.UnknownError;
     }
 
-    const errorText = await response.text();
-    console.log(errorText);
+    const data = (await response.json()) as Leaderboard[];
 
+    return data;
+  } catch (e: unknown) {
+    console.error(e);
     return GetLeaderboardsError.UnknownError;
   }
-
-  const data = (await response.json()) as Leaderboard[];
-
-  return data;
 };
 
 export const getLeaderboard = async (leaderboardName: string) => {

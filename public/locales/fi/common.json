@@ -111,7 +111,10 @@
       "regex": "Tulostaulun nimi voi sisältää vain alphanumeerisia kirjaimia.",
       "required": "Tulostaulun nimi vaaditaan."
     },
-    "yourPosition": "Sija"
+    "yourPosition": "Sija",
+    "error": {
+      "loadingAllLeaderboards": "Tulostaulujesi lataamisessa tapahtui virhe, yritä uudelleen myöhemmin. Jos virhe jatkuu, ole hyvä ja ota yhteyttä meihin."
+    }
   },
   "loginPage": {
     "invalidCredentials": "Virheelliset tunnukset",
