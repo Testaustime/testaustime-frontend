@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { LoginError } from "../../types";
 
-export interface ApiAuthLoginResponse {
+interface ApiAuthLoginResponse {
   id: number;
   auth_token: string;
   friend_code: string;

@@ -3,19 +3,15 @@
 import { Badge, Table, TableTh, TableThead, TableTr } from "@mantine/core";
 import { prettyDuration } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
-import { LeaderboardData } from "../../types";
+import { Leaderboard } from "../../types";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
 interface LeaderboardsListProps {
-  leaderboards: LeaderboardData[];
-  username: string;
+  leaderboards: Leaderboard[];
 }
 
-export const LeaderboardsList = ({
-  leaderboards,
-  username,
-}: LeaderboardsListProps) => {
+export const LeaderboardsList = ({ leaderboards }: LeaderboardsListProps) => {
   const { t } = useTranslation();
 
   return (
@@ -30,23 +26,14 @@ export const LeaderboardsList = ({
       </TableThead>
       <Table.Tbody>
         {leaderboards.map((leaderboard) => {
-          const membersSorted = [...leaderboard.members].sort(
-            (a, b) => b.time_coded - a.time_coded,
-          );
-          const topMember = membersSorted[0];
-          const yourPosition =
-            membersSorted.findIndex((member) => member.username === username) +
-            1;
-          const userIsAdmin = Boolean(
-            leaderboard.members.find((member) => member.username === username)
-              ?.admin,
-          );
+          const topMember = leaderboard.top_member;
+          const yourPosition = leaderboard.my_position;
 
           return (
-            <TableTr key={leaderboard.invite}>
+            <TableTr key={leaderboard.name}>
               <Table.Td>
                 {leaderboard.name}
-                {userIsAdmin && (
+                {leaderboard.me.admin && (
                   <Badge ml="sm">{t("leaderboards.admin")}</Badge>
                 )}
               </Table.Td>
