@@ -14,7 +14,7 @@ export interface ApiFriendsResponseItem {
     past_month: number;
     past_week: number;
   };
-  status: CurrentActivityApiResponse;
+  status: CurrentActivityApiResponse | null;
 }
 
 export const getFriendsList = async () => {

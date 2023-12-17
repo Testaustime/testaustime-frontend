@@ -1,6 +1,12 @@
 "use client";
-
-import { Button, Table, TableTh, TableThead, TableTr } from "@mantine/core";
+import {
+  Button,
+  HoverCard,
+  Table,
+  TableTh,
+  TableThead,
+  TableTr,
+} from "@mantine/core";
 import { prettyDuration } from "../../utils/dateUtils";
 import { showNotification } from "@mantine/notifications";
 import styles from "./FriendList.module.css";
@@ -10,13 +16,14 @@ import { removeFriend } from "./actions";
 import Link from "next/link";
 import { BlinkingDot } from "../CurrentActivity/BlinkingDot";
 import { CurrentActivity } from "../CurrentActivity/CurrentActivity";
+import { CurrentActivityDisplay } from "../CurrentActivity/CurrentActivityDisplay";
 
 type FriendListProps = {
   friends: ApiFriendsResponseItem[];
   ownTimeCoded: number;
   username: string;
   locale: string;
-  ownStatus: CurrentActivity;
+  ownStatus: CurrentActivity | null;
 };
 
 export const FriendList = ({
@@ -34,13 +41,19 @@ export const FriendList = ({
         isMe: false,
         codingTime: f.coding_time.past_month,
         username: f.username,
-        status: !!f.status,
+        status: f.status
+          ? {
+              projectName: f.status.heartbeat.project_name,
+              language: f.status.heartbeat.language,
+              startedAt: f.status.started,
+            }
+          : null,
       }))
       .concat({
         codingTime: ownTimeCoded,
         isMe: true,
         username,
-        status: !!ownStatus,
+        status: ownStatus,
       }),
   ].sort((a, b) => b.codingTime - a.codingTime);
 
@@ -64,7 +77,17 @@ export const FriendList = ({
             <Table.Td>{idx + 1}</Table.Td>
             <Table.Td>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                {username} {status && <BlinkingDot />}
+                {username}
+                {status && (
+                  <HoverCard>
+                    <HoverCard.Target>
+                      <BlinkingDot />
+                    </HoverCard.Target>
+                    <HoverCard.Dropdown>
+                      <CurrentActivityDisplay currentActivity={status} />
+                    </HoverCard.Dropdown>
+                  </HoverCard>
+                )}
               </div>
             </Table.Td>
             <Table.Td>{prettyDuration(codingTime)}</Table.Td>

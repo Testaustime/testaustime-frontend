@@ -61,7 +61,7 @@ export default async function FriendsPage({
     }
   }
 
-  if ("error" in ownActivityStatus) {
+  if (ownActivityStatus && "error" in ownActivityStatus) {
     if (ownActivityStatus.error === "Too many requests") {
       redirect("/rate-limited");
     } else {

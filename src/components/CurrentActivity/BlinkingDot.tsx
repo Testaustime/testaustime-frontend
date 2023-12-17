@@ -1,11 +1,11 @@
-import { DetailedHTMLProps } from "react";
+import { ComponentPropsWithoutRef, forwardRef } from "react";
 import styles from "./BlinkingDot.module.css";
 
-type BlinkingDotProps = DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->;
+export const BlinkingDot = forwardRef<
+  HTMLDivElement,
+  ComponentPropsWithoutRef<"div">
+>(({ className, ...props }, ref) => (
+  <div className={styles.blinkingDot + " " + className} ref={ref} {...props} />
+));
 
-export const BlinkingDot = ({ className, ...props }: BlinkingDotProps) => {
-  return <div className={styles.blinkingDot + " " + className} {...props} />;
-};
+BlinkingDot.displayName = "BlinkingDot";
