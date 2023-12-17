@@ -5,7 +5,11 @@ import { generateFriendCode } from "../../../utils/codeUtils";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import initTranslations from "../../i18n";
-import { getMe, getOwnActivityDataSummary } from "../../../api/usersApi";
+import {
+  getCurrentActivityStatus,
+  getMe,
+  getOwnActivityDataSummary,
+} from "../../../api/usersApi";
 import { getFriendsList } from "../../../api/friendsApi";
 
 export default async function FriendsPage({
@@ -19,11 +23,13 @@ export default async function FriendsPage({
     redirect("/login");
   }
 
-  const [friendsList, ownDataSummary, me] = await Promise.all([
-    getFriendsList(),
-    getOwnActivityDataSummary(),
-    getMe(),
-  ]);
+  const [friendsList, ownDataSummary, me, ownActivityStatus] =
+    await Promise.all([
+      getFriendsList(),
+      getOwnActivityDataSummary(),
+      getMe(),
+      getCurrentActivityStatus("@me"),
+    ]);
 
   if ("error" in me) {
     if (me.error === "Unauthorized") {
@@ -55,6 +61,16 @@ export default async function FriendsPage({
     }
   }
 
+  if (ownActivityStatus && "error" in ownActivityStatus) {
+    if (ownActivityStatus.error === "Too many requests") {
+      redirect("/rate-limited");
+    } else {
+      throw new Error(ownActivityStatus.error);
+    }
+  }
+
+  // TODO: Activity status should be refreshed every 1 minute.
+
   const { t } = await initTranslations(locale, ["common"]);
 
   return (
@@ -71,6 +87,7 @@ export default async function FriendsPage({
         ownTimeCoded={ownDataSummary.last_month.total}
         username={me.username}
         locale={locale}
+        ownStatus={ownActivityStatus}
       />
     </>
   );

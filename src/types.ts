@@ -124,3 +124,14 @@ export enum RegenerateAuthTokenError {
   RateLimited = "Rate limited",
   UnknownError = "Unknown error",
 }
+
+export type CurrentActivityApiResponse = {
+  started: string;
+  duration: number;
+  heartbeat: {
+    project_name: string;
+    language: string;
+    editor_name: string;
+    hostname: string;
+  };
+};

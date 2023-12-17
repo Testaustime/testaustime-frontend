@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import { getFriendActivityData } from "../../../../api/friendsApi";
 import { Dashboard } from "../../../../components/Dashboard";
+import { getCurrentActivityStatus } from "../../../../api/usersApi";
+import { CurrentActivity } from "../../../../components/CurrentActivity/CurrentActivity";
 
 export default async function FriendPage({
   params: { locale, username },
@@ -21,12 +23,20 @@ export default async function FriendPage({
 
   const decodedUsername = decodeURIComponent(username);
 
+  let currentActivity: CurrentActivity | undefined = undefined;
+  const currentActivityResponse =
+    await getCurrentActivityStatus(decodedUsername);
+  if (!(currentActivityResponse && "error" in currentActivityResponse)) {
+    currentActivity = currentActivityResponse ?? undefined;
+  }
+
   return (
     <Dashboard
       allEntries={data}
       username={decodedUsername}
       isFrontPage={false}
       locale={locale}
+      initialActivity={currentActivity}
     />
   );
 }

@@ -2,6 +2,7 @@ import { startOfDay } from "date-fns";
 import {
   ActivityDataEntry,
   ApiUsersUserActivityDataResponseItem,
+  CurrentActivityApiResponse,
 } from "../types";
 import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
 import { cookies, headers } from "next/headers";
@@ -13,6 +14,7 @@ export interface ApiFriendsResponseItem {
     past_month: number;
     past_week: number;
   };
+  status: CurrentActivityApiResponse | null;
 }
 
 export const getFriendsList = async () => {

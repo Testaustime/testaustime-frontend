@@ -33,6 +33,8 @@ import styles from "./Dashboard.module.css";
 import { filterEntries } from "../utils/activityUtils";
 import { ActivityDataEntry } from "../types";
 import { useTranslation } from "react-i18next";
+import { CurrentActivity } from "./CurrentActivity/CurrentActivity";
+import { DataCard } from "./DataCard/DataCard";
 
 interface DashboardProps {
   username: string;
@@ -41,6 +43,7 @@ interface DashboardProps {
   defaultDayRange?: DayRange | undefined | null;
   smoothCharts?: boolean | undefined | null;
   locale: string;
+  initialActivity?: CurrentActivity | undefined | null;
 }
 
 export const Dashboard = ({
@@ -50,6 +53,7 @@ export const Dashboard = ({
   defaultDayRange,
   smoothCharts,
   locale,
+  initialActivity,
 }: DashboardProps) => {
   const { t } = useTranslation();
 
@@ -88,16 +92,30 @@ export const Dashboard = ({
 
   return (
     <div style={{ width: "100%" }}>
-      {isFrontPage ? (
-        <>
-          <Group style={{ marginBottom: "1rem" }}>
+      <Stack gap="1rem">
+        {isFrontPage ? (
+          <>
             <Text>{t("dashboard.greeting", { username })}</Text>
-          </Group>
-          <Title mb={5}>{t("dashboard.statistics")}</Title>
-        </>
-      ) : (
-        <Title>{username}</Title>
-      )}
+            {initialActivity && (
+              <CurrentActivity
+                initialActivity={initialActivity}
+                username={username}
+              />
+            )}
+            <Title mb={5}>{t("dashboard.statistics")}</Title>
+          </>
+        ) : (
+          <>
+            <Title>{username}</Title>
+            {initialActivity && (
+              <CurrentActivity
+                initialActivity={initialActivity}
+                username={username}
+              />
+            )}
+          </>
+        )}
+      </Stack>
       <Group align="end" mt={10} mb={30} justify="space-between">
         <Combobox
           store={combobox}
@@ -199,7 +217,7 @@ export const Dashboard = ({
       </Group>
       {entries.length !== 0 ? (
         <>
-          <Group className={styles.dataCard}>
+          <DataCard>
             <Title mt={10} order={2}>
               {t("dashboard.timePerDay")}
             </Title>
@@ -219,8 +237,8 @@ export const Dashboard = ({
                 ),
               })}
             </Text>
-          </Group>
-          <Group className={styles.dataCard}>
+          </DataCard>
+          <DataCard>
             <Title mt={10} order={2}>
               {t("dashboard.timePerProject")}
             </Title>
@@ -228,7 +246,7 @@ export const Dashboard = ({
               entries={entries}
               className={styles.projectCodingChart}
             />
-          </Group>
+          </DataCard>
           {isSmallScreen ? (
             <Stack align="center">
               <div>
