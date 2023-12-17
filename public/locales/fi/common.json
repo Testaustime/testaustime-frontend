@@ -8,6 +8,9 @@
   },
   "dashboard": {
     "greeting": "Hei, {{username}}!",
+    "currentActivity": {
+      "startedAt": "Aloitettu {{startedAt}}"
+    },
     "languages": "Kielet",
     "noData": {
       "installPrompt": "<link>Asenna Testaustime-laajennus<link>, jotta voit nähdä tietoja.",

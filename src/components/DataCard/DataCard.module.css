@@ -1,0 +1,18 @@
+.dataCardContainer {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: white;
+  padding: 10px;
+}
+
+[data-mantine-color-scheme="dark"] .dataCardContainer {
+  background-color: #222326;
+  border-color: #383838;
+}
+
+.dataCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}

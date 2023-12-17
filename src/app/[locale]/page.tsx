@@ -12,7 +12,11 @@ import styles from "./page.module.css";
 import { ApiUsersUserResponse } from "../../types";
 import { cookies } from "next/headers";
 import initTranslations from "../i18n";
-import { getMe, getOwnActivityData } from "../../api/usersApi";
+import {
+  getCurrentActivityStatus,
+  getMe,
+  getOwnActivityData,
+} from "../../api/usersApi";
 import { redirect } from "next/navigation";
 
 export default async function MainPage({
@@ -40,6 +44,14 @@ export default async function MainPage({
       throw new Error(activityData.error);
     }
 
+    const currentActivity = await getCurrentActivityStatus(me.username);
+    if ("error" in currentActivity) {
+      if (currentActivity.error === "Too many requests") {
+        redirect("/rate-limited");
+      }
+      throw new Error(currentActivity.error);
+    }
+
     const uncheckedDefaultDayRange = cookies().get(defaultDayRangeCookieName)
       ?.value;
     const defaultDayRange = isDayRange(uncheckedDefaultDayRange)
@@ -61,6 +73,7 @@ export default async function MainPage({
           defaultDayRange={defaultDayRange ?? null}
           smoothCharts={smoothCharts}
           locale={locale}
+          initialActivity={currentActivity}
         />
       </div>
     );
