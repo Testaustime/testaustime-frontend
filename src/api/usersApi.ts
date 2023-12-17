@@ -148,6 +148,15 @@ export const getCurrentActivityStatus = async (username: string) => {
       };
     }
 
+    if (response.status === 404) {
+      return null;
+    }
+
+    const error = await response.text();
+    console.error(
+      `Error while fetching current activity: status ${response.status},`,
+      error,
+    );
     return {
       error: "Unknown error" as const,
     };

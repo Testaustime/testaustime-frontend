@@ -45,7 +45,7 @@ export default async function MainPage({
     }
 
     const currentActivity = await getCurrentActivityStatus(me.username);
-    if ("error" in currentActivity) {
+    if (currentActivity && "error" in currentActivity) {
       if (currentActivity.error === "Too many requests") {
         redirect("/rate-limited");
       }

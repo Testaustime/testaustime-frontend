@@ -26,8 +26,8 @@ export default async function FriendPage({
   let currentActivity: CurrentActivity | undefined = undefined;
   const currentActivityResponse =
     await getCurrentActivityStatus(decodedUsername);
-  if (!("error" in currentActivityResponse)) {
-    currentActivity = currentActivityResponse;
+  if (!(currentActivityResponse && "error" in currentActivityResponse)) {
+    currentActivity = currentActivityResponse ?? undefined;
   }
 
   return (
