@@ -29,7 +29,7 @@
     "src",
     ".storybook/withSetup.tsx",
     "next-i18next.config.js",
-    "next.config.js",
+    "next.config.mjs",
     ".next/types/**/*.ts"
   ],
   "references": [
