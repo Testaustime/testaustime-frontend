@@ -4,6 +4,7 @@ import ButtonWithConfirmation from "../../../components/ButtonWithConfirmation";
 import { useTranslation } from "react-i18next";
 import { changeAccountVisibility } from "./actions";
 import { showNotification } from "@mantine/notifications";
+import { useRouter } from "next/navigation";
 
 export const ProfileVisibilityToggle = ({
   isPublic,
@@ -11,6 +12,7 @@ export const ProfileVisibilityToggle = ({
   isPublic: boolean;
 }) => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   return (
     <ButtonWithConfirmation
@@ -25,6 +27,7 @@ export const ProfileVisibilityToggle = ({
               message: t("unknownErrorOccurred"),
             });
           }
+          router.refresh();
         })();
       }}
     >
