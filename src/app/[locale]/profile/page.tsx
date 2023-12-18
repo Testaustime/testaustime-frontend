@@ -32,12 +32,15 @@ export default async function ProfilePage({
   params: { locale: string };
 }) {
   const token = cookies().get("token")?.value;
-
   if (!token) {
     redirect("/login");
   }
 
   const me = await getMe();
+  if (!me) {
+    redirect("/login");
+  }
+
   if ("error" in me) {
     if (me.error === "Unauthorized") {
       redirect("/login");
@@ -55,10 +58,6 @@ export default async function ProfilePage({
   };
 
   const { t } = await initTranslations(locale, ["common"]);
-
-  if (!token) {
-    return redirect("/login");
-  }
 
   return (
     <div>

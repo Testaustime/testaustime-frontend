@@ -28,14 +28,9 @@ export default async function LeaderboardPage({
 }: {
   params: { locale: string; name: string };
 }) {
-  const leaderboard = await getLeaderboard(name);
   const me = await getMe();
-  if (typeof leaderboard !== "object") {
-    if (leaderboard === GetLeaderboardError.TooManyRequests) {
-      redirect("/rate-limited");
-    } else {
-      throw new Error(leaderboard);
-    }
+  if (!me) {
+    redirect("/login");
   }
 
   if ("error" in me) {
@@ -45,6 +40,17 @@ export default async function LeaderboardPage({
       redirect("/rate-limited");
     } else {
       throw new Error(me.error);
+    }
+  }
+
+  const leaderboard = await getLeaderboard(name);
+  if (typeof leaderboard !== "object") {
+    if (leaderboard === GetLeaderboardError.TooManyRequests) {
+      redirect("/rate-limited");
+    } else if (leaderboard === GetLeaderboardError.Unauthorized) {
+      redirect("/login");
+    } else {
+      throw new Error(leaderboard);
     }
   }
 

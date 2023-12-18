@@ -37,11 +37,9 @@ export default async function RootLayout({
     ? colorSchemeUnchecked
     : "dark";
 
-  const token = cookies().get("token")?.value;
-
   let username = undefined;
-  if (token) {
-    const me = await getMe();
+  const me = await getMe();
+  if (me) {
     if ("error" in me) {
       if (me.error === "Unauthorized") {
         // Can't redirect to /login because it would cause an infinite loop
@@ -52,18 +50,13 @@ export default async function RootLayout({
       } else {
         throw new Error(me.error);
       }
-    }
-
-    if (!("error" in me)) {
+    } else {
       username = me.username;
     }
   }
 
   return (
     <html lang="en">
-      {/* <head>
-        <link rel="icon" href="/time.png" sizes="any" />
-      </head> */}
       <body>
         <TranslationsProvider
           locale={locale}

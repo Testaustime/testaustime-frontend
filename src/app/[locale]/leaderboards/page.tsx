@@ -20,6 +20,10 @@ export default async function LeaderboardsPage({
   params: { locale: string };
 }) {
   const me = await getMe();
+  if (!me) {
+    redirect("/login");
+  }
+
   if ("error" in me) {
     if (me.error === "Unauthorized") {
       redirect("/login");
@@ -56,16 +60,14 @@ export default async function LeaderboardsPage({
 
   return (
     <>
-      <div>
-        <Group align="center" mb="md" mt="xl" justify="space-between">
-          <Title>{t("leaderboards.leaderboards")}</Title>
-          <Group gap="sm">
-            <CreateNewLeaderboardButton username={me.username} />
-            <JoinLeaderboardButton />
-          </Group>
+      <Group align="center" mb="md" mt="xl" justify="space-between">
+        <Title>{t("leaderboards.leaderboards")}</Title>
+        <Group gap="sm">
+          <CreateNewLeaderboardButton username={me.username} />
+          <JoinLeaderboardButton />
         </Group>
-        <LeaderboardsList leaderboards={leaderboardList} />
-      </div>
+      </Group>
+      <LeaderboardsList leaderboards={leaderboardList} />
     </>
   );
 }

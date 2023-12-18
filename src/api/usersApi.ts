@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import {
   ActivityDataSummary,
   ApiUsersUserActivityDataResponseItem,
@@ -11,7 +10,7 @@ import { CurrentActivity } from "../components/CurrentActivity/CurrentActivity";
 export const getMe = async () => {
   const token = cookies().get("token")?.value;
   if (!token) {
-    redirect("/login");
+    return undefined;
   }
 
   const meResponse = await fetch(
