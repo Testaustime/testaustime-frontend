@@ -12,6 +12,21 @@ import initTranslations from "../i18n";
 import "@mantine/notifications/styles.css";
 import TranslationsProvider from "../../components/TranslationsProvider";
 import { getMe } from "../../api/usersApi";
+import { Ubuntu, Poppins } from "next/font/google";
+
+const ubuntu = Ubuntu({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+  variable: "--font-ubuntu",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "800",
+  variable: "--font-poppins",
+});
 
 export const metadata = {
   title: "Testaustime",
@@ -56,7 +71,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${ubuntu.variable} ${poppins.variable}`}>
       <body>
         <TranslationsProvider
           locale={locale}
@@ -70,7 +85,7 @@ export default async function RootLayout({
         >
           <MantineProvider
             theme={{
-              fontFamily: "Ubuntu, sans-serif",
+              fontFamily: "var(--font-ubuntu), sans-serif",
               white: "#eee",
               black: "#121212",
               colors: {
@@ -100,7 +115,7 @@ export default async function RootLayout({
                 ],
               },
               headings: {
-                fontFamily: "Poppins, sans-serif",
+                fontFamily: "var(--font-poppins), sans-serif",
                 fontWeight: "800",
                 sizes: {
                   h1: { fontSize: "1.9rem" },
