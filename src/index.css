@@ -1,9 +1,3 @@
-*:not(.noDefaultTransition) {
-  transition:
-    ease-in-out background-color 0.2s,
-    ease-in-out filter 0.2s,
-    ease-in-out border 0.2s !important;
-}
 * {
   box-sizing: border-box;
 }

@@ -4,10 +4,12 @@ import { Group, SegmentedControl, Text } from "@mantine/core";
 import { useSettings } from "../../hooks/useSettings";
 import { DayRange } from "../../utils/dateUtils";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 export const DefaultDayRangeSelector = () => {
   const { defaultDayRange, setDefaultDayRange } = useSettings();
   const { t } = useTranslation();
+  const router = useRouter();
 
   return (
     <Group>
@@ -21,6 +23,9 @@ export const DefaultDayRangeSelector = () => {
         value={defaultDayRange}
         onChange={(value) => {
           setDefaultDayRange(value as DayRange);
+
+          // Why is this necessary?
+          router.refresh();
         }}
       />
     </Group>
