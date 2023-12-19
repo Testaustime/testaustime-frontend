@@ -2,12 +2,13 @@ import { GitHubLogoIcon, QuestionMarkIcon } from "@radix-ui/react-icons";
 import initTranslations from "../../i18n";
 import { ReactNode } from "react";
 import styles from "./styles.module.css";
-import { Anchor, Center, Group, Stack, Title, Text } from "@mantine/core";
+import { Anchor, Stack, Title, Text } from "@mantine/core";
 import Neovim from "../../../../public/images/neovim.svg";
 import Vscode from "../../../../public/images/vscode.svg";
 import IntelliJ from "../../../../public/images/intellij.svg";
 import Micro from "../../../../public/images/micro.svg";
 import Sublime from "../../../../public/images/sublime.svg";
+import { DataCardContainer } from "../../../components/DataCard/DataCardContainer";
 
 interface ExtensionBlockProps {
   logo: React.ReactNode;
@@ -25,35 +26,28 @@ const ExtensionBlock = ({
   // Icon map for source code icons
   const iconMap: Record<string, ReactNode> = {
     // Root domain in lower case to icon element
-    github: <GitHubLogoIcon height={20} width={20} className={styles.icon} />,
+    github: <GitHubLogoIcon height={20} width={20} />,
   };
 
   return (
-    <Group style={{ width: "100%" }} className={styles.wrapper}>
-      <Center className={styles.logo}>{logo}</Center>
-      <Anchor className={styles.spacer} />
-      <Anchor
-        href={downloadLink}
-        style={{ flex: 1 }}
-        size="lg"
-        className={styles.text}
-      >
-        {text}
-      </Anchor>
-      <Group gap={10} className={styles.sideContainer}>
-        <Anchor
-          href={sourceCodeLink}
-          variant="text"
-          className={styles.iconContainer}
-        >
-          {iconMap[
-            new URL(sourceCodeLink).hostname.split(".").reverse()[1]
-          ] ?? (
-            <QuestionMarkIcon height={20} width={20} className={styles.icon} />
-          )}
+    <DataCardContainer className={styles.wrapper} withoutPadding>
+      <div className={styles.firstSection}>
+        <div className={styles.logo}>{logo}</div>
+        <div className={styles.spacer} />
+        <Anchor href={downloadLink} size="lg">
+          {text}
         </Anchor>
-      </Group>
-    </Group>
+      </div>
+      <Anchor
+        href={sourceCodeLink}
+        variant="text"
+        className={styles.iconContainer}
+      >
+        {iconMap[new URL(sourceCodeLink).hostname.split(".").reverse()[1]] ?? (
+          <QuestionMarkIcon height={20} width={20} className={styles.icon} />
+        )}
+      </Anchor>
+    </DataCardContainer>
   );
 };
 

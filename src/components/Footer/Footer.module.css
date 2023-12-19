@@ -1,5 +1,4 @@
 .container {
-  margin-top: 100px;
   width: 100%;
   display: flex;
   justify-content: flex-start;
@@ -23,7 +22,7 @@
 .line {
   width: 100%;
   opacity: 0.5;
-  margin-block-end: 3rem;
+  margin-block: 3rem;
 }
 
 .bwLogo {

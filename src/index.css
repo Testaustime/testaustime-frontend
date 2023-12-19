@@ -7,6 +7,8 @@ body {
   margin: 0px;
   padding: 0px;
   min-height: 100vh;
+  /* Mantine's CSS reset sets `height: 100%` but we don't want that */
+  height: auto;
 }
 
 p,
