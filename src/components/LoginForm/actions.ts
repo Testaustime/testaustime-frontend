@@ -65,9 +65,9 @@ export const logIn = async (
       return { error: LoginError.InvalidCredentials };
     } else if (response.status === 429) {
       return { error: LoginError.RateLimited };
-    } else {
-      return { error: LoginError.UnknownError };
     }
+
+    return { error: LoginError.UnknownError };
   }
 
   if (!secureAccessTokenResponse.ok) {
@@ -75,9 +75,9 @@ export const logIn = async (
       return { error: LoginError.InvalidCredentials };
     } else if (secureAccessTokenResponse.status === 429) {
       return { error: LoginError.RateLimited };
-    } else {
-      return { error: LoginError.UnknownError };
     }
+
+    return { error: LoginError.UnknownError };
   }
 
   const login = (await response.json()) as ApiAuthLoginResponse;
