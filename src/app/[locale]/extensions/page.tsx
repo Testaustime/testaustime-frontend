@@ -3,15 +3,12 @@ import initTranslations from "../../i18n";
 import { ReactNode } from "react";
 import styles from "./styles.module.css";
 import { Anchor, Stack, Title, Text } from "@mantine/core";
-import Neovim from "../../../../public/images/neovim.svg";
-import Vscode from "../../../../public/images/vscode.svg";
-import IntelliJ from "../../../../public/images/intellij.svg";
-import Micro from "../../../../public/images/micro.svg";
-import Sublime from "../../../../public/images/sublime.svg";
 import { DataCardContainer } from "../../../components/DataCard/DataCardContainer";
+import Image from "next/image";
 
 interface ExtensionBlockProps {
-  logo: React.ReactNode;
+  logo: string;
+  alt: string;
   downloadLink: string;
   sourceCodeLink: string;
   text: string;
@@ -19,6 +16,7 @@ interface ExtensionBlockProps {
 
 const ExtensionBlock = ({
   logo,
+  alt,
   downloadLink,
   sourceCodeLink,
   text,
@@ -32,7 +30,13 @@ const ExtensionBlock = ({
   return (
     <DataCardContainer className={styles.wrapper} withoutPadding>
       <div className={styles.firstSection}>
-        <div className={styles.logo}>{logo}</div>
+        <Image
+          className={styles.logo}
+          src={logo}
+          alt={alt}
+          width={40}
+          height={40}
+        />
         <div className={styles.spacer} />
         <Anchor href={downloadLink} size="lg">
           {text}
@@ -67,31 +71,36 @@ export default async function ExtensionsPage({
         <Text>{t("extensions.body")}</Text>
         <Stack gap={25} mt={30}>
           <ExtensionBlock
-            logo={<Vscode width={40} height={40} />}
+            logo="/images/vscode.svg"
+            alt="Visual Studio Code logo"
             downloadLink="https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime"
             sourceCodeLink="https://github.com/Testausserveri/testaustime-vscode"
             text={t("extensions.vscode")}
           />
           <ExtensionBlock
-            logo={<Neovim width={40} height={40} />}
+            logo="/images/neovim.svg"
+            alt="Neovim logo"
             downloadLink="https://github.com/Testaustime/testaustime.nvim"
             sourceCodeLink="https://github.com/Testaustime/testaustime.nvim"
             text={t("extensions.neovim")}
           />
           <ExtensionBlock
-            logo={<IntelliJ width={40} height={40} />}
+            logo="/images/intellij.svg"
+            alt="IntelliJ logo"
             downloadLink="https://plugins.jetbrains.com/plugin/19408-testaustime/"
             sourceCodeLink="https://github.com/Testaustime/testaustime-intellij/"
             text={t("extensions.intellij")}
           />
           <ExtensionBlock
-            logo={<Micro width={40} height={40} />}
+            logo="/images/micro.svg"
+            alt="Micro logo"
             downloadLink="https://github.com/Testaustime/testaustime-micro"
             sourceCodeLink="https://github.com/Testaustime/testaustime-micro"
             text={t("extensions.micro")}
           />
           <ExtensionBlock
-            logo={<Sublime width={40} height={40} />}
+            logo="/images/sublime.svg"
+            alt="Sublime Text logo"
             downloadLink="https://github.com/Testaustime/testaustime-sublime/releases/latest"
             sourceCodeLink="https://github.com/Testaustime/testaustime-sublime"
             text={t("extensions.sublime")}
