@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import { changeAccountVisibility } from "./actions";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
+import { ChangeAccountVisibilityError } from "../../../types";
+import { logOutAndRedirect } from "../../../utils/authUtils";
 
 export const ProfileVisibilityToggle = ({
   isPublic,
@@ -21,13 +23,29 @@ export const ProfileVisibilityToggle = ({
         void (async () => {
           const result = await changeAccountVisibility(!isPublic);
           if (result) {
-            showNotification({
-              title: t("error"),
-              color: "red",
-              message: t("unknownErrorOccurred"),
-            });
+            switch (result.error) {
+              case ChangeAccountVisibilityError.RateLimited:
+                router.push("/rate-limited");
+                break;
+              case ChangeAccountVisibilityError.Unauthorized:
+                showNotification({
+                  title: t("error"),
+                  color: "red",
+                  message: t("errors.unauthorized"),
+                });
+                await logOutAndRedirect();
+                break;
+              case ChangeAccountVisibilityError.UnknownError:
+                showNotification({
+                  title: t("error"),
+                  color: "red",
+                  message: t("unknownErrorOccurred"),
+                });
+                break;
+            }
+          } else {
+            router.refresh();
           }
-          router.refresh();
         })();
       }}
     >

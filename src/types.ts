@@ -135,3 +135,9 @@ export type CurrentActivityApiResponse = {
     hostname: string;
   };
 };
+
+export enum ChangeAccountVisibilityError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "Rate limited",
+  UnknownError = "Unknown error",
+}

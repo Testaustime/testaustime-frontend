@@ -1,7 +1,10 @@
 "use server";
 
 import { cookies, headers } from "next/headers";
-import { RegenerateAuthTokenError } from "../../../types";
+import {
+  ChangeAccountVisibilityError,
+  RegenerateAuthTokenError,
+} from "../../../types";
 
 interface ApiAuthRegenerateResponse {
   token: string;
@@ -90,6 +93,12 @@ export const changeAccountVisibility = async (isPublic: boolean) => {
   );
 
   if (!response.ok) {
-    return { error: "Unknown error" as const };
+    if (response.status === 401) {
+      return { error: ChangeAccountVisibilityError.Unauthorized };
+    } else if (response.status === 429) {
+      return { error: ChangeAccountVisibilityError.RateLimited };
+    }
+
+    return { error: ChangeAccountVisibilityError.UnknownError };
   }
 };
