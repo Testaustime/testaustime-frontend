@@ -10,14 +10,12 @@ type ProjectEntryProps = {
   name?: string | undefined | null;
   durationSeconds: number;
   allowEditing?: boolean;
-  username: string;
 };
 
 export const ProjectEntry = ({
   name,
   durationSeconds,
   allowEditing,
-  username,
 }: ProjectEntryProps) => {
   const modals = useModals();
 
@@ -34,7 +32,6 @@ export const ProjectEntry = ({
             onClose={() => {
               modals.closeModal(id);
             }}
-            username={username}
           />
         ),
         styles: {

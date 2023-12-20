@@ -3,26 +3,27 @@ import { FormikTextInput } from "../forms/FormikTextInput";
 import { Button, Group } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import { renameProject } from "./actions";
+import { useRouter } from "next/navigation";
 
 type EditProjectModalProps = {
   projectName: string;
   onClose: () => void;
-  username: string;
 };
 
 export const EditProjectModal = ({
   projectName,
   onClose,
-  username,
 }: EditProjectModalProps) => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   return (
     <>
       <Formik
         initialValues={{ projectName }}
         onSubmit={async (values) => {
-          await renameProject(projectName, values.projectName, username);
+          await renameProject(projectName, values.projectName);
+          router.refresh();
           onClose();
         }}
       >
