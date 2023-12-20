@@ -1,5 +1,3 @@
-// TODO: Remove
-/* eslint-disable @typescript-eslint/no-throw-literal */
 import { Anchor, Stack, Text, Title } from "@mantine/core";
 import { format } from "date-fns";
 import WithTooltip from "../../../components/WithTooltip";
