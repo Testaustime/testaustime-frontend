@@ -5,7 +5,14 @@ const formatShort = {
   xMinutes: "{{count}}min",
   xHours: "{{count}}h",
   xDays: "{{count}}d",
+  xMonths: "{{count}}mo",
+  xYears: "{{count}}y",
 };
+
+const isImplementedToken = (
+  token: unknown,
+): token is keyof typeof formatShort =>
+  typeof token === "string" && token in formatShort;
 
 export const prettyDuration = (seconds: number) =>
   formatDuration(
@@ -15,17 +22,13 @@ export const prettyDuration = (seconds: number) =>
     }),
     {
       locale: {
-        // Let's just hope the token is one of these options
-        formatDistance: (
-          token: "xSeconds" | "xMinutes" | "xHours" | "xDays",
-          count: number,
-        ) => {
-          if (!(token in formatShort)) {
+        formatDistance: (token, count) => {
+          if (isImplementedToken(token)) {
+            return formatShort[token].replace("{{count}}", String(count));
+          } else {
             console.warn("Unimplemented token", token);
             return "";
           }
-
-          return formatShort[token].replace("{{count}}", String(count));
         },
       },
     },

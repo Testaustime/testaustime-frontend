@@ -1,5 +1,4 @@
-import { format } from "date-fns";
-import { addDays, startOfDay } from "date-fns";
+import { addDays, startOfDay, format } from "date-fns";
 import { sumBy } from "../../utils/arrayUtils";
 import { calculateTickValues } from "../../utils/chartUtils";
 import { Line } from "react-chartjs-2";

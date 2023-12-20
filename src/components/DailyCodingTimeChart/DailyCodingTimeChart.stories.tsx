@@ -4,7 +4,7 @@ import {
   DailyCodingTimeChart,
   DailyCodingTimeChartProps,
 } from "./DailyCodingTimeChart";
-import { addDays } from "date-fns/esm";
+import { addDays } from "date-fns";
 
 export default {
   title: "DailyCodingTimeChart",
