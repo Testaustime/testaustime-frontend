@@ -17,12 +17,6 @@ li {
   font-family: var(--font-ubuntu), sans-serif;
 }
 
-p,
-a {
-  font-size: 1.2rem;
-  line-height: 2rem;
-}
-
 a {
   color: #5084cc;
 }
