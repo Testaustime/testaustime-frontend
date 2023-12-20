@@ -79,15 +79,13 @@ const InnerApp = ({ children }: PropsWithChildren) => {
 
 export const withSetup: Decorator = (Story) => {
   return (
-    <div id="root">
-      <I18nextProvider i18n={i18n}>
-        <InnerApp>
-          <ModalsProvider>
-            <Notifications />
-            <Story />
-          </ModalsProvider>
-        </InnerApp>
-      </I18nextProvider>
-    </div>
+    <I18nextProvider i18n={i18n}>
+      <InnerApp>
+        <ModalsProvider>
+          <Notifications />
+          <Story />
+        </ModalsProvider>
+      </InnerApp>
+    </I18nextProvider>
   );
 };

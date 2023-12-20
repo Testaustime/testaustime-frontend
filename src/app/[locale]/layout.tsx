@@ -1,7 +1,7 @@
 import { Group, MantineProvider } from "@mantine/core";
 import styles from "./layout.module.css";
 import "@mantine/core/styles.css";
-import { Content } from "./extensions/Content";
+import { Content } from "./Content";
 import { cookies } from "next/headers";
 import { colorSchemeCookieName } from "../../utils/constants";
 import Link from "next/link";

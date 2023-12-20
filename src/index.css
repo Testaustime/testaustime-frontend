@@ -27,14 +27,6 @@ a {
   color: #5084cc;
 }
 
-#root {
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-  min-height: 100vh;
-}
-
 input[data-error="true"]::placeholder {
   opacity: 0.6;
 }
