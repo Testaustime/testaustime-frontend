@@ -160,3 +160,9 @@ export enum LeaveLeaderboardError {
   RateLimited = "Rate limited",
   UnknownError = "Unknown error",
 }
+
+export enum RemoveFriendError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "Rate limited",
+  UnknownError = "Unknown error",
+}

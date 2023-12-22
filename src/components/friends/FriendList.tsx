@@ -17,6 +17,9 @@ import Link from "next/link";
 import { BlinkingDot } from "../CurrentActivity/BlinkingDot";
 import { CurrentActivity } from "../CurrentActivity/CurrentActivity";
 import { CurrentActivityDisplay } from "../CurrentActivity/CurrentActivityDisplay";
+import { RemoveFriendError } from "../../types";
+import { useRouter } from "next/navigation";
+import { logOutAndRedirect } from "../../utils/authUtils";
 
 type FriendListProps = {
   friends: ApiFriendsResponseItem[];
@@ -34,6 +37,7 @@ export const FriendList = ({
   ownStatus,
 }: FriendListProps) => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const friendsSorted = [
     ...friends
@@ -106,13 +110,30 @@ export const FriendList = ({
                   size="compact-md"
                   onClick={() => {
                     removeFriend(username)
-                      .then((result) => {
-                        if (result) {
-                          showNotification({
-                            title: t("error"),
-                            color: "red",
-                            message: t("friends.errorRemovingFriend"),
-                          });
+                      .then(async (result) => {
+                        if (result && "error" in result) {
+                          switch (result.error) {
+                            case RemoveFriendError.RateLimited:
+                              router.push("/rate-limited");
+                              break;
+                            case RemoveFriendError.Unauthorized:
+                              showNotification({
+                                title: t("error"),
+                                color: "red",
+                                message: t("errors.unauthorized"),
+                              });
+                              await logOutAndRedirect();
+                              break;
+                            case RemoveFriendError.UnknownError:
+                              showNotification({
+                                title: t("error"),
+                                color: "red",
+                                message: t("friends.errorRemovingFriend"),
+                              });
+                              break;
+                          }
+                        } else {
+                          router.refresh();
                         }
                       })
                       .catch(() => {
