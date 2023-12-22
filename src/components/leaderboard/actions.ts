@@ -1,7 +1,11 @@
 "use server";
 
 import { cookies, headers } from "next/headers";
-import { DeleteLeaderboardError, JoinLeaderboardError } from "../../types";
+import {
+  DeleteLeaderboardError,
+  JoinLeaderboardError,
+  LeaveLeaderboardError,
+} from "../../types";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -31,6 +35,8 @@ export const joinLeaderboard = async (inviteCode: string) => {
     } else if (response.status === 404) {
       return JoinLeaderboardError.NotFound;
     }
+
+    console.error("Error when joining leaderboard:", await response.text());
     return JoinLeaderboardError.UnknownError;
   }
 
@@ -61,10 +67,15 @@ export const leaveLeaderboard = async (leaderboardName: string) => {
   );
 
   if (!response.ok) {
-    return { error: "Unknown error" };
-  }
+    if (response.status === 401) {
+      return { error: LeaveLeaderboardError.Unauthorized };
+    } else if (response.status === 429) {
+      return { error: LeaveLeaderboardError.RateLimited };
+    }
 
-  revalidateTag(`leaderboard-${leaderboardName}`);
+    console.error("Error when leaving leaderboard:", await response.text());
+    return { error: LeaveLeaderboardError.UnknownError };
+  }
 
   redirect("/leaderboards");
 };
@@ -90,10 +101,10 @@ export const deleteLeaderboard = async (leaderboardName: string) => {
       return { error: DeleteLeaderboardError.Unauthorized };
     } else if (response.status === 429) {
       return { error: DeleteLeaderboardError.RateLimited };
-    } else {
-      console.log(response.status);
-      return { error: DeleteLeaderboardError.UnknownError };
     }
+
+    console.error("Error when deleting leaderboard:", await response.text());
+    return { error: DeleteLeaderboardError.UnknownError };
   }
 
   redirect("/leaderboards");

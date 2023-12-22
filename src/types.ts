@@ -154,3 +154,9 @@ export enum RegenerateFriendCodeError {
   RateLimited = "Rate limited",
   UnknownError = "Unknown error",
 }
+
+export enum LeaveLeaderboardError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "Rate limited",
+  UnknownError = "Unknown error",
+}
