@@ -2,6 +2,7 @@
 
 import { revalidateTag } from "next/cache";
 import { cookies, headers } from "next/headers";
+import { RegenerateInviteCodeError } from "../../../../types";
 
 export const regenerateInviteCode = async (leaderboardName: string) => {
   const token = cookies().get("secure-access-token")?.value;
@@ -23,10 +24,14 @@ export const regenerateInviteCode = async (leaderboardName: string) => {
   );
 
   if (!response.ok) {
-    return { error: "Unknown error" as const };
-  }
+    if (response.status === 401) {
+      return { error: RegenerateInviteCodeError.Unauthorized };
+    } else if (response.status === 429) {
+      return { error: RegenerateInviteCodeError.RateLimited };
+    }
 
-  revalidateTag(`leaderboard-${leaderboardName}`);
+    return { error: RegenerateInviteCodeError.UnknownError };
+  }
 };
 
 export const promoteUser = async (

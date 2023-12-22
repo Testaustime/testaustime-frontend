@@ -142,3 +142,9 @@ export enum ChangeAccountVisibilityError {
   RateLimited = "Rate limited",
   UnknownError = "Unknown error",
 }
+
+export enum RegenerateInviteCodeError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "Rate limited",
+  UnknownError = "Unknown error",
+}
