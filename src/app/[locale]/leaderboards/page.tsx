@@ -6,7 +6,6 @@ import initTranslations from "../../i18n";
 import { CreateNewLeaderboardButton } from "./CreateNewLeaderboardButton";
 import { JoinLeaderboardButton } from "./JoinLeaderboardButton";
 import { getMyLeaderboards } from "../../../api/leaderboardApi";
-import { getMe } from "../../../api/usersApi";
 
 export type LeaderboardsPageProps = {
   initialLeaderboards: LeaderboardData[];
@@ -19,42 +18,30 @@ export default async function LeaderboardsPage({
 }: {
   params: { locale: string };
 }) {
-  const me = await getMe();
-  if (!me) {
-    redirect("/login");
-  }
-
-  if ("error" in me) {
-    if (me.error === "Unauthorized") {
-      redirect("/login");
-    } else if (me.error === "Too many requests") {
-      redirect("/rate-limited");
-    } else {
-      throw new Error(me.error);
-    }
-  }
-
   const { t } = await initTranslations(locale, ["common"]);
 
-  const leaderboardList = await getMyLeaderboards(me.username);
+  const leaderboardList = await getMyLeaderboards();
   if (!Array.isArray(leaderboardList)) {
-    if (leaderboardList === GetLeaderboardsError.TooManyRequests) {
-      redirect("/rate-limited");
-    } else if (leaderboardList === GetLeaderboardsError.Unauthorized) {
-      redirect("/login");
-    } else {
-      return (
-        <>
-          <Group align="center" mb="md" mt="xl" justify="space-between">
-            <Title>{t("leaderboards.leaderboards")}</Title>
-            <Group gap="sm">
-              <CreateNewLeaderboardButton username={me.username} />
-              <JoinLeaderboardButton />
+    switch (leaderboardList.error) {
+      case GetLeaderboardsError.RateLimited:
+        redirect("/rate-limited");
+        break;
+      case GetLeaderboardsError.Unauthorized:
+        redirect("/login");
+        break;
+      case GetLeaderboardsError.UnknownError:
+        return (
+          <>
+            <Group align="center" mb="md" mt="xl" justify="space-between">
+              <Title>{t("leaderboards.leaderboards")}</Title>
+              <Group gap="sm">
+                <CreateNewLeaderboardButton />
+                <JoinLeaderboardButton />
+              </Group>
             </Group>
-          </Group>
-          <div>{t("leaderboards.error.loadingAllLeaderboards")}</div>
-        </>
-      );
+            <div>{t("leaderboards.error.loadingAllLeaderboards")}</div>
+          </>
+        );
     }
   }
 
@@ -63,7 +50,7 @@ export default async function LeaderboardsPage({
       <Group align="center" mb="md" mt="xl" justify="space-between">
         <Title>{t("leaderboards.leaderboards")}</Title>
         <Group gap="sm">
-          <CreateNewLeaderboardButton username={me.username} />
+          <CreateNewLeaderboardButton />
           <JoinLeaderboardButton />
         </Group>
       </Group>

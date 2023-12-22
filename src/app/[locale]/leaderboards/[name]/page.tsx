@@ -44,13 +44,13 @@ export default async function LeaderboardPage({
   }
 
   const leaderboard = await getLeaderboard(name);
-  if (typeof leaderboard !== "object") {
-    if (leaderboard === GetLeaderboardError.TooManyRequests) {
+  if ("error" in leaderboard) {
+    if (leaderboard.error === GetLeaderboardError.RateLimited) {
       redirect("/rate-limited");
-    } else if (leaderboard === GetLeaderboardError.Unauthorized) {
+    } else if (leaderboard.error === GetLeaderboardError.Unauthorized) {
       redirect("/login");
     } else {
-      throw new Error(leaderboard);
+      throw new Error(leaderboard.error);
     }
   }
 

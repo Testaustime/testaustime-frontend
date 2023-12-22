@@ -63,6 +63,7 @@ export enum JoinLeaderboardError {
 export enum CreateLeaderboardError {
   AlreadyExists,
   UnknownError,
+  RateLimited,
 }
 
 type ActivityDataSummaryEntry = {
@@ -97,13 +98,13 @@ export enum RegistrationResult {
 
 export enum GetLeaderboardError {
   Unauthorized = "Unauthorized",
-  TooManyRequests = "Too many requests",
+  RateLimited = "Rate limited",
   UnknownError = "Unknown error",
 }
 
 export enum GetLeaderboardsError {
   Unauthorized = "Unauthorized",
-  TooManyRequests = "Too many requests",
+  RateLimited = "Rate limited",
   UnknownError = "Unknown error",
 }
 

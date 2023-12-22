@@ -5,14 +5,12 @@ import { CreateLeaderboardModal } from "../../../components/leaderboard/CreateLe
 import { Button } from "@mantine/core";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
-export const CreateNewLeaderboardButton = ({
-  username,
-}: {
-  username: string;
-}) => {
+export const CreateNewLeaderboardButton = () => {
   const { t } = useTranslation();
   const modals = useModals();
+  const router = useRouter();
 
   const openCreateLeaderboard = () => {
     const id = modals.openModal({
@@ -22,8 +20,8 @@ export const CreateNewLeaderboardButton = ({
         <CreateLeaderboardModal
           onCreate={() => {
             modals.closeModal(id);
+            router.refresh();
           }}
-          username={username}
         />
       ),
       styles: {
