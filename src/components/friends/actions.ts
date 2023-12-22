@@ -61,12 +61,12 @@ export const addFriend = async (friendCode: string) => {
 
   if (!response.ok) {
     if (response.status === 409) {
-      return AddFriendError.AlreadyFriends;
+      return { error: AddFriendError.AlreadyFriends };
     } else if (response.status === 404) {
-      return AddFriendError.NotFound;
+      return { error: AddFriendError.NotFound };
     }
 
-    return AddFriendError.UnknownError;
+    return { error: AddFriendError.UnknownError };
   }
 
   const data = (await response.json()) as ApiFriendsAddResponse;
