@@ -4,6 +4,7 @@ import { cookies, headers } from "next/headers";
 import {
   ChangeAccountVisibilityError,
   RegenerateAuthTokenError,
+  RegenerateFriendCodeError,
 } from "../../../types";
 
 interface ApiAuthRegenerateResponse {
@@ -68,7 +69,13 @@ export const regenerateFriendCode = async () => {
   );
 
   if (!response.ok) {
-    return { error: "Unknown error" as const };
+    if (response.status === 401) {
+      return { error: RegenerateFriendCodeError.Unauthorized };
+    } else if (response.status === 429) {
+      return { error: RegenerateFriendCodeError.RateLimited };
+    }
+
+    return { error: RegenerateFriendCodeError.UnknownError };
   }
 };
 
