@@ -35,6 +35,9 @@ import { ActivityDataEntry } from "../types";
 import { useTranslation } from "react-i18next";
 import { CurrentActivity } from "./CurrentActivity/CurrentActivity";
 import { DataCard } from "./DataCard/DataCard";
+import MonthlyCodingTimeChart, {
+  transformData as transformMonthlyData,
+} from "./MonthlyCodingTimeChart";
 
 interface DashboardProps {
   username: string;
@@ -222,10 +225,17 @@ export const Dashboard = ({
               {t("dashboard.timePerDay")}
             </Title>
             {entries.length > 0 ? (
-              <DailyCodingTimeChart
-                data={transformDailyData(entries, dayCount)}
-                smoothCharts={smoothCharts ?? true}
-              />
+              dayCount > 180 ? (
+                <MonthlyCodingTimeChart
+                  data={transformMonthlyData(entries)}
+                  smoothCharts={smoothCharts ?? true}
+                />
+              ) : (
+                <DailyCodingTimeChart
+                  data={transformDailyData(entries, dayCount)}
+                  smoothCharts={smoothCharts ?? true}
+                />
+              )
             ) : (
               <Text>{t("dashboard.noData.title")}</Text>
             )}
