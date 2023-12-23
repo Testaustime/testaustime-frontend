@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies, headers } from "next/headers";
-import { AddFriendError } from "../../types";
+import { AddFriendError, RemoveFriendError } from "../../types";
 
 export const removeFriend = async (username: string) => {
   const token = cookies().get("secure-access-token")?.value;
@@ -22,7 +22,13 @@ export const removeFriend = async (username: string) => {
   );
 
   if (!response.ok) {
-    return { error: "Unknown error" as const };
+    if (response.status === 401) {
+      return { error: RemoveFriendError.Unauthorized };
+    } else if (response.status === 429) {
+      return { error: RemoveFriendError.RateLimited };
+    }
+
+    return { error: RemoveFriendError.UnknownError };
   }
 };
 
@@ -55,12 +61,12 @@ export const addFriend = async (friendCode: string) => {
 
   if (!response.ok) {
     if (response.status === 409) {
-      return AddFriendError.AlreadyFriends;
+      return { error: AddFriendError.AlreadyFriends };
     } else if (response.status === 404) {
-      return AddFriendError.NotFound;
+      return { error: AddFriendError.NotFound };
     }
 
-    return AddFriendError.UnknownError;
+    return { error: AddFriendError.UnknownError };
   }
 
   const data = (await response.json()) as ApiFriendsAddResponse;

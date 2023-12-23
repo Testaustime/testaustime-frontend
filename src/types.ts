@@ -63,6 +63,7 @@ export enum JoinLeaderboardError {
 export enum CreateLeaderboardError {
   AlreadyExists,
   UnknownError,
+  RateLimited,
 }
 
 type ActivityDataSummaryEntry = {
@@ -97,13 +98,13 @@ export enum RegistrationResult {
 
 export enum GetLeaderboardError {
   Unauthorized = "Unauthorized",
-  TooManyRequests = "Too many requests",
+  RateLimited = "Rate limited",
   UnknownError = "Unknown error",
 }
 
 export enum GetLeaderboardsError {
   Unauthorized = "Unauthorized",
-  TooManyRequests = "Too many requests",
+  RateLimited = "Rate limited",
   UnknownError = "Unknown error",
 }
 
@@ -135,3 +136,33 @@ export type CurrentActivityApiResponse = {
     hostname: string;
   };
 };
+
+export enum ChangeAccountVisibilityError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "Rate limited",
+  UnknownError = "Unknown error",
+}
+
+export enum RegenerateInviteCodeError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "Rate limited",
+  UnknownError = "Unknown error",
+}
+
+export enum RegenerateFriendCodeError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "Rate limited",
+  UnknownError = "Unknown error",
+}
+
+export enum LeaveLeaderboardError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "Rate limited",
+  UnknownError = "Unknown error",
+}
+
+export enum RemoveFriendError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "Rate limited",
+  UnknownError = "Unknown error",
+}

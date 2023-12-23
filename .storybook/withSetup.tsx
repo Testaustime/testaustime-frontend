@@ -27,7 +27,7 @@ const InnerApp = ({ children }: PropsWithChildren) => {
   return (
     <MantineProvider
       theme={{
-        fontFamily: "Ubuntu, sans-serif",
+        fontFamily: "var(--font-ubuntu), sans-serif",
         white: "#eee",
         black: "#121212",
         colors: {
@@ -57,7 +57,7 @@ const InnerApp = ({ children }: PropsWithChildren) => {
           ],
         },
         headings: {
-          fontFamily: "Poppins, sans-serif",
+          fontFamily: "var(--font-poppins), sans-serif",
           fontWeight: "800",
           sizes: {
             h1: { fontSize: "1.9rem" },
@@ -79,15 +79,13 @@ const InnerApp = ({ children }: PropsWithChildren) => {
 
 export const withSetup: Decorator = (Story) => {
   return (
-    <div id="root">
-      <I18nextProvider i18n={i18n}>
-        <InnerApp>
-          <ModalsProvider>
-            <Notifications />
-            <Story />
-          </ModalsProvider>
-        </InnerApp>
-      </I18nextProvider>
-    </div>
+    <I18nextProvider i18n={i18n}>
+      <InnerApp>
+        <ModalsProvider>
+          <Notifications />
+          <Story />
+        </ModalsProvider>
+      </InnerApp>
+    </I18nextProvider>
   );
 };

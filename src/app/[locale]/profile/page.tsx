@@ -1,5 +1,3 @@
-// TODO: Remove
-/* eslint-disable @typescript-eslint/no-throw-literal */
 import { Anchor, Stack, Text, Title } from "@mantine/core";
 import { format } from "date-fns";
 import WithTooltip from "../../../components/WithTooltip";
@@ -32,12 +30,15 @@ export default async function ProfilePage({
   params: { locale: string };
 }) {
   const token = cookies().get("token")?.value;
-
   if (!token) {
     redirect("/login");
   }
 
   const me = await getMe();
+  if (!me) {
+    redirect("/login");
+  }
+
   if ("error" in me) {
     if (me.error === "Unauthorized") {
       redirect("/login");
@@ -55,10 +56,6 @@ export default async function ProfilePage({
   };
 
   const { t } = await initTranslations(locale, ["common"]);
-
-  if (!token) {
-    return redirect("/login");
-  }
 
   return (
     <div>

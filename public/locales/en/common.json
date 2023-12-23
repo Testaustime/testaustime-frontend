@@ -37,6 +37,9 @@
     "title": "Editing {{projectName}}"
   },
   "error": "Error",
+  "errors": {
+    "unauthorized": "You are not logged in or your session has expired. Please log in and try again."
+  },
   "extensions": {
     "body": "Download the Testaustime extension for your favorite code editor!",
     "intellij": "Download Testaustime for IntelliJ",

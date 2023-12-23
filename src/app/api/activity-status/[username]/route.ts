@@ -37,5 +37,14 @@ export const GET = async (
     });
   } catch (error) {
     console.error(error);
+    return new NextResponse(
+      JSON.stringify({ error: "An unknown error occurred" }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
   }
 };

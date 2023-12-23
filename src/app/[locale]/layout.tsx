@@ -1,7 +1,7 @@
 import { Group, MantineProvider } from "@mantine/core";
 import styles from "./layout.module.css";
 import "@mantine/core/styles.css";
-import { Content } from "./extensions/Content";
+import { Content } from "./Content";
 import { cookies } from "next/headers";
 import { colorSchemeCookieName } from "../../utils/constants";
 import Link from "next/link";
@@ -12,6 +12,21 @@ import initTranslations from "../i18n";
 import "@mantine/notifications/styles.css";
 import TranslationsProvider from "../../components/TranslationsProvider";
 import { getMe } from "../../api/usersApi";
+import { Ubuntu, Poppins } from "next/font/google";
+
+const ubuntu = Ubuntu({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+  variable: "--font-ubuntu",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "800",
+  variable: "--font-poppins",
+});
 
 export const metadata = {
   title: "Testaustime",
@@ -37,11 +52,9 @@ export default async function RootLayout({
     ? colorSchemeUnchecked
     : "dark";
 
-  const token = cookies().get("token")?.value;
-
   let username = undefined;
-  if (token) {
-    const me = await getMe();
+  const me = await getMe();
+  if (me) {
     if ("error" in me) {
       if (me.error === "Unauthorized") {
         // Can't redirect to /login because it would cause an infinite loop
@@ -52,18 +65,13 @@ export default async function RootLayout({
       } else {
         throw new Error(me.error);
       }
-    }
-
-    if (!("error" in me)) {
+    } else {
       username = me.username;
     }
   }
 
   return (
-    <html lang="en">
-      {/* <head>
-        <link rel="icon" href="/time.png" sizes="any" />
-      </head> */}
+    <html lang="en" className={`${ubuntu.variable} ${poppins.variable}`}>
       <body>
         <TranslationsProvider
           locale={locale}
@@ -77,7 +85,7 @@ export default async function RootLayout({
         >
           <MantineProvider
             theme={{
-              fontFamily: "Ubuntu, sans-serif",
+              fontFamily: "var(--font-ubuntu), sans-serif",
               white: "#eee",
               black: "#121212",
               colors: {
@@ -107,7 +115,7 @@ export default async function RootLayout({
                 ],
               },
               headings: {
-                fontFamily: "Poppins, sans-serif",
+                fontFamily: "var(--font-poppins), sans-serif",
                 fontWeight: "800",
                 sizes: {
                   h1: { fontSize: "1.9rem" },

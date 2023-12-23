@@ -21,5 +21,8 @@
     }
   },
   "root": true,
-  "plugins": ["@typescript-eslint"]
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/switch-exhaustiveness-check": "error"
+  }
 }

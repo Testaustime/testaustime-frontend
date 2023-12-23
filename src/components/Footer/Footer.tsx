@@ -1,5 +1,5 @@
 import { Text, Anchor } from "@mantine/core";
-import { TestausserveriLogo } from "../images/TestausserveriLogo";
+import TestausserveriLogo from "../../../public/images/testausserveri.svg";
 import { LanguageSelector } from "../LanguageSelector/LanguageSelector";
 import styles from "./Footer.module.css";
 import type { TFunction } from "i18next";

@@ -6,10 +6,11 @@ import { Form, Formik } from "formik";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import * as Yup from "yup";
 import { showNotification } from "@mantine/notifications";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { AddFriendError } from "../../types";
 import { addFriend } from "./actions";
+import { useState } from "react";
 
 type AddFriendFormProps = {
   friendCodePlaceholder: string;
@@ -21,6 +22,9 @@ export const AddFriendForm = ({
   const { t } = useTranslation();
   const params = useSearchParams();
   const urlFriendCode = params.get("code");
+  const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Group>
@@ -32,10 +36,10 @@ export const AddFriendForm = ({
             .matches(/^ttfc_[a-zA-Z0-9]{24}$/, t("friends.friendCodeInvalid")),
         })}
         onSubmit={async ({ friendCode }, { resetForm }) => {
+          setIsLoading(true);
           const result = await addFriend(friendCode);
-          if (typeof result === "object") {
-            resetForm();
-          } else {
+          setIsLoading(false);
+          if ("error" in result) {
             showNotification({
               title: t("error"),
               message: {
@@ -44,9 +48,12 @@ export const AddFriendForm = ({
                 ),
                 [AddFriendError.NotFound]: t("friends.error.notFound"),
                 [AddFriendError.UnknownError]: t("unknownErrorOccurred"),
-              }[result],
+              }[result.error],
               color: "red",
             });
+          } else {
+            resetForm();
+            router.refresh();
           }
         }}
       >
@@ -60,7 +67,7 @@ export const AddFriendForm = ({
                 placeholder={friendCodePlaceholder}
                 style={{ flex: 1 }}
               />
-              <Button type="submit" mt={27.5}>
+              <Button type="submit" mt={27.5} loading={isLoading}>
                 {t("friends.add")}
               </Button>
             </Group>

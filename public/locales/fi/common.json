@@ -37,6 +37,9 @@
     "title": "Muokataan {{projectName}}"
   },
   "error": "Virhe",
+  "errors": {
+    "unauthorized": "Et ole kirjautunut sisään tai sinun istuntosi on vanhentunut. Kirjaudu sisään, ja yritä uudelleen."
+  },
   "extensions": {
     "body": "Lataa Testaustime-laajennus suosikkieditorillesi!",
     "intellij": "Lataa Testaustime IntelliJ:lle",

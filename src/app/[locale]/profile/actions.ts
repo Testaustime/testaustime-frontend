@@ -1,7 +1,11 @@
 "use server";
 
 import { cookies, headers } from "next/headers";
-import { RegenerateAuthTokenError } from "../../../types";
+import {
+  ChangeAccountVisibilityError,
+  RegenerateAuthTokenError,
+  RegenerateFriendCodeError,
+} from "../../../types";
 
 interface ApiAuthRegenerateResponse {
   token: string;
@@ -65,7 +69,13 @@ export const regenerateFriendCode = async () => {
   );
 
   if (!response.ok) {
-    return { error: "Unknown error" as const };
+    if (response.status === 401) {
+      return { error: RegenerateFriendCodeError.Unauthorized };
+    } else if (response.status === 429) {
+      return { error: RegenerateFriendCodeError.RateLimited };
+    }
+
+    return { error: RegenerateFriendCodeError.UnknownError };
   }
 };
 
@@ -90,6 +100,12 @@ export const changeAccountVisibility = async (isPublic: boolean) => {
   );
 
   if (!response.ok) {
-    return { error: "Unknown error" as const };
+    if (response.status === 401) {
+      return { error: ChangeAccountVisibilityError.Unauthorized };
+    } else if (response.status === 429) {
+      return { error: ChangeAccountVisibilityError.RateLimited };
+    }
+
+    return { error: ChangeAccountVisibilityError.UnknownError };
   }
 };

@@ -8,13 +8,11 @@ import {
   Leaderboard,
   LeaderboardData,
 } from "../types";
-import { revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
 
-export const getMyLeaderboards = async (username: string) => {
+export const getMyLeaderboards = async () => {
   const token = cookies().get("token")?.value;
   if (!token) {
-    return GetLeaderboardsError.Unauthorized;
+    return { error: GetLeaderboardsError.Unauthorized };
   }
 
   try {
@@ -27,38 +25,35 @@ export const getMyLeaderboards = async (username: string) => {
           "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
         },
         cache: "no-cache",
-        next: {
-          tags: [`leaderboards-${username}`],
-        },
       },
     );
 
     if (!response.ok) {
       if (response.status === 401) {
-        return GetLeaderboardsError.Unauthorized;
+        return { error: GetLeaderboardsError.Unauthorized };
       } else if (response.status === 429) {
-        return GetLeaderboardsError.TooManyRequests;
+        return { error: GetLeaderboardsError.RateLimited };
       }
 
       const errorText = await response.text();
-      console.log(errorText);
+      console.log("Unknown error when getting user's leaderboards:", errorText);
 
-      return GetLeaderboardsError.UnknownError;
+      return { error: GetLeaderboardsError.UnknownError };
     }
 
     const data = (await response.json()) as Leaderboard[];
 
     return data;
   } catch (e: unknown) {
-    console.error(e);
-    return GetLeaderboardsError.UnknownError;
+    console.error("Unknown error when getting user's leaderboards:", e);
+    return { error: GetLeaderboardsError.UnknownError };
   }
 };
 
 export const getLeaderboard = async (leaderboardName: string) => {
   const token = cookies().get("token")?.value;
   if (!token) {
-    redirect("/login");
+    return { error: GetLeaderboardError.Unauthorized };
   }
 
   const response = await fetch(
@@ -78,15 +73,15 @@ export const getLeaderboard = async (leaderboardName: string) => {
 
   if (!response.ok) {
     if (response.status === 401) {
-      return GetLeaderboardError.Unauthorized;
+      return { error: GetLeaderboardError.Unauthorized };
     } else if (response.status === 429) {
-      return GetLeaderboardError.TooManyRequests;
+      return { error: GetLeaderboardError.RateLimited };
     }
 
     const errorText = await response.text();
     console.log(errorText);
 
-    return GetLeaderboardError.UnknownError;
+    return { error: GetLeaderboardError.UnknownError };
   }
 
   const data = (await response.json()) as LeaderboardData;
@@ -94,10 +89,7 @@ export const getLeaderboard = async (leaderboardName: string) => {
   return data;
 };
 
-export const createLeaderboard = async (
-  leaderboardName: string,
-  username: string,
-) => {
+export const createLeaderboard = async (leaderboardName: string) => {
   const token = cookies().get("token")?.value;
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + "/leaderboards/create",
@@ -114,19 +106,18 @@ export const createLeaderboard = async (
     },
   );
 
-  if (response.status === 409) {
-    return CreateLeaderboardError.AlreadyExists;
-  }
-
   if (!response.ok) {
-    console.log(await response.text());
-    return CreateLeaderboardError.UnknownError;
+    if (response.status === 409) {
+      return { error: CreateLeaderboardError.AlreadyExists };
+    } else if (response.status === 429) {
+      return { error: CreateLeaderboardError.RateLimited };
+    }
+
+    console.error("Error while creating leaderboard:", await response.text());
+    return { error: CreateLeaderboardError.UnknownError };
   }
 
   const data = (await response.json()) as { invite_code: string };
-
-  // TODO: username is provided by user, we should not trust it
-  revalidateTag(`leaderboards-${username}`);
 
   return data;
 };

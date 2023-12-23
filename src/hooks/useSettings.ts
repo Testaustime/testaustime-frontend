@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
 import { DayRange } from "../utils/dateUtils";
 import { Locales } from "../i18next";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import {
   colorSchemeCookieName,
@@ -11,6 +11,7 @@ import {
   smoothChartsCookieName,
 } from "../utils/constants";
 import { MantineColorScheme } from "@mantine/core";
+import { i18nConfig } from "../i18nConfig";
 
 export const useCreateSettings = ({
   initialColorScheme,
@@ -19,6 +20,7 @@ export const useCreateSettings = ({
 }) => {
   const router = useRouter();
   const [cookies, setCookies] = useCookies();
+  const pathname = usePathname();
 
   const defaultCookieSettings: Parameters<typeof setCookies>[2] = {
     path: "/",
@@ -62,7 +64,12 @@ export const useCreateSettings = ({
     language,
     setLanguage: (value: Locales) => {
       setLanguage(value);
-      router.push("/" + value); // TODO: Keep on the same page
+      const pathnameWithoutLanguage = pathname.replace(
+        new RegExp(`/(${Object.values(i18nConfig.locales).join("|")})/?`),
+        "/",
+      );
+
+      router.push("/" + value + "/" + pathnameWithoutLanguage);
     },
     colorScheme: colorScheme || initialColorScheme,
     setColorScheme,

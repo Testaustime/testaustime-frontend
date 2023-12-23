@@ -27,11 +27,14 @@ export default async function MainPage({
   const { t } = await initTranslations(locale, ["common"]);
 
   let me: ApiUsersUserResponse | undefined = undefined;
-  const meResponse = await getMe();
-  if ("error" in meResponse) {
-    me = undefined;
-  } else {
-    me = meResponse;
+  const token = cookies().get("token")?.value;
+  if (token) {
+    const meResponse = await getMe();
+    if (!meResponse || "error" in meResponse) {
+      me = undefined;
+    } else {
+      me = meResponse;
+    }
   }
 
   if (me) {

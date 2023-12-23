@@ -3,7 +3,6 @@ import { FriendList } from "../../../components/friends/FriendList";
 import { AddFriendForm } from "../../../components/friends/AddFriendForm";
 import { generateFriendCode } from "../../../utils/codeUtils";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
 import initTranslations from "../../i18n";
 import {
   getCurrentActivityStatus,
@@ -17,12 +16,6 @@ export default async function FriendsPage({
 }: {
   params: { locale: string };
 }) {
-  const token = cookies().get("token")?.value;
-
-  if (!token) {
-    redirect("/login");
-  }
-
   const [friendsList, ownDataSummary, me, ownActivityStatus] =
     await Promise.all([
       getFriendsList(),
@@ -30,6 +23,10 @@ export default async function FriendsPage({
       getMe(),
       getCurrentActivityStatus("@me"),
     ]);
+
+  if (!me) {
+    redirect("/login");
+  }
 
   if ("error" in me) {
     if (me.error === "Unauthorized") {

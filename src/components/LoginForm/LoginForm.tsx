@@ -35,26 +35,28 @@ export const LoginForm = () => {
       })}
       onSubmit={async (values) => {
         setVisible(true);
-
         const result = await logIn(
           values.username,
           values.password,
           unsafeRedirect,
         );
 
-        const message = {
-          [LoginError.InvalidCredentials]: t("loginPage.invalidCredentials"),
-          [LoginError.RateLimited]: t("rateLimitedError"),
-          [LoginError.UnknownError]: t("unknownErrorOccurred"),
-        }[result.error];
-
-        showNotification({
-          title: t("error"),
-          color: "red",
-          message: message,
-        });
-
-        setVisible(false);
+        // Not sure why result is undefined when the login is successful. Result should be `never` in those cases
+        // because we call `redirect` in `logIn`.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (result) {
+          const message = {
+            [LoginError.InvalidCredentials]: t("loginPage.invalidCredentials"),
+            [LoginError.RateLimited]: t("rateLimitedError"),
+            [LoginError.UnknownError]: t("unknownErrorOccurred"),
+          }[result.error];
+          showNotification({
+            title: t("error"),
+            color: "red",
+            message: message,
+          });
+          setVisible(false);
+        }
       }}
     >
       {() => (

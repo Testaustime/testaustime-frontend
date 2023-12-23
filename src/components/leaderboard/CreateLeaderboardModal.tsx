@@ -11,12 +11,10 @@ import { useTranslation } from "react-i18next";
 
 interface CreateLeaderboardModalProps {
   onCreate: (leaderboardName: string) => void;
-  username: string;
 }
 
 export const CreateLeaderboardModal = ({
   onCreate,
-  username,
 }: CreateLeaderboardModalProps) => {
   const { t } = useTranslation();
 
@@ -27,10 +25,7 @@ export const CreateLeaderboardModal = ({
           leaderboardName: "",
         }}
         onSubmit={async (values) => {
-          const result = await createLeaderboard(
-            values.leaderboardName,
-            username,
-          );
+          const result = await createLeaderboard(values.leaderboardName);
           if (typeof result === "object") {
             onCreate(values.leaderboardName);
           } else {

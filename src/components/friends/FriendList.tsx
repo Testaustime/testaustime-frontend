@@ -1,22 +1,9 @@
 "use client";
-import {
-  Button,
-  HoverCard,
-  Table,
-  TableTh,
-  TableThead,
-  TableTr,
-} from "@mantine/core";
-import { prettyDuration } from "../../utils/dateUtils";
-import { showNotification } from "@mantine/notifications";
-import styles from "./FriendList.module.css";
+import { Table, TableTh, TableThead, TableTr } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import { ApiFriendsResponseItem } from "../../api/friendsApi";
-import { removeFriend } from "./actions";
-import Link from "next/link";
-import { BlinkingDot } from "../CurrentActivity/BlinkingDot";
 import { CurrentActivity } from "../CurrentActivity/CurrentActivity";
-import { CurrentActivityDisplay } from "../CurrentActivity/CurrentActivityDisplay";
+import { FriendListRow } from "./FriendListRow";
 
 type FriendListProps = {
   friends: ApiFriendsResponseItem[];
@@ -70,65 +57,15 @@ export const FriendList = ({
       </TableThead>
       <Table.Tbody>
         {friendsSorted.map(({ username, codingTime, isMe, status }, idx) => (
-          <TableTr
+          <FriendListRow
             key={username}
-            className={isMe ? styles.tableRow : undefined}
-          >
-            <Table.Td>{idx + 1}</Table.Td>
-            <Table.Td>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                {username}
-                {status && (
-                  <HoverCard>
-                    <HoverCard.Target>
-                      <BlinkingDot />
-                    </HoverCard.Target>
-                    <HoverCard.Dropdown>
-                      <CurrentActivityDisplay currentActivity={status} />
-                    </HoverCard.Dropdown>
-                  </HoverCard>
-                )}
-              </div>
-            </Table.Td>
-            <Table.Td>{prettyDuration(codingTime)}</Table.Td>
-            <Table.Td style={{ textAlign: "right", padding: "7px 0px" }}>
-              {!isMe && (
-                <Link href={`/${locale}/friends/${username}`} prefetch={false}>
-                  {t("friends.showDashboard")}
-                </Link>
-              )}
-            </Table.Td>
-            <Table.Td style={{ textAlign: "right", padding: "7px 0px" }}>
-              {!isMe && (
-                <Button
-                  variant="outline"
-                  color="red"
-                  size="compact-md"
-                  onClick={() => {
-                    removeFriend(username)
-                      .then((result) => {
-                        if (result) {
-                          showNotification({
-                            title: t("error"),
-                            color: "red",
-                            message: t("friends.errorRemovingFriend"),
-                          });
-                        }
-                      })
-                      .catch(() => {
-                        showNotification({
-                          title: t("error"),
-                          color: "red",
-                          message: t("friends.errorRemovingFriend"),
-                        });
-                      });
-                  }}
-                >
-                  {t("friends.unfriend")}
-                </Button>
-              )}
-            </Table.Td>
-          </TableTr>
+            index={idx}
+            username={username}
+            status={status}
+            locale={locale}
+            codingTime={codingTime}
+            isMe={isMe}
+          />
         ))}
       </Table.Tbody>
     </Table>
