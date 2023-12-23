@@ -196,6 +196,23 @@
       },
       "title": "Vaihda salasana"
     },
+    "changeUsername": {
+      "title": "Vaihda käyttäjänimi",
+      "new": {
+        "invalid": "Käyttäjänimi ei ole kelvollinen",
+        "required": "Käyttäjänimi vaaditaan",
+        "tooLong": "Käyttäjänimi voi olla enintään {{max, number}} merkkiä pitkä",
+        "tooShort": "Käyttäjänimen tulee olla vähintään {{min, number}} merkkiä pitkä",
+        "regex": "Käyttäjänimi voi sisältää vain alphanumeerisia merkkejä"
+      },
+      "newUsernameLabel": "Uusi käyttäjänimi",
+      "submit": "Vaihda käyttäjänimi",
+      "usernameTaken": "Käyttäjänimi on varattu",
+      "success": {
+        "message": "Käyttäjänimesi on vaihdettu onnistuneesti",
+        "title": "Käyttäjänimi vaihdettu"
+      }
+    },
     "deleteAccount": {
       "button": "Poista tili",
       "modal": {

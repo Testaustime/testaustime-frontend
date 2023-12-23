@@ -196,6 +196,23 @@
       },
       "title": "Change password"
     },
+    "changeUsername": {
+      "title": "Change username",
+      "new": {
+        "invalid": "Username is invalid",
+        "required": "Username is required",
+        "tooLong": "Username can not be more than {{max, number}} characters long",
+        "tooShort": "Username must be at least {{min, number}} characters long",
+        "regex": "Username must only contain alphanumeric characters"
+      },
+      "usernameTaken": "Username is taken",
+      "newUsernameLabel": "New username",
+      "submit": "Change username",
+      "success": {
+        "message": "Your username has been changed successfully.",
+        "title": "Username changed"
+      }
+    },
     "deleteAccount": {
       "button": "Delete account",
       "modal": {
