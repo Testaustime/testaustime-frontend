@@ -166,3 +166,11 @@ export enum RemoveFriendError {
   RateLimited = "Rate limited",
   UnknownError = "Unknown error",
 }
+
+export enum ChangeUsernameError {
+  InvalidUsername,
+  Unauthorized,
+  UsernameTaken,
+  RateLimited,
+  UnknownError,
+}

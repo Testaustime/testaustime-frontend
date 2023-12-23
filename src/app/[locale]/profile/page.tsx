@@ -14,6 +14,7 @@ import { FriendCodeField } from "./FriendCodeField";
 import { AuthTokenField } from "./AuthTokenField";
 import { redirect } from "next/navigation";
 import { getMe } from "../../../api/usersApi";
+import ChangeUsernameForm from "../../../components/ChangeUsernameForm";
 
 export type ProfilePageProps = {
   username: string;
@@ -58,65 +59,77 @@ export default async function ProfilePage({
   const { t } = await initTranslations(locale, ["common"]);
 
   return (
-    <div>
-      <Title order={2}>{t("profile.title")}</Title>
-      <Text mt={15}>{t("profile.username", { username })}</Text>
-      <Text mt={15}>
-        {t("profile.registrationTime", {
-          registrationTime: format(
-            new Date(registrationTime),
-            "d.M.yyyy HH:mm",
-          ),
-        })}
-      </Text>
-      <Stack mt={40} gap={15}>
+    <Stack gap={32}>
+      <Stack gap={16}>
+        <Title order={2}>{t("profile.title")}</Title>
+        <Text>{t("profile.username", { username })}</Text>
+        <Text>
+          {t("profile.registrationTime", {
+            registrationTime: format(
+              new Date(registrationTime),
+              "d.M.yyyy HH:mm",
+            ),
+          })}
+        </Text>
+      </Stack>
+      <Stack gap={32}>
         <Title order={2}>{t("profile.account.title")}</Title>
-        <Title order={3}>{t("profile.changePassword.title")}</Title>
-        <ChangePasswordForm />
-        <WithTooltip
-          tooltipLabel={
-            <Text>{t("profile.accountVisibility.description")}</Text>
-          }
-        >
-          <Title order={3}>{t("profile.accountVisibility.title")}</Title>
-        </WithTooltip>
-        <div>
-          <ProfileVisibilityToggle isPublic={me.is_public} />
-        </div>
-        <Title order={3}>{t("profile.deleteAccount.title")}</Title>
-        <div>
-          <DeleteAccountButton username={me.username} />
-        </div>
+        <Stack gap="xs">
+          <Title order={3}>{t("profile.changePassword.title")}</Title>
+          <ChangePasswordForm />
+        </Stack>
+        <Stack gap="xs">
+          <Title order={3}>{t("profile.changeUsername.title")}</Title>
+          <ChangeUsernameForm />
+        </Stack>
+        <Stack gap="xs">
+          <WithTooltip
+            tooltipLabel={
+              <Text>{t("profile.accountVisibility.description")}</Text>
+            }
+          >
+            <Title order={3}>{t("profile.accountVisibility.title")}</Title>
+          </WithTooltip>
+          <div>
+            <ProfileVisibilityToggle isPublic={me.is_public} />
+          </div>
+        </Stack>
+        <Stack gap="xs">
+          <Title order={3}>{t("profile.deleteAccount.title")}</Title>
+          <div>
+            <DeleteAccountButton username={me.username} />
+          </div>
+        </Stack>
+        <Stack gap="xs">
+          <WithTooltip
+            tooltipLabel={
+              <Text>
+                {t("profile.authenticationToken.tooltip.label")}{" "}
+                <Anchor component={Link} href={`/${locale}/extensions`}>
+                  {t("profile.authenticationToken.tooltip.install")}
+                </Anchor>
+              </Text>
+            }
+          >
+            <Title order={3}>{t("profile.authenticationToken.title")}</Title>
+          </WithTooltip>
+          <AuthTokenField token={token} />
+        </Stack>
+        <Stack gap="xs">
+          <WithTooltip
+            tooltipLabel={<Text>{t("profile.friendCode.tooltip")}</Text>}
+          >
+            <Title order={3}>{t("profile.friendCode.title")}</Title>
+          </WithTooltip>
+          <FriendCodeField friendCode={friendCode} />
+        </Stack>
       </Stack>
-      <Stack mt={40} gap={15}>
-        <WithTooltip
-          tooltipLabel={
-            <Text>
-              {t("profile.authenticationToken.tooltip.label")}{" "}
-              <Anchor component={Link} href={`/${locale}/extensions`}>
-                {t("profile.authenticationToken.tooltip.install")}
-              </Anchor>
-            </Text>
-          }
-        >
-          <Title order={3}>{t("profile.authenticationToken.title")}</Title>
-        </WithTooltip>
-        <AuthTokenField token={token} />
-      </Stack>
-      <Stack mt={40} gap={15}>
-        <WithTooltip
-          tooltipLabel={<Text>{t("profile.friendCode.tooltip")}</Text>}
-        >
-          <Title order={3}>{t("profile.friendCode.title")}</Title>
-        </WithTooltip>
-        <FriendCodeField friendCode={friendCode} />
-      </Stack>
-      <Stack mt={40} gap={15}>
+      <Stack gap="xs">
         <Title order={2}>{t("profile.settings.title")}</Title>
         <SmoothChartsSelector />
         <LanguageSelector locale={locale} />
         <DefaultDayRangeSelector />
       </Stack>
-    </div>
+    </Stack>
   );
 }
