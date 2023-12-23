@@ -8,6 +8,7 @@ import { DeleteLeaderboardError } from "../../../../types";
 import { showNotification } from "@mantine/notifications";
 import { logOutAndRedirect } from "../../../../utils/authUtils";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type DeleteLeaderboardButtonProps = {
   name: string;
@@ -18,13 +19,16 @@ export const DeleteLeaderboardButton = ({
 }: DeleteLeaderboardButtonProps) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   return (
     <ButtonWithConfirmation
       color="red"
       size="xs"
       leftSection={<Trash2 size={18} />}
+      loading={isDeleting}
       onClick={() => {
+        setIsDeleting(true);
         deleteLeaderboard(name)
           .then(async (res) => {
             if ("error" in res) {
@@ -52,6 +56,9 @@ export const DeleteLeaderboardButton = ({
           })
           .catch((e) => {
             console.log(e);
+          })
+          .finally(() => {
+            setIsDeleting(false);
           });
       }}
     >
