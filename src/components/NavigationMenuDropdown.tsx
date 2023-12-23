@@ -18,7 +18,13 @@ export const NavigationMenuDropdown = ({
   const { t } = useTranslation();
 
   return (
-    <Menu trigger="hover">
+    <Menu
+      trigger="click-hover"
+      loop={false}
+      trapFocus={false}
+      withinPortal={false}
+      menuItemTabIndex={0}
+    >
       <Menu.Target>
         <Button
           variant="outline"
