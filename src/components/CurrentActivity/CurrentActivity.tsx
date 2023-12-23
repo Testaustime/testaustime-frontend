@@ -36,7 +36,7 @@ export const CurrentActivity = (props: CurrentActivityProps) => {
         .catch((error) => {
           console.error(error);
         });
-    }, 5000);
+    }, 30 * 1000);
 
     return () => {
       clearInterval(interval);
