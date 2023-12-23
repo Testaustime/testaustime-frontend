@@ -7,6 +7,7 @@ import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { ChangeAccountVisibilityError } from "../../../types";
 import { logOutAndRedirect } from "../../../utils/authUtils";
+import { useState } from "react";
 
 export const ProfileVisibilityToggle = ({
   isPublic,
@@ -15,13 +16,17 @@ export const ProfileVisibilityToggle = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <ButtonWithConfirmation
       color="red"
+      loading={isLoading}
       onClick={() => {
         void (async () => {
+          setIsLoading(true);
           const result = await changeAccountVisibility(!isPublic);
+          setIsLoading(false);
           if (result) {
             switch (result.error) {
               case ChangeAccountVisibilityError.RateLimited:
