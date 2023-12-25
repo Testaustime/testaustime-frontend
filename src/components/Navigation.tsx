@@ -4,6 +4,7 @@ import Link from "next/link";
 import styles from "./Navigation.module.css";
 import { TFunction } from "i18next";
 import { NavigationMenuDropdown } from "./NavigationMenuDropdown";
+import { UserSearch } from "./UserSearch/UserSearch";
 
 type NavigationProps = {
   isLoggedIn: boolean;
@@ -41,6 +42,7 @@ export const Navigation = ({
               >
                 {t("navbar.leaderboards")}
               </Anchor>
+              <UserSearch />
               <NavigationMenuDropdown username={username} locale={locale} />
             </>
           ) : (

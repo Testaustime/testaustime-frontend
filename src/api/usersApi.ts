@@ -5,6 +5,8 @@ import {
   ApiUsersUserResponse,
   CurrentActivityApiResponse,
   GetUserActivityDataError,
+  SearchUsersApiResponse,
+  SearchUsersError,
 } from "../types";
 import { cookies, headers } from "next/headers";
 import { CurrentActivity } from "../components/CurrentActivity/CurrentActivity";
@@ -223,4 +225,37 @@ export const getUserActivityData = async (username: string) => {
   }));
 
   return mappedData;
+};
+
+export const searchUsers = async (query: string) => {
+  const response = await fetch(
+    `${
+      process.env.NEXT_PUBLIC_API_URL
+    }/search/users?keyword=${encodeURIComponent(query)}`,
+    {
+      cache: "no-cache",
+      headers: {
+        "client-ip": headers().get("client-ip") ?? "Unknown IP",
+        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    if (response.status === 429) {
+      return { error: SearchUsersError.RateLimited };
+    }
+
+    console.error(
+      "Error while searching users: status",
+      response.status,
+      await response.text(),
+    );
+
+    return { error: SearchUsersError.UnknownError };
+  }
+
+  const data = (await response.json()) as SearchUsersApiResponse;
+
+  return data;
 };

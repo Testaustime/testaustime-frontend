@@ -181,3 +181,16 @@ export enum GetUserActivityDataError {
   UnknownError,
   NotFound,
 }
+
+export type SearchUsersResult = {
+  id: number;
+  username: string;
+  registration_time: string;
+};
+
+export type SearchUsersApiResponse = SearchUsersResult[];
+
+export enum SearchUsersError {
+  RateLimited,
+  UnknownError,
+}
