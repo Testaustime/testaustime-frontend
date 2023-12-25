@@ -174,3 +174,10 @@ export enum ChangeUsernameError {
   RateLimited,
   UnknownError,
 }
+
+export enum GetUserActivityDataError {
+  Unauthorized,
+  RateLimited,
+  UnknownError,
+  NotFound,
+}

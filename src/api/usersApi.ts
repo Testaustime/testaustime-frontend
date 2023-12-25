@@ -1,11 +1,15 @@
 import {
+  ActivityDataEntry,
   ActivityDataSummary,
   ApiUsersUserActivityDataResponseItem,
   ApiUsersUserResponse,
   CurrentActivityApiResponse,
+  GetUserActivityDataError,
 } from "../types";
 import { cookies, headers } from "next/headers";
 import { CurrentActivity } from "../components/CurrentActivity/CurrentActivity";
+import { startOfDay } from "date-fns";
+import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
 
 export const getMe = async () => {
   const token = cookies().get("token")?.value;
@@ -168,4 +172,55 @@ export const getCurrentActivityStatus = async (username: string) => {
     startedAt: data.started,
     projectName: data.heartbeat.project_name,
   } satisfies CurrentActivity;
+};
+
+export const getUserActivityData = async (username: string) => {
+  const token = cookies().get("token")?.value;
+
+  const h = new Headers();
+  if (token) {
+    // When https://github.com/Testaustime/testaustime-backend/issues/72 is fixed, we can
+    // remove this check and just use the token directly.
+    h.append("Authorization", `Bearer ${token}`);
+  }
+  h.append("client-ip", headers().get("client-ip") ?? "Unknown IP");
+  h.append("bypass-token", process.env.RATELIMIT_IP_FORWARD_SECRET ?? "");
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/users/${username}/activity/data`,
+    {
+      cache: "no-cache",
+      headers: h,
+    },
+  );
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      return { error: GetUserActivityDataError.Unauthorized };
+    } else if (response.status === 404) {
+      return { error: GetUserActivityDataError.NotFound };
+    } else if (response.status === 429) {
+      return { error: GetUserActivityDataError.RateLimited };
+    }
+
+    const error = await response.text();
+    console.error(
+      "Error while getting user's activity data: status",
+      response.status,
+      error,
+    );
+    return { error: GetUserActivityDataError.UnknownError };
+  }
+
+  const data =
+    (await response.json()) as ApiUsersUserActivityDataResponseItem[];
+
+  const mappedData: ActivityDataEntry[] = data.map((e) => ({
+    ...e,
+    start_time: new Date(e.start_time),
+    dayStart: startOfDay(new Date(e.start_time)),
+    language: normalizeProgrammingLanguageName(e.language),
+  }));
+
+  return mappedData;
 };

@@ -279,5 +279,8 @@
     "text": "You are sending a lot of requests! Please try again in a minute.",
     "link": "Go back home"
   },
-  "rateLimitedError": "You are sending a lot of requests! Please try again in a minute."
+  "rateLimitedError": "You are sending a lot of requests! Please try again in a minute.",
+  "users": {
+    "notFound": "We couldn't find this user."
+  }
 }
