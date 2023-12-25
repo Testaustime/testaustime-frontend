@@ -134,14 +134,20 @@ export const getOwnActivityDataSummary = async () => {
 
 export const getCurrentActivityStatus = async (username: string) => {
   const token = cookies().get("token")?.value;
+
+  const h = new Headers();
+  if (token) {
+    // When https://github.com/Testaustime/testaustime-backend/issues/72 is fixed, we can
+    // remove this check and just use the token directly.
+    h.append("Authorization", `Bearer ${token}`);
+  }
+  h.append("client-ip", headers().get("client-ip") ?? "Unknown IP");
+  h.append("bypass-token", process.env.RATELIMIT_IP_FORWARD_SECRET ?? "");
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/users/${username}/activity/current`,
     {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "client-ip": headers().get("client-ip") ?? "Unknown IP",
-        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
-      },
+      headers: h,
       cache: "no-cache",
     },
   );
