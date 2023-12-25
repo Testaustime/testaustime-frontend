@@ -279,5 +279,24 @@
     "text": "You are sending a lot of requests! Please try again in a minute.",
     "link": "Go back home"
   },
-  "rateLimitedError": "You are sending a lot of requests! Please try again in a minute."
+  "rateLimitedError": "You are sending a lot of requests! Please try again in a minute.",
+  "users": {
+    "notFound": "We couldn't find this user.",
+    "search": {
+      "title": "Public users",
+      "unknownError": "An unknown error occurred while searching for users. Please try again later.",
+      "resultCount_zero": "No users found with query \"{{query}}\".",
+      "resultCount_one": "Found {{count}} user.",
+      "resultCount_other": "Found {{count}} users.",
+      "table": {
+        "username": "Username"
+      },
+      "popover": {
+        "title": "Find public users",
+        "label": "Username",
+        "placeholder": "CodeWithChris1",
+        "button": "Search"
+      }
+    }
+  }
 }

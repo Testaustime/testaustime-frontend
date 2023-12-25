@@ -279,5 +279,24 @@
     "text": "Olet tehnyt liian monta pyyntöä. Yritä uudelleen minuutin kuluttua.",
     "link": "Takaisin etusivulle"
   },
-  "rateLimitedError": "Olet tehnyt liian monta pyyntöä. Yritä uudelleen minuutin kuluttua."
+  "rateLimitedError": "Olet tehnyt liian monta pyyntöä. Yritä uudelleen minuutin kuluttua.",
+  "users": {
+    "notFound": "Emme löytäneet tätä käyttäjää.",
+    "search": {
+      "title": "Julkiset käyttäjät",
+      "unknownError": "Tapahtui tuntematon virhe haettaessa käyttäjiä. Ole hyvä ja yritä uudelleen myöhemmin.",
+      "resultCount_zero": "Käyttäjiä ei löytynyt haulla \"{{query}}\".",
+      "resultCount_one": "Löytyi {{count}} käyttäjä.",
+      "resultCount_other": "Löytyi {{count}} käyttäjää.",
+      "table": {
+        "username": "Käyttäjänimi"
+      },
+      "popover": {
+        "title": "Etsi julkisia käyttäjiä",
+        "label": "Käyttäjänimi",
+        "placeholder": "KoodaajaKalle1",
+        "button": "Etsi"
+      }
+    }
+  }
 }

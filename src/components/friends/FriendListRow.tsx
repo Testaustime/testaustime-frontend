@@ -55,7 +55,7 @@ export const FriendListRow = ({
       <TableTd>{prettyDuration(codingTime)}</TableTd>
       <TableTd style={{ textAlign: "right", padding: "7px 0px" }}>
         {!isMe && (
-          <Link href={`/${locale}/friends/${username}`} prefetch={false}>
+          <Link href={`/${locale}/users/${username}`} prefetch={false}>
             {t("friends.showDashboard")}
           </Link>
         )}
