@@ -54,6 +54,7 @@ export const Navigation = ({
               >
                 {t("navbar.extensions")}
               </Anchor>
+              <UserSearch />
               <Box className={styles.spacer} />
               <Anchor
                 component={Link}
