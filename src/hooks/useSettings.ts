@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
 import { DayRange } from "../utils/dateUtils";
 import { Locales } from "../i18next";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCookies } from "react-cookie";
 import {
   colorSchemeCookieName,
@@ -21,6 +21,7 @@ export const useCreateSettings = ({
   const router = useRouter();
   const [cookies, setCookies] = useCookies();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const defaultCookieSettings: Parameters<typeof setCookies>[2] = {
     path: "/",
@@ -69,7 +70,12 @@ export const useCreateSettings = ({
         "/",
       );
 
-      router.push("/" + value + "/" + pathnameWithoutLanguage);
+      let path = "/" + value + "/" + pathnameWithoutLanguage;
+      if (searchParams.size > 0) {
+        path += "?" + searchParams.toString();
+      }
+
+      router.push(path);
     },
     colorScheme: colorScheme || initialColorScheme,
     setColorScheme,
