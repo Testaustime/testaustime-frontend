@@ -298,5 +298,13 @@
         "button": "Search"
       }
     }
+  },
+  "authorize": {
+    "body": "You are logging in to the official Visual Studio Code extension.",
+    "continue": "Continue as {{username}}",
+    "notWorking": {
+      "text": "Not working?",
+      "link": "Copy authentication token on settings page."
+    }
   }
 }

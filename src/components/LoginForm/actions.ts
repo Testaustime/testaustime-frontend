@@ -17,7 +17,7 @@ export interface SecureAccessTokenResponse {
   token: string;
 }
 
-const allowedRedirects = ["/profile", "/friends", "/leaderboards"];
+const allowedRedirects = ["/profile", "/friends", "/leaderboards", "/authorize?editor=vscode"];
 
 export const logIn = async (
   username: string,
