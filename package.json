@@ -37,9 +37,9 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.0.4",
-    "@storybook/addon-essentials": "^7.6.6",
-    "@storybook/nextjs": "^7.6.6",
-    "@storybook/react": "^7.6.6",
+    "@storybook/addon-essentials": "^7.6.8",
+    "@storybook/nextjs": "^7.6.8",
+    "@storybook/react": "^7.6.8",
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^20.10.8",
     "@types/react": "^18.2.47",
@@ -54,7 +54,7 @@
     "eslint-plugin-storybook": "^0.6.15",
     "prettier": "^3.1.1",
     "prettier-eslint": "^16.2.0",
-    "storybook": "^7.6.6",
+    "storybook": "^7.6.8",
     "typescript": "^5.3.3",
     "vitest": "^1.1.0"
   }
