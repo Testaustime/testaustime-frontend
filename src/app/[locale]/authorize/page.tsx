@@ -41,9 +41,12 @@ export default async function AuthorizePage({
         height={40}
       />
       <Text>{t("authorize.body")}</Text>
-      <a href={`vscode://testausserveri-ry.testaustime/authorize?${token}`}>
-        <Button>{t("authorize.continue", { username })}</Button>
-      </a>
+      <Button
+        component="a"
+        href={`vscode://testausserveri-ry.testaustime/authorize?token=${token}`}
+      >
+        {t("authorize.continue", { username })}
+      </Button>
       <Text c="dark.2">
         {t("authorize.notWorking.text")}&nbsp;
         <Link href="profile">{t("authorize.notWorking.link")}</Link>
