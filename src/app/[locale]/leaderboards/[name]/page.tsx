@@ -39,7 +39,7 @@ export default async function LeaderboardPage({
     } else if (me.error === "Too many requests") {
       redirect("/rate-limited");
     } else {
-      throw new Error(me.error);
+      throw new Error(JSON.stringify(me));
     }
   }
 
@@ -50,7 +50,7 @@ export default async function LeaderboardPage({
     } else if (leaderboard.error === GetLeaderboardError.Unauthorized) {
       redirect("/login");
     } else {
-      throw new Error(leaderboard.error);
+      throw new Error(JSON.stringify(leaderboard));
     }
   }
 

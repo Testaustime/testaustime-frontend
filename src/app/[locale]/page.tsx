@@ -44,7 +44,7 @@ export default async function MainPage({
       if (activityData.error === "Too many requests") {
         redirect("/rate-limited");
       }
-      throw new Error(activityData.error);
+      throw new Error(JSON.stringify(activityData));
     }
 
     const currentActivity = await getCurrentActivityStatus(me.username);
@@ -52,7 +52,7 @@ export default async function MainPage({
       if (currentActivity.error === "Too many requests") {
         redirect("/rate-limited");
       }
-      throw new Error(currentActivity.error);
+      throw new Error(JSON.stringify(currentActivity));
     }
 
     const uncheckedDefaultDayRange = cookies().get(defaultDayRangeCookieName)

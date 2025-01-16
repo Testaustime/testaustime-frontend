@@ -46,7 +46,7 @@ export default async function ProfilePage({
     } else if (me.error === "Too many requests") {
       redirect("/rate-limited");
     } else {
-      throw new Error(me.error);
+      throw new Error(JSON.stringify(me));
     }
   }
 

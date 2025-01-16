@@ -304,7 +304,7 @@
     "continue": "Jatka käyttäjänä {{username}}",
     "notWorking": {
       "text": "Eikö toimi?",
-      "link": "Kopioi tunnistautumistunnus asetukset-sivulla." 
+      "link": "Kopioi tunnistautumistunnus asetukset-sivulla."
     }
   }
 }

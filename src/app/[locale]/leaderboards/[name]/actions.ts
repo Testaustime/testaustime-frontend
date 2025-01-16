@@ -66,7 +66,12 @@ export const promoteUser = async (
       return { error: "Too many requests" as const };
     }
 
-    return { error: "Unknown error" as const };
+    return {
+      error:
+        "Unknown error when fetching /leaderboards/{leaderboardName}/promot" as const,
+      leaderboardName,
+      status: response.status,
+    };
   }
 
   revalidateTag(`leaderboard-${leaderboardName}`);
@@ -99,7 +104,12 @@ export const demoteUser = async (username: string, leaderboardName: string) => {
       return { error: "Too many requests" as const };
     }
 
-    return { error: "Unknown error" as const };
+    return {
+      error:
+        "Unknown error when fetching /leadeboards/{leaderboardName}/demote" as const,
+      leaderboardName,
+      status: response.status,
+    };
   }
 
   revalidateTag(`leaderboard-${leaderboardName}`);
@@ -132,7 +142,12 @@ export const kickUser = async (username: string, leaderboardName: string) => {
       return { error: "Too many requests" as const };
     }
 
-    return { error: "Unknown error" as const };
+    return {
+      error:
+        "Unknown error when fetching /leaderboards/{leaderboardName}/kick" as const,
+      leaderboardName,
+      status: response.status,
+    };
   }
 
   revalidateTag(`leaderboard-${leaderboardName}`);

@@ -45,7 +45,8 @@ export const getFriendsList = async () => {
     }
 
     return {
-      error: "Unknown error" as const,
+      error: "Unknown error when fetching /friends/list" as const,
+      status: friendsPromise.status,
     };
   }
 

@@ -63,7 +63,7 @@ export default async function RootLayout({
         // Can't redirect to /rate-limited because it would cause an infinite loop
         console.log("User has token but it is rate limited");
       } else {
-        throw new Error(me.error);
+        throw new Error(JSON.stringify(me));
       }
     } else {
       username = me.username;

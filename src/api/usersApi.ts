@@ -45,7 +45,8 @@ export const getMe = async () => {
 
   if (!meResponse.ok) {
     return {
-      error: "Unknown error" as const,
+      error: "Unknown error when fetching /users/@me" as const,
+      status: meResponse.status,
     };
   }
 
@@ -85,7 +86,8 @@ export const getOwnActivityData = async (username: string) => {
     }
 
     return {
-      error: "Unknown error" as const,
+      error: "Unknown error when fetching /users/@me/activity/data" as const,
+      status: response.status,
     };
   }
 
@@ -123,7 +125,8 @@ export const getOwnActivityDataSummary = async () => {
     }
 
     return {
-      error: "Unknown error" as const,
+      error: "Unknown error when fetching /users/@me/activity/summary" as const,
+      status: response.status,
     };
   }
 
@@ -169,7 +172,10 @@ export const getCurrentActivityStatus = async (username: string) => {
       error,
     );
     return {
-      error: "Unknown error" as const,
+      error:
+        "Unknown error when fetching /users/{username}/activity/current" as const,
+      username,
+      status: response.status,
     };
   }
 

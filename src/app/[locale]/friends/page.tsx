@@ -34,7 +34,7 @@ export default async function FriendsPage({
     } else if (me.error === "Too many requests") {
       redirect("/rate-limited");
     } else {
-      throw new Error(me.error);
+      throw new Error(JSON.stringify(me));
     }
   }
 
@@ -44,7 +44,7 @@ export default async function FriendsPage({
     } else if (friendsList.error === "Too many requests") {
       redirect("/rate-limited");
     } else {
-      throw new Error(friendsList.error);
+      throw new Error(JSON.stringify(friendsList));
     }
   }
 
@@ -54,7 +54,7 @@ export default async function FriendsPage({
     } else if (ownDataSummary.error === "Unauthorized") {
       redirect("/login");
     } else {
-      throw new Error(ownDataSummary.error);
+      throw new Error(JSON.stringify(ownDataSummary));
     }
   }
 
@@ -62,7 +62,7 @@ export default async function FriendsPage({
     if (ownActivityStatus.error === "Too many requests") {
       redirect("/rate-limited");
     } else {
-      throw new Error(ownActivityStatus.error);
+      throw new Error(JSON.stringify(ownActivityStatus));
     }
   }
 

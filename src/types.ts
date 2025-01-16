@@ -99,13 +99,13 @@ export enum RegistrationResult {
 export enum GetLeaderboardError {
   Unauthorized = "Unauthorized",
   RateLimited = "Rate limited",
-  UnknownError = "Unknown error",
+  UnknownError = "Unknown error when getting leaderboard",
 }
 
 export enum GetLeaderboardsError {
   Unauthorized = "Unauthorized",
   RateLimited = "Rate limited",
-  UnknownError = "Unknown error",
+  UnknownError = "Unknown error when getting leaderboards",
 }
 
 export enum LoginError {
@@ -117,13 +117,13 @@ export enum LoginError {
 export enum DeleteLeaderboardError {
   Unauthorized = "Unauthorized",
   RateLimited = "Rate limited",
-  UnknownError = "Unknown error",
+  UnknownError = "Unknown error when deleting leaderboard",
 }
 
 export enum RegenerateAuthTokenError {
   Unauthorized = "Unauthorized",
   RateLimited = "Rate limited",
-  UnknownError = "Unknown error",
+  UnknownError = "Unknown error when regenerating auth token",
 }
 
 export type CurrentActivityApiResponse = {
@@ -140,31 +140,31 @@ export type CurrentActivityApiResponse = {
 export enum ChangeAccountVisibilityError {
   Unauthorized = "Unauthorized",
   RateLimited = "Rate limited",
-  UnknownError = "Unknown error",
+  UnknownError = "Unknown error when changing account visibility",
 }
 
 export enum RegenerateInviteCodeError {
   Unauthorized = "Unauthorized",
   RateLimited = "Rate limited",
-  UnknownError = "Unknown error",
+  UnknownError = "Unknown error when regenerating invite code",
 }
 
 export enum RegenerateFriendCodeError {
   Unauthorized = "Unauthorized",
   RateLimited = "Rate limited",
-  UnknownError = "Unknown error",
+  UnknownError = "Unknown error when regenerating friend code",
 }
 
 export enum LeaveLeaderboardError {
   Unauthorized = "Unauthorized",
   RateLimited = "Rate limited",
-  UnknownError = "Unknown error",
+  UnknownError = "Unknown error when leaving leaderboard",
 }
 
 export enum RemoveFriendError {
   Unauthorized = "Unauthorized",
   RateLimited = "Rate limited",
-  UnknownError = "Unknown error",
+  UnknownError = "Unknown error when removing friend",
 }
 
 export enum ChangeUsernameError {
