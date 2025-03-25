@@ -53,7 +53,7 @@ export const Content = ({
       <ModalsProvider>
         <div className={styles.container}>
           <CookiesProvider>
-            <InnerContent children={children} colorScheme={colorScheme} />
+            <InnerContent colorScheme={colorScheme}>{children}</InnerContent>
           </CookiesProvider>
         </div>
       </ModalsProvider>
