@@ -27,10 +27,11 @@
   "include": [
     "next-env.d.ts",
     "src",
-    ".storybook/withSetup.tsx",
+    ".storybook",
     "next-i18next.config.js",
     "next.config.mjs",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ""
   ],
   "references": [
     {

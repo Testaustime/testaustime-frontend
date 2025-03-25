@@ -10,6 +10,7 @@ import i18n from "i18next";
 import en from "../public/locales/en/common.json";
 import fi from "../public/locales/fi/common.json";
 import "@mantine/core/styles.css";
+import { CookiesProvider } from "react-cookie";
 
 i18n.use(initReactI18next).init({
   fallbackLng: "en",
@@ -80,12 +81,14 @@ const InnerApp = ({ children }: PropsWithChildren) => {
 export const withSetup: Decorator = (Story) => {
   return (
     <I18nextProvider i18n={i18n}>
-      <InnerApp>
-        <ModalsProvider>
-          <Notifications />
-          <Story />
-        </ModalsProvider>
-      </InnerApp>
+      <CookiesProvider>
+        <InnerApp>
+          <ModalsProvider>
+            <Notifications />
+            <Story />
+          </ModalsProvider>
+        </InnerApp>
+      </CookiesProvider>
     </I18nextProvider>
   );
 };

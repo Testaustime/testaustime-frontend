@@ -9,7 +9,7 @@ import { useHotkeys } from "@mantine/hooks";
 import { CookiesProvider } from "react-cookie";
 import styles from "./Content.module.css";
 
-export const Content = ({
+const InnerContent = ({
   children,
   colorScheme,
 }: {
@@ -33,13 +33,27 @@ export const Content = ({
 
   return (
     <>
+      <SettingsContext.Provider value={settings}>
+        {children}
+      </SettingsContext.Provider>
+    </>
+  );
+};
+
+export const Content = ({
+  children,
+  colorScheme,
+}: {
+  children: React.ReactNode;
+  colorScheme: MantineColorScheme;
+}) => {
+  return (
+    <>
       <Notifications />
       <ModalsProvider>
         <div className={styles.container}>
           <CookiesProvider>
-            <SettingsContext.Provider value={settings}>
-              {children}
-            </SettingsContext.Provider>
+            <InnerContent children={children} colorScheme={colorScheme} />
           </CookiesProvider>
         </div>
       </ModalsProvider>

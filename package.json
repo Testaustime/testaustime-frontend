@@ -19,7 +19,7 @@
     "next-i18n-router": "^5.1.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
-    "react-cookie": "^6.1.1",
+    "react-cookie": "^8.0.1",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-i18next": "^14.0.0",
@@ -37,9 +37,9 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.0.4",
-    "@storybook/addon-essentials": "^7.6.8",
-    "@storybook/nextjs": "^7.6.8",
-    "@storybook/react": "^7.6.8",
+    "@storybook/addon-essentials": "^8.6.9",
+    "@storybook/nextjs": "^8.6.9",
+    "@storybook/react": "^8.6.9",
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^20.12.5",
     "@types/react": "^18.2.74",
@@ -54,8 +54,8 @@
     "eslint-plugin-storybook": "^0.6.15",
     "prettier": "^3.1.1",
     "prettier-eslint": "^16.2.0",
-    "storybook": "^7.6.8",
+    "storybook": "^8.6.9",
     "typescript": "^5.3.3",
-    "vitest": "^1.1.0"
+    "vitest": "^3.0.9"
   }
 }
