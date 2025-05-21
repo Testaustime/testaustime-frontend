@@ -222,7 +222,9 @@ export const Dashboard = ({
         <>
           <DataCard>
             <Title mt={10} order={2}>
-              {t("dashboard.timePerDay")}
+              {dayCount > 180
+                ? t("dashboard.timePerMonth")
+                : t("dashboard.timePerDay")}
             </Title>
             {entries.length > 0 ? (
               dayCount > 180 ? (

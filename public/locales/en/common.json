@@ -27,6 +27,7 @@
       "week": "Last 7 days"
     },
     "timePerDay": "Time per day",
+    "timePerMonth": "Time per month",
     "timePerProject": "Time per project",
     "totalTime": "Total time coded in the last {{days}} days: {{totalTime}}",
     "unknownProject": "Unknown"

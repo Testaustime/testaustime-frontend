@@ -27,6 +27,7 @@
       "week": "Viimeiset 7 päivää"
     },
     "timePerDay": "Aika per päivä",
+    "timePerMonth": "Aika per kuukausi",
     "timePerProject": "Aika per projekti",
     "totalTime": "Kokonaisaika viimeisten {{days}} päivän aikana: {{totalTime}}",
     "unknownProject": "Tuntematon"
