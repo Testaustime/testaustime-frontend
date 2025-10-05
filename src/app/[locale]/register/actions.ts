@@ -14,7 +14,22 @@ interface ApiAuthLoginResponse {
   is_public: boolean;
 }
 
-export const register = async (username: string, password: string) => {
+export const register = async (
+  username: string,
+  password: string,
+  email?: string,
+) => {
+  const body = email
+    ? JSON.stringify({
+        username: username,
+        email: email,
+        password: password,
+      })
+    : JSON.stringify({
+        username: username,
+        password: password,
+      });
+
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL + "/auth/register",
     {
@@ -25,10 +40,7 @@ export const register = async (username: string, password: string) => {
         "client-ip": headers().get("client-ip") ?? "Unknown IP",
         "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
       },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
+      body: body,
     },
   );
 

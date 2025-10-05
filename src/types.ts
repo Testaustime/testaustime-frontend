@@ -84,6 +84,18 @@ export enum PasswordChangeResult {
   UnknownError,
 }
 
+export enum PasswordResetRequestResult {
+  Success,
+  RateLimited,
+  UnknownError,
+}
+
+export enum PasswordResetResult {
+  Success,
+  InvalidToken,
+  RateLimited,
+  UnknownError,
+}
 export enum AddFriendError {
   AlreadyFriends,
   NotFound,
