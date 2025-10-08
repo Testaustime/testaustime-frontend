@@ -176,7 +176,9 @@ export const Dashboard = ({
           <Combobox.Dropdown>
             <Combobox.Search
               value={search}
-              onChange={(event) => setSearch(event.currentTarget.value)}
+              onChange={(event) => {
+                setSearch(event.currentTarget.value);
+              }}
               placeholder="Search"
             />
             <Combobox.Options>
