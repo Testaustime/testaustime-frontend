@@ -84,12 +84,15 @@ export const Dashboard = ({
     "<link>",
   );
 
+  const [search, setSearch] = useState("");
   const combobox = useCombobox({
     onDropdownClose: () => {
       combobox.resetSelectedOption();
+      setSearch("");
     },
     onDropdownOpen: () => {
       combobox.updateSelectedOptionIndex("active");
+      combobox.focusSearchInput();
     },
   });
 
@@ -167,39 +170,32 @@ export const Dashboard = ({
                       : t("dashboard.projectsFilter")}
                   </Input.Placeholder>
                 )}
-                <Combobox.EventsTarget>
-                  <PillsInput.Field
-                    type="hidden"
-                    onBlur={() => {
-                      combobox.closeDropdown();
-                    }}
-                    onKeyDown={(event) => {
-                      if (event.key === "Backspace") {
-                        event.preventDefault();
-                        setSelectedProjects((projects) =>
-                          projects.slice(0, projects.length - 1),
-                        );
-                      }
-                    }}
-                  />
-                </Combobox.EventsTarget>
               </Pill.Group>
             </PillsInput>
           </Combobox.DropdownTarget>
           <Combobox.Dropdown>
+            <Combobox.Search
+              value={search}
+              onChange={(event) => {
+                setSearch(event.currentTarget.value);
+              }}
+              placeholder="Search"
+            />
             <Combobox.Options>
-              {unfilteredProjectNames.map((projectName) => (
-                <Combobox.Option
-                  value={projectName}
-                  key={projectName}
-                  active={selectedProjects.includes(projectName)}
-                >
-                  {selectedProjects.includes(projectName) && (
-                    <CheckIcon size={12} style={{ marginInlineEnd: 6 }} />
-                  )}
-                  <span>{projectName}</span>
-                </Combobox.Option>
-              ))}
+              {unfilteredProjectNames
+                .filter((p) => p.toLowerCase().includes(search.toLowerCase()))
+                .map((projectName) => (
+                  <Combobox.Option
+                    value={projectName}
+                    key={projectName}
+                    active={selectedProjects.includes(projectName)}
+                  >
+                    {selectedProjects.includes(projectName) && (
+                      <CheckIcon size={12} style={{ marginInlineEnd: 6 }} />
+                    )}
+                    <span>{projectName}</span>
+                  </Combobox.Option>
+                ))}
             </Combobox.Options>
           </Combobox.Dropdown>
         </Combobox>
