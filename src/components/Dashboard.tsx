@@ -84,11 +84,11 @@ export const Dashboard = ({
     "<link>",
   );
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const combobox = useCombobox({
     onDropdownClose: () => {
       combobox.resetSelectedOption();
-      setSearch('');
+      setSearch("");
     },
     onDropdownOpen: () => {
       combobox.updateSelectedOptionIndex("active");
@@ -174,24 +174,26 @@ export const Dashboard = ({
             </PillsInput>
           </Combobox.DropdownTarget>
           <Combobox.Dropdown>
-          <Combobox.Search
-            value={search}
-            onChange={(event) => setSearch(event.currentTarget.value)}
-            placeholder="Search"
+            <Combobox.Search
+              value={search}
+              onChange={(event) => setSearch(event.currentTarget.value)}
+              placeholder="Search"
             />
             <Combobox.Options>
-              {unfilteredProjectNames.filter(p => p.toLowerCase().includes(search.toLowerCase())).map((projectName) => (
-                <Combobox.Option
-                  value={projectName}
-                  key={projectName}
-                  active={selectedProjects.includes(projectName)}
-                >
-                  {selectedProjects.includes(projectName) && (
-                    <CheckIcon size={12} style={{ marginInlineEnd: 6 }} />
-                  )}
-                  <span>{projectName}</span>
-                </Combobox.Option>
-              ))}
+              {unfilteredProjectNames
+                .filter((p) => p.toLowerCase().includes(search.toLowerCase()))
+                .map((projectName) => (
+                  <Combobox.Option
+                    value={projectName}
+                    key={projectName}
+                    active={selectedProjects.includes(projectName)}
+                  >
+                    {selectedProjects.includes(projectName) && (
+                      <CheckIcon size={12} style={{ marginInlineEnd: 6 }} />
+                    )}
+                    <span>{projectName}</span>
+                  </Combobox.Option>
+                ))}
             </Combobox.Options>
           </Combobox.Dropdown>
         </Combobox>
