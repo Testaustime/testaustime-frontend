@@ -3,10 +3,10 @@
 import { useRouter } from "next/navigation";
 import TokenField from "../../../../components/TokenField";
 import { regenerateInviteCode } from "./actions";
-import { RegenerateInviteCodeError } from "../../../../types";
 import { showNotification } from "@mantine/notifications";
 import { useTranslation } from "react-i18next";
 import { logOutAndRedirect } from "../../../../utils/authUtils";
+import { PostRequestError } from "../../../../types";
 
 type LeaderboardInviteTokenFieldProps = {
   leaderboardName: string;
@@ -29,12 +29,12 @@ export const LeaderboardInviteTokenField = ({
         isAdmin
           ? async () => {
               const result = await regenerateInviteCode(leaderboardName);
-              if (result && "error" in result) {
+              if ("error" in result) {
                 switch (result.error) {
-                  case RegenerateInviteCodeError.RateLimited:
+                  case PostRequestError.RateLimited:
                     router.push("/rate-limited");
                     break;
-                  case RegenerateInviteCodeError.Unauthorized:
+                  case PostRequestError.Unauthorized:
                     showNotification({
                       title: t("error"),
                       color: "red",
@@ -42,7 +42,7 @@ export const LeaderboardInviteTokenField = ({
                     });
                     await logOutAndRedirect();
                     break;
-                  case RegenerateInviteCodeError.UnknownError:
+                  case PostRequestError.UnknownError:
                     showNotification({
                       title: t("error"),
                       color: "red",

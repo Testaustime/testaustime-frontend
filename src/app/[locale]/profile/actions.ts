@@ -1,49 +1,29 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import {
-  ChangeAccountVisibilityError,
-  RegenerateAuthTokenError,
-  RegenerateFriendCodeError,
-} from "../../../types";
+  postRequestWithoutResponse,
+  postRequestWithResponse,
+} from "../../../api/baseApi";
 
 interface ApiAuthRegenerateResponse {
   token: string;
 }
 
 export const regenerateToken = async () => {
-  const token = cookies().get("secure-access-token")?.value;
+  const res =
+    await postRequestWithResponse<ApiAuthRegenerateResponse>(
+      "/auth/regenerate",
+    );
 
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + "/auth/regenerate",
-    {
-      method: "POST",
-      cache: "no-cache",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "client-ip": headers().get("client-ip") ?? "Unknown IP",
-        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
-      },
-    },
-  );
-
-  if (!response.ok) {
-    if (response.status === 401) {
-      return { error: RegenerateAuthTokenError.Unauthorized };
-    } else if (response.status === 429) {
-      return { error: RegenerateAuthTokenError.RateLimited };
-    } else {
-      console.log(response.status, await response.text());
-      return { error: RegenerateAuthTokenError.UnknownError };
-    }
+  if ("error" in res) {
+    return res;
   }
-
-  const data = (await response.json()) as ApiAuthRegenerateResponse;
 
   const expiration = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7);
 
-  cookies().set("token", data.token, {
-    value: data.token,
+  cookies().set("token", res.data.token, {
+    value: res.data.token,
     expires: expiration,
     path: "/",
     sameSite: "strict",
@@ -52,60 +32,10 @@ export const regenerateToken = async () => {
   });
 };
 
-export const regenerateFriendCode = async () => {
-  const token = cookies().get("secure-access-token")?.value;
+export const regenerateFriendCode = () =>
+  postRequestWithoutResponse("/friends/regenerate");
 
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + "/friends/regenerate",
-    {
-      method: "POST",
-      cache: "no-cache",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "client-ip": headers().get("client-ip") ?? "Unknown IP",
-        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
-      },
-    },
-  );
-
-  if (!response.ok) {
-    if (response.status === 401) {
-      return { error: RegenerateFriendCodeError.Unauthorized };
-    } else if (response.status === 429) {
-      return { error: RegenerateFriendCodeError.RateLimited };
-    }
-
-    return { error: RegenerateFriendCodeError.UnknownError };
-  }
-};
-
-export const changeAccountVisibility = async (isPublic: boolean) => {
-  const token = cookies().get("secure-access-token")?.value;
-
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + "/account/settings",
-    {
-      method: "POST",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-        "client-ip": headers().get("client-ip") ?? "Unknown IP",
-        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
-      },
-      body: JSON.stringify({
-        public_profile: isPublic,
-      }),
-    },
-  );
-
-  if (!response.ok) {
-    if (response.status === 401) {
-      return { error: ChangeAccountVisibilityError.Unauthorized };
-    } else if (response.status === 429) {
-      return { error: ChangeAccountVisibilityError.RateLimited };
-    }
-
-    return { error: ChangeAccountVisibilityError.UnknownError };
-  }
-};
+export const changeAccountVisibility = (isPublic: boolean) =>
+  postRequestWithoutResponse("/account/settings", {
+    public_profile: isPublic,
+  });

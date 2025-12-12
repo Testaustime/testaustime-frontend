@@ -3,10 +3,10 @@
 import { useRouter } from "next/navigation";
 import TokenField from "../../../components/TokenField";
 import { regenerateFriendCode } from "./actions";
-import { RegenerateFriendCodeError } from "../../../types";
 import { showNotification } from "@mantine/notifications";
 import { useTranslation } from "react-i18next";
 import { logOutAndRedirect } from "../../../utils/authUtils";
+import { PostRequestError } from "../../../types";
 
 export const FriendCodeField = ({ friendCode }: { friendCode: string }) => {
   const router = useRouter();
@@ -19,9 +19,9 @@ export const FriendCodeField = ({ friendCode }: { friendCode: string }) => {
       revealLength={4}
       regenerate={async () => {
         const result = await regenerateFriendCode();
-        if (result && "error" in result) {
+        if ("error" in result) {
           switch (result.error) {
-            case RegenerateFriendCodeError.Unauthorized:
+            case PostRequestError.Unauthorized:
               showNotification({
                 title: t("error"),
                 color: "red",
@@ -29,10 +29,10 @@ export const FriendCodeField = ({ friendCode }: { friendCode: string }) => {
               });
               await logOutAndRedirect();
               break;
-            case RegenerateFriendCodeError.RateLimited:
+            case PostRequestError.RateLimited:
               router.push("/rate-limited");
               break;
-            case RegenerateFriendCodeError.UnknownError:
+            case PostRequestError.UnknownError:
               showNotification({
                 title: t("error"),
                 color: "red",

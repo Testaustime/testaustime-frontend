@@ -119,6 +119,7 @@
     },
     "yourPosition": "Sija",
     "error": {
+      "notFound": "Tulostaulua ei löytynyt.",
       "loadingAllLeaderboards": "Tulostaulujesi lataamisessa tapahtui virhe, yritä uudelleen myöhemmin. Jos virhe jatkuu, ole hyvä ja ota yhteyttä meihin."
     }
   },

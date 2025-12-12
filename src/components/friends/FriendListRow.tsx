@@ -6,12 +6,12 @@ import { CurrentActivityDisplay } from "../CurrentActivity/CurrentActivityDispla
 import { prettyDuration } from "../../utils/dateUtils";
 import Link from "next/link";
 import { removeFriend } from "./actions";
-import { RemoveFriendError } from "../../types";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { showNotification } from "@mantine/notifications";
 import { logOutAndRedirect } from "../../utils/authUtils";
 import { useState } from "react";
+import { PostRequestError } from "../../types";
 
 type FriendListRowProps = {
   isMe: boolean;
@@ -71,12 +71,12 @@ export const FriendListRow = ({
               setIsDeleting(true);
               removeFriend(username)
                 .then(async (result) => {
-                  if (result && "error" in result) {
+                  if ("error" in result) {
                     switch (result.error) {
-                      case RemoveFriendError.RateLimited:
+                      case PostRequestError.RateLimited:
                         router.push("/rate-limited");
                         break;
-                      case RemoveFriendError.Unauthorized:
+                      case PostRequestError.Unauthorized:
                         showNotification({
                           title: t("error"),
                           color: "red",
@@ -84,7 +84,7 @@ export const FriendListRow = ({
                         });
                         await logOutAndRedirect();
                         break;
-                      case RemoveFriendError.UnknownError:
+                      case PostRequestError.UnknownError:
                         showNotification({
                           title: t("error"),
                           color: "red",

@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import { showNotification } from "@mantine/notifications";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { AddFriendError } from "../../types";
+import { AddFriendError, PostRequestError } from "../../types";
 import { addFriend } from "./actions";
 import { useState } from "react";
 
@@ -47,7 +47,9 @@ export const AddFriendForm = ({
                   "friends.error.alreadyFriends",
                 ),
                 [AddFriendError.NotFound]: t("friends.error.notFound"),
-                [AddFriendError.UnknownError]: t("unknownErrorOccurred"),
+                [PostRequestError.RateLimited]: t("rateLimitedError"),
+                [PostRequestError.Unauthorized]: t("errors.unauthorized"),
+                [PostRequestError.UnknownError]: t("unknownErrorOccurred"),
               }[result.error],
               color: "red",
             });

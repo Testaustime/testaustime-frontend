@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { searchUsers } from "../../../api/usersApi";
-import { SearchUsersApiResponse, SearchUsersError } from "../../../types";
 import initTranslations from "../../i18n";
 import {
   Table,
@@ -11,6 +10,9 @@ import {
   TableTr,
 } from "@mantine/core";
 import Link from "next/link";
+import { showNotification } from "@mantine/notifications";
+import { logOutAndRedirect } from "../../../utils/authUtils";
+import { GetRequestError } from "../../../types";
 
 export default async function UsersPage({
   params,
@@ -23,25 +25,31 @@ export default async function UsersPage({
   const users = await searchUsers(keyword);
   const { t } = await initTranslations(params.locale, ["common"]);
 
-  let data: SearchUsersApiResponse = [];
   if ("error" in users) {
     switch (users.error) {
-      case SearchUsersError.RateLimited:
+      case GetRequestError.RateLimited:
         return redirect("/rate-limited");
-      case SearchUsersError.UnknownError:
+      case GetRequestError.UnknownError:
         return <div>{t("users.search.unknownError")}</div>;
+      case GetRequestError.Unauthorized:
+        showNotification({
+          title: t("error"),
+          color: "red",
+          message: t("errors.unauthorized"),
+        });
+        await logOutAndRedirect();
+        break;
     }
-  } else {
-    data = users;
+    return;
   }
 
   return (
     <div>
       <h1>{t("users.search.title")}</h1>
       <p>
-        {t("users.search.resultCount", { count: data.length, query: keyword })}
+        {t("users.search.resultCount", { count: users.length, query: keyword })}
       </p>
-      {data.length > 0 && (
+      {users.length > 0 && (
         <Table>
           <TableThead>
             <TableTr>
@@ -49,7 +57,7 @@ export default async function UsersPage({
             </TableTr>
           </TableThead>
           <TableTbody>
-            {data.map((user) => (
+            {users.map((user) => (
               <TableTr key={user.id}>
                 <TableTd>
                   <Link href={`/${params.locale}/users/${user.username}`}>

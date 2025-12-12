@@ -119,6 +119,7 @@
     },
     "yourPosition": "Your position",
     "error": {
+      "notFound": "Leaderboard not found",
       "loadingAllLeaderboards": "An error occurred while loading your leaderboard list, try again later. If the error persists, please contact us."
     }
   },
