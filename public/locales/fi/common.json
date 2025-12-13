@@ -85,6 +85,10 @@
     "create": "Luo",
     "createNewLeaderboard": "Luo uusi tulostaulu",
     "deleteLeaderboard": "Poista tulostaulu",
+    "deletionNotification": {
+      "successTitle": "Tulostaulu poistettu",
+      "successDescription": "Tulostaulu on poistettu onnistuneesti"
+    },
     "demote": "Alenna",
     "inviteCode": "Kutsukoodi",
     "join": {

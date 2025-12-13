@@ -52,10 +52,7 @@ export const getMe = async () => {
     };
   }
 
-  const t = await meResponse.text();
-
-  // const data = (await meResponse.json()) as ApiUsersUserResponse;
-  const data = JSON.parse(t) as ApiUsersUserResponse;
+  const data = (await meResponse.json()) as ApiUsersUserResponse;
 
   return data;
 };

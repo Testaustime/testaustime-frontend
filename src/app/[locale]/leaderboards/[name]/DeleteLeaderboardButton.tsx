@@ -54,6 +54,14 @@ export const DeleteLeaderboardButton = ({
                   });
                   break;
               }
+            } else {
+              showNotification({
+                title: t("leaderboards.deletionNotification.successTitle"),
+                color: "green",
+                message: t(
+                  "leaderboards.deletionNotification.successDescription",
+                ),
+              });
             }
           })
           .catch((e) => {

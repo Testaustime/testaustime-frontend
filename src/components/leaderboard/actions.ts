@@ -25,7 +25,7 @@ export const leaveLeaderboard = async (leaderboardName: string) => {
 
 export const deleteLeaderboard = async (leaderboardName: string) => {
   const data = await postRequestWithoutResponse(
-    `/leaderboard/${leaderboardName}`,
+    `/leaderboards/${leaderboardName}`,
     undefined,
     "DELETE",
   );

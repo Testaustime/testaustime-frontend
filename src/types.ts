@@ -123,15 +123,15 @@ export type SearchUsersResult = {
 export type SearchUsersApiResponse = SearchUsersResult[];
 
 export enum GetRequestError {
-  Unauthorized,
-  RateLimited,
-  UnknownError,
+  Unauthorized = "Unauthorized",
+  RateLimited = "RateLimited",
+  UnknownError = "UnknownError",
 }
 
 export enum PostRequestError {
-  Unauthorized,
-  RateLimited,
-  UnknownError,
+  Unauthorized = "Unauthorized",
+  RateLimited = "RateLimited",
+  UnknownError = "UnknownError",
 }
 
 export enum GetLeaderboardError {

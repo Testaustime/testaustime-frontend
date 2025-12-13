@@ -85,6 +85,10 @@
     "create": "Create",
     "createNewLeaderboard": "Create new leaderboard",
     "deleteLeaderboard": "Delete leaderboard",
+    "deletionNotification": {
+      "successTitle": "Leaderboard deleted",
+      "successDescription": "Leaderboard was successfully deleted"
+    },
     "demote": "Demote",
     "inviteCode": "Invite code",
     "join": {
