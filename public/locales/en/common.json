@@ -96,7 +96,7 @@
       "genericError": "Error joining leaderboard",
       "join": "Join",
       "leaderboardCode": "Leaderboard code",
-      "leaderboardCodeInvalid": "Leaderboard code must start with \"ttlic_\", and be followed by 24 alphanumeric characters.",
+      "leaderboardCodeInvalid": "Leaderboard code must start with \"ttlic_\", and be followed by 32 alphanumeric characters.",
       "leaderboardCodeRequired": "Leaderboard code is required",
       "notFound": "Leaderboard not found"
     },

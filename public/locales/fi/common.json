@@ -96,7 +96,7 @@
       "genericError": "Tulostauluun liittyminen epäonnistui.",
       "join": "Liity",
       "leaderboardCode": "Tulostaulukoodi",
-      "leaderboardCodeInvalid": "Kutsukoodin tulee alkaa \"ttlic_\", ja sen jälkeen täytyy olla 24 alphanumeerista kirjainta.",
+      "leaderboardCodeInvalid": "Kutsukoodin tulee alkaa \"ttlic_\", ja sen jälkeen täytyy olla 32 alphanumeerista kirjainta.",
       "leaderboardCodeRequired": "Kutsukoodi vaaditaan.",
       "notFound": "Tulostaulua ei löytynyt."
     },
