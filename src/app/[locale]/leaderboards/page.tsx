@@ -7,6 +7,7 @@ import { CreateNewLeaderboardButton } from "./CreateNewLeaderboardButton";
 import { JoinLeaderboardButton } from "./JoinLeaderboardButton";
 import { getMyLeaderboards } from "../../../api/leaderboardApi";
 import { getPreferences } from "../../../utils/cookieUtils";
+import { getMe } from "../../../api/usersApi";
 
 export type LeaderboardsPageProps = {
   initialLeaderboards: LeaderboardData[];
@@ -46,6 +47,22 @@ export default async function LeaderboardsPage({
     }
   }
 
+  const me = await getMe();
+
+  if (!me) {
+    redirect("/login");
+  }
+
+  if ("error" in me) {
+    if (me.error === "Unauthorized") {
+      redirect("/login");
+    } else if (me.error === "Too many requests") {
+      redirect("/rate-limited");
+    } else {
+      throw new Error(JSON.stringify(me));
+    }
+  }
+
   const { maxTimeUnit } = getPreferences();
 
   return (
@@ -60,6 +77,7 @@ export default async function LeaderboardsPage({
       <LeaderboardsList
         leaderboards={leaderboardList}
         maxTimeUnit={maxTimeUnit}
+        meUsername={me.username}
       />
     </>
   );

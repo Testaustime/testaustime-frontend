@@ -82,7 +82,6 @@
     "yourFriends": "Kaverisi"
   },
   "leaderboards": {
-    "admin": "Ylläpitäjä",
     "create": "Luo",
     "createNewLeaderboard": "Luo uusi tulostaulu",
     "deleteLeaderboard": "Poista tulostaulu",
@@ -307,5 +306,9 @@
       "text": "Eikö toimi?",
       "link": "Kopioi tunnistautumistunnus asetukset-sivulla."
     }
+  },
+  "badges": {
+    "admin": "Ylläpitäjä",
+    "you": "Sinä"
   }
 }

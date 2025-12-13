@@ -1,5 +1,4 @@
-import { Button, HoverCard, TableTd, TableTr } from "@mantine/core";
-import styles from "./FriendListRow.module.css";
+import { Badge, Button, HoverCard, TableTd, TableTr } from "@mantine/core";
 import { CurrentActivity } from "../CurrentActivity/CurrentActivity";
 import { BlinkingDot } from "../CurrentActivity/BlinkingDot";
 import { CurrentActivityDisplay } from "../CurrentActivity/CurrentActivityDisplay";
@@ -12,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { showNotification } from "@mantine/notifications";
 import { logOutAndRedirect } from "../../utils/authUtils";
 import { useState } from "react";
+import { YOU_BADGE_COLOR } from "../../utils/constants";
 
 type FriendListRowProps = {
   isMe: boolean;
@@ -37,11 +37,12 @@ export const FriendListRow = ({
   const [isDeleting, setIsDeleting] = useState(false);
 
   return (
-    <TableTr className={isMe ? styles.tableRow : undefined}>
+    <TableTr>
       <TableTd>{index + 1}</TableTd>
       <TableTd>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           {username}
+          {isMe && <Badge color={YOU_BADGE_COLOR}>{t("badges.you")}</Badge>}
           {status && (
             <HoverCard>
               <HoverCard.Target>
