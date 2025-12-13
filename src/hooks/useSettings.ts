@@ -6,6 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCookies } from "react-cookie";
 import {
   colorSchemeCookieName,
+  DEFAULT_TIME_IN_HOURS,
   defaultDayRangeCookieName,
   languageCookieName,
   smoothChartsCookieName,
@@ -88,7 +89,7 @@ export const useCreateSettings = ({
     toggleColorScheme,
     defaultDayRange: defaultDayRange ?? "week",
     setDefaultDayRange,
-    timeInHours,
+    timeInHours: timeInHours ?? DEFAULT_TIME_IN_HOURS,
     setTimeInHours,
   };
 };
