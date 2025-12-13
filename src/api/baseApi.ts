@@ -86,6 +86,11 @@ async function baseFetch(
         error: PostRequestError.RateLimited,
         statusCode: response.status,
       };
+    } else if (response.status === 401) {
+      return {
+        error: PostRequestError.Unauthorized,
+        statusCode: response.status,
+      };
     }
 
     return {

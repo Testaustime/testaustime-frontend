@@ -168,7 +168,15 @@
       "tooltip": {
         "install": "Get your extension from here!",
         "label": "This token is used for authentication in your code editor."
-      }
+      },
+      "passwordLabel": "Password",
+      "confirmPassword": "Confirm password",
+      "passwordRequiredDescription": "Please provide your password to regenerate the authentication token",
+      "regenerateWrongPassword": "The provided password is incorrect",
+      "passwordRequired": "Password is required",
+      "regenerateButton": "Confirm",
+      "regenerateSuccessTitle": "Authentication token regenerated",
+      "regenerateSuccessDescription": "Your authentication token was successfully regenerated, please remember to update the new token to your code editors."
     },
     "changePassword": {
       "confirm": {

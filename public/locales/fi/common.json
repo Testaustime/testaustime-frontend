@@ -168,7 +168,15 @@
       "tooltip": {
         "install": "Asenna Testaustime-laajennus täältä!",
         "label": "Tätä tunnusta käytetään tunnistautumiseen koodieditorissasi."
-      }
+      },
+      "passwordLabel": "Salasana",
+      "confirmPassword": "Vahvista salasana",
+      "passwordRequiredDescription": "Vahvista salasanasi generoidaksesi tunnistautumistunnus uudelleen",
+      "regenerateWrongPassword": "Antamasi salasana on väärin",
+      "passwordRequired": "Salasana vaaditaan",
+      "regenerateButton": "Vahvista",
+      "regenerateSuccessTitle": "Tunnistautumistunnus generoitu uudelleen",
+      "regenerateSuccessDescription": "Tunnistautumistunnus generoitiin uudelleen, muista päivittää uusi tunnus myös editoreihisi."
     },
     "changePassword": {
       "confirm": {

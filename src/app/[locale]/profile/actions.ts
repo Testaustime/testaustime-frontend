@@ -10,11 +10,14 @@ interface ApiAuthRegenerateResponse {
   token: string;
 }
 
-export const regenerateToken = async () => {
-  const res =
-    await postRequestWithResponse<ApiAuthRegenerateResponse>(
-      "/auth/regenerate",
-    );
+export const regenerateToken = async (username: string, password: string) => {
+  const res = await postRequestWithResponse<ApiAuthRegenerateResponse>(
+    "/auth/regenerate",
+    {
+      username,
+      password,
+    },
+  );
 
   if ("error" in res) {
     return res;
