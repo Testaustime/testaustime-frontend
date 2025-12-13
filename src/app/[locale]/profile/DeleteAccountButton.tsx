@@ -4,7 +4,6 @@ import { useModals } from "@mantine/modals";
 import ButtonWithConfirmation from "../../../components/ButtonWithConfirmation";
 import ConfirmAccountDeletionModal from "../../../components/ConfirmAccountDeletionModal";
 import { useTranslation } from "react-i18next";
-import { deleteAccount } from "./deleteAccount";
 
 export const DeleteAccountButton = ({ username }: { username: string }) => {
   const modals = useModals();
@@ -12,15 +11,12 @@ export const DeleteAccountButton = ({ username }: { username: string }) => {
 
   const openDeleteAccountModal = () => {
     const id = modals.openModal({
-      title: t("profile.deleteAccount.modal.title"),
+      title: t("profile.sudoOperation.confirmButton"),
       size: "xl",
       children: (
         <ConfirmAccountDeletionModal
-          onCancel={() => {
-            modals.closeModal(id);
-          }}
-          onConfirm={async (password) => {
-            await deleteAccount(username, password);
+          username={username}
+          closeModal={() => {
             modals.closeModal(id);
           }}
         />

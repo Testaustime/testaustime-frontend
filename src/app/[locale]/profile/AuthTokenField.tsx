@@ -23,7 +23,7 @@ export const AuthTokenField = ({
 
   const openPasswordModal = () => {
     const id = modals.openModal({
-      title: t("profile.authenticationToken.confirmPassword"),
+      title: t("profile.sudoOperation.title"),
       size: "xl",
       children: (
         <div>
@@ -36,7 +36,7 @@ export const AuthTokenField = ({
             }}
             validationSchema={Yup.object().shape({
               password: Yup.string().required(
-                t("profile.authenticationToken.passwordRequired"),
+                t("profile.sudoOperation.passwordRequired"),
               ),
             })}
             onSubmit={async (values) => {
@@ -47,7 +47,7 @@ export const AuthTokenField = ({
                   message: {
                     [PostRequestError.RateLimited]: t("rateLimitedError"),
                     [PostRequestError.Unauthorized]: t(
-                      "profile.authenticationToken.regenerateWrongPassword",
+                      "profile.sudoOperation.wrongPassword",
                     ),
                     [PostRequestError.UnknownError]: t("unknownErrorOccurred"),
                   }[result.error],
@@ -72,12 +72,12 @@ export const AuthTokenField = ({
               <Form>
                 <FormikPasswordInput
                   name="password"
-                  label={t("profile.authenticationToken.passwordLabel")}
+                  label={t("profile.sudoOperation.passwordLabel")}
                   mt={15}
                 />
                 <Button mt={20} type="submit">
                   <LoadingOverlay visible={formik.isSubmitting} />
-                  {t("profile.authenticationToken.confirmPassword")}
+                  {t("profile.sudoOperation.confirmButton")}
                 </Button>
               </Form>
             )}

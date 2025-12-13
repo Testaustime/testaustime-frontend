@@ -163,18 +163,20 @@
       "makePublic": "Muuta julkiseksi",
       "title": "Tilin näkyvyys"
     },
+    "sudoOperation": {
+      "title": "Vahvista salasana",
+      "passwordLabel": "Salasana",
+      "wrongPassword": "Antamasi salasana on väärin",
+      "passwordRequired": "Salasana vaaditaan",
+      "confirmButton": "Vahvista"
+    },
     "authenticationToken": {
       "title": "Tunnistautumistunnus",
       "tooltip": {
         "install": "Asenna Testaustime-laajennus täältä!",
         "label": "Tätä tunnusta käytetään tunnistautumiseen koodieditorissasi."
       },
-      "passwordLabel": "Salasana",
-      "confirmPassword": "Vahvista salasana",
       "passwordRequiredDescription": "Vahvista salasanasi generoidaksesi tunnistautumistunnus uudelleen",
-      "regenerateWrongPassword": "Antamasi salasana on väärin",
-      "passwordRequired": "Salasana vaaditaan",
-      "regenerateButton": "Vahvista",
       "regenerateSuccessTitle": "Tunnistautumistunnus generoitu uudelleen",
       "regenerateSuccessDescription": "Tunnistautumistunnus generoitiin uudelleen, muista päivittää uusi tunnus myös editoreihisi."
     },
@@ -223,13 +225,13 @@
       }
     },
     "deleteAccount": {
+      "title": "Tilin poisto",
       "button": "Poista tili",
-      "modal": {
-        "button": "Poista",
-        "text": "Kirjoita salasanasi vahvistaaksesi tilisi poistaminen. Tätä toimintoa ei voi peruuttaa.",
-        "title": "Käyttäjän poistaminen"
-      },
-      "title": "Poista tili"
+      "modalDescription": "Kirjoita salasanasi vahvistaaksesi tilisi poistaminen. Tätä toimintoa ei voi peruuttaa.",
+      "notification": {
+        "successTitle": "Tili poistettu",
+        "successDescription": "Tilisi ja kaikki sen tiedot on poistettu onnistuneesti"
+      }
     },
     "friendCode": {
       "title": "Kaverikoodi",
