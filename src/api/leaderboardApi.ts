@@ -17,7 +17,7 @@ export const getLeaderboard = async (leaderboardName: string) => {
   );
 
   if ("error" in data) {
-    if (data.response?.status === 404) {
+    if (data.response.status === 404) {
       return { error: GetLeaderboardError.LeaderboardNotFound };
     }
   }
