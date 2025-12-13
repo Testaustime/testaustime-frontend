@@ -5,20 +5,20 @@ import { GetRequestError, PostRequestError } from "../types";
 
 export const getRequest = async <T>(path: string) => {
   const token = cookies().get("token")?.value;
-  if (!token) {
-    return {
-      error: GetRequestError.Unauthorized as const,
-    };
-  }
 
   const ip = headers().get("client-ip") ?? "Unknown IP";
 
+  const h = new Headers({
+    "client-ip": ip,
+    "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
+  });
+
+  if (token !== undefined) {
+    h.set("Authorization", `Bearer ${token}`);
+  }
+
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${path}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "client-ip": ip,
-      "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
-    },
+    headers: h,
     cache: "no-cache",
   });
 

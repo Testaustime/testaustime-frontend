@@ -71,7 +71,7 @@ export const getCurrentActivityStatus = async (username: string) => {
   );
 
   if ("error" in data) {
-    if (data.response?.status === 404) {
+    if (data.response.status === 404) {
       const errorJson = (await data.response.json()) as unknown;
       if (
         errorJson !== null &&
@@ -100,7 +100,7 @@ export const getUserActivityData = async (username: string) => {
   );
 
   if ("error" in data) {
-    if (data.response?.status === 404) {
+    if (data.response.status === 404) {
       return { error: GetUserActivityDataError.UserNotFound };
     }
     return data;
