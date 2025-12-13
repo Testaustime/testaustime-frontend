@@ -23,6 +23,7 @@ import { PromoteUserButton } from "./PromoteUserButton";
 import { KickUserButton } from "./KickUserButton";
 import { GetLeaderboardError } from "../../../../types";
 import { getPreferences } from "../../../../utils/cookieUtils";
+import { YOU_BADGE_COLOR } from "../../../../utils/constants";
 
 export default async function LeaderboardPage({
   params: { locale, name },
@@ -115,6 +116,11 @@ export default async function LeaderboardPage({
                   </TableTd>
                   <TableTd>
                     {member.username}
+                    {member.username === me.username && (
+                      <Badge ml="sm" color={YOU_BADGE_COLOR}>
+                        {t("leaderboards.you")}
+                      </Badge>
+                    )}
                     {member.admin && (
                       <Badge ml="sm">{t("leaderboards.admin")}</Badge>
                     )}

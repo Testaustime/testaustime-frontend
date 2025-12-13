@@ -83,6 +83,7 @@
   },
   "leaderboards": {
     "admin": "Admin",
+    "you": "You",
     "create": "Create",
     "createNewLeaderboard": "Create new leaderboard",
     "deleteLeaderboard": "Delete leaderboard",

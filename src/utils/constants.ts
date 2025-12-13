@@ -6,3 +6,5 @@ export const timeInHoursCookieName = "testaustime-time-in-hours";
 
 export const DEFAULT_DAY_RANGE = "week";
 export const DEFAULT_TIME_IN_HOURS = false;
+
+export const YOU_BADGE_COLOR = "green" as const;

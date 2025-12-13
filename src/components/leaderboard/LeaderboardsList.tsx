@@ -6,15 +6,18 @@ import { getOrdinalSuffix } from "../../utils/stringUtils";
 import { Leaderboard } from "../../types";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import { YOU_BADGE_COLOR } from "../../utils/constants";
 
 interface LeaderboardsListProps {
   leaderboards: Leaderboard[];
   maxTimeUnit: TimeUnit;
+  meUsername: string;
 }
 
 export const LeaderboardsList = ({
   leaderboards,
   maxTimeUnit,
+  meUsername,
 }: LeaderboardsListProps) => {
   const { t } = useTranslation();
 
@@ -44,6 +47,11 @@ export const LeaderboardsList = ({
               <Table.Td>
                 {topMember.username} (
                 {prettyDuration(topMember.time_coded, maxTimeUnit)})
+                {topMember.username === meUsername && (
+                  <Badge color={YOU_BADGE_COLOR} ml="sm">
+                    {t("leaderboards.you")}
+                  </Badge>
+                )}
               </Table.Td>
               <Table.Td>
                 {yourPosition}

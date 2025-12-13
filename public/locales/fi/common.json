@@ -83,6 +83,7 @@
   },
   "leaderboards": {
     "admin": "Ylläpitäjä",
+    "you": "Sinä",
     "create": "Luo",
     "createNewLeaderboard": "Luo uusi tulostaulu",
     "deleteLeaderboard": "Poista tulostaulu",
