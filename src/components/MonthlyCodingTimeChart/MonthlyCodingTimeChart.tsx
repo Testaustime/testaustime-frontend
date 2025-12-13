@@ -13,7 +13,7 @@ import { addMonths, format, startOfMonth } from "date-fns";
 import { sumBy } from "../../utils/arrayUtils";
 import { calculateTickValues } from "../../utils/chartUtils";
 import { Line } from "react-chartjs-2";
-import { prettyDuration } from "../../utils/dateUtils";
+import { prettyDuration, TimeUnit } from "../../utils/dateUtils";
 
 ChartJS.register(
   CategoryScale,
@@ -32,6 +32,7 @@ type MonthlyCodingTimeChartProps = {
     duration: number;
   }[];
   smoothCharts: boolean;
+  maxTimeUnit: TimeUnit;
 };
 
 export const transformData = (
@@ -69,6 +70,7 @@ export const transformData = (
 export const MonthlyCodingTimeChart = ({
   data: dataRaw,
   smoothCharts,
+  maxTimeUnit,
 }: MonthlyCodingTimeChartProps) => {
   const data = [...dataRaw].sort(
     (a, b) => a.month.getTime() - b.month.getTime(),
@@ -87,7 +89,8 @@ export const MonthlyCodingTimeChart = ({
             mode: "index",
             intersect: false,
             callbacks: {
-              label: (item) => "  " + prettyDuration(Number(item.raw)),
+              label: (item) =>
+                "  " + prettyDuration(Number(item.raw), maxTimeUnit),
             },
             padding: 8,
           },
@@ -102,7 +105,8 @@ export const MonthlyCodingTimeChart = ({
             ticks: {
               count: yticks.length,
               stepSize: yticks[1] - yticks[0],
-              callback: (_, index) => prettyDuration(yticks[index]),
+              callback: (_, index) =>
+                prettyDuration(yticks[index], maxTimeUnit),
             },
           },
         },

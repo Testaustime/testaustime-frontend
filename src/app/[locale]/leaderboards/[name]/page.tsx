@@ -23,6 +23,8 @@ import { DemoteUserButton } from "./DemoteUserButton";
 import { PromoteUserButton } from "./PromoteUserButton";
 import { KickUserButton } from "./KickUserButton";
 import { GetLeaderboardError, GetRequestError } from "../../../../types";
+import { getPreferences } from "../../../../utils/cookieUtils";
+import { YOU_BADGE_COLOR } from "../../../../utils/constants";
 
 export default async function LeaderboardPage({
   params: { locale, name },
@@ -69,6 +71,8 @@ export default async function LeaderboardPage({
     .map((m) => m.username);
   const isAdmin = adminUsernames.includes(me.username);
   const isLastAdmin = isAdmin && adminUsernames.length === 1;
+
+  const { maxTimeUnit } = getPreferences();
 
   return (
     <>
@@ -120,11 +124,16 @@ export default async function LeaderboardPage({
                   </TableTd>
                   <TableTd>
                     {member.username}
-                    {member.admin && (
-                      <Badge ml="sm">{t("leaderboards.admin")}</Badge>
+                    {member.username === me.username && (
+                      <Badge ml="sm" color={YOU_BADGE_COLOR}>
+                        {t("badges.you")}
+                      </Badge>
                     )}
+                    {member.admin && <Badge ml="sm">{t("badges.admin")}</Badge>}
                   </TableTd>
-                  <TableTd>{prettyDuration(member.time_coded)}</TableTd>
+                  <TableTd>
+                    {prettyDuration(member.time_coded, maxTimeUnit)}
+                  </TableTd>
                   {isAdmin && (
                     <>
                       <TableTd

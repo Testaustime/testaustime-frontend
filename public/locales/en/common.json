@@ -82,7 +82,6 @@
     "yourFriends": "Your friends"
   },
   "leaderboards": {
-    "admin": "Admin",
     "create": "Create",
     "createNewLeaderboard": "Create new leaderboard",
     "deleteLeaderboard": "Delete leaderboard",
@@ -243,6 +242,7 @@
       "defaultDayRange": "Default day range",
       "language": "Language",
       "smoothCharts": "Smooth charts",
+      "timeInHours": "Convert large time units to hours",
       "title": "Settings"
     },
     "title": "My profile",
@@ -317,5 +317,9 @@
       "text": "Not working?",
       "link": "Copy authentication token on settings page."
     }
+  },
+  "badges": {
+    "admin": "Admin",
+    "you": "You"
   }
 }

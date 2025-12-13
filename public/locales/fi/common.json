@@ -82,7 +82,6 @@
     "yourFriends": "Kaverisi"
   },
   "leaderboards": {
-    "admin": "Ylläpitäjä",
     "create": "Luo",
     "createNewLeaderboard": "Luo uusi tulostaulu",
     "deleteLeaderboard": "Poista tulostaulu",
@@ -243,6 +242,7 @@
       "defaultDayRange": "Oletuksena näytettävä aikaväli",
       "language": "Kieli",
       "smoothCharts": "Pehmeät kaaviot",
+      "timeInHours": "Muunna suuret aikayksiköt tunteihin",
       "title": "Asetukset"
     },
     "title": "Profiili",
@@ -317,5 +317,9 @@
       "text": "Eikö toimi?",
       "link": "Kopioi tunnistautumistunnus asetukset-sivulla."
     }
+  },
+  "badges": {
+    "admin": "Ylläpitäjä",
+    "you": "Sinä"
   }
 }

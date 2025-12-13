@@ -1,17 +1,24 @@
 "use client";
 
 import { Badge, Table, TableTh, TableThead, TableTr } from "@mantine/core";
-import { prettyDuration } from "../../utils/dateUtils";
+import { prettyDuration, TimeUnit } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
 import { Leaderboard } from "../../types";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import { YOU_BADGE_COLOR } from "../../utils/constants";
 
 interface LeaderboardsListProps {
   leaderboards: Leaderboard[];
+  maxTimeUnit: TimeUnit;
+  meUsername: string;
 }
 
-export const LeaderboardsList = ({ leaderboards }: LeaderboardsListProps) => {
+export const LeaderboardsList = ({
+  leaderboards,
+  maxTimeUnit,
+  meUsername,
+}: LeaderboardsListProps) => {
   const { t } = useTranslation();
 
   return (
@@ -34,11 +41,17 @@ export const LeaderboardsList = ({ leaderboards }: LeaderboardsListProps) => {
               <Table.Td>
                 {leaderboard.name}
                 {leaderboard.me.admin && (
-                  <Badge ml="sm">{t("leaderboards.admin")}</Badge>
+                  <Badge ml="sm">{t("badges.admin")}</Badge>
                 )}
               </Table.Td>
               <Table.Td>
-                {topMember.username} ({prettyDuration(topMember.time_coded)})
+                {topMember.username} (
+                {prettyDuration(topMember.time_coded, maxTimeUnit)})
+                {topMember.username === meUsername && (
+                  <Badge color={YOU_BADGE_COLOR} ml="sm">
+                    {t("badges.you")}
+                  </Badge>
+                )}
               </Table.Td>
               <Table.Td>
                 {yourPosition}

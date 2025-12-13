@@ -13,6 +13,8 @@ interface SettingsContextValue {
   setColorScheme: (colorScheme: MantineColorScheme) => void;
   defaultDayRange?: DayRange;
   setDefaultDayRange: (defaultDayRange: DayRange) => void;
+  timeInHours: boolean;
+  setTimeInHours: (timeInHours: boolean) => void;
 }
 
 const defaultCallback = () => {
@@ -28,6 +30,8 @@ const defaultValue: SettingsContextValue = {
   setColorScheme: defaultCallback,
   defaultDayRange: undefined,
   setDefaultDayRange: defaultCallback,
+  timeInHours: false,
+  setTimeInHours: defaultCallback,
 };
 
 export const SettingsContext = createContext(defaultValue);

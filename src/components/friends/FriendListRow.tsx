@@ -1,9 +1,8 @@
-import { Button, HoverCard, TableTd, TableTr } from "@mantine/core";
-import styles from "./FriendListRow.module.css";
+import { Badge, Button, HoverCard, TableTd, TableTr } from "@mantine/core";
 import { CurrentActivity } from "../CurrentActivity/CurrentActivity";
 import { BlinkingDot } from "../CurrentActivity/BlinkingDot";
 import { CurrentActivityDisplay } from "../CurrentActivity/CurrentActivityDisplay";
-import { prettyDuration } from "../../utils/dateUtils";
+import { prettyDuration, TimeUnit } from "../../utils/dateUtils";
 import Link from "next/link";
 import { removeFriend } from "./actions";
 import { useRouter } from "next/navigation";
@@ -12,6 +11,7 @@ import { showNotification } from "@mantine/notifications";
 import { logOutAndRedirect } from "../../utils/authUtils";
 import { useState } from "react";
 import { PostRequestError } from "../../types";
+import { YOU_BADGE_COLOR } from "../../utils/constants";
 
 type FriendListRowProps = {
   isMe: boolean;
@@ -20,6 +20,7 @@ type FriendListRowProps = {
   status: CurrentActivity | null;
   codingTime: number;
   locale: string;
+  maxTimeUnit: TimeUnit;
 };
 
 export const FriendListRow = ({
@@ -29,17 +30,19 @@ export const FriendListRow = ({
   status,
   codingTime,
   locale,
+  maxTimeUnit,
 }: FriendListRowProps) => {
   const router = useRouter();
   const { t } = useTranslation();
   const [isDeleting, setIsDeleting] = useState(false);
 
   return (
-    <TableTr className={isMe ? styles.tableRow : undefined}>
+    <TableTr>
       <TableTd>{index + 1}</TableTd>
       <TableTd>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           {username}
+          {isMe && <Badge color={YOU_BADGE_COLOR}>{t("badges.you")}</Badge>}
           {status && (
             <HoverCard>
               <HoverCard.Target>
@@ -52,7 +55,7 @@ export const FriendListRow = ({
           )}
         </div>
       </TableTd>
-      <TableTd>{prettyDuration(codingTime)}</TableTd>
+      <TableTd>{prettyDuration(codingTime, maxTimeUnit)}</TableTd>
       <TableTd style={{ textAlign: "right", padding: "7px 0px" }}>
         {!isMe && (
           <Link href={`/${locale}/users/${username}`} prefetch={false}>

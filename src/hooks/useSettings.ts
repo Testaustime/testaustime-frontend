@@ -6,9 +6,11 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCookies } from "react-cookie";
 import {
   colorSchemeCookieName,
+  DEFAULT_TIME_IN_HOURS,
   defaultDayRangeCookieName,
   languageCookieName,
   smoothChartsCookieName,
+  timeInHoursCookieName,
 } from "../utils/constants";
 import { MantineColorScheme } from "@mantine/core";
 import { i18nConfig } from "../i18nConfig";
@@ -59,6 +61,11 @@ export const useCreateSettings = ({
     setCookies(defaultDayRangeCookieName, value, defaultCookieSettings);
   };
 
+  const timeInHours = cookies[timeInHoursCookieName] as boolean | undefined;
+  const setTimeInHours = (value: boolean) => {
+    setCookies(timeInHoursCookieName, value, defaultCookieSettings);
+  };
+
   return {
     smoothCharts: smoothCharts ?? true,
     setSmoothCharts,
@@ -82,6 +89,8 @@ export const useCreateSettings = ({
     toggleColorScheme,
     defaultDayRange: defaultDayRange ?? "week",
     setDefaultDayRange,
+    timeInHours: timeInHours ?? DEFAULT_TIME_IN_HOURS,
+    setTimeInHours,
   };
 };
 
