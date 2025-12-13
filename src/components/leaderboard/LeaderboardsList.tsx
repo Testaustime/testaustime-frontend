@@ -41,7 +41,7 @@ export const LeaderboardsList = ({
               <Table.Td>
                 {leaderboard.name}
                 {leaderboard.me.admin && (
-                  <Badge ml="sm">{t("leaderboards.admin")}</Badge>
+                  <Badge ml="sm">{t("badges.admin")}</Badge>
                 )}
               </Table.Td>
               <Table.Td>
@@ -49,7 +49,7 @@ export const LeaderboardsList = ({
                 {prettyDuration(topMember.time_coded, maxTimeUnit)})
                 {topMember.username === meUsername && (
                   <Badge color={YOU_BADGE_COLOR} ml="sm">
-                    {t("leaderboards.you")}
+                    {t("badges.you")}
                   </Badge>
                 )}
               </Table.Td>

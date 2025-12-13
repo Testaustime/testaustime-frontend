@@ -118,12 +118,10 @@ export default async function LeaderboardPage({
                     {member.username}
                     {member.username === me.username && (
                       <Badge ml="sm" color={YOU_BADGE_COLOR}>
-                        {t("leaderboards.you")}
+                        {t("badges.you")}
                       </Badge>
                     )}
-                    {member.admin && (
-                      <Badge ml="sm">{t("leaderboards.admin")}</Badge>
-                    )}
+                    {member.admin && <Badge ml="sm">{t("badges.admin")}</Badge>}
                   </TableTd>
                   <TableTd>
                     {prettyDuration(member.time_coded, maxTimeUnit)}
