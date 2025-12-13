@@ -232,6 +232,7 @@
       "defaultDayRange": "Default day range",
       "language": "Language",
       "smoothCharts": "Smooth charts",
+      "timeInHours": "Convert large time units to hours",
       "title": "Settings"
     },
     "title": "My profile",

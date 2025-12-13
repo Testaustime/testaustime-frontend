@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { ApiFriendsResponseItem } from "../../api/friendsApi";
 import { CurrentActivity } from "../CurrentActivity/CurrentActivity";
 import { FriendListRow } from "./FriendListRow";
+import { TimeUnit } from "../../utils/dateUtils";
 
 type FriendListProps = {
   friends: ApiFriendsResponseItem[];
@@ -11,6 +12,7 @@ type FriendListProps = {
   username: string;
   locale: string;
   ownStatus: CurrentActivity | null;
+  maxTimeUnit: TimeUnit;
 };
 
 export const FriendList = ({
@@ -19,6 +21,7 @@ export const FriendList = ({
   username,
   locale,
   ownStatus,
+  maxTimeUnit,
 }: FriendListProps) => {
   const { t } = useTranslation();
 
@@ -65,6 +68,7 @@ export const FriendList = ({
             locale={locale}
             codingTime={codingTime}
             isMe={isMe}
+            maxTimeUnit={maxTimeUnit}
           />
         ))}
       </Table.Tbody>

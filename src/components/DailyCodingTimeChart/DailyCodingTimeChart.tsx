@@ -13,7 +13,7 @@ import {
   LineElement,
   PointElement,
 } from "chart.js";
-import { prettyDuration } from "../../utils/dateUtils";
+import { prettyDuration, TimeUnit } from "../../utils/dateUtils";
 
 ChartJS.register(
   CategoryScale,
@@ -32,6 +32,7 @@ export interface DailyCodingTimeChartProps {
     duration: number;
   }[];
   smoothCharts: boolean;
+  maxTimeUnit: TimeUnit;
 }
 
 export const transformData = (
@@ -61,6 +62,7 @@ export const transformData = (
 export const DailyCodingTimeChart = ({
   data: dataRaw,
   smoothCharts,
+  maxTimeUnit,
 }: DailyCodingTimeChartProps) => {
   const data = [...dataRaw].sort((a, b) => a.date.getTime() - b.date.getTime());
   const maxDuration = Math.max(...data.map((d) => d.duration));
@@ -77,7 +79,8 @@ export const DailyCodingTimeChart = ({
             mode: "index",
             intersect: false,
             callbacks: {
-              label: (item) => "  " + prettyDuration(Number(item.raw)),
+              label: (item) =>
+                "  " + prettyDuration(Number(item.raw), maxTimeUnit),
             },
             padding: 8,
           },
@@ -92,7 +95,8 @@ export const DailyCodingTimeChart = ({
             ticks: {
               count: yticks.length,
               stepSize: yticks[1] - yticks[0],
-              callback: (_, index) => prettyDuration(yticks[index]),
+              callback: (_, index) =>
+                prettyDuration(yticks[index], maxTimeUnit),
             },
           },
         },

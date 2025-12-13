@@ -232,6 +232,7 @@
       "defaultDayRange": "Oletuksena näytettävä aikaväli",
       "language": "Kieli",
       "smoothCharts": "Pehmeät kaaviot",
+      "timeInHours": "Muunna suuret aikayksiköt tunteihin",
       "title": "Asetukset"
     },
     "title": "Profiili",

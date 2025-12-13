@@ -1,5 +1,5 @@
 import { ActionIcon } from "@mantine/core";
-import { prettyDuration } from "../../utils/dateUtils";
+import { prettyDuration, TimeUnit } from "../../utils/dateUtils";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useModals } from "@mantine/modals";
 import EditProjectModal from "../EditProjectModal";
@@ -10,12 +10,14 @@ type ProjectEntryProps = {
   name?: string | undefined | null;
   durationSeconds: number;
   allowEditing?: boolean;
+  maxTimeUnit: TimeUnit;
 };
 
 export const ProjectEntry = ({
   name,
   durationSeconds,
   allowEditing,
+  maxTimeUnit,
 }: ProjectEntryProps) => {
   const modals = useModals();
 
@@ -50,7 +52,7 @@ export const ProjectEntry = ({
       <div className={styles.container}>
         <span>
           {name || <i>{t("dashboard.unknownProject")}</i>}:{" "}
-          {prettyDuration(durationSeconds)}
+          {prettyDuration(durationSeconds, maxTimeUnit)}
         </span>
         {allowEditing && (
           <ActionIcon

@@ -15,6 +15,7 @@ import { AuthTokenField } from "./AuthTokenField";
 import { redirect } from "next/navigation";
 import { getMe } from "../../../api/usersApi";
 import ChangeUsernameForm from "../../../components/ChangeUsernameForm";
+import { TimeInHoursSelector } from "../../../components/TimeInHoursSelector/TimeInHoursSelector";
 
 export type ProfilePageProps = {
   username: string;
@@ -129,6 +130,7 @@ export default async function ProfilePage({
         <SmoothChartsSelector />
         <LanguageSelector locale={locale} />
         <DefaultDayRangeSelector />
+        <TimeInHoursSelector />
       </Stack>
     </Stack>
   );

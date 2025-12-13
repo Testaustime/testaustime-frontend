@@ -13,7 +13,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { prettyDuration } from "../utils/dateUtils";
+import { prettyDuration, TimeUnit } from "../utils/dateUtils";
 
 ChartJS.register(
   CategoryScale,
@@ -37,6 +37,7 @@ interface PerProjectChartProps {
   }[];
   projectCount?: number;
   className: string;
+  maxTimeUnit: TimeUnit;
 }
 
 const defaultColors = [
@@ -82,6 +83,7 @@ export const PerProjectChart = ({
   entries,
   projectCount = 5,
   className,
+  maxTimeUnit,
 }: PerProjectChartProps) => {
   if (entries.length === 0) return <Text>No data</Text>;
 
@@ -181,6 +183,7 @@ export const PerProjectChart = ({
                 label: (item) =>
                   `${item.dataset.label || "Unknown"}: ${prettyDuration(
                     Number(item.raw),
+                    maxTimeUnit,
                   )}`,
               },
             },
@@ -195,7 +198,8 @@ export const PerProjectChart = ({
               stacked: true,
               ticks: {
                 count: ticks.length,
-                callback: (_, index) => prettyDuration(ticks[index]),
+                callback: (_, index) =>
+                  prettyDuration(ticks[index], maxTimeUnit),
               },
             },
             y: {
