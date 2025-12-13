@@ -19,6 +19,7 @@ import {
   getDayCount,
   isDayRange,
   prettyDuration,
+  TimeUnit,
 } from "../utils/dateUtils";
 import { TopProjects } from "./TopProjects/TopProjects";
 import { sumBy } from "../utils/arrayUtils";
@@ -43,10 +44,11 @@ interface DashboardProps {
   username: string;
   isFrontPage: boolean;
   allEntries: ActivityDataEntry[];
-  defaultDayRange?: DayRange | undefined | null;
-  smoothCharts?: boolean | undefined | null;
+  defaultDayRange: DayRange;
+  smoothCharts: boolean;
   locale: string;
-  initialActivity?: CurrentActivity | undefined | null;
+  initialActivity: CurrentActivity | undefined | null;
+  maxTimeUnit: TimeUnit;
 }
 
 export const Dashboard = ({
@@ -57,12 +59,12 @@ export const Dashboard = ({
   smoothCharts,
   locale,
   initialActivity,
+  maxTimeUnit,
 }: DashboardProps) => {
   const { t } = useTranslation();
 
-  const [statisticsRange, setStatisticsRange] = useState<DayRange>(
-    defaultDayRange || "week",
-  );
+  const [statisticsRange, setStatisticsRange] =
+    useState<DayRange>(defaultDayRange);
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
 
@@ -224,12 +226,14 @@ export const Dashboard = ({
               dayCount > 180 ? (
                 <MonthlyCodingTimeChart
                   data={transformMonthlyData(entries)}
-                  smoothCharts={smoothCharts ?? true}
+                  smoothCharts={smoothCharts}
+                  maxTimeUnit={maxTimeUnit}
                 />
               ) : (
                 <DailyCodingTimeChart
                   data={transformDailyData(entries, dayCount)}
-                  smoothCharts={smoothCharts ?? true}
+                  smoothCharts={smoothCharts}
+                  maxTimeUnit={maxTimeUnit}
                 />
               )
             ) : (
@@ -240,6 +244,7 @@ export const Dashboard = ({
                 days: dayCount,
                 totalTime: prettyDuration(
                   sumBy(entries, (entry) => entry.duration),
+                  maxTimeUnit,
                 ),
               })}
             </Text>
@@ -251,28 +256,37 @@ export const Dashboard = ({
             <PerProjectChart
               entries={entries}
               className={styles.projectCodingChart}
+              maxTimeUnit={maxTimeUnit}
             />
           </DataCard>
           {isSmallScreen ? (
-            <Stack align="center">
+            <Stack>
               <div>
                 <Title order={2}>{t("dashboard.languages")}</Title>
-                <TopLanguages entries={entries} />
+                <TopLanguages entries={entries} maxTimeUnit={maxTimeUnit} />
               </div>
               <div>
                 <Title order={2}>{t("dashboard.projects")}</Title>
-                <TopProjects entries={entries} allowEditing={isFrontPage} />
+                <TopProjects
+                  entries={entries}
+                  allowEditing={isFrontPage}
+                  maxTimeUnit={maxTimeUnit}
+                />
               </div>
             </Stack>
           ) : (
             <Group grow align="flex-start">
               <div>
                 <Title order={2}>{t("dashboard.languages")}</Title>
-                <TopLanguages entries={entries} />
+                <TopLanguages entries={entries} maxTimeUnit={maxTimeUnit} />
               </div>
               <div>
                 <Title order={2}>{t("dashboard.projects")}</Title>
-                <TopProjects entries={entries} allowEditing={isFrontPage} />
+                <TopProjects
+                  entries={entries}
+                  allowEditing={isFrontPage}
+                  maxTimeUnit={maxTimeUnit}
+                />
               </div>
             </Group>
           )}

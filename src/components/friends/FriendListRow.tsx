@@ -3,7 +3,7 @@ import styles from "./FriendListRow.module.css";
 import { CurrentActivity } from "../CurrentActivity/CurrentActivity";
 import { BlinkingDot } from "../CurrentActivity/BlinkingDot";
 import { CurrentActivityDisplay } from "../CurrentActivity/CurrentActivityDisplay";
-import { prettyDuration } from "../../utils/dateUtils";
+import { prettyDuration, TimeUnit } from "../../utils/dateUtils";
 import Link from "next/link";
 import { removeFriend } from "./actions";
 import { RemoveFriendError } from "../../types";
@@ -20,6 +20,7 @@ type FriendListRowProps = {
   status: CurrentActivity | null;
   codingTime: number;
   locale: string;
+  maxTimeUnit: TimeUnit;
 };
 
 export const FriendListRow = ({
@@ -29,6 +30,7 @@ export const FriendListRow = ({
   status,
   codingTime,
   locale,
+  maxTimeUnit,
 }: FriendListRowProps) => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -52,7 +54,7 @@ export const FriendListRow = ({
           )}
         </div>
       </TableTd>
-      <TableTd>{prettyDuration(codingTime)}</TableTd>
+      <TableTd>{prettyDuration(codingTime, maxTimeUnit)}</TableTd>
       <TableTd style={{ textAlign: "right", padding: "7px 0px" }}>
         {!isMe && (
           <Link href={`/${locale}/users/${username}`} prefetch={false}>

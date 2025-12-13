@@ -1,38 +1,37 @@
-import { formatDuration, intervalToDuration } from "date-fns";
+const timeUnits = [
+  { suffix: "y", value: 60 * 60 * 24 * 365 },
+  { suffix: "mo", value: 60 * 60 * 24 * 30 },
+  { suffix: "d", value: 60 * 60 * 24 },
+  { suffix: "h", value: 60 * 60 },
+  { suffix: "min", value: 60 },
+  { suffix: "s", value: 1 },
+] as const;
 
-const formatShort = {
-  xSeconds: "{{count}}s",
-  xMinutes: "{{count}}min",
-  xHours: "{{count}}h",
-  xDays: "{{count}}d",
-  xMonths: "{{count}}mo",
-  xYears: "{{count}}y",
+export type TimeUnit = (typeof timeUnits)[number]["suffix"];
+
+export const prettyDuration = (
+  seconds: number,
+  maxTimeUnit: TimeUnit,
+): string => {
+  if (seconds <= 0) return "0s";
+
+  let result = "";
+
+  const startTimeUnitIndex = timeUnits.findIndex(
+    (x) => x.suffix === maxTimeUnit,
+  );
+
+  const usableTimeUnits = timeUnits.slice(startTimeUnitIndex);
+  for (const { suffix, value } of usableTimeUnits) {
+    const count = Math.floor(seconds / value);
+    if (count > 0) {
+      result += String(count) + suffix + " ";
+    }
+    seconds %= value;
+  }
+
+  return result.trim();
 };
-
-const isImplementedToken = (
-  token: unknown,
-): token is keyof typeof formatShort =>
-  typeof token === "string" && token in formatShort;
-
-export const prettyDuration = (seconds: number) =>
-  formatDuration(
-    intervalToDuration({
-      start: 0,
-      end: Math.round(((seconds || 0) * 1000) / 60000) * 60000,
-    }),
-    {
-      locale: {
-        formatDistance: (token, count) => {
-          if (isImplementedToken(token)) {
-            return formatShort[token].replace("{{count}}", String(count));
-          } else {
-            console.warn("Unimplemented token", token);
-            return "";
-          }
-        },
-      },
-    },
-  ) || "None";
 
 const DAY_RANGE_VALUES = ["month", "week", "all"] as const;
 export type DayRange = (typeof DAY_RANGE_VALUES)[number];

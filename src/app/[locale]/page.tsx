@@ -3,11 +3,6 @@ import { Anchor, Text } from "@mantine/core";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { Dashboard } from "../../components/Dashboard";
 import { startOfDay } from "date-fns";
-import { isDayRange } from "../../utils/dateUtils";
-import {
-  defaultDayRangeCookieName,
-  smoothChartsCookieName,
-} from "../../utils/constants";
 import styles from "./page.module.css";
 import { ApiUsersUserResponse } from "../../types";
 import { cookies } from "next/headers";
@@ -18,6 +13,7 @@ import {
   getOwnActivityData,
 } from "../../api/usersApi";
 import { redirect } from "next/navigation";
+import { getPreferences } from "../../utils/cookieUtils";
 
 export default async function MainPage({
   params: { locale },
@@ -55,13 +51,7 @@ export default async function MainPage({
       throw new Error(JSON.stringify(currentActivity));
     }
 
-    const uncheckedDefaultDayRange = cookies().get(defaultDayRangeCookieName)
-      ?.value;
-    const defaultDayRange = isDayRange(uncheckedDefaultDayRange)
-      ? uncheckedDefaultDayRange
-      : undefined;
-    const smoothCharts =
-      (cookies().get(smoothChartsCookieName)?.value || "true") === "true";
+    const { dayRange, smoothCharts, maxTimeUnit } = getPreferences();
 
     return (
       <div className={styles.dashboardContainer}>
@@ -73,10 +63,11 @@ export default async function MainPage({
             start_time: new Date(e.start_time),
             dayStart: startOfDay(new Date(e.start_time)),
           }))}
-          defaultDayRange={defaultDayRange ?? null}
+          defaultDayRange={dayRange}
           smoothCharts={smoothCharts}
           locale={locale}
           initialActivity={currentActivity}
+          maxTimeUnit={maxTimeUnit}
         />
       </div>
     );

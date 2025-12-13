@@ -22,6 +22,7 @@ import { DemoteUserButton } from "./DemoteUserButton";
 import { PromoteUserButton } from "./PromoteUserButton";
 import { KickUserButton } from "./KickUserButton";
 import { GetLeaderboardError } from "../../../../types";
+import { getPreferences } from "../../../../utils/cookieUtils";
 
 export default async function LeaderboardPage({
   params: { locale, name },
@@ -61,6 +62,8 @@ export default async function LeaderboardPage({
     .map((m) => m.username);
   const isAdmin = adminUsernames.includes(me.username);
   const isLastAdmin = isAdmin && adminUsernames.length === 1;
+
+  const { maxTimeUnit } = getPreferences();
 
   return (
     <>
@@ -116,7 +119,9 @@ export default async function LeaderboardPage({
                       <Badge ml="sm">{t("leaderboards.admin")}</Badge>
                     )}
                   </TableTd>
-                  <TableTd>{prettyDuration(member.time_coded)}</TableTd>
+                  <TableTd>
+                    {prettyDuration(member.time_coded, maxTimeUnit)}
+                  </TableTd>
                   {isAdmin && (
                     <>
                       <TableTd

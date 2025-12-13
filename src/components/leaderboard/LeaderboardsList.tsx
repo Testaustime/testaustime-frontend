@@ -1,7 +1,7 @@
 "use client";
 
 import { Badge, Table, TableTh, TableThead, TableTr } from "@mantine/core";
-import { prettyDuration } from "../../utils/dateUtils";
+import { prettyDuration, TimeUnit } from "../../utils/dateUtils";
 import { getOrdinalSuffix } from "../../utils/stringUtils";
 import { Leaderboard } from "../../types";
 import { useTranslation } from "react-i18next";
@@ -9,9 +9,13 @@ import Link from "next/link";
 
 interface LeaderboardsListProps {
   leaderboards: Leaderboard[];
+  maxTimeUnit: TimeUnit;
 }
 
-export const LeaderboardsList = ({ leaderboards }: LeaderboardsListProps) => {
+export const LeaderboardsList = ({
+  leaderboards,
+  maxTimeUnit,
+}: LeaderboardsListProps) => {
   const { t } = useTranslation();
 
   return (
@@ -38,7 +42,8 @@ export const LeaderboardsList = ({ leaderboards }: LeaderboardsListProps) => {
                 )}
               </Table.Td>
               <Table.Td>
-                {topMember.username} ({prettyDuration(topMember.time_coded)})
+                {topMember.username} (
+                {prettyDuration(topMember.time_coded, maxTimeUnit)})
               </Table.Td>
               <Table.Td>
                 {yourPosition}

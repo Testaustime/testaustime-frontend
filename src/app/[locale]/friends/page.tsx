@@ -10,6 +10,7 @@ import {
   getOwnActivityDataSummary,
 } from "../../../api/usersApi";
 import { getFriendsList } from "../../../api/friendsApi";
+import { getPreferences } from "../../../utils/cookieUtils";
 
 export default async function FriendsPage({
   params: { locale },
@@ -70,6 +71,8 @@ export default async function FriendsPage({
 
   const { t } = await initTranslations(locale, ["common"]);
 
+  const { maxTimeUnit } = getPreferences();
+
   return (
     <>
       <Title order={2} mb={15}>
@@ -85,6 +88,7 @@ export default async function FriendsPage({
         username={me.username}
         locale={locale}
         ownStatus={ownActivityStatus}
+        maxTimeUnit={maxTimeUnit}
       />
     </>
   );

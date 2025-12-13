@@ -6,6 +6,7 @@ import initTranslations from "../../i18n";
 import { CreateNewLeaderboardButton } from "./CreateNewLeaderboardButton";
 import { JoinLeaderboardButton } from "./JoinLeaderboardButton";
 import { getMyLeaderboards } from "../../../api/leaderboardApi";
+import { getPreferences } from "../../../utils/cookieUtils";
 
 export type LeaderboardsPageProps = {
   initialLeaderboards: LeaderboardData[];
@@ -45,6 +46,8 @@ export default async function LeaderboardsPage({
     }
   }
 
+  const { maxTimeUnit } = getPreferences();
+
   return (
     <>
       <Group align="center" mb="md" mt="xl" justify="space-between">
@@ -54,7 +57,10 @@ export default async function LeaderboardsPage({
           <JoinLeaderboardButton />
         </Group>
       </Group>
-      <LeaderboardsList leaderboards={leaderboardList} />
+      <LeaderboardsList
+        leaderboards={leaderboardList}
+        maxTimeUnit={maxTimeUnit}
+      />
     </>
   );
 }
