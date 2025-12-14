@@ -8,7 +8,6 @@ import { CurrentActivity } from "../../../../components/CurrentActivity/CurrentA
 import { GetUserActivityDataError } from "../../../../types";
 import initTranslations from "../../../i18n";
 import { Stack, Title } from "@mantine/core";
-import { getPreferences } from "../../../../utils/cookieUtils";
 
 export default async function UserPage({
   params: { locale, username },
@@ -44,7 +43,6 @@ export default async function UserPage({
   if (!(currentActivityResponse && "error" in currentActivityResponse)) {
     currentActivity = currentActivityResponse ?? undefined;
   }
-
 
   return (
     <Dashboard
