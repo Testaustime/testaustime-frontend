@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Anchor, Text } from "@mantine/core";
 import { DownloadIcon } from "@radix-ui/react-icons";
-import { Dashboard } from "../../components/Dashboard";
 import { startOfDay } from "date-fns";
 import styles from "./page.module.css";
 import { ApiUsersUserResponse } from "../../types";
@@ -52,7 +51,7 @@ export default async function MainPage({
       throw new Error(JSON.stringify(currentActivity));
     }
 
-    const { dayRange, smoothCharts, maxTimeUnit } = getPreferences();
+    const { dayRange, maxTimeUnit } = getPreferences();
 
     return (
       <div className={styles.dashboardContainer}>
@@ -65,7 +64,6 @@ export default async function MainPage({
             dayStart: startOfDay(new Date(e.start_time)),
           }))}
           defaultDayRange={dayRange}
-          smoothChartsSSR={smoothCharts}
           locale={locale}
           initialActivity={currentActivity}
           maxTimeUnit={maxTimeUnit}
