@@ -4,7 +4,7 @@ import { ModalsProvider } from "@mantine/modals";
 import { MantineProvider } from "@mantine/core";
 import { useCreateSettings } from "../src/hooks/useSettings";
 import { SettingsContext } from "../src/contexts/SettingsContext";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import i18n from "i18next";
 import en from "../public/locales/en/common.json";
@@ -24,6 +24,9 @@ const InnerApp = ({ children }: PropsWithChildren) => {
   const settings = useCreateSettings({
     initialColorScheme: "dark",
   });
+  const [smoothCharts, setSmoothChartsState] = useState(
+    settings.smoothCharts
+  );
 
   return (
     <MantineProvider
@@ -71,7 +74,14 @@ const InnerApp = ({ children }: PropsWithChildren) => {
         },
       }}
     >
-      <SettingsContext.Provider value={settings}>
+      <SettingsContext.Provider value={{
+          ...settings,
+          smoothCharts,
+          setSmoothCharts: (value: boolean) => {
+            setSmoothChartsState(value);          // reactive update
+            settings.setSmoothCharts(value); // persist to cookie
+          },
+        }}>
         {children}
       </SettingsContext.Provider>
     </MantineProvider>
