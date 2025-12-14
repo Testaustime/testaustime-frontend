@@ -14,6 +14,7 @@ import {
 } from "../../api/usersApi";
 import { redirect } from "next/navigation";
 import { getPreferences } from "../../utils/cookieUtils";
+import { DashboardWrapper } from "../../components/DashboardWrapper";
 
 export default async function MainPage({
   params: { locale },
@@ -55,7 +56,7 @@ export default async function MainPage({
 
     return (
       <div className={styles.dashboardContainer}>
-        <Dashboard
+        <DashboardWrapper
           username={me.username}
           isFrontPage={true}
           allEntries={activityData.map((e) => ({
@@ -64,7 +65,7 @@ export default async function MainPage({
             dayStart: startOfDay(new Date(e.start_time)),
           }))}
           defaultDayRange={dayRange}
-          smoothCharts={smoothCharts}
+          smoothChartsSSR={smoothCharts}
           locale={locale}
           initialActivity={currentActivity}
           maxTimeUnit={maxTimeUnit}
