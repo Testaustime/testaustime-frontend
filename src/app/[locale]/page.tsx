@@ -12,8 +12,7 @@ import {
   getOwnActivityData,
 } from "../../api/usersApi";
 import { redirect } from "next/navigation";
-import { getPreferences } from "../../utils/cookieUtils";
-import { DashboardWrapper } from "../../components/DashboardWrapper";
+import { Dashboard } from "../../components/Dashboard";
 
 export default async function MainPage({
   params: { locale },
@@ -51,11 +50,9 @@ export default async function MainPage({
       throw new Error(JSON.stringify(currentActivity));
     }
 
-    const { dayRange, maxTimeUnit } = getPreferences();
-
     return (
       <div className={styles.dashboardContainer}>
-        <DashboardWrapper
+        <Dashboard
           username={me.username}
           isFrontPage={true}
           allEntries={activityData.map((e) => ({
@@ -63,10 +60,8 @@ export default async function MainPage({
             start_time: new Date(e.start_time),
             dayStart: startOfDay(new Date(e.start_time)),
           }))}
-          defaultDayRange={dayRange}
           locale={locale}
           initialActivity={currentActivity}
-          maxTimeUnit={maxTimeUnit}
         />
       </div>
     );

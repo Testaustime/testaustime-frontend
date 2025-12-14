@@ -26,7 +26,7 @@ import { sumBy } from "../utils/arrayUtils";
 import DailyCodingTimeChart, {
   transformData as transformDailyData,
 } from "./DailyCodingTimeChart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
 import Link from "next/link";
@@ -39,32 +39,36 @@ import { DataCard } from "./DataCard/DataCard";
 import MonthlyCodingTimeChart, {
   transformData as transformMonthlyData,
 } from "./MonthlyCodingTimeChart";
+import { useSettings } from "../hooks/useSettings";
 
 interface DashboardProps {
   username: string;
   isFrontPage: boolean;
   allEntries: ActivityDataEntry[];
-  defaultDayRange: DayRange;
-  smoothCharts: boolean;
   locale: string;
   initialActivity: CurrentActivity | undefined | null;
-  maxTimeUnit: TimeUnit;
 }
 
 export const Dashboard = ({
   username,
   isFrontPage,
   allEntries,
-  defaultDayRange,
-  smoothCharts,
   locale,
   initialActivity,
-  maxTimeUnit,
 }: DashboardProps) => {
   const { t } = useTranslation();
+  const { smoothCharts, defaultDayRange, timeInHours } = useSettings();
+  const maxTimeUnit: TimeUnit = timeInHours ? "h" : "min";
 
-  const [statisticsRange, setStatisticsRange] =
-    useState<DayRange>(defaultDayRange);
+  const [statisticsRange, setStatisticsRange] = useState<DayRange>(
+    defaultDayRange ?? "week",
+  );
+
+  useEffect(() => {
+    if (defaultDayRange) {
+      setStatisticsRange(defaultDayRange);
+    }
+  }, [defaultDayRange]);
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
 
