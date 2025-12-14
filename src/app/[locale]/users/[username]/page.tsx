@@ -45,7 +45,6 @@ export default async function UserPage({
     currentActivity = currentActivityResponse ?? undefined;
   }
 
-  const { dayRange, smoothCharts, maxTimeUnit } = getPreferences();
 
   return (
     <Dashboard
@@ -54,9 +53,6 @@ export default async function UserPage({
       isFrontPage={false}
       locale={locale}
       initialActivity={currentActivity}
-      defaultDayRange={dayRange}
-      maxTimeUnit={maxTimeUnit}
-      smoothCharts={smoothCharts}
     />
   );
 }
