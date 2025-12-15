@@ -60,7 +60,9 @@ export const Dashboard = ({
   const { smoothCharts, defaultDayRange, timeInHours } = useSettings();
   const maxTimeUnit: TimeUnit = timeInHours ? "h" : "y";
 
-  const [statisticsRange, setStatisticsRange] = useState<DayRange>(defaultDayRange ?? "week");
+  const [statisticsRange, setStatisticsRange] = useState<DayRange>(
+    defaultDayRange ?? "week",
+  );
   useEffect(() => {
     if (defaultDayRange) {
       setStatisticsRange(defaultDayRange);
