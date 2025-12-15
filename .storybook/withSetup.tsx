@@ -74,14 +74,7 @@ const InnerApp = ({ children }: PropsWithChildren) => {
         },
       }}
     >
-      <SettingsContext.Provider value={{
-          ...settings,
-          smoothCharts,
-          setSmoothCharts: (value: boolean) => {
-            setSmoothChartsState(value);          // reactive update
-            settings.setSmoothCharts(value); // persist to cookie
-          },
-        }}>
+      <SettingsContext.Provider value={settings}>
         {children}
       </SettingsContext.Provider>
     </MantineProvider>
