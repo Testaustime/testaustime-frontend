@@ -13,7 +13,6 @@ import {
   getOwnActivityData,
 } from "../../api/usersApi";
 import { redirect } from "next/navigation";
-import { getPreferences } from "../../utils/cookieUtils";
 
 export default async function MainPage({
   params: { locale },
@@ -51,8 +50,6 @@ export default async function MainPage({
       throw new Error(JSON.stringify(currentActivity));
     }
 
-    const { dayRange, smoothCharts, maxTimeUnit } = getPreferences();
-
     return (
       <div className={styles.dashboardContainer}>
         <Dashboard
@@ -63,11 +60,8 @@ export default async function MainPage({
             start_time: new Date(e.start_time),
             dayStart: startOfDay(new Date(e.start_time)),
           }))}
-          defaultDayRange={dayRange}
-          smoothCharts={smoothCharts}
           locale={locale}
           initialActivity={currentActivity}
-          maxTimeUnit={maxTimeUnit}
         />
       </div>
     );
