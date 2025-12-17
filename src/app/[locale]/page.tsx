@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Anchor, Text } from "@mantine/core";
 import { DownloadIcon } from "@radix-ui/react-icons";
+import { Dashboard } from "../../components/Dashboard";
 import { startOfDay } from "date-fns";
 import styles from "./page.module.css";
 import { ApiUsersUserResponse } from "../../types";
@@ -12,7 +13,6 @@ import {
   getOwnActivityData,
 } from "../../api/usersApi";
 import { redirect } from "next/navigation";
-import { Dashboard } from "../../components/Dashboard";
 
 export default async function MainPage({
   params: { locale },

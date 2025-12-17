@@ -26,7 +26,7 @@ import { sumBy } from "../utils/arrayUtils";
 import DailyCodingTimeChart, {
   transformData as transformDailyData,
 } from "./DailyCodingTimeChart";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { PerProjectChart } from "./PerProjectChart";
 import Link from "next/link";
@@ -63,11 +63,6 @@ export const Dashboard = ({
   const [statisticsRange, setStatisticsRange] = useState<DayRange>(
     defaultDayRange ?? "week",
   );
-  useEffect(() => {
-    if (defaultDayRange) {
-      setStatisticsRange(defaultDayRange);
-    }
-  }, [defaultDayRange]);
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
 
