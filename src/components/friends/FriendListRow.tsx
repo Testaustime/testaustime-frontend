@@ -64,7 +64,16 @@ export const FriendListRow = ({
         )}
       </TableTd>
       <TableTd style={{ textAlign: "right", padding: "7px 0px" }}>
-        {!isMe && (
+        {isMe ? (
+          <Button
+            variant="outline"
+            size="compact-md"
+            style={{ visibility: "hidden" }}
+            aria-hidden="true"
+          >
+            {t("friends.unfriend")}
+          </Button>
+        ) : (
           <Button
             variant="outline"
             color="red"
