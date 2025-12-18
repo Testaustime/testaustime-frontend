@@ -64,65 +64,61 @@ export const FriendListRow = ({
         )}
       </TableTd>
       <TableTd style={{ textAlign: "right", padding: "7px 0px" }}>
-        {isMe ? (
-          <Button
-            variant="outline"
-            size="compact-md"
-            style={{ visibility: "hidden" }}
-            aria-hidden="true"
-          >
-            {t("friends.unfriend")}
-          </Button>
-        ) : (
-          <Button
-            variant="outline"
-            color="red"
-            size="compact-md"
-            loading={isDeleting}
-            onClick={() => {
-              setIsDeleting(true);
-              removeFriend(username)
-                .then(async (result) => {
-                  if (result && "error" in result) {
-                    switch (result.error) {
-                      case RemoveFriendError.RateLimited:
-                        router.push("/rate-limited");
-                        break;
-                      case RemoveFriendError.Unauthorized:
-                        showNotification({
-                          title: t("error"),
-                          color: "red",
-                          message: t("errors.unauthorized"),
-                        });
-                        await logOutAndRedirect();
-                        break;
-                      case RemoveFriendError.UnknownError:
-                        showNotification({
-                          title: t("error"),
-                          color: "red",
-                          message: t("friends.errorRemovingFriend"),
-                        });
-                        break;
-                    }
-                  } else {
-                    router.refresh();
-                  }
-                })
-                .catch(() => {
-                  showNotification({
-                    title: t("error"),
-                    color: "red",
-                    message: t("friends.errorRemovingFriend"),
-                  });
-                })
-                .finally(() => {
-                  setIsDeleting(false);
-                });
-            }}
-          >
-            {t("friends.unfriend")}
-          </Button>
-        )}
+        {/* Keep button space consistent across rows; hide for self to match row height */}
+        <Button
+          variant="outline"
+          color={!isMe ? "red" : undefined}
+          size="compact-md"
+          style={{ visibility: isMe ? "hidden" : undefined }}
+          aria-hidden={isMe ? "true" : undefined}
+          loading={!isMe && isDeleting}
+          onClick={
+            !isMe
+              ? () => {
+                  setIsDeleting(true);
+                  removeFriend(username)
+                    .then(async (result) => {
+                      if (result && "error" in result) {
+                        switch (result.error) {
+                          case RemoveFriendError.RateLimited:
+                            router.push("/rate-limited");
+                            break;
+                          case RemoveFriendError.Unauthorized:
+                            showNotification({
+                              title: t("error"),
+                              color: "red",
+                              message: t("errors.unauthorized"),
+                            });
+                            await logOutAndRedirect();
+                            break;
+                          case RemoveFriendError.UnknownError:
+                            showNotification({
+                              title: t("error"),
+                              color: "red",
+                              message: t("friends.errorRemovingFriend"),
+                            });
+                            break;
+                        }
+                      } else {
+                        router.refresh();
+                      }
+                    })
+                    .catch(() => {
+                      showNotification({
+                        title: t("error"),
+                        color: "red",
+                        message: t("friends.errorRemovingFriend"),
+                      });
+                    })
+                    .finally(() => {
+                      setIsDeleting(false);
+                    });
+                }
+              : undefined
+          }
+        >
+          {t("friends.unfriend")}
+        </Button>
       </TableTd>
     </TableTr>
   );
