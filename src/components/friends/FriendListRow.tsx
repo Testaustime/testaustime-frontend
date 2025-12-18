@@ -67,14 +67,16 @@ export const FriendListRow = ({
         {/* Keep button space consistent across rows; hide for self to match row height */}
         <Button
           variant="outline"
-          color={!isMe ? "red" : undefined}
           size="compact-md"
-          style={{ visibility: isMe ? "hidden" : undefined }}
+          /* Only attach interactivity and loading state when the button is visible */
+          color={isMe ? undefined : "red"}
+          style={isMe ? { visibility: "hidden" } : undefined}
           aria-hidden={isMe ? "true" : undefined}
-          loading={!isMe && isDeleting}
+          loading={isMe ? undefined : isDeleting}
           onClick={
-            !isMe
-              ? () => {
+            isMe
+              ? undefined
+              : () => {
                   setIsDeleting(true);
                   removeFriend(username)
                     .then(async (result) => {
@@ -114,7 +116,6 @@ export const FriendListRow = ({
                       setIsDeleting(false);
                     });
                 }
-              : undefined
           }
         >
           {t("friends.unfriend")}
