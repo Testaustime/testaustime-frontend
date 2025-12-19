@@ -1,4 +1,5 @@
 {
-  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix"
 }
