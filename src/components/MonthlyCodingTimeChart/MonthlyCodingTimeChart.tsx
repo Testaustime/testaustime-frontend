@@ -120,6 +120,8 @@ export const MonthlyCodingTimeChart = ({
             borderColor: "#1f78b4",
             borderWidth: 4,
             pointRadius: 2,
+            // Avoid "overshoot" where the smoothed curve goes above/below actual points.
+            cubicInterpolationMode: smoothCharts ? "monotone" : "default",
             tension: smoothCharts ? 0.5 : 0,
           },
         ],

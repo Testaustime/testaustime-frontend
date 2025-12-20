@@ -9,8 +9,9 @@ import {
 import { isDayRange, TimeUnit } from "./dateUtils";
 
 export const getPreferences = () => {
-  const uncheckedDefaultDayRange = cookies().get(defaultDayRangeCookieName)
-    ?.value;
+  const uncheckedDefaultDayRange = cookies().get(
+    defaultDayRangeCookieName,
+  )?.value;
   const defaultDayRange = isDayRange(uncheckedDefaultDayRange)
     ? uncheckedDefaultDayRange
     : undefined;

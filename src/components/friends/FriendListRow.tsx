@@ -56,14 +56,16 @@ export const FriendListRow = ({
         </div>
       </TableTd>
       <TableTd>{prettyDuration(codingTime, maxTimeUnit)}</TableTd>
-      <TableTd style={{ textAlign: "right", padding: "7px 0px" }}>
+      {/* Width=1px removes the extra space around the component*/}
+      <TableTd width="1px">
         {!isMe && (
           <Link href={`/${locale}/users/${username}`} prefetch={false}>
             {t("friends.showDashboard")}
           </Link>
         )}
       </TableTd>
-      <TableTd style={{ textAlign: "right", padding: "7px 0px" }}>
+      {/* Width=1px removes the extra space around the component*/}
+      <TableTd width="1px">
         <Button
           variant="outline"
           size="compact-md"

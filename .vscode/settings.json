@@ -1,5 +1,8 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix"
+  "editor.defaultFormatter": "prettier.prettier-vscode",
+  "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix",
+  "[typescript]": {
+    "editor.defaultFormatter": "prettier.prettier-vscode"
+  }
 }
