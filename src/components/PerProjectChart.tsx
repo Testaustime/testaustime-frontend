@@ -209,10 +209,12 @@ export const PerProjectChart = ({
           scales: {
             x: {
               stacked: true,
+              afterBuildTicks: (axis) => {
+                // Quite hacky but there doesn't seem to be a better way...
+                axis.ticks = ticks.map((x) => ({ value: x }));
+              },
               ticks: {
-                count: ticks.length,
-                callback: (_, index) =>
-                  prettyDuration(ticks[index], maxTimeUnit),
+                callback: (val) => prettyDuration(Number(val), maxTimeUnit),
               },
             },
             y: {
