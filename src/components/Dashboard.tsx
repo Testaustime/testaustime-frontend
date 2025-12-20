@@ -19,7 +19,6 @@ import {
   getDayCount,
   isDayRange,
   prettyDuration,
-  TimeUnit,
 } from "../utils/dateUtils";
 import { TopProjects } from "./TopProjects/TopProjects";
 import { sumBy } from "../utils/arrayUtils";
@@ -39,32 +38,29 @@ import { DataCard } from "./DataCard/DataCard";
 import MonthlyCodingTimeChart, {
   transformData as transformMonthlyData,
 } from "./MonthlyCodingTimeChart";
+import { useSettings } from "../hooks/useSettings";
 
 interface DashboardProps {
   username: string;
   isFrontPage: boolean;
   allEntries: ActivityDataEntry[];
-  defaultDayRange: DayRange;
-  smoothCharts: boolean;
   locale: string;
   initialActivity: CurrentActivity | undefined | null;
-  maxTimeUnit: TimeUnit;
 }
 
 export const Dashboard = ({
   username,
   isFrontPage,
   allEntries,
-  defaultDayRange,
-  smoothCharts,
   locale,
   initialActivity,
-  maxTimeUnit,
 }: DashboardProps) => {
   const { t } = useTranslation();
+  const { smoothCharts, defaultDayRange, maxTimeUnit } = useSettings();
 
-  const [statisticsRange, setStatisticsRange] =
-    useState<DayRange>(defaultDayRange);
+  const [statisticsRange, setStatisticsRange] = useState<DayRange>(
+    defaultDayRange ?? "week",
+  );
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
 

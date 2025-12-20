@@ -246,8 +246,16 @@
       "defaultDayRange": "Default day range",
       "language": "Language",
       "smoothCharts": "Smooth charts",
-      "timeInHours": "Convert large time units to hours",
-      "title": "Settings"
+      "title": "Settings",
+      "timeUnits": {
+        "label": "Largest displayed time unit",
+        "y": "Year",
+        "mo": "Month",
+        "d": "Day",
+        "h": "Hour",
+        "min": "Minute",
+        "s": "Second"
+      }
     },
     "title": "My profile",
     "username": "Username: {{username}}"

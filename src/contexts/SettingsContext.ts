@@ -1,7 +1,8 @@
 import { createContext } from "react";
-import { DayRange } from "../utils/dateUtils";
+import { DayRange, TimeUnit } from "../utils/dateUtils";
 import { Locales } from "../i18next";
 import { MantineColorScheme } from "@mantine/core";
+import { DEFAULT_MAX_TIME_UNIT } from "../utils/constants";
 
 interface SettingsContextValue {
   smoothCharts: boolean;
@@ -13,8 +14,8 @@ interface SettingsContextValue {
   setColorScheme: (colorScheme: MantineColorScheme) => void;
   defaultDayRange?: DayRange;
   setDefaultDayRange: (defaultDayRange: DayRange) => void;
-  timeInHours: boolean;
-  setTimeInHours: (timeInHours: boolean) => void;
+  maxTimeUnit: TimeUnit;
+  setMaxTimeUnit: (maxTimeUnit: TimeUnit) => void;
 }
 
 const defaultCallback = () => {
@@ -30,8 +31,8 @@ const defaultValue: SettingsContextValue = {
   setColorScheme: defaultCallback,
   defaultDayRange: undefined,
   setDefaultDayRange: defaultCallback,
-  timeInHours: false,
-  setTimeInHours: defaultCallback,
+  maxTimeUnit: DEFAULT_MAX_TIME_UNIT,
+  setMaxTimeUnit: defaultCallback,
 };
 
 export const SettingsContext = createContext(defaultValue);

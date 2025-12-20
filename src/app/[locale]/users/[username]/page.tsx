@@ -8,7 +8,6 @@ import { CurrentActivity } from "../../../../components/CurrentActivity/CurrentA
 import { GetRequestError, GetUserActivityDataError } from "../../../../types";
 import initTranslations from "../../../i18n";
 import { Stack, Title } from "@mantine/core";
-import { getPreferences } from "../../../../utils/cookieUtils";
 
 export default async function UserPage({
   params: { locale, username },
@@ -45,8 +44,6 @@ export default async function UserPage({
     currentActivity = currentActivityResponse;
   }
 
-  const { dayRange, smoothCharts, maxTimeUnit } = getPreferences();
-
   return (
     <Dashboard
       allEntries={data}
@@ -54,9 +51,6 @@ export default async function UserPage({
       isFrontPage={false}
       locale={locale}
       initialActivity={currentActivity}
-      defaultDayRange={dayRange}
-      maxTimeUnit={maxTimeUnit}
-      smoothCharts={smoothCharts}
     />
   );
 }

@@ -3,9 +3,10 @@ import {
   DEFAULT_DAY_RANGE,
   defaultDayRangeCookieName,
   smoothChartsCookieName,
-  timeInHoursCookieName,
+  maxTimeUnitCookieName,
+  DEFAULT_MAX_TIME_UNIT,
 } from "./constants";
-import { isDayRange } from "./dateUtils";
+import { isDayRange, TimeUnit } from "./dateUtils";
 
 export const getPreferences = () => {
   const uncheckedDefaultDayRange = cookies().get(defaultDayRangeCookieName)
@@ -15,12 +16,12 @@ export const getPreferences = () => {
     : undefined;
   const smoothCharts =
     (cookies().get(smoothChartsCookieName)?.value || "true") === "true";
-  const timeInHours =
-    (cookies().get(timeInHoursCookieName)?.value || "false") === "true";
+  const maxTimeUnit =
+    cookies().get(maxTimeUnitCookieName)?.value || DEFAULT_MAX_TIME_UNIT;
 
   return {
     dayRange: defaultDayRange ?? DEFAULT_DAY_RANGE,
     smoothCharts,
-    maxTimeUnit: timeInHours ? ("h" as const) : ("y" as const),
+    maxTimeUnit: maxTimeUnit as unknown as TimeUnit,
   };
 };

@@ -1,8 +1,8 @@
 import { Text } from "@mantine/core";
-import { groupBy, sumBy } from "../utils/arrayUtils";
+import { sumBy } from "../utils/arrayUtils";
 import { calculateTickValues } from "../utils/chartUtils";
 import { prettifyProgrammingLanguageName } from "../utils/programmingLanguagesUtils";
-import { colors, isColor } from "../utils/colors";
+import { colors } from "../utils/colors";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -55,7 +55,7 @@ const defaultColors = [
   "#b15928",
 ];
 
-const chosenRandomColors: Record<string, string> = {};
+const chosenRandomColors = new Map<string, string>();
 
 function getLanguageColor(str: string): string {
   let language = str.toLowerCase();
@@ -64,18 +64,24 @@ function getLanguageColor(str: string): string {
   if (language.split(" ").length > 1) {
     language = language
       .split(" ")
-      .filter((possibleName) => isColor(possibleName))[0];
+      .filter((possibleName) => colors.has(possibleName))[0];
   }
 
-  if (isColor(language)) {
-    return colors[language];
+  if (colors.has(language)) {
+    // Should never be undefined
+    return colors.get(language) ?? "#000000";
   }
 
-  if (language in chosenRandomColors) return chosenRandomColors[language];
+  if (chosenRandomColors.has(language)) {
+    // Should never be undefined
+
+    return chosenRandomColors.get(language) ?? "#000000";
+  }
 
   const randomColor =
     defaultColors[Math.floor(defaultColors.length * Math.random())];
-  chosenRandomColors[language] = randomColor;
+  chosenRandomColors.set(language, randomColor);
+
   return randomColor;
 }
 
@@ -87,21 +93,28 @@ export const PerProjectChart = ({
 }: PerProjectChartProps) => {
   if (entries.length === 0) return <Text>No data</Text>;
 
-  let languageNames = entries
+  const languageNames = entries
     .sort((entry1, entry2) => entry2.duration - entry1.duration)
     .map((entry) => entry.language || "other")
     .filter((item, index, array) => array.indexOf(item) === index)
-    .slice(0, 9);
-  languageNames.push("other");
-  languageNames = languageNames.reverse();
+    .slice(0, 9)
+    .concat("other") // TODO: Why is this here
+    .toReversed();
 
   // Get the total time spent on each project
-  const projectGroups = groupBy(entries, (e) => e.project_name ?? "Unknown");
+  const projectGroups = Object.groupBy(
+    entries,
+    (x) => x.project_name ?? "undefined",
+  );
+
   const totalTimeByProject = Object.keys(projectGroups).map((projectName) => {
-    const projectEntries = projectGroups[projectName];
-    const langGroups = groupBy(projectEntries, (e) => e.language);
+    const projectEntries = projectGroups[projectName] ?? [];
+    const langGroups = Object.groupBy(
+      projectEntries,
+      (e) => e.language ?? "undefined",
+    );
     const totalTimeByLanguage = Object.keys(langGroups).map((lang) => {
-      const langEntries = langGroups[lang];
+      const langEntries = langGroups[lang] ?? [];
       return {
         language: lang,
         duration: sumBy(langEntries, (e) => e.duration),
