@@ -64,7 +64,7 @@ export const DeleteLeaderboardButton = ({
               });
             }
           })
-          .catch((e) => {
+          .catch((e: unknown) => {
             console.log(e);
           })
           .finally(() => {

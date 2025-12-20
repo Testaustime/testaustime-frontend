@@ -5,7 +5,11 @@ export const BlinkingDot = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<"div">
 >(({ className, ...props }, ref) => (
-  <div className={styles.blinkingDot + " " + className} ref={ref} {...props} />
+  <div
+    className={styles.blinkingDot + " " + (className ?? "")}
+    ref={ref}
+    {...props}
+  />
 ));
 
 BlinkingDot.displayName = "BlinkingDot";

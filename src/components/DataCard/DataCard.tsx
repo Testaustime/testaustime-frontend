@@ -10,7 +10,7 @@ export const DataCard = ({
 >) => {
   return (
     <DataCardContainer
-      className={styles.dataCard + " " + className}
+      className={styles.dataCard + " " + (className ?? "")}
       {...props}
     />
   );

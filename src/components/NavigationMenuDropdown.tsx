@@ -58,7 +58,9 @@ export const NavigationMenuDropdown = ({
           color="blue"
           leftSection={<ExitIcon />}
           onClick={() => {
-            logOutAndRedirect().catch(console.error);
+            logOutAndRedirect().catch((e: unknown) => {
+              console.error(e);
+            });
           }}
         >
           {t("navbar.logOut")}

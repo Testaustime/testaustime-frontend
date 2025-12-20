@@ -55,7 +55,7 @@ export const LeaveLeaderboardButton = ({
               }
             }
           })
-          .catch((e) => {
+          .catch((e: unknown) => {
             console.error(e);
           });
       }}

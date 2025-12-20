@@ -52,7 +52,7 @@ export const DemoteUserButton = ({ name, username }: DemoteUserButtonProps) => {
               router.refresh();
             }
           })
-          .catch((e) => {
+          .catch((e: unknown) => {
             console.log(e);
           });
       }}

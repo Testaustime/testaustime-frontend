@@ -33,7 +33,7 @@ export const CurrentActivity = (props: CurrentActivityProps) => {
             startedAt: data.started,
           });
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error(error);
         });
     }, 30 * 1000);

@@ -4,6 +4,9 @@ import { cookies, headers } from "next/headers";
 import { GetRequestError, PostRequestError } from "../types";
 
 export const getRequest = async <T>(path: string) => {
+  if (process.env.NEXT_PUBLIC_API_URL == null)
+    throw new Error("API URL was not defined");
+
   const token = cookies().get("token")?.value;
 
   const ip = headers().get("client-ip") ?? "Unknown IP";
@@ -60,6 +63,9 @@ async function baseFetch(
   body?: unknown,
   method: string = "POST",
 ) {
+  if (process.env.NEXT_PUBLIC_API_URL == null)
+    throw new Error("API URL was not defined");
+
   const tokenCookieName = "token";
   const token = cookies().get(tokenCookieName)?.value;
 

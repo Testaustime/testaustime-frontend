@@ -16,7 +16,7 @@ export const DataCardContainer = ({
         styles.dataCardContainer +
         (withoutPadding ? "" : " " + styles.withPadding) +
         " " +
-        className
+        (className ?? "")
       }
       {...props}
     />

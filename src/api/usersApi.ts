@@ -16,6 +16,9 @@ import { normalizeProgrammingLanguageName } from "../utils/programmingLanguagesU
 import { getRequest } from "./baseApi";
 
 export const getMe = async () => {
+  if (process.env.NEXT_PUBLIC_API_URL == null)
+    throw new Error("API URL was not defined");
+
   const token = cookies().get("token")?.value;
   if (!token) {
     return undefined;

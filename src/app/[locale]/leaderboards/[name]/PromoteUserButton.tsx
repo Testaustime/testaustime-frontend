@@ -56,7 +56,7 @@ export const PromoteUserButton = ({
               router.refresh();
             }
           })
-          .catch((e) => {
+          .catch((e: unknown) => {
             console.log(e);
           });
       }}
