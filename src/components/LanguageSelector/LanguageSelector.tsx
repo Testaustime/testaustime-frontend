@@ -10,6 +10,7 @@ import {
 import { useSettings } from "../../hooks/useSettings";
 import { Locales } from "../../i18next";
 import { useTranslation } from "react-i18next";
+import { useId } from "react";
 
 type LanguageSelectorType = "segmented" | "dropdown";
 
@@ -29,6 +30,8 @@ export const LanguageSelector = ({
   const { setLanguage } = useSettings();
   const { t } = useTranslation();
 
+  const id = useId();
+
   const data = [
     { label: "🇺🇸 English", value: "en" },
     { label: "🇫🇮 Suomi", value: "fi" },
@@ -42,6 +45,7 @@ export const LanguageSelector = ({
   const Component =
     type === "segmented" ? (
       <SegmentedControl
+        id={id}
         size={size}
         data={data}
         value={locale}
@@ -49,6 +53,7 @@ export const LanguageSelector = ({
       />
     ) : (
       <Select
+        id={id}
         size={size}
         data={data}
         value={locale}
@@ -59,7 +64,9 @@ export const LanguageSelector = ({
 
   return showLabel ? (
     <Group>
-      {<Text>{t("profile.settings.language")}</Text>}
+      <label htmlFor={id}>
+        <Text>{t("profile.settings.language")}</Text>
+      </label>
       {Component}
     </Group>
   ) : (

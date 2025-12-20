@@ -19,7 +19,6 @@ import {
   getDayCount,
   isDayRange,
   prettyDuration,
-  TimeUnit,
 } from "../utils/dateUtils";
 import { TopProjects } from "./TopProjects/TopProjects";
 import { sumBy } from "../utils/arrayUtils";
@@ -57,8 +56,7 @@ export const Dashboard = ({
   initialActivity,
 }: DashboardProps) => {
   const { t } = useTranslation();
-  const { smoothCharts, defaultDayRange, timeInHours } = useSettings();
-  const maxTimeUnit: TimeUnit = timeInHours ? "h" : "y";
+  const { smoothCharts, defaultDayRange, maxTimeUnit } = useSettings();
 
   const [statisticsRange, setStatisticsRange] = useState<DayRange>(
     defaultDayRange ?? "week",

@@ -1,4 +1,4 @@
-const timeUnits = [
+export const timeUnits = [
   { suffix: "y", value: 60 * 60 * 24 * 365 },
   { suffix: "mo", value: 60 * 60 * 24 * 30 },
   { suffix: "d", value: 60 * 60 * 24 },

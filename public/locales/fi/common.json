@@ -231,8 +231,16 @@
       "defaultDayRange": "Oletuksena näytettävä aikaväli",
       "language": "Kieli",
       "smoothCharts": "Pehmeät kaaviot",
-      "timeInHours": "Muunna suuret aikayksiköt tunteihin",
-      "title": "Asetukset"
+      "title": "Asetukset",
+      "timeUnits": {
+        "label": "Suurin näytettävä aikayksikkö",
+        "y": "Vuosi",
+        "mo": "Kuukausi",
+        "d": "Päivä",
+        "h": "Tunti",
+        "min": "Minuutti",
+        "s": "Sekuntti"
+      }
     },
     "title": "Profiili",
     "username": "Käyttäjänimi: {{username}}"

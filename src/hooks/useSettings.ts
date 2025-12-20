@@ -1,16 +1,16 @@
 import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
-import { DayRange } from "../utils/dateUtils";
+import { DayRange, TimeUnit } from "../utils/dateUtils";
 import { Locales } from "../i18next";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCookies } from "react-cookie";
 import {
   colorSchemeCookieName,
-  DEFAULT_TIME_IN_HOURS,
+  DEFAULT_MAX_TIME_UNIT,
   defaultDayRangeCookieName,
   languageCookieName,
   smoothChartsCookieName,
-  timeInHoursCookieName,
+  maxTimeUnitCookieName,
 } from "../utils/constants";
 import { MantineColorScheme } from "@mantine/core";
 import { i18nConfig } from "../i18nConfig";
@@ -61,9 +61,9 @@ export const useCreateSettings = ({
     setCookies(defaultDayRangeCookieName, value, defaultCookieSettings);
   };
 
-  const timeInHours = cookies[timeInHoursCookieName] as boolean | undefined;
-  const setTimeInHours = (value: boolean) => {
-    setCookies(timeInHoursCookieName, value, defaultCookieSettings);
+  const maxTimeUnit = cookies[maxTimeUnitCookieName] as TimeUnit | undefined;
+  const setMaxTimeUnit = (value: TimeUnit) => {
+    setCookies(maxTimeUnitCookieName, value, defaultCookieSettings);
   };
 
   return {
@@ -89,8 +89,8 @@ export const useCreateSettings = ({
     toggleColorScheme,
     defaultDayRange: defaultDayRange ?? "week",
     setDefaultDayRange,
-    timeInHours: timeInHours ?? DEFAULT_TIME_IN_HOURS,
-    setTimeInHours,
+    maxTimeUnit: maxTimeUnit ?? DEFAULT_MAX_TIME_UNIT,
+    setMaxTimeUnit,
   };
 };
 
