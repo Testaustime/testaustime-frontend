@@ -119,6 +119,9 @@ export const MonthlyCodingTimeChart = ({
             data: data.map((entry) => entry.duration),
             borderColor: "#1f78b4",
             borderWidth: 4,
+            // Avoid sharp "miter" spikes at vertices when drawing straight segments.
+            borderJoinStyle: "round",
+            borderCapStyle: "round",
             pointRadius: 2,
             // Avoid "overshoot" where the smoothed curve goes above/below actual points.
             cubicInterpolationMode: smoothCharts ? "monotone" : "default",
