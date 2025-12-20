@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine AS base
+FROM --platform=$BUILDPLATFORM node:24-alpine AS base
 
 FROM --platform=$BUILDPLATFORM base AS deps
 RUN apk add --no-cache libc6-compat
