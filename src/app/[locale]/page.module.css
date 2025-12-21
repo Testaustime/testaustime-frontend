@@ -11,8 +11,9 @@
 .dashboardContainer {
   height: calc(100% - 36px - 50px - 80px);
   display: flex;
+  gap: 2rem;
   flex-wrap: wrap;
-  flex-direction: row;
+  flex-direction: stretch;
   align-content: flex-start;
   justify-content: flex-start;
   align-items: flex-start;
