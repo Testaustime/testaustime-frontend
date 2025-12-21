@@ -33,8 +33,8 @@ export const LanguageSelector = ({
   const id = useId();
 
   const data = [
-    { label: "🇺🇸 English", value: "en" },
-    { label: "🇫🇮 Suomi", value: "fi" },
+    { label: "English", value: "en" },
+    { label: "Suomi", value: "fi" },
   ];
 
   const onChange = (value: string | null) => {
