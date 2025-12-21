@@ -20,12 +20,13 @@ export const getPreferences = () => {
     (cookies().get(smoothChartsCookieName)?.value || "true") === "true";
   const maxTimeUnit =
     cookies().get(maxTimeUnitCookieName)?.value || DEFAULT_MAX_TIME_UNIT;
-  const wrapped2025Hidden = cookies().get(wrapped2025CookieName)?.value === "true"
+  const wrapped2025Hidden =
+    cookies().get(wrapped2025CookieName)?.value === "true";
 
   return {
     dayRange: defaultDayRange ?? DEFAULT_DAY_RANGE,
     smoothCharts,
     maxTimeUnit: maxTimeUnit as unknown as TimeUnit,
-    wrapped2025Hidden
+    wrapped2025Hidden,
   };
 };

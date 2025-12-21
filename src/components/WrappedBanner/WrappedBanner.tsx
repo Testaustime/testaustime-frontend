@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { wrapped2025CookieName } from "../../utils/constants";
 
 export const WrappedBanner = ({ text }: { text: string }) => {
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function closeBanner() {
     "use server";
     cookies().set(wrapped2025CookieName, "true", {
@@ -23,6 +24,7 @@ export const WrappedBanner = ({ text }: { text: string }) => {
         </a>
       </div>
       <div className={styles.right}>
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form action={closeBanner}>
           <ActionIcon variant="transparent" type="submit">
             <CloseIcon />

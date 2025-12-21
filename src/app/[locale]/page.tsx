@@ -52,7 +52,7 @@ export default async function MainPage({
       throw new Error(JSON.stringify(currentActivity));
     }
 
-    const preferences = await getPreferences();
+    const preferences = getPreferences();
 
     return (
       <div className={styles.dashboardContainer}>
