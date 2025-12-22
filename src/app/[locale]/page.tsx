@@ -13,6 +13,8 @@ import {
   getOwnActivityData,
 } from "../../api/usersApi";
 import { redirect } from "next/navigation";
+import { WrappedBanner } from "../../components/WrappedBanner/WrappedBanner";
+import { getPreferences } from "../../utils/cookieUtils";
 
 export default async function MainPage({
   params: { locale },
@@ -50,8 +52,13 @@ export default async function MainPage({
       throw new Error(JSON.stringify(currentActivity));
     }
 
+    const preferences = getPreferences();
+
     return (
       <div className={styles.dashboardContainer}>
+        {!preferences.wrapped2025Hidden && (
+          <WrappedBanner text={t("wrappedText")} />
+        )}
         <Dashboard
           username={me.username}
           isFrontPage={true}

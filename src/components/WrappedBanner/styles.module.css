@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+
+  flex: 1;
+  padding: 16px;
+  background-color: #b7defb;
+  color: #1a1a1a;
+  border: 4px solid #5b87a8;
+  border-radius: 8px;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: flex-start;
+}
+
+.right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text {
+  margin: 0;
+}
+
+.link {
+  color: #1c3a64;
+  font-weight: bold;
+}
