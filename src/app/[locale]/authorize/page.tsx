@@ -18,6 +18,8 @@ export default async function AuthorizePage({
   const loginUrl =
     editor == "vscode"
       ? `/login?redirect=${encodeURIComponent("/authorize?editor=vscode")}`
+      : editor == ""
+      ? `/login?redirect=${encodeURIComponent("/authorize?editor=cursor")}`
       : "/login";
 
   const token = cookies().get("token")?.value;
@@ -32,6 +34,8 @@ export default async function AuthorizePage({
 
   const { username } = me;
 
+  const editorName = editor == "vscode" ? "Visual Studio Code" : "Cursor";
+
   return (
     <Stack align="center" gap="xl">
       <Image
@@ -40,10 +44,14 @@ export default async function AuthorizePage({
         width={40}
         height={40}
       />
-      <Text>{t("authorize.body")}</Text>
+      <Text>{t("authorize.body", { editor: editorName })}</Text>
       <Button
         component="a"
-        href={`vscode://testausserveri-ry.testaustime/authorize?token=${token}`}
+        href={
+          editor == "vscode"
+          ? `vscode://testausserveri-ry.testaustime/authorize?token=${token}`
+          : `cursor://testausserveri-ry.testaustime/authorize?token=${token}`
+        }
       >
         {t("authorize.continue", { username })}
       </Button>
