@@ -309,7 +309,7 @@
     }
   },
   "authorize": {
-    "body": "You are logging in to the official Visual Studio Code extension.",
+    "body": "You are logging in to the official {{editor}} extension.",
     "continue": "Continue as {{username}}",
     "notWorking": {
       "text": "Not working?",
