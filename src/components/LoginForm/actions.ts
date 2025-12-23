@@ -22,6 +22,7 @@ const allowedRedirects = [
   "/friends",
   "/leaderboards",
   "/authorize?editor=vscode",
+  "/authorize?editor=cursor",
 ];
 
 export const logIn = async (
