@@ -19,6 +19,7 @@ export const RegistrationForm = () => {
     <Formik
       initialValues={{
         username: "",
+        email: "",
         password: "",
         passwordConfirmation: "",
       }}
@@ -31,6 +32,9 @@ export const RegistrationForm = () => {
             /^[a-zA-Z0-9]*$/,
             t("registrationPage.validation.username.regex"),
           ),
+        email: Yup.string()
+          .email(t("registrationPage.validation.email.invalid"))
+          .optional(),
         password: Yup.string()
           .required(t("registrationPage.validation.password.required"))
           .min(8, t("registrationPage.validation.password.min", { min: 8 }))
@@ -47,7 +51,18 @@ export const RegistrationForm = () => {
       })}
       onSubmit={async (values) => {
         setVisible(true);
-        const result = await register(values.username, values.password);
+
+        let result;
+        if (values.email == "") {
+          result = await register(values.username, values.password);
+        } else {
+          result = await register(
+            values.username,
+            values.password,
+            values.email,
+          );
+        }
+
         switch (result) {
           case RegistrationResult.RateLimited:
             showNotification({
@@ -81,6 +96,11 @@ export const RegistrationForm = () => {
           <FormikTextInput
             name="username"
             label={t("registrationPage.username")}
+          />
+          <FormikTextInput
+            name="email"
+            label={t("registrationPage.email")}
+            mt={15}
           />
           <FormikPasswordInput
             name="password"

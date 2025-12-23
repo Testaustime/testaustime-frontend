@@ -256,6 +256,7 @@
     "password": "Password",
     "passwordConfirm": "Confirm password",
     "registerButton": "Register",
+    "email": "Email (optional)",
     "username": "Username",
     "validation": {
       "password": {
@@ -272,9 +273,43 @@
         "min": "Username must be at least {{min, number}} characters long",
         "regex": "Username must only contain alphanumeric characters",
         "required": "Username is required"
+      },
+      "email": {
+        "invalid": "Invalid email"
       }
     },
     "usernameTaken": "Username is taken"
+  },
+  "passwordResetRequestPage": {
+    "rateLimited": "You cannot request a password reset again yet",
+    "email": "Email",
+    "title": "Request password reset",
+    "success": "Email sent",
+    "emailSent": "Password reset email sent",
+    "sendEmailButton": "Send password reset email",
+    "validation": {
+      "email": {
+        "invalid": "Invalid email"
+      }
+    }
+  },
+  "passwordResetPage": {
+    "rateLimited": "You cannot request a password reset again yet",
+    "invalidToken": "Your password reset token is invalid or expired",
+    "changePassword": "Change password",
+    "title": "Reset password",
+    "success": "Password changed",
+    "validation": {
+      "password": {
+        "max": "Password can not be more than {{max, number}} characters long",
+        "min": "Password must be at least {{min, number}} characters long",
+        "required": "Password is required"
+      },
+      "passwordConfirm": {
+        "noMatch": "Passwords must match",
+        "required": "Password confirmation is required"
+      }
+    }
   },
   "theme": {
     "dark": "Dark mode",

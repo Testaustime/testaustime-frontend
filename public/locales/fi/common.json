@@ -257,6 +257,7 @@
     "passwordConfirm": "Vahvista salasana",
     "registerButton": "Rekisteröidy",
     "username": "Käyttäjänimi",
+    "email": "Sähköposti (valinnainen)",
     "validation": {
       "password": {
         "max": "Salasana voi olla enintään {{max, number}} merkkiä pitkä",
@@ -272,9 +273,43 @@
         "min": "Käyttäjänimen tulee olla vähintään {{min, number}} merkkiä pitkä",
         "regex": "Käyttäjänimi voi sisältää vain alphanumeerisia merkkejä",
         "required": "Käyttäjänimi vaaditaan"
+      },
+      "email": {
+        "invalid": "Virheellinen sähköpostiosoite"
       }
     },
     "usernameTaken": "Käyttäjänimi on varattu"
+  },
+  "passwordResetRequestPage": {
+    "rateLimited": "Et voi pyytää uutta salasanan nollausta vielä",
+    "email": "Email",
+    "success": "Sähköposti lähetetty",
+    "title": "Salasanan nollaus",
+    "emailSent": "Salasanan nollaussähköposti lähetetty",
+    "sendEmailButton": "Lähetä salasanan nollaussähköposti",
+    "validation": {
+      "email": {
+        "invalid": "Virheellinen sähköpostiosoite"
+      }
+    }
+  },
+  "passwordResetPage": {
+    "rateLimited": "Et voi pyytää uutta salasanan nollausta vielä",
+    "invalidToken": "Koodisi on virheellinen tai ei enää voimassa",
+    "changePassword": "Vaihda salasana",
+    "title": "Salasanan nollaus",
+    "success": "Salasana muutettu",
+    "validation": {
+      "password": {
+        "max": "Salasana voi olla enintään {{max, number}} merkkiä pitkä",
+        "min": "Salasanan tulee olla vähintään {{min, number}} merkkiä pitkä",
+        "required": "Salasana vaaditaan"
+      },
+      "passwordConfirm": {
+        "noMatch": "Salasanat eivät täsmää",
+        "required": "Salasanavahvistus vaaditaan"
+      }
+    }
   },
   "theme": {
     "dark": "Tumma teema",
