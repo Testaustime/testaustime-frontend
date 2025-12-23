@@ -15,12 +15,18 @@ export default async function AuthorizePage({
 }) {
   const { t } = await initTranslations(locale, ["common"]);
 
-  const loginUrl =
-    editor == "vscode"
-      ? `/login?redirect=${encodeURIComponent("/authorize?editor=vscode")}`
-      : editor == ""
-      ? `/login?redirect=${encodeURIComponent("/authorize?editor=cursor")}`
-      : "/login";
+  const loginUrls = new Map(
+    Object.entries({
+      vscode: `/login?redirect=${encodeURIComponent("/authorize?editor=vscode")}`,
+      cursor: `/login?redirect=${encodeURIComponent("/authorize?editor=cursor")}`,
+    }),
+  );
+  const loginUrl = loginUrls.get(editor ?? "vscode");
+
+  if (loginUrl === undefined) {
+    // Make this prettier
+    return <div>Unsupported editor</div>;
+  }
 
   const token = cookies().get("token")?.value;
   if (!token) {
@@ -34,7 +40,17 @@ export default async function AuthorizePage({
 
   const { username } = me;
 
-  const editorName = editor == "vscode" ? "Visual Studio Code" : "Cursor";
+  const editorNames = new Map(
+    Object.entries({
+      vscode: "Visual Studio Code",
+      cursor: "Cursor",
+    }),
+  );
+  const editorName = editorNames.get(editor ?? "vscode");
+
+  if (editorName === undefined) {
+    return <div>Invalid editor</div>;
+  }
 
   return (
     <Stack align="center" gap="xl">
@@ -47,11 +63,7 @@ export default async function AuthorizePage({
       <Text>{t("authorize.body", { editor: editorName })}</Text>
       <Button
         component="a"
-        href={
-          editor == "vscode"
-          ? `vscode://testausserveri-ry.testaustime/authorize?token=${token}`
-          : `cursor://testausserveri-ry.testaustime-cursor/authorize?token=${token}`
-        }
+        href={loginUrl}
       >
         {t("authorize.continue", { username })}
       </Button>

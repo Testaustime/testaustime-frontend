@@ -80,7 +80,7 @@ export default async function ExtensionsPage({
           <ExtensionBlock
             logo="/images/cursor.svg"
             alt="Cursor logo"
-            downloadLink="https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime"
+            downloadLink="https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime-cursor"
             sourceCodeLink="https://github.com/Testausserveri/testaustime-cursor"
             text={t("extensions.cursor")}
           />
