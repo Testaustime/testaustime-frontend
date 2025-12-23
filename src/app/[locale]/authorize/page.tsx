@@ -50,7 +50,7 @@ export default async function AuthorizePage({
         href={
           editor == "vscode"
           ? `vscode://testausserveri-ry.testaustime/authorize?token=${token}`
-          : `cursor://testausserveri-ry.testaustime/authorize?token=${token}`
+          : `cursor://testausserveri-ry.testaustime-cursor/authorize?token=${token}`
         }
       >
         {t("authorize.continue", { username })}
