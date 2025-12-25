@@ -10,7 +10,19 @@ export const GET = async (
     params: { username: string };
   },
 ) => {
+  if (process.env.NEXT_PUBLIC_API_URL == null)
+    throw new Error("API URL was not defined");
+
   const token = cookies().get("token")?.value;
+
+  const h = new Headers({
+    "client-ip": headers().get("client-ip") ?? "Unknown IP",
+    "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
+  });
+
+  if (token) {
+    h.set("Authorization", `Bearer ${token}`);
+  }
 
   try {
     const response = await fetch(
@@ -19,11 +31,7 @@ export const GET = async (
       )}/activity/current`,
       {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "client-ip": headers().get("client-ip") ?? "Unknown IP",
-          "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
-        },
+        headers: h,
         cache: "no-cache",
       },
     );

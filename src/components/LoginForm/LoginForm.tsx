@@ -10,7 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { showNotification } from "@mantine/notifications";
 import { useTranslation } from "react-i18next";
 import { logIn } from "./actions";
-import { LoginError } from "../../types";
+import { LoginError, PostRequestError } from "../../types";
 
 export const LoginForm = () => {
   const [visible, setVisible] = useState(false);
@@ -41,14 +41,14 @@ export const LoginForm = () => {
           unsafeRedirect,
         );
 
-        // Not sure why result is undefined when the login is successful. Result should be `never` in those cases
-        // because we call `redirect` in `logIn`.
+        // Using `redirect` will return undefined, but it uses the type `never` so we don't notice it.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (result) {
+        if (result && "error" in result) {
           const message = {
             [LoginError.InvalidCredentials]: t("loginPage.invalidCredentials"),
-            [LoginError.RateLimited]: t("rateLimitedError"),
-            [LoginError.UnknownError]: t("unknownErrorOccurred"),
+            [PostRequestError.Unauthorized]: t("errors.unauthorized"),
+            [PostRequestError.RateLimited]: t("rateLimitedError"),
+            [PostRequestError.UnknownError]: t("unknownErrorOccurred"),
           }[result.error];
           showNotification({
             title: t("error"),

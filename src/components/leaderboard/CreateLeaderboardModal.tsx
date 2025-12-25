@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { FormikTextInput } from "../forms/FormikTextInput";
 import { showNotification } from "@mantine/notifications";
 import { createLeaderboard } from "../../api/leaderboardApi";
-import { CreateLeaderboardError } from "../../types";
+import { CreateLeaderboardError, PostRequestError } from "../../types";
 import { useTranslation } from "react-i18next";
 
 interface CreateLeaderboardModalProps {
@@ -26,9 +26,7 @@ export const CreateLeaderboardModal = ({
         }}
         onSubmit={async (values) => {
           const result = await createLeaderboard(values.leaderboardName);
-          if (typeof result === "object") {
-            onCreate(values.leaderboardName);
-          } else {
+          if ("error" in result)
             showNotification({
               title: t("error"),
               color: "red",
@@ -36,11 +34,15 @@ export const CreateLeaderboardModal = ({
                 [CreateLeaderboardError.AlreadyExists]: t(
                   "leaderboards.leaderboardExists",
                 ),
-                [CreateLeaderboardError.UnknownError]: t(
+                [PostRequestError.Unauthorized]: t("errors.unauthorized"),
+                [PostRequestError.RateLimited]: t("rateLimitedError"),
+                [PostRequestError.UnknownError]: t(
                   "leaderboards.leaderboardCreateError",
                 ),
-              }[result],
+              }[result.error],
             });
+          else {
+            onCreate(values.leaderboardName);
           }
         }}
         validationSchema={Yup.object().shape({

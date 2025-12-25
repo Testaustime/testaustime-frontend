@@ -8,6 +8,7 @@ import {
   TableTbody,
   TableThead,
   TableTh,
+  Stack,
 } from "@mantine/core";
 import { getLeaderboard } from "../../../../api/leaderboardApi";
 import { redirect } from "next/navigation";
@@ -21,7 +22,7 @@ import { LeaderboardInviteTokenField } from "./LeaderboardInviteTokenField";
 import { DemoteUserButton } from "./DemoteUserButton";
 import { PromoteUserButton } from "./PromoteUserButton";
 import { KickUserButton } from "./KickUserButton";
-import { GetLeaderboardError } from "../../../../types";
+import { GetLeaderboardError, GetRequestError } from "../../../../types";
 import { getPreferences } from "../../../../utils/cookieUtils";
 import { YOU_BADGE_COLOR } from "../../../../utils/constants";
 
@@ -45,18 +46,25 @@ export default async function LeaderboardPage({
     }
   }
 
+  const { t } = await initTranslations(locale, ["common"]);
+
   const leaderboard = await getLeaderboard(name);
   if ("error" in leaderboard) {
-    if (leaderboard.error === GetLeaderboardError.RateLimited) {
+    if (leaderboard.error === GetRequestError.RateLimited) {
       redirect("/rate-limited");
-    } else if (leaderboard.error === GetLeaderboardError.Unauthorized) {
+    } else if (leaderboard.error === GetRequestError.Unauthorized) {
       redirect("/login");
+    } else if (leaderboard.error === GetLeaderboardError.LeaderboardNotFound) {
+      return (
+        <Stack gap="sm">
+          <Title>{name}</Title>
+          <div>{t("leaderboards.error.notFound")}</div>
+        </Stack>
+      );
     } else {
       throw new Error(JSON.stringify(leaderboard));
     }
   }
-
-  const { t } = await initTranslations(locale, ["common"]);
 
   const adminUsernames = leaderboard.members
     .filter((m) => m.admin)

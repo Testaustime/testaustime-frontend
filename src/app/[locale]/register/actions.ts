@@ -1,9 +1,9 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { RegistrationResult } from "../../../types";
-import { SecureAccessTokenResponse } from "../../../components/LoginForm/actions";
+import { postRequestWithResponse } from "../../../api/baseApi";
+import { PostRequestError, RegistrationResult } from "../../../types";
 
 interface ApiAuthLoginResponse {
   id: number;
@@ -15,69 +15,29 @@ interface ApiAuthLoginResponse {
 }
 
 export const register = async (username: string, password: string) => {
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + "/auth/register",
+  const res = await postRequestWithResponse<ApiAuthLoginResponse>(
+    "/auth/register",
     {
-      method: "POST",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-        "client-ip": headers().get("client-ip") ?? "Unknown IP",
-        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
+      username,
+      password,
     },
   );
 
-  if (!response.ok) {
-    if (response.status === 409) {
+  if ("error" in res) {
+    if (res.statusCode === 409) {
       return RegistrationResult.UsernameTaken;
     }
-    if (response.status === 429) {
-      return RegistrationResult.RateLimited;
+    if (res.statusCode === 429) {
+      return PostRequestError.RateLimited;
     }
 
-    return RegistrationResult.UnknownError;
+    return PostRequestError.UnknownError;
   }
 
-  const secureAccessTokenResponse = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + "/auth/securedaccess",
-    {
-      method: "POST",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-        "client-ip": headers().get("client-ip") ?? "Unknown IP",
-        "bypass-token": process.env.RATELIMIT_IP_FORWARD_SECRET ?? "",
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    },
-  );
-
-  const data = (await response.json()) as ApiAuthLoginResponse;
-
   const expiration = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7);
-  cookies().set("token", data.auth_token, {
-    value: data.auth_token,
+  cookies().set("token", res.data.auth_token, {
+    value: res.data.auth_token,
     expires: expiration,
-    path: "/",
-    sameSite: "strict",
-    secure: true,
-    httpOnly: true,
-  });
-
-  const secureAccessTokenData =
-    (await secureAccessTokenResponse.json()) as SecureAccessTokenResponse;
-  const secureAccessTokenExpiration = new Date(Date.now() + 1000 * 60 * 60);
-  cookies().set("secure-access-token", secureAccessTokenData.token, {
-    value: secureAccessTokenData.token,
-    expires: secureAccessTokenExpiration,
     path: "/",
     sameSite: "strict",
     secure: true,

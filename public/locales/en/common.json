@@ -85,6 +85,10 @@
     "create": "Create",
     "createNewLeaderboard": "Create new leaderboard",
     "deleteLeaderboard": "Delete leaderboard",
+    "deletionNotification": {
+      "successTitle": "Leaderboard deleted",
+      "successDescription": "Leaderboard was successfully deleted"
+    },
     "demote": "Demote",
     "inviteCode": "Invite code",
     "join": {
@@ -92,7 +96,7 @@
       "genericError": "Error joining leaderboard",
       "join": "Join",
       "leaderboardCode": "Leaderboard code",
-      "leaderboardCodeInvalid": "Leaderboard code must start with \"ttlic_\", and be followed by 24 alphanumeric characters.",
+      "leaderboardCodeInvalid": "Leaderboard code must start with \"ttlic_\", and be followed by 32 alphanumeric characters.",
       "leaderboardCodeRequired": "Leaderboard code is required",
       "notFound": "Leaderboard not found"
     },
@@ -118,6 +122,7 @@
     },
     "yourPosition": "Your position",
     "error": {
+      "notFound": "Leaderboard not found",
       "loadingAllLeaderboards": "An error occurred while loading your leaderboard list, try again later. If the error persists, please contact us."
     }
   },
@@ -161,12 +166,22 @@
       "makePublic": "Make my account public",
       "title": "Account visibility"
     },
+    "sudoOperation": {
+      "title": "Confirm password",
+      "passwordLabel": "Password",
+      "wrongPassword": "The provided password is incorrect",
+      "passwordRequired": "Password is required",
+      "confirmButton": "Confirm"
+    },
     "authenticationToken": {
       "title": "Authentication token",
       "tooltip": {
         "install": "Get your extension from here!",
         "label": "This token is used for authentication in your code editor."
-      }
+      },
+      "passwordRequiredDescription": "Please provide your password to regenerate the authentication token",
+      "regenerateSuccessTitle": "Authentication token regenerated",
+      "regenerateSuccessDescription": "Your authentication token was successfully regenerated, please remember to update the new token to your code editors."
     },
     "changePassword": {
       "confirm": {
@@ -213,13 +228,13 @@
       }
     },
     "deleteAccount": {
+      "title": "Account deletion",
       "button": "Delete account",
-      "modal": {
-        "button": "Delete",
-        "text": "Type your password to confirm the deletion. This action can not be undone.",
-        "title": "Delete account"
-      },
-      "title": "Delete account"
+      "modalDescription": "Type your password to confirm the deletion. This action can not be undone.",
+      "notification": {
+        "successTitle": "Account deleted",
+        "successDescription": "Your account and all data has been successfully deleted"
+      }
     },
     "friendCode": {
       "title": "Friend code",

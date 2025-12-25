@@ -6,7 +6,7 @@ import { Button } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import styles from "./ChangeUsernameForm.module.css";
 import { changeUsername } from "./actions";
-import { ChangeUsernameError } from "../../types";
+import { ChangeUsernameError, PostRequestError } from "../../types";
 import { useRouter } from "next/navigation";
 import { showNotification } from "@mantine/notifications";
 import { logOutAndRedirect } from "../../utils/authUtils";
@@ -39,10 +39,10 @@ export const ChangeUsernameForm = () => {
                 message: t("profile.changeUsername.new.invalid"),
               });
               break;
-            case ChangeUsernameError.RateLimited:
+            case PostRequestError.RateLimited:
               router.push("/rate-limited");
               break;
-            case ChangeUsernameError.Unauthorized:
+            case PostRequestError.Unauthorized:
               showNotification({
                 title: t("error"),
                 color: "red",
@@ -57,7 +57,7 @@ export const ChangeUsernameForm = () => {
                 message: t("profile.changeUsername.usernameTaken"),
               });
               break;
-            case ChangeUsernameError.UnknownError:
+            case PostRequestError.UnknownError:
               showNotification({
                 title: t("error"),
                 color: "red",

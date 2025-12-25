@@ -7,7 +7,7 @@ import { FormikTextInput } from "../forms/FormikTextInput";
 import { EnterIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 import { showNotification } from "@mantine/notifications";
-import { JoinLeaderboardError } from "../../types";
+import { JoinLeaderboardError, PostRequestError } from "../../types";
 import { joinLeaderboard } from "./actions";
 
 interface JoinLeaderboardModalProps {
@@ -40,9 +40,7 @@ export const JoinLeaderboardModal = ({
         })}
         onSubmit={async (values) => {
           const result = await joinLeaderboard(values.leaderboardCode);
-          if (typeof result === "object") {
-            onJoin();
-          } else {
+          if ("error" in result) {
             showNotification({
               title: t("error"),
               color: "red",
@@ -53,11 +51,15 @@ export const JoinLeaderboardModal = ({
                 [JoinLeaderboardError.NotFound]: t(
                   "leaderboards.join.notFound",
                 ),
-                [JoinLeaderboardError.UnknownError]: t(
+                [PostRequestError.RateLimited]: t("rateLimitedError"),
+                [PostRequestError.Unauthorized]: t("errors.unauthorized"),
+                [PostRequestError.UnknownError]: t(
                   "leaderboards.join.genericError",
                 ),
-              }[result],
+              }[result.error],
             });
+          } else {
+            onJoin();
           }
         }}
       >

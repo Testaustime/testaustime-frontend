@@ -114,7 +114,7 @@ export default async function ProfilePage({
           >
             <Title order={3}>{t("profile.authenticationToken.title")}</Title>
           </WithTooltip>
-          <AuthTokenField token={token} />
+          <AuthTokenField username={me.username} token={token} />
         </Stack>
         <Stack gap="xs">
           <WithTooltip

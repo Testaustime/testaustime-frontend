@@ -9,7 +9,7 @@ import { FormikPasswordInput } from "../../../components/forms/FormikPasswordInp
 import { Button, LoadingOverlay } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import { register } from "./actions";
-import { RegistrationResult } from "../../../types";
+import { PostRequestError, RegistrationResult } from "../../../types";
 
 export const RegistrationForm = () => {
   const [visible, setVisible] = useState(false);
@@ -49,7 +49,7 @@ export const RegistrationForm = () => {
         setVisible(true);
         const result = await register(values.username, values.password);
         switch (result) {
-          case RegistrationResult.RateLimited:
+          case PostRequestError.RateLimited:
             showNotification({
               title: t("error"),
               color: "red",
@@ -57,7 +57,7 @@ export const RegistrationForm = () => {
             });
             setVisible(false);
             break;
-          case RegistrationResult.UnknownError:
+          case PostRequestError.UnknownError:
             showNotification({
               title: t("error"),
               color: "red",

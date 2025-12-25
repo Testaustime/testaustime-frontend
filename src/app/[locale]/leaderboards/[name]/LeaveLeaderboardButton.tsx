@@ -4,10 +4,10 @@ import { ExitIcon } from "@radix-ui/react-icons";
 import ButtonWithConfirmation from "../../../../components/ButtonWithConfirmation";
 import { leaveLeaderboard } from "../../../../components/leaderboard/actions";
 import { useTranslation } from "react-i18next";
-import { LeaveLeaderboardError } from "../../../../types";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { logOutAndRedirect } from "../../../../utils/authUtils";
+import { PostRequestError } from "../../../../types";
 
 type LeaveLeaderboardButtonProps = {
   name: string;
@@ -30,9 +30,11 @@ export const LeaveLeaderboardButton = ({
       onClick={() => {
         leaveLeaderboard(name)
           .then(async (res) => {
-            if ("error" in res) {
+            // Using `redirect` will return undefined, but it uses the type `never` so we don't notice it.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (res && "error" in res) {
               switch (res.error) {
-                case LeaveLeaderboardError.Unauthorized:
+                case PostRequestError.Unauthorized:
                   showNotification({
                     title: t("error"),
                     color: "red",
@@ -40,10 +42,10 @@ export const LeaveLeaderboardButton = ({
                   });
                   await logOutAndRedirect();
                   break;
-                case LeaveLeaderboardError.RateLimited:
+                case PostRequestError.RateLimited:
                   router.push("/rate-limited");
                   break;
-                case LeaveLeaderboardError.UnknownError:
+                case PostRequestError.UnknownError:
                   showNotification({
                     title: t("error"),
                     color: "red",
@@ -53,7 +55,7 @@ export const LeaveLeaderboardButton = ({
               }
             }
           })
-          .catch((e) => {
+          .catch((e: unknown) => {
             console.error(e);
           });
       }}

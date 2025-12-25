@@ -4,7 +4,7 @@ import { DownloadIcon } from "@radix-ui/react-icons";
 import { Dashboard } from "../../components/Dashboard";
 import { startOfDay } from "date-fns";
 import styles from "./page.module.css";
-import { ApiUsersUserResponse } from "../../types";
+import { ApiUsersUserResponse, GetRequestError } from "../../types";
 import { cookies } from "next/headers";
 import initTranslations from "../i18n";
 import {
@@ -35,10 +35,10 @@ export default async function MainPage({
   }
 
   if (me) {
-    const activityData = await getOwnActivityData(me.username);
+    const activityData = await getOwnActivityData();
 
     if ("error" in activityData) {
-      if (activityData.error === "Too many requests") {
+      if (activityData.error === GetRequestError.RateLimited) {
         redirect("/rate-limited");
       }
       throw new Error(JSON.stringify(activityData));
@@ -46,7 +46,7 @@ export default async function MainPage({
 
     const currentActivity = await getCurrentActivityStatus(me.username);
     if (currentActivity && "error" in currentActivity) {
-      if (currentActivity.error === "Too many requests") {
+      if (currentActivity.error === GetRequestError.RateLimited) {
         redirect("/rate-limited");
       }
       throw new Error(JSON.stringify(currentActivity));

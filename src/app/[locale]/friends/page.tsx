@@ -10,6 +10,7 @@ import {
   getOwnActivityDataSummary,
 } from "../../../api/usersApi";
 import { getFriendsList } from "../../../api/friendsApi";
+import { GetRequestError } from "../../../types";
 import { getPreferences } from "../../../utils/cookieUtils";
 
 export default async function FriendsPage({
@@ -40,9 +41,9 @@ export default async function FriendsPage({
   }
 
   if ("error" in friendsList) {
-    if (friendsList.error === "Unauthorized") {
+    if (friendsList.error === GetRequestError.Unauthorized) {
       redirect("/login");
-    } else if (friendsList.error === "Too many requests") {
+    } else if (friendsList.error === GetRequestError.RateLimited) {
       redirect("/rate-limited");
     } else {
       throw new Error(JSON.stringify(friendsList));
@@ -50,9 +51,9 @@ export default async function FriendsPage({
   }
 
   if ("error" in ownDataSummary) {
-    if (ownDataSummary.error === "Too many requests") {
+    if (ownDataSummary.error === GetRequestError.RateLimited) {
       redirect("/rate-limited");
-    } else if (ownDataSummary.error === "Unauthorized") {
+    } else if (ownDataSummary.error === GetRequestError.Unauthorized) {
       redirect("/login");
     } else {
       throw new Error(JSON.stringify(ownDataSummary));
@@ -60,7 +61,7 @@ export default async function FriendsPage({
   }
 
   if (ownActivityStatus && "error" in ownActivityStatus) {
-    if (ownActivityStatus.error === "Too many requests") {
+    if (ownActivityStatus.error === GetRequestError.RateLimited) {
       redirect("/rate-limited");
     } else {
       throw new Error(JSON.stringify(ownActivityStatus));

@@ -55,15 +55,12 @@ export interface LeaderboardData {
 }
 
 export enum JoinLeaderboardError {
-  AlreadyMember,
-  NotFound,
-  UnknownError,
+  AlreadyMember = "AlreadyMember",
+  NotFound = "NotFound",
 }
 
 export enum CreateLeaderboardError {
-  AlreadyExists,
-  UnknownError,
-  RateLimited,
+  AlreadyExists = "AlreadyExists",
 }
 
 type ActivityDataSummaryEntry = {
@@ -78,52 +75,23 @@ export type ActivityDataSummary = {
 };
 
 export enum PasswordChangeResult {
-  Success,
-  OldPasswordIncorrect,
-  NewPasswordInvalid,
-  UnknownError,
+  Success = "Success",
+  OldPasswordIncorrect = "OldPasswordIncorrect",
+  NewPasswordInvalid = "NewPasswordInvalid",
+  UnknownError = "UnknownError",
 }
 
 export enum AddFriendError {
-  AlreadyFriends,
-  NotFound,
-  UnknownError,
+  AlreadyFriends = "Already friends",
+  NotFound = "Not found",
 }
 
 export enum RegistrationResult {
-  RateLimited,
-  UnknownError,
-  UsernameTaken,
-}
-
-export enum GetLeaderboardError {
-  Unauthorized = "Unauthorized",
-  RateLimited = "Rate limited",
-  UnknownError = "Unknown error when getting leaderboard",
-}
-
-export enum GetLeaderboardsError {
-  Unauthorized = "Unauthorized",
-  RateLimited = "Rate limited",
-  UnknownError = "Unknown error when getting leaderboards",
+  UsernameTaken = "Username taken",
 }
 
 export enum LoginError {
-  InvalidCredentials,
-  UnknownError,
-  RateLimited,
-}
-
-export enum DeleteLeaderboardError {
-  Unauthorized = "Unauthorized",
-  RateLimited = "Rate limited",
-  UnknownError = "Unknown error when deleting leaderboard",
-}
-
-export enum RegenerateAuthTokenError {
-  Unauthorized = "Unauthorized",
-  RateLimited = "Rate limited",
-  UnknownError = "Unknown error when regenerating auth token",
+  InvalidCredentials = "Invalid credentials",
 }
 
 export type CurrentActivityApiResponse = {
@@ -137,49 +105,13 @@ export type CurrentActivityApiResponse = {
   };
 };
 
-export enum ChangeAccountVisibilityError {
-  Unauthorized = "Unauthorized",
-  RateLimited = "Rate limited",
-  UnknownError = "Unknown error when changing account visibility",
-}
-
-export enum RegenerateInviteCodeError {
-  Unauthorized = "Unauthorized",
-  RateLimited = "Rate limited",
-  UnknownError = "Unknown error when regenerating invite code",
-}
-
-export enum RegenerateFriendCodeError {
-  Unauthorized = "Unauthorized",
-  RateLimited = "Rate limited",
-  UnknownError = "Unknown error when regenerating friend code",
-}
-
-export enum LeaveLeaderboardError {
-  Unauthorized = "Unauthorized",
-  RateLimited = "Rate limited",
-  UnknownError = "Unknown error when leaving leaderboard",
-}
-
-export enum RemoveFriendError {
-  Unauthorized = "Unauthorized",
-  RateLimited = "Rate limited",
-  UnknownError = "Unknown error when removing friend",
-}
-
 export enum ChangeUsernameError {
-  InvalidUsername,
-  Unauthorized,
-  UsernameTaken,
-  RateLimited,
-  UnknownError,
+  InvalidUsername = "Invalid username",
+  UsernameTaken = "Username taken",
 }
 
 export enum GetUserActivityDataError {
-  Unauthorized,
-  RateLimited,
-  UnknownError,
-  NotFound,
+  UserNotFound = "User not found",
 }
 
 export type SearchUsersResult = {
@@ -190,7 +122,18 @@ export type SearchUsersResult = {
 
 export type SearchUsersApiResponse = SearchUsersResult[];
 
-export enum SearchUsersError {
-  RateLimited,
-  UnknownError,
+export enum GetRequestError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "RateLimited",
+  UnknownError = "UnknownError",
+}
+
+export enum PostRequestError {
+  Unauthorized = "Unauthorized",
+  RateLimited = "RateLimited",
+  UnknownError = "UnknownError",
+}
+
+export enum GetLeaderboardError {
+  LeaderboardNotFound = "Leaderboard not found",
 }

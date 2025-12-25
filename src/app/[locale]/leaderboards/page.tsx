@@ -1,6 +1,6 @@
 import { Group, Title } from "@mantine/core";
 import { LeaderboardsList } from "../../../components/leaderboard/LeaderboardsList";
-import { GetLeaderboardsError, LeaderboardData } from "../../../types";
+import { GetRequestError, LeaderboardData } from "../../../types";
 import { redirect } from "next/navigation";
 import initTranslations from "../../i18n";
 import { CreateNewLeaderboardButton } from "./CreateNewLeaderboardButton";
@@ -25,13 +25,13 @@ export default async function LeaderboardsPage({
   const leaderboardList = await getMyLeaderboards();
   if (!Array.isArray(leaderboardList)) {
     switch (leaderboardList.error) {
-      case GetLeaderboardsError.RateLimited:
+      case GetRequestError.RateLimited:
         redirect("/rate-limited");
         break;
-      case GetLeaderboardsError.Unauthorized:
+      case GetRequestError.Unauthorized:
         redirect("/login");
         break;
-      case GetLeaderboardsError.UnknownError:
+      case GetRequestError.UnknownError:
         return (
           <>
             <Group align="center" mb="md" mt="xl" justify="space-between">

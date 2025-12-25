@@ -5,9 +5,9 @@ import { useTranslation } from "react-i18next";
 import { changeAccountVisibility } from "./actions";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
-import { ChangeAccountVisibilityError } from "../../../types";
 import { logOutAndRedirect } from "../../../utils/authUtils";
 import { useState } from "react";
+import { PostRequestError } from "../../../types";
 
 export const ProfileVisibilityToggle = ({
   isPublic,
@@ -27,12 +27,12 @@ export const ProfileVisibilityToggle = ({
           setIsLoading(true);
           const result = await changeAccountVisibility(!isPublic);
           setIsLoading(false);
-          if (result) {
+          if ("error" in result) {
             switch (result.error) {
-              case ChangeAccountVisibilityError.RateLimited:
+              case PostRequestError.RateLimited:
                 router.push("/rate-limited");
                 break;
-              case ChangeAccountVisibilityError.Unauthorized:
+              case PostRequestError.Unauthorized:
                 showNotification({
                   title: t("error"),
                   color: "red",
@@ -40,7 +40,7 @@ export const ProfileVisibilityToggle = ({
                 });
                 await logOutAndRedirect();
                 break;
-              case ChangeAccountVisibilityError.UnknownError:
+              case PostRequestError.UnknownError:
                 showNotification({
                   title: t("error"),
                   color: "red",

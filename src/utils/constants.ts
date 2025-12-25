@@ -8,4 +8,4 @@ export const wrapped2025CookieName = "testaustime-wrapped-2025-closed";
 export const DEFAULT_DAY_RANGE = "week";
 export const DEFAULT_MAX_TIME_UNIT = "h";
 
-export const YOU_BADGE_COLOR = "green" as const;
+export const YOU_BADGE_COLOR = "green";

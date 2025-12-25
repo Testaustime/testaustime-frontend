@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 import ButtonWithConfirmation from "../../../../components/ButtonWithConfirmation";
 import { Trash2 } from "react-feather";
 import { deleteLeaderboard } from "../../../../components/leaderboard/actions";
-import { DeleteLeaderboardError } from "../../../../types";
 import { showNotification } from "@mantine/notifications";
 import { logOutAndRedirect } from "../../../../utils/authUtils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { PostRequestError } from "../../../../types";
 
 type DeleteLeaderboardButtonProps = {
   name: string;
@@ -31,9 +31,11 @@ export const DeleteLeaderboardButton = ({
         setIsDeleting(true);
         deleteLeaderboard(name)
           .then(async (res) => {
-            if ("error" in res) {
+            // Using `redirect` will return undefined, but it uses the type `never` so we don't notice it.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (res && "error" in res) {
               switch (res.error) {
-                case DeleteLeaderboardError.Unauthorized:
+                case PostRequestError.Unauthorized:
                   showNotification({
                     title: t("error"),
                     color: "red",
@@ -41,10 +43,10 @@ export const DeleteLeaderboardButton = ({
                   });
                   await logOutAndRedirect();
                   break;
-                case DeleteLeaderboardError.RateLimited:
+                case PostRequestError.RateLimited:
                   router.push("/rate-limited");
                   break;
-                case DeleteLeaderboardError.UnknownError:
+                case PostRequestError.UnknownError:
                   showNotification({
                     title: t("error"),
                     color: "red",
@@ -52,9 +54,17 @@ export const DeleteLeaderboardButton = ({
                   });
                   break;
               }
+            } else {
+              showNotification({
+                title: t("leaderboards.deletionNotification.successTitle"),
+                color: "green",
+                message: t(
+                  "leaderboards.deletionNotification.successDescription",
+                ),
+              });
             }
           })
-          .catch((e) => {
+          .catch((e: unknown) => {
             console.log(e);
           })
           .finally(() => {
