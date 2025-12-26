@@ -25,12 +25,24 @@ export default async function AuthorizePage({
 
   if (loginUrl === undefined) {
     // Make this prettier
-    return <div>Unsupported editor</div>;
+    return <div>{t("authorize.unsupportedEditor")}</div>;
   }
 
   const token = cookies().get("token")?.value;
   if (!token) {
     redirect(loginUrl);
+  }
+
+  const redirectUrls = new Map(
+    Object.entries({
+      vscode: `vscode://testausserveri-ry.testaustime/authorize?token=${token}`,
+      cursor: `cursor://testausserveri-ry.testaustime-cursor/authorize?token=${token}`,
+    }),
+  );
+  const redirectUrl = redirectUrls.get(editor ?? "vscode");
+  if (redirectUrl === undefined) {
+    // Make this prettier
+    return <div>{t("authorize.unsupportedEditor")}</div>;
   }
 
   const me = await getMe();
@@ -49,7 +61,7 @@ export default async function AuthorizePage({
   const editorName = editorNames.get(editor ?? "vscode");
 
   if (editorName === undefined) {
-    return <div>Invalid editor</div>;
+    return <div>{t("authorize.invalidEditor")}</div>;
   }
 
   return (
@@ -63,7 +75,7 @@ export default async function AuthorizePage({
       <Text>{t("authorize.body", { editor: editorName })}</Text>
       <Button
         component="a"
-        href={loginUrl}
+        href={redirectUrl}
       >
         {t("authorize.continue", { username })}
       </Button>

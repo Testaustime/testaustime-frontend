@@ -310,6 +310,8 @@
   },
   "authorize": {
     "body": "Olet kirjautumassa sisään viralliseen {{editor}} -lisäosaan.",
+    "invalidEditor": "Tämä editori on virheellinen.",
+    "unsupportedEditor": "Tätä editoria ei tueta.",
     "continue": "Jatka käyttäjänä {{username}}",
     "notWorking": {
       "text": "Eikö toimi?",

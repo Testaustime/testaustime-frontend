@@ -310,6 +310,8 @@
   },
   "authorize": {
     "body": "You are logging in to the official {{editor}} extension.",
+    "invalidEditor": "This editor is invalid.",
+    "unsupportedEditor": "This editor is not supported.",
     "continue": "Continue as {{username}}",
     "notWorking": {
       "text": "Not working?",
