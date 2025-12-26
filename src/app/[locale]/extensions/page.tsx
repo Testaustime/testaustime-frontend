@@ -78,6 +78,13 @@ export default async function ExtensionsPage({
             text={t("extensions.vscode")}
           />
           <ExtensionBlock
+            logo="/images/cursor.svg"
+            alt="Cursor logo"
+            downloadLink="https://marketplace.visualstudio.com/items?itemName=testausserveri-ry.testaustime-cursor"
+            sourceCodeLink="https://github.com/Testausserveri/testaustime-cursor"
+            text={t("extensions.cursor")}
+          />
+          <ExtensionBlock
             logo="/images/neovim.svg"
             alt="Neovim logo"
             downloadLink="https://github.com/Testaustime/testaustime.nvim"

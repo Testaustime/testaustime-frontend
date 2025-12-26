@@ -15,14 +15,34 @@ export default async function AuthorizePage({
 }) {
   const { t } = await initTranslations(locale, ["common"]);
 
-  const loginUrl =
-    editor == "vscode"
-      ? `/login?redirect=${encodeURIComponent("/authorize?editor=vscode")}`
-      : "/login";
+  const loginUrls = new Map(
+    Object.entries({
+      vscode: `/login?redirect=${encodeURIComponent("/authorize?editor=vscode")}`,
+      cursor: `/login?redirect=${encodeURIComponent("/authorize?editor=cursor")}`,
+    }),
+  );
+  const loginUrl = loginUrls.get(editor ?? "vscode");
+
+  if (loginUrl === undefined) {
+    // Make this prettier
+    return <div>{t("authorize.unsupportedEditor")}</div>;
+  }
 
   const token = cookies().get("token")?.value;
   if (!token) {
     redirect(loginUrl);
+  }
+
+  const redirectUrls = new Map(
+    Object.entries({
+      vscode: `vscode://testausserveri-ry.testaustime/authorize?token=${token}`,
+      cursor: `cursor://testausserveri-ry.testaustime-cursor/authorize?token=${token}`,
+    }),
+  );
+  const redirectUrl = redirectUrls.get(editor ?? "vscode");
+  if (redirectUrl === undefined) {
+    // Make this prettier
+    return <div>{t("authorize.unsupportedEditor")}</div>;
   }
 
   const me = await getMe();
@@ -32,6 +52,18 @@ export default async function AuthorizePage({
 
   const { username } = me;
 
+  const editorNames = new Map(
+    Object.entries({
+      vscode: "Visual Studio Code",
+      cursor: "Cursor",
+    }),
+  );
+  const editorName = editorNames.get(editor ?? "vscode");
+
+  if (editorName === undefined) {
+    return <div>{t("authorize.invalidEditor")}</div>;
+  }
+
   return (
     <Stack align="center" gap="xl">
       <Image
@@ -40,10 +72,10 @@ export default async function AuthorizePage({
         width={40}
         height={40}
       />
-      <Text>{t("authorize.body")}</Text>
+      <Text>{t("authorize.body", { editor: editorName })}</Text>
       <Button
         component="a"
-        href={`vscode://testausserveri-ry.testaustime/authorize?token=${token}`}
+        href={redirectUrl}
       >
         {t("authorize.continue", { username })}
       </Button>
